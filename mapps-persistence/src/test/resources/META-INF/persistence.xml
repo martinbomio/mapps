@@ -1,0 +1,55 @@
+<persistence version="1.0"
+             xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+    <persistence-unit name="mapps-persistence-hsqldb">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.mapps.model.Athlete</class>
+        <class>com.mapps.model.Device</class>
+        <class>com.mapps.model.Gender</class>
+        <class>com.mapps.model.GPSData</class>
+        <class>com.mapps.model.IMUData</class>
+        <class>com.mapps.model.Institution</class>
+        <class>com.mapps.model.Permission</class>
+        <class>com.mapps.model.Person</class>
+        <class>com.mapps.model.ProcessedDataUnit</class>
+        <class>com.mapps.model.PulseData</class>
+        <class>com.mapps.model.RawDataUnit</class>
+        <class>com.mapps.model.Report</class>
+        <class>com.mapps.model.Role</class>
+        <class>com.mapps.model.Sport</class>
+        <class>com.mapps.model.Training</class>
+        <class>com.mapps.model.User</class>
+        <class>com.mapps.exceptions.AthleteAlreadyExistException</class>
+        <class>com.mapps.exceptions.AthleteNotFoundException</class>
+        <class>com.mapps.exceptions.DeviceAlreadyExistException</class>
+        <class>com.mapps.exceptions.DeviceNotFoundException</class>
+        <class>com.mapps.exceptions.GPSDataNotFoundException</class>
+        <class>com.mapps.exceptions.IMUDataNotFoundException</class>
+        <class>com.mapps.exceptions.InstitutionAlreadyExistException</class>
+        <class>com.mapps.exceptions.InstitutionNotFoundException</class>
+        <class>com.mapps.exceptions.PermissionNotFoundException</class>
+        <class>com.mapps.exceptions.ProcessedDataUnitNotFoundException</class>
+        <class>com.mapps.exceptions.PulseDataNotFoundException</class>
+        <class>com.mapps.exceptions.RawDataUnitNotFoundException</class>
+        <class>com.mapps.exceptions.ReportNotFoundException</class>
+        <class>com.mapps.exceptions.RoleNotFoundException</class>
+        <class>com.mapps.exceptions.SportAlreadyExistException</class>
+        <class>com.mapps.exceptions.SportNotFoundException</class>
+        <class>com.mapps.exceptions.TrainingNotFoundException</class>
+        <class>com.mapps.exceptions.UserNotFoundException</class>
+
+        <properties>
+            <property name="hibernate.transaction.manager_lookup_class"
+                      value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:mapps-persistece" />
+            <property name="javax.persistence.jdbc.usuario" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <property name="hibernate.connection.shutdown" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+        </properties>
+    </persistence-unit>
+</persistence>
