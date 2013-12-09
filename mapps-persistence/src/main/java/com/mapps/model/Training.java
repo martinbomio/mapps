@@ -48,6 +48,9 @@ public class Training {
     private List<Report> reports;
     @ManyToOne
     private Sport sport;
+    @ManyToOne
+    private Institution institution;
+
     @ElementCollection
     @JoinTable(name = "Permissions_Users_Training")
     @Enumerated(value = EnumType.ORDINAL)
@@ -64,7 +67,7 @@ public class Training {
 
     public Training(String name, Date date, int participants, long latOrigin, long longOrigin, int minBPM,
                     int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports, Sport sport,
-                    Map<User, Permission> mapUserPermission) {
+                    Map<User, Permission> mapUserPermission,Institution institution) {
         this.name = name;
         this.date = date;
         this.participants = participants;
@@ -76,6 +79,7 @@ public class Training {
         this.reports = reports;
         this.sport = sport;
         this.mapUserPermission = mapUserPermission;
+        this.institution=institution;
         this.started = true;
     }
 
@@ -181,5 +185,13 @@ public class Training {
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
     }
 }

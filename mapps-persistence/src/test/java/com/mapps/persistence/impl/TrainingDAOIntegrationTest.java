@@ -2,6 +2,7 @@ package com.mapps.persistence.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
@@ -12,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mapps.exceptions.AthleteAlreadyExistException;
+import com.mapps.exceptions.AthleteNotFoundException;
 import com.mapps.exceptions.DeviceAlreadyExistException;
 import com.mapps.exceptions.DeviceNotFoundException;
 import com.mapps.exceptions.InstitutionAlreadyExistException;
@@ -77,7 +79,7 @@ public class TrainingDAOIntegrationTest {
 
     @Test
     public void testAddTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
-        testTraining=new Training("hola",null,0,0,0,0,0,null,null,null,null);
+        testTraining=new Training("hola",null,0,0,0,0,0,null,null,null,null,null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
         Assert.assertEquals(testTraining.getName(), returnedTraining.getName());
@@ -85,7 +87,7 @@ public class TrainingDAOIntegrationTest {
 
     @Test
     public void testDeleteTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
-        testTraining=new Training("hola2",null,0,0,0,0,0,null,null,null,null);
+        testTraining=new Training("hola2",null,0,0,0,0,0,null,null,null,null,null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
 
@@ -100,7 +102,7 @@ public class TrainingDAOIntegrationTest {
     }
     @Test
     public void updateTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
-        testTraining=new Training("hola3",null,0,0,0,0,0,null,null,null,null);
+        testTraining=new Training("hola3",null,0,0,0,0,0,null,null,null,null,null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
         returnedTraining.setMaxBPM(5);
@@ -121,7 +123,7 @@ public class TrainingDAOIntegrationTest {
         testDevice=new Device("0013A200","40813E2A",55,testInstitution);
         HashMap<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
         mapAthleteDevice.put(testAthlete,testDevice);
-        testTraining=new Training("hola4",dNow,0,0,0,0,0,mapAthleteDevice,null,null,null);
+        testTraining=new Training("hola4",dNow,0,0,0,0,0,mapAthleteDevice,null,null,null,null);
 
         institutionDAO.addInstitution(testInstitution);
         athleteDAO.addAthlete(testAthlete);
@@ -129,10 +131,42 @@ public class TrainingDAOIntegrationTest {
         trainingDAO.addTraining(testTraining);
 
         Device returnedDevice = deviceDAO.getDeviceByDir(testDevice.getDirLow());
-        Training testAux= trainingDAO.getTrainingOfDevice(returnedDevice.getDirLow(),dNow);
+        List<Training> testAux= trainingDAO.getTrainingOfDevice(returnedDevice.getDirLow(),dNow);
 
-            Assert.assertEquals(testAux.getName(),"hola4");
+            Assert.assertEquals(testAux.get(0).getName(),"hola4");
 
+
+    }
+    @Test
+    public void testGetTrainingOfAthlete() throws InstitutionAlreadyExistException, NullParameterException, AthleteAlreadyExistException, DeviceAlreadyExistException, TrainingAlreadyExistException, AthleteNotFoundException, TrainingNotFoundException {
+        testInstitution=new Institution("institution",null,"URUGUAY");
+        testAthlete=new Athlete(null, null, null,null,
+                null,1.5, 1.2,"44475997",testInstitution);
+        testDevice=new Device("0013A202","40813E2B",55,testInstitution);
+        HashMap<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
+        mapAthleteDevice.put(testAthlete,testDevice);
+        testTraining=new Training("training",null,0,0,0,0,0,mapAthleteDevice,null,null,null,null);
+
+        institutionDAO.addInstitution(testInstitution);
+        athleteDAO.addAthlete(testAthlete);
+        deviceDAO.addDevice(testDevice);
+        trainingDAO.addTraining(testTraining);
+
+        Athlete returnedAthlete=athleteDAO.getAthleteByIdDocument(testAthlete.getIdDocument());
+        List<Training> testAux= trainingDAO.getTrainingOfAthlete(returnedAthlete);
+        Assert.assertEquals(testAux.get(0).getName(),"training");
+
+    }
+    @Test
+    public void testTrainingOfInstitution() throws InstitutionAlreadyExistException, NullParameterException, TrainingAlreadyExistException {
+        testInstitution=new Institution("inst",null,"URUGUAY");
+        testTraining=new Training("trai",null,0,0,0,0,0,null,null,null,null,testInstitution);
+
+        institutionDAO.addInstitution(testInstitution);
+        trainingDAO.addTraining(testTraining);
+
+        List<Training> testAux= trainingDAO.getTrainingOfInstitution(testInstitution.getName());
+        Assert.assertEquals(testAux.get(0).getName(),"trai");
 
     }
 

@@ -9,6 +9,7 @@ import com.mapps.model.Training;
 
 import javax.ejb.Local;
 import java.util.Date;
+import java.util.List;
 
 /**
  * TrainingDAO interface
@@ -72,7 +73,7 @@ public interface TrainingDAO {
     public boolean isTrainingStarted(String name) throws TrainingNotFoundException;
 
     /**
-     * This method returns a training of a device and a date
+     * This method returns the training of a device and a date
      * @param dirLow - the Device identification date to find the Training in the database
      * @param date - the Date identification of the training
      * @return - the training of the device and the date
@@ -80,5 +81,23 @@ public interface TrainingDAO {
      * @throws TrainingNotFoundException - If the Training is not in the database
      */
 
-    public Training getTrainingOfDevice(String dirLow,Date date) throws TrainingNotFoundException;
+    public List<Training> getTrainingOfDevice(String dirLow,Date date);
+
+
+    /**
+     * This method returns the training of a athlete
+     * @param athlete - the Name identification to find the Athlete in the database
+     * @return - the training of the athlete
+     * @throws TrainingNotFoundException - If the Training is not in the database
+     */
+
+    public List<Training> getTrainingOfAthlete(Athlete athlete);
+
+    /**
+     * This method returns the training of a athlete
+     * @param name - the Name identification to find the institution in the database
+     * @return - the trainings of the institution
+     */
+
+    public List<Training> getTrainingOfInstitution(String name);
 }

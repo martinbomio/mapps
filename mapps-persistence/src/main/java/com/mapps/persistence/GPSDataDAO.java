@@ -1,13 +1,13 @@
 package com.mapps.persistence;
 
-import javax.ejb.Local;
-
 import com.mapps.exceptions.GPSDataNotFoundException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.GPSData;
 
+import javax.ejb.Local;
+
 /**
- * DAO for GPSDATA
+ * .
  */
 @Local
 public interface GPSDataDAO {
