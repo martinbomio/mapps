@@ -1,6 +1,7 @@
 package com.mapps.services.receiver.impl;
 
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -49,7 +50,8 @@ public class ReceiveRestfulService implements ReceiverService{
         String sensorData = split[1];
         try{
             Device device = getDevice(Constants.DIRHIGH, dirLow);
-            Training dbTraining = trainingDAO.getTrainingOfDevice(device.getDirLow(), new Date());
+            List<Training> dbTrainings = trainingDAO.getTrainingOfDevice(device.getDirLow(), new Date());
+            Training dbTraining = getRecentTraining(dbTrainings);
             if(trainingDAO.isTrainingStarted(dbTraining.getName()))
                 handleData(sensorData, device, dbTraining);
             else
@@ -61,6 +63,20 @@ public class ReceiveRestfulService implements ReceiverService{
         } catch (TrainingNotFoundException e) {
             throw new IllegalArgumentException();
         }
+    }
+
+    private Training getRecentTraining(List<Training> dbTrainings) {
+        Date now = new Date();
+        Training training = dbTrainings.get(0);
+        long minTime = Long.MAX_VALUE;
+        for (Training t : dbTrainings){
+            long time = now.getTime() - t.getDate().getTime();
+            if (time <= minTime){
+                minTime = time;
+                training = t;
+            }
+        }
+        return training;
     }
 
     @Override
