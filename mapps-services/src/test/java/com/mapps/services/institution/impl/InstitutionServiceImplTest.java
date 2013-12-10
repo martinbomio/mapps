@@ -1,6 +1,11 @@
 package com.mapps.services.institution.impl;
 
 
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.model.Institution;
@@ -9,17 +14,14 @@ import com.mapps.persistence.InstitutionDAO;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.institution.stub.InstitutionServiceStub;
-import org.junit.Before;
-import org.junit.Test;
-import junit.framework.Assert;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
 public class InstitutionServiceImplTest {
-      InstitutionServiceStub institutionService;
-      InstitutionDAO institutionDAO;
+    InstitutionServiceStub institutionService;
+    InstitutionDAO institutionDAO;
 
     @Before
     public void setUp()throws Exception{

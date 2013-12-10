@@ -3,6 +3,8 @@ package com.mapps.services.institution.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.log4j.Logger;
+
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.InstitutionAlreadyExistException;
@@ -14,7 +16,6 @@ import com.mapps.persistence.InstitutionDAO;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -36,13 +37,13 @@ public class InstitutionServiceImpl implements InstitutionService {
             throw new InvalidInstitutionException();
         }
         try {
-            if(!(authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))||
-                    !(authenticationHandler.isUserInRole(token, Role.TRAINER))){
+            if((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))||
+                    (authenticationHandler.isUserInRole(token, Role.TRAINER))){
+                institutionDAO.addInstitution(institution);
+            }else{
                 logger.error("authentication error");
                 throw new AuthenticationException();
             }
-            institutionDAO.addInstitution(institution);
-
         } catch (InvalidTokenException e) {
             logger.error("Invalid Token");
             throw new AuthenticationException();
