@@ -8,7 +8,6 @@
       <groupId>mapps</groupId>
       <artifactId>mapps</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>mapps-persistence</groupId>
