@@ -1,6 +1,5 @@
 package com.mapps.services.institution.impl;
 
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class InstitutionServiceImplTest {
+public class InstServiceImplTest {
     InstitutionServiceStub institutionService;
     InstitutionDAO institutionDAO;
 
