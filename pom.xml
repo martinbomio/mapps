@@ -14,6 +14,7 @@
       <module>authenticationhandler</module>
       <module>mapps-persistence</module>
       <module>mapps-services</module>
+      <module>mapps-webapp</module>
     </modules>
 
     
