@@ -6,20 +6,13 @@ import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
+import com.mapps.exceptions.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mapps.exceptions.AthleteAlreadyExistException;
-import com.mapps.exceptions.AthleteNotFoundException;
-import com.mapps.exceptions.DeviceAlreadyExistException;
-import com.mapps.exceptions.DeviceNotFoundException;
-import com.mapps.exceptions.InstitutionAlreadyExistException;
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.TrainingAlreadyExistException;
-import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;

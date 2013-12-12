@@ -43,7 +43,7 @@
             <property name="hibernate.transaction.manager_lookup_class"
                       value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:mapps-persistece" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:mapps-persistence" />
             <property name="javax.persistence.jdbc.usuario" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.show_sql" value="true" />
