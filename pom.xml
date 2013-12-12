@@ -15,6 +15,7 @@
       <module>mapps-persistence</module>
       <module>mapps-services</module>
       <module>mapps-webapp</module>
+      <module>mapps-receiver</module>
     </modules>
 
     
