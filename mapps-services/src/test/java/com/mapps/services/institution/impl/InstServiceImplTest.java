@@ -1,5 +1,8 @@
 package com.mapps.services.institution.impl;
 
+import com.mapps.exceptions.InstitutionNotFoundException;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.UserNotFoundException;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -15,6 +18,7 @@ import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.institution.stub.InstitutionServiceStub;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -100,7 +104,66 @@ public class InstServiceImplTest {
         when(deleteInstitution.getName()).thenReturn("borrarInstitucion");
         when(deleteInstitution.getCountry()).thenReturn("paisInstitucion");
 
+        try{
+            when(institutionDAO.getInstitutionByName("borrarInstitucion")).thenReturn(deleteInstitution);
+            institutionService.deleteInstitution(deleteInstitution,"validToken");
+            verify(institutionDAO).updateInstitution(deleteInstitution);
+        } catch (InvalidInstitutionException e) {
+            Assert.fail();
+        } catch (AuthenticationException e) {
+            Assert.fail();
+        } catch (InstitutionNotFoundException e) {
+            Assert.fail();
+        } catch (NullParameterException e) {
+            Assert.fail();
+        }
 
     }
+    @Test
+    public void testDeleteInstitutionWithoutPermissions(){
+        Institution deleteInstitution = mock(Institution.class);
+        when(deleteInstitution.getName()).thenReturn("borrarInstitucion");
+        when(deleteInstitution.getCountry()).thenReturn("paisInstitucion");
+        try {
+            when(institutionDAO.getInstitutionByName("delete")).thenReturn(deleteInstitution);
+            institutionService.deleteInstitution(deleteInstitution, "invalidToken");
+            Assert.fail();
+        } catch (AuthenticationException e) {
+            Assert.assertTrue(true);
+        } catch (InstitutionNotFoundException e) {
+            Assert.fail();
+        }  catch (InvalidInstitutionException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void testUpdateInstitution(){
+        Institution newInst=mock(Institution.class);
+        Institution updateInstitution=mock(Institution.class);
+
+        when(newInst.getName()).thenReturn("newInst");
+        when(newInst.getCountry()).thenReturn("paisInstitucion");
+
+        when(updateInstitution.getName()).thenReturn("updateInstitucion");
+        when(updateInstitution.getCountry()).thenReturn("paisInstitucion");
+
+        try{
+            when(institutionDAO.getInstitutionByName("updateInstitucion")).thenReturn(updateInstitution);
+            institutionService.updateInstitution(newInst,"validToken");
+
+            verify(institutionDAO).updateInstitution(newInst);
+        } catch (InvalidInstitutionException e) {
+            Assert.fail();
+        } catch (AuthenticationException e) {
+            Assert.fail();
+        } catch (NullParameterException e) {
+            Assert.fail();
+        } catch (InstitutionNotFoundException e) {
+            Assert.fail();
+        }
+    }
+
+
 
 }
