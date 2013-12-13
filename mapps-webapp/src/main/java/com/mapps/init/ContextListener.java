@@ -7,10 +7,34 @@ import javax.ejb.EJB;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.mapps.exceptions.*;
-import com.mapps.model.*;
-import com.mapps.persistence.*;
 import org.apache.log4j.Logger;
+
+import com.mapps.exceptions.AthleteAlreadyExistException;
+import com.mapps.exceptions.DeviceAlreadyExistException;
+import com.mapps.exceptions.InstitutionAlreadyExistException;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.ReportAlreadyExistException;
+import com.mapps.exceptions.SportAlreadyExistException;
+import com.mapps.exceptions.TrainingAlreadyExistException;
+import com.mapps.exceptions.UserAlreadyExistException;
+import com.mapps.model.Athlete;
+import com.mapps.model.Device;
+import com.mapps.model.Gender;
+import com.mapps.model.Institution;
+import com.mapps.model.Permission;
+import com.mapps.model.Report;
+import com.mapps.model.ReportType;
+import com.mapps.model.Role;
+import com.mapps.model.Sport;
+import com.mapps.model.Training;
+import com.mapps.model.User;
+import com.mapps.persistence.AthleteDAO;
+import com.mapps.persistence.DeviceDAO;
+import com.mapps.persistence.InstitutionDAO;
+import com.mapps.persistence.ReportDAO;
+import com.mapps.persistence.SportDAO;
+import com.mapps.persistence.TrainingDAO;
+import com.mapps.persistence.UserDAO;
 
 /**
  *
@@ -60,7 +84,7 @@ public class ContextListener implements ServletContextListener{
         mapUserPermission.put(user,Permission.CREATE);
         mapUserPermission.put(user,Permission.READ);
 
-        Training training=new Training("nombreTraining",null,3,0,0,55,190,mapAthleteDevice,null,sport,mapUserPermission,inst);
+        Training training=new Training("nombreTraining",new Date(),3,0,0,55,190,mapAthleteDevice,null,sport,mapUserPermission,inst);
 
         try {
             institutionDAO.addInstitution(inst);

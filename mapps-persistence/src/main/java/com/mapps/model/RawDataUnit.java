@@ -3,14 +3,14 @@ package com.mapps.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.mapps.interfaces.DataParser;
 import com.mapps.utils.Constants;
@@ -20,15 +20,16 @@ import com.mapps.utils.Constants;
  * contains all the data necessary for a prediction. A concrete Decorator on the
  * decorator pattern.
  */
+@Entity(name = "RawDataUnit")
 public class RawDataUnit implements DataParser{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<IMUData> imuData;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<GPSData> gpsData;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<PulseData> pulseData;
     @ManyToOne
     private Device device;
@@ -36,7 +37,6 @@ public class RawDataUnit implements DataParser{
     private Long timestamp;
     @Column(nullable = false)
     private boolean readed;
-    @Temporal(TemporalType.DATE)
     private Date date;
 
     public RawDataUnit(List<IMUData> imuData, List<GPSData> gpsData, List<PulseData> pulseData,
@@ -53,6 +53,7 @@ public class RawDataUnit implements DataParser{
     public RawDataUnit() {
     }
     public RawDataUnit(String data) {
+        this.date = new Date();
         this.populate(data);
     }
 

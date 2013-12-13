@@ -23,6 +23,7 @@ import com.mapps.services.receiver.exceptions.InvalidDataException;
 import com.mapps.services.receiver.exceptions.InvalidDataRuntimeException;
 import com.mapps.services.receiver.exceptions.InvalidDeviceException;
 import com.mapps.services.receiver.exceptions.InvalidRawDataUnitRuntimeException;
+import com.mapps.services.receiver.exceptions.NoTrainingFoundException;
 import com.mapps.services.util.Constants;
 
 /**
@@ -49,10 +50,15 @@ public class ReceiveRestfulService implements ReceiverService{
         logger.error("String DATA arrived: "+data);
         String[] split = data.split("@");
         String dirLow = split[0];
+        logger.error("String dirLow arrived: "+dirLow);
         String sensorData = split[1];
+        logger.error("String SensorData arrived: "+sensorData);
         try{
             Device device = getDevice(Constants.DIRHIGH, dirLow);
             List<Training> dbTrainings = trainingDAO.getTrainingOfDevice(device.getDirLow(), new Date());
+            if (dbTrainings.size() == 0){
+                throw new NoTrainingFoundException();
+            }
             Training dbTraining = getRecentTraining(dbTrainings);
             if(trainingDAO.isTrainingStarted(dbTraining.getName()))
                 handleData(sensorData, device, dbTraining);
@@ -97,7 +103,7 @@ public class ReceiveRestfulService implements ReceiverService{
 
     @Override
     public void handleData(String data, Device device, Training training) throws InvalidDataException, InvalidDeviceException {
-        if (data == null || device == null){
+        if (data == null || device == null || training == null){
             logger.error("Invalid parameters data or device");
             throw new IllegalArgumentException();
         }
