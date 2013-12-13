@@ -31,7 +31,7 @@ public class Report {
     public Report() {
     }
 
-    public Report(Long id, String url, Date createdDate, String name, ReportType type) {
+    public Report(String url, Date createdDate, String name, ReportType type) {
         this.id = id;
         this.url = url;
         this.createdDate = createdDate;

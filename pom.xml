@@ -16,6 +16,7 @@
       <module>mapps-services</module>
       <module>mapps-webapp</module>
       <module>mapps-receiver</module>
+      <module>mapps-filter</module>
     </modules>
 
     
