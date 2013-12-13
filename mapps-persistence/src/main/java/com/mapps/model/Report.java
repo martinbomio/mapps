@@ -1,14 +1,7 @@
 package com.mapps.model;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Represents a report in the model. Report can be for trainings or per athlete.
@@ -21,6 +14,7 @@ public class Report {
     Long id;
     @Column(nullable = false)
     private String url;
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date createdDate;
     @Column(nullable=false,unique=true)
