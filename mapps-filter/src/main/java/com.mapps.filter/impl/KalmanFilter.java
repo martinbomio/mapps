@@ -9,6 +9,7 @@ import com.mapps.filter.Filter;
 import com.mapps.model.Device;
 import com.mapps.model.GPSData;
 import com.mapps.model.IMUData;
+import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Training;
 
@@ -27,8 +28,7 @@ public class KalmanFilter implements Filter{
     private SimpleMatrix Rgi;
     private List<SimpleMatrix> xPost;
     private SimpleMatrix pPost;
-
-    private int omega;
+    private List<ProcessedDataUnit> processedData;
 
     private static double [] latitude0 = new double [3];		// DD-mm-ssss
     private static double [] longitude0 = new double [3];		// DD-mm-ssss
@@ -60,6 +60,7 @@ public class KalmanFilter implements Filter{
             if(gpsData == null){
                 isGPSData = true;
                 gpsData = rawData.getGpsData().get(0);
+                this.processedData = new ArrayList<ProcessedDataUnit>();
             }
             setVariableMatrices(isGPSData);
 
@@ -82,8 +83,22 @@ public class KalmanFilter implements Filter{
             this.pPost = pPre.minus(matrizK.mult(this.C).mult(pPre));
             this.xPost.add(xPostMatrix);
 
+            ProcessedDataUnit processedDataUnit = createProcessedDataFromXPost(xPostMatrix, imuData);
+            this.processedData.add(processedDataUnit);
             isGPSData = false;
         }
+    }
+
+    private ProcessedDataUnit createProcessedDataFromXPost(SimpleMatrix xPost, IMUData imuData) {
+        double posX = xPost.get(0,0);
+        double posY = xPost.get(1,0);
+        double velX = xPost.get(2,0);
+        double velY = xPost.get(3,0);
+        double accelX = ((double)imuData.getAccelX()) / ACCEL_RANGE;
+        double accelY = ((double)imuData.getAccelY()) / ACCEL_RANGE;
+
+        ProcessedDataUnit pData = new ProcessedDataUnit(posX,accelY,accelX,velY,velX,posY);
+        return pData;
     }
 
     public void setUpInitialConditions(List<RawDataUnit> rawDataUnits){
@@ -121,6 +136,10 @@ public class KalmanFilter implements Filter{
         this.xPost = new ArrayList<SimpleMatrix>();
         this.xPost.add(new SimpleMatrix(xPostArray.length,1,false,xPostArray));
         this.pPost = SimpleMatrix.identity(6);
+    }
+
+    public List<ProcessedDataUnit> getResults(){
+        return this.processedData;
     }
 
     private void setVariableMatrices(boolean isGpsData) {
