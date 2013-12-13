@@ -69,7 +69,7 @@ public class ContextListener implements ServletContextListener{
             sportDAO.addSport(sport);
             athleteDAO.addAthlete(athlete);
             deviceDAO.addDevice(device);
-            //trainingDAO.addTraining(training);
+            trainingDAO.addTraining(training);
 
         } catch (InstitutionAlreadyExistException e) {
             logger.error("Institution already exists");
@@ -85,8 +85,8 @@ public class ContextListener implements ServletContextListener{
             logger.error("Device already exists");
         } catch (ReportAlreadyExistException e) {
             logger.error("Report already exists");
-        } //catch (TrainingAlreadyExistException e) {
-          //  logger.error("Training already exists");
-        //}
+        } catch (TrainingAlreadyExistException e) {
+            logger.error("Training already exists");
+        }
     }
 }
