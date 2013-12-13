@@ -4,6 +4,9 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <listener>
+    <listener-class>com.mapps.init.ContextListener</listener-class>
+  </listener>
 </web-app>
 
 

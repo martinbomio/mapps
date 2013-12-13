@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>mapps-webapp</artifactId>
+  <groupId>mapps</groupId>
+  <packaging>war</packaging>
 
   <dependencies>
     <dependency>
@@ -19,7 +21,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>mapps-services</groupId>
+      <groupId>mapps</groupId>
       <artifactId>mapps-services</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>

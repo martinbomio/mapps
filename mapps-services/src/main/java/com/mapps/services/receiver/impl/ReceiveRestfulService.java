@@ -45,7 +45,9 @@ public class ReceiveRestfulService implements ReceiverService{
             logger.error("There is no data passed");
             throw new IllegalArgumentException();
         }
-        String[] split = data.split("|");
+        System.out.print(data);
+        logger.error("String DATA arrived: "+data);
+        String[] split = data.split("@");
         String dirLow = split[0];
         String sensorData = split[1];
         try{
@@ -88,7 +90,7 @@ public class ReceiveRestfulService implements ReceiverService{
         try{
            return deviceDAO.getDeviceByDir(dirLow);
        } catch (DeviceNotFoundException e) {
-           logger.error("Invalid Device. Device with dirLow:"+ dirLow + " not found.");
+           logger.error("Invalid Device. Device with dirLow: "+ dirLow + " not found.");
            throw new InvalidDeviceException();
        }
     }
