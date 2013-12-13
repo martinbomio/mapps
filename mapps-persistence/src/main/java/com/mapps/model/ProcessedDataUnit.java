@@ -31,10 +31,10 @@ public class ProcessedDataUnit {
 
     }
 
-    public ProcessedDataUnit(double positionX, double acelerationY, double acelerationX, double velocityY, double velocityX, double positionY) {
+    public ProcessedDataUnit(double positionX, double accelerationY, double accelerationX, double velocityY, double velocityX, double positionY) {
         this.positionX = positionX;
-        this.accelerationY = acelerationY;
-        this.accelerationX = acelerationX;
+        this.accelerationY = accelerationY;
+        this.accelerationX = accelerationX;
         this.velocityY = velocityY;
         this.velocityX = velocityX;
         this.positionY = positionY;
@@ -76,16 +76,16 @@ public class ProcessedDataUnit {
         return accelerationX;
     }
 
-    public void setAccelerationX(double acelerationX) {
-        this.accelerationX = acelerationX;
+    public void setAccelerationX(double accelerationX) {
+        this.accelerationX = accelerationX;
     }
 
     public double getAccelerationY() {
         return accelerationY;
     }
 
-    public void setAccelerationY(double acelerationY) {
-        this.accelerationY = acelerationY;
+    public void setAccelerationY(double accelerationY) {
+        this.accelerationY = accelerationY;
     }
 
 
