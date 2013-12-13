@@ -30,7 +30,7 @@ if(request.getAttribute("error")== null){
  	 </div>
      <div class="login">
      <div class="loginContent">
-    	 <form action="loginservlet" method="post">
+    	 <form action="login" method="post">
     	 <center><span class="error"><%=error%></span></center>
          <br/>
      	<label>Username: <input type="email" name="email" id="email" required="required" /></label>
