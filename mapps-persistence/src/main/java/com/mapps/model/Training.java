@@ -83,7 +83,7 @@ public class Training {
         this.sport = sport;
         this.mapUserPermission = mapUserPermission;
         this.institution=institution;
-        this.started = true;
+        this.started = false;
     }
 
     public Long getId() {

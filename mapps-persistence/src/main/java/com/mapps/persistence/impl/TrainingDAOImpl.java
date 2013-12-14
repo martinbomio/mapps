@@ -69,7 +69,7 @@ public class TrainingDAOImpl implements TrainingDAO {
     @Override
     public void updateTraining(Training training) throws TrainingNotFoundException, NullParameterException {
         if(training!=null){
-        Training trainingAux=getTrainingById(training.getId());
+        Training trainingAux=getTrainingByName(training.getName());
         if(trainingAux!=null){
             entityManager.merge(training);
             logger.info("A Training was updated in the database");
