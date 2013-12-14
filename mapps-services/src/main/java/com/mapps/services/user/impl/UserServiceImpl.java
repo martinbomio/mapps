@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
             logger.error("Username or password null");
             throw new AuthenticationException();
         }
-        User user = new User(null, null, null, null, username, username, password, null, null);
+        User user = new User(null, null, null, null, username, username, password, null, null,null);
         String token;
         try {
             token = authenticationHandler.authenticate(user);

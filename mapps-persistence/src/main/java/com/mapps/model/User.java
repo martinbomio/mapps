@@ -30,7 +30,7 @@ public class User extends Person{
     }
 
     public User(String name, String lastName, Date birth, Gender gender,
-                String email, String userName, String password, Institution institution, Role role){
+                String email, String userName, String password, Institution institution, Role role,String idDocument){
         this.name = name;
         this.lastName = lastName;
         this.birth = birth;
@@ -40,6 +40,7 @@ public class User extends Person{
         this.password = password;
         this.institution = institution;
         this.role = role;
+        this.idDocument=idDocument;
         this.enabled = true;
     }
 

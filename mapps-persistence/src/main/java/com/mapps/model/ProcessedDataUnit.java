@@ -27,17 +27,42 @@ public class ProcessedDataUnit {
     @Column(nullable = false)
     double accelerationY;
 
+    public RawDataUnit getRawDataUnit() {
+        return rawDataUnit;
+    }
+
+    public void setRawDataUnit(RawDataUnit rawDataUnit) {
+        this.rawDataUnit = rawDataUnit;
+    }
+
+    @ManyToOne
+    RawDataUnit rawDataUnit;
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
+    @ManyToOne
+    Device device;
+
     public ProcessedDataUnit(){
 
     }
 
-    public ProcessedDataUnit(double positionX, double accelerationY, double accelerationX, double velocityY, double velocityX, double positionY) {
+    public ProcessedDataUnit(double positionX, double accelerationY, double accelerationX, double velocityY,
+                             double velocityX, double positionY,Device device,RawDataUnit rawDataUnit) {
         this.positionX = positionX;
         this.accelerationY = accelerationY;
         this.accelerationX = accelerationX;
         this.velocityY = velocityY;
         this.velocityX = velocityX;
         this.positionY = positionY;
+        this.rawDataUnit=rawDataUnit;
+        this.device=device;
     }
 
     public double getPositionX() {

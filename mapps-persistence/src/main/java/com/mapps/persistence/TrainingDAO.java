@@ -5,6 +5,7 @@ import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
+import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.Training;
 
 import javax.ejb.Local;
@@ -100,4 +101,6 @@ public interface TrainingDAO {
      */
 
     public List<Training> getTrainingOfInstitution(String name);
+
+
 }
