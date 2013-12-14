@@ -1,11 +1,7 @@
 package com.mapps.model;
 
 import java.util.Date;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -22,6 +18,7 @@ public abstract class Person{
     protected Gender gender;
     @Email
     protected String email;
+    @Column(nullable = false, unique = true)
     protected String idDocument;
     @ManyToOne
     protected Institution institution;
