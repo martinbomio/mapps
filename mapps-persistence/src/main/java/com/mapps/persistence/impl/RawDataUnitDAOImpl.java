@@ -1,14 +1,20 @@
 package com.mapps.persistence.impl;
 
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.RawDataUnitNotFoundException;
-import com.mapps.model.RawDataUnit;
-import com.mapps.persistence.RawDataUnitDAO;
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.RawDataUnitNotFoundException;
+import com.mapps.model.Device;
+import com.mapps.model.RawDataUnit;
+import com.mapps.model.Training;
+import com.mapps.persistence.RawDataUnitDAO;
+import com.mapps.utils.Constants;
 
 /**
  * .
@@ -62,4 +68,28 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
             throw new RawDataUnitNotFoundException();
         }
     }
+
+    @Override
+    public boolean initialConditionsSatisfied(Training training, Device device) {
+        String sql = "select r from RawDataUnit r join r.device d where ( d=:device and r.date>=:date ) order by r.date asc";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("device", device);
+        query.setParameter("date", training.getDate());
+        int numb = query.getResultList().size();
+
+        return (numb >= Constants.INITIAL_CONDITIONS_NUMBER);
+    }
+
+    @Override
+    public List<RawDataUnit> getInitialConditions(Training training, Device device) {
+        String sql = "select r from RawDataUnit r join r.device d where ( d=:device and r.date>=:date ) order by r.date asc";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("device", device);
+        query.setParameter("date", training.getDate());
+        query.setMaxResults(Constants.INITIAL_CONDITIONS_NUMBER);
+        List<RawDataUnit> rawDataUnits = query.getResultList();
+        return  rawDataUnits;
+    }
+
+
 }

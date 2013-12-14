@@ -1,22 +1,22 @@
 package com.mapps.persistence.impl;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
-import com.mapps.model.Device;
 import com.mapps.model.Training;
 import com.mapps.persistence.TrainingDAO;
-import org.apache.log4j.Logger;
-
-
-import javax.ejb.Stateless;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.Date;
-import java.util.List;
+import com.mapps.utils.Calendars;
 
 /**
  *
@@ -124,10 +124,17 @@ public class TrainingDAOImpl implements TrainingDAO {
 
     @Override
     public List<Training> getTrainingOfDevice(String dirLow,Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        Calendars.toBeginningOfTheDay(calendar);
+        Date startDate = calendar.getTime();
+        Calendars.toEndOfTheDay(calendar);
+        Date endDate = calendar.getTime();
         Query query=entityManager.createQuery("select t from Training t join t.mapAthleteDevice m " +
-                "where (m.dirLow = :key and t.date=:date)");
+                "where (m.dirLow = :key and t.date>=:startDate and t.date<=endDate)");
         query.setParameter("key",dirLow);
-        query.setParameter("date",date);
+        query.setParameter("startDate",startDate);
+        query.setParameter("endDate",endDate);
         List<Training> results=query.getResultList();
 /*        if(results.size()!=1) {
             throw new TrainingNotFoundException();

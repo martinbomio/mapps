@@ -1,10 +1,13 @@
 package com.mapps.persistence;
 
+import java.util.List;
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.RawDataUnitNotFoundException;
+import com.mapps.model.Device;
 import com.mapps.model.RawDataUnit;
-
-import javax.ejb.Local;
+import com.mapps.model.Training;
 
 /**
  *    RawDataUnitDAO interface
@@ -38,4 +41,8 @@ public interface RawDataUnitDAO {
      * @throws RawDataUnitNotFoundException - If the RawDataUnit is not in the database
      */
     RawDataUnit getRawDataUnitById (Long rawDataUnitId) throws RawDataUnitNotFoundException;
+
+    boolean initialConditionsSatisfied(Training training, Device device);
+
+    List<RawDataUnit> getInitialConditions(Training training, Device device);
 }

@@ -6,4 +6,5 @@ package com.mapps.utils;
 public class Constants {
     public static String GPSDELIMETER= "G";
     public static String IMUDELIMETER= "I";
+    public static int INITIAL_CONDITIONS_NUMBER = 45;
 }

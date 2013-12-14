@@ -112,6 +112,10 @@ public class ReceiveRestfulService implements ReceiverService{
             rawDataUnit.setDevice(device);
             rawDataUnit.setTimestamp(rawDataUnit.getDate().getTime() - training.getDate().getTime());
             rawDataUnitDAO.addRawDataUnit(rawDataUnit);
+            if (rawDataUnitDAO.initialConditionsSatisfied(training, device)){
+                List<RawDataUnit> initialCOnditions = rawDataUnitDAO.getInitialConditions(training,device);
+                //TODO: CALL KALMAN FILTER
+            }
         } catch (NullParameterException e) {
             logger.error("Invalid data unit structure to save");
             throw new InvalidRawDataUnitRuntimeException();

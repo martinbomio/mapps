@@ -17,8 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -34,7 +32,6 @@ public class Training {
     Long id;
     @Column(nullable=false,unique = true)
     private String name;
-    @Temporal(TemporalType.DATE)
     @Column(nullable=false)
     private Date date;
     private int participants;
@@ -61,7 +58,6 @@ public class Training {
     @Type(
                     type="org.hibernate.type.EnumType"
             )
-
     private Map <User,Permission> mapUserPermission;
 
     public Training(){
