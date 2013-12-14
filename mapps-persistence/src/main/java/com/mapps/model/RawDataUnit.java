@@ -137,8 +137,10 @@ public class RawDataUnit implements DataParser{
             if( sensorData[0].equals(Constants.GPSDELIMETER)){
                 GPSData gps = new GPSData(sensorData[1]);
                 gpsData.add(gps);
-                PulseData pulse = new PulseData(sensorData[2]);
-                pulseData.add(pulse);
+                if (sensorData.length > 2){
+                    PulseData pulse = new PulseData(sensorData[2]);
+                    pulseData.add(pulse);
+                }
             }else if( sensorData[0].equals(Constants.IMUDELIMETER)){
                 for(int i = 1; i< sensorData.length; i++){
                     IMUData imu = new IMUData(sensorData[i]);

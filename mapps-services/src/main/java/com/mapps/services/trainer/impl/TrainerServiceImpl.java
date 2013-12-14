@@ -1,26 +1,34 @@
 package com.mapps.services.trainer.impl;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.mapps.authentificationhandler.AuthenticationHandler;
-import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
-
-import com.mapps.exceptions.AthleteAlreadyExistException;
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.TrainingNotFoundException;
-import com.mapps.model.*;
-
-import com.mapps.persistence.SportDAO;
-import com.mapps.services.trainer.exceptions.AuthenticationException;
-import com.mapps.services.trainer.exceptions.InvalidAthleteException;
-import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 import org.apache.log4j.Logger;
 
+import com.mapps.authentificationhandler.AuthenticationHandler;
+import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
+import com.mapps.exceptions.AthleteAlreadyExistException;
+import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.SportAlreadyExistException;
+import com.mapps.exceptions.TrainingNotFoundException;
+import com.mapps.model.Athlete;
+import com.mapps.model.Device;
+import com.mapps.model.Role;
+import com.mapps.model.Sport;
+import com.mapps.model.Training;
 import com.mapps.persistence.AthleteDAO;
 import com.mapps.persistence.DeviceDAO;
+import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
+import com.mapps.services.trainer.exceptions.AuthenticationException;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
+import com.mapps.services.trainer.exceptions.InvalidParameterException;
+import com.mapps.services.trainer.exceptions.InvalidSportException;
+import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  * Implementation of the TrainerService
@@ -161,25 +169,109 @@ public class TrainerServiceImpl implements TrainerService{
     }
 
     @Override
-    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) {
+    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws InvalidParameterException, AuthenticationException {
            if(invalidTraining(training)||invalidAthlete(athlete)||invalidDevice(device)){
-
-
+               logger.error("invalid parameter");
+               throw new InvalidParameterException();
            }
+
+
+        try {
+            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
+                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+                if(training.getMapAthleteDevice().equals(null)){
+                    Map<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
+                    mapAthleteDevice.put(athlete,device);
+                    training.setMapAthleteDevice(mapAthleteDevice);
+                    trainingDAO.updateTraining(training);
+                }else{
+                    Map<Athlete,Device> aux=training.getMapAthleteDevice();
+                    aux.put(athlete,device);
+                    training.setMapAthleteDevice(aux);
+                    trainingDAO.updateTraining(training);
+                }
+
+
+            }else{
+                logger.error("authentication error");
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+             throw new AuthenticationException();
+        } catch (NullParameterException e) {
+            throw new InvalidParameterException();
+        } catch (TrainingNotFoundException e) {
+            throw new InvalidParameterException();
+        }
     }
 
     @Override
-    public void modifyAthlete(Athlete athlete, String token) {
+    public void modifyAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
+        if(invalidAthlete(athlete)){
+            throw new InvalidAthleteException();
+        }
+        try {
+            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
+                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+                athleteDAO.updateAthlete(athlete);
+
+            }else{
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (AthleteNotFoundException e) {
+            throw new InvalidAthleteException();
+        } catch (NullParameterException e) {
+            throw new InvalidAthleteException();
+        }
+
 
     }
 
     @Override
-    public void deleteAthlete(Athlete athlete, String token) {
+    public void deleteAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
+        if(invalidAthlete(athlete)){
+            throw new InvalidAthleteException();
+        }
+        try {
+            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
+                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+                athlete.setEnabled(false);
+                athleteDAO.updateAthlete(athlete);
+
+            }else{
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (AthleteNotFoundException e) {
+            throw new InvalidAthleteException();
+        } catch (NullParameterException e) {
+            throw new InvalidAthleteException();
+        }
 
     }
 
     @Override
-    public void addSport(Sport sport, String token) {
+    public void addSport(Sport sport, String token) throws InvalidSportException, AuthenticationException {
+        if(sport.equals(null)||sport.getName().equals(null)){
+            throw new InvalidSportException();
+        }
+        try {
+            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
+                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+                sportDAO.addSport(sport);
+            }else{
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (SportAlreadyExistException e) {
+            throw new InvalidSportException();
+        } catch (NullParameterException e) {
+            throw new InvalidSportException();
+        }
 
     }
 }

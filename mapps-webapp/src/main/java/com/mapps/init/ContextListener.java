@@ -75,7 +75,7 @@ public class ContextListener implements ServletContextListener{
         User user = new User("adminnnnnnn","", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR);
         Sport sport=new Sport("Futbol");
         Athlete athlete=new Athlete("pepe","apellido",null,Gender.MALE,"pepe@gmail.com",78,1.8,"44475993",inst);
-        Device device =new Device("0013A202","40813E2B",55,inst);
+        Device device =new Device("0013A200","40aad87e",55,inst);
         Report report=new Report("url",date,"report one",ReportType.TRAINNING);
 
         Map<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
