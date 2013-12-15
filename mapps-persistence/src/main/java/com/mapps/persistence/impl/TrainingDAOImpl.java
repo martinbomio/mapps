@@ -131,7 +131,7 @@ public class TrainingDAOImpl implements TrainingDAO {
         Calendars.toEndOfTheDay(calendar);
         Date endDate = calendar.getTime();
         Query query=entityManager.createQuery("select t from Training t join t.mapAthleteDevice m " +
-                "where (m.dirLow = :key and t.date>=:startDate and t.date<=endDate)");
+                "where (m.dirLow = :key and t.date>=:startDate and t.date<=:endDate)");
         query.setParameter("key",dirLow);
         query.setParameter("startDate",startDate);
         query.setParameter("endDate",endDate);

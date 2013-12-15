@@ -1,18 +1,26 @@
 package com.mapps.persistence.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
-import com.mapps.exceptions.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mapps.exceptions.AthleteAlreadyExistException;
+import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.exceptions.DeviceAlreadyExistException;
+import com.mapps.exceptions.DeviceNotFoundException;
+import com.mapps.exceptions.InstitutionAlreadyExistException;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.TrainingAlreadyExistException;
+import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
@@ -129,7 +137,13 @@ public class TrainingDAOIntegrationTest {
         Device returnedDevice = deviceDAO.getDeviceByDir(testDevice.getDirLow());
         List<Training> testAux= trainingDAO.getTrainingOfDevice(returnedDevice.getDirLow(),dNow);
 
-            Assert.assertEquals(testAux.get(0).getName(),"hola4");
+        Assert.assertEquals(testAux.get(0).getName(),"hola4");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dNow);
+        cal.add(Calendar.DAY_OF_YEAR,1);
+        Date tomorrow = cal.getTime();
+        List<Training> noTrainings = trainingDAO.getTrainingOfDevice(returnedDevice.getDirLow(), tomorrow);
+        Assert.assertEquals(noTrainings.size(), 0);
 
 
     }

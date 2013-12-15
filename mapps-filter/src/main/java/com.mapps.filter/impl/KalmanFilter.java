@@ -97,7 +97,7 @@ public class KalmanFilter implements Filter{
         double accelX = ((double)imuData.getAccelX()) / ACCEL_RANGE;
         double accelY = ((double)imuData.getAccelY()) / ACCEL_RANGE;
 
-        ProcessedDataUnit pData = new ProcessedDataUnit(posX,accelY,accelX,velY,velX,posY);
+        ProcessedDataUnit pData = new ProcessedDataUnit(posX,accelY,accelX,velY,velX,posY, this.device, this.rawData);
         return pData;
     }
 
