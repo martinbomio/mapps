@@ -24,7 +24,7 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
 
     Logger logger= Logger.getLogger(RawDataUnitDAOImpl.class);
     @PersistenceContext(unitName = "mapps-persistence")
-    EntityManager entityManager;
+    protected EntityManager entityManager;
 
     @Override
     public void addRawDataUnit(RawDataUnit rawDataUnit) throws NullParameterException {

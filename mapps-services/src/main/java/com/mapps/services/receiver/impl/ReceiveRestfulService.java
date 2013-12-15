@@ -18,6 +18,7 @@ import com.mapps.model.Training;
 import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.RawDataUnitDAO;
 import com.mapps.persistence.TrainingDAO;
+import com.mapps.services.kalman.impl.KalmanFilterService;
 import com.mapps.services.receiver.ReceiverService;
 import com.mapps.services.receiver.exceptions.InvalidDataException;
 import com.mapps.services.receiver.exceptions.InvalidDataRuntimeException;
@@ -38,6 +39,8 @@ public class ReceiveRestfulService implements ReceiverService{
     RawDataUnitDAO rawDataUnitDAO;
     @EJB(beanName = "DeviceDAO")
     DeviceDAO deviceDAO;
+    @EJB(beanName = "KalmanFilterService")
+    KalmanFilterService kalmanFilterService;
 
     @POST
     @Consumes("text/plain")
@@ -112,10 +115,7 @@ public class ReceiveRestfulService implements ReceiverService{
             rawDataUnit.setDevice(device);
             rawDataUnit.setTimestamp(rawDataUnit.getDate().getTime() - training.getDate().getTime());
             rawDataUnitDAO.addRawDataUnit(rawDataUnit);
-            if (rawDataUnitDAO.initialConditionsSatisfied(training, device)){
-                List<RawDataUnit> initialCOnditions = rawDataUnitDAO.getInitialConditions(training,device);
-                //TODO: CALL KALMAN FILTER
-            }
+            this.kalmanFilterService.handleData(rawDataUnit, device, training);
         } catch (NullParameterException e) {
             logger.error("Invalid data unit structure to save");
             throw new InvalidRawDataUnitRuntimeException();

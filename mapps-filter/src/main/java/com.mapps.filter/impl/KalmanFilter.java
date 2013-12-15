@@ -291,5 +291,31 @@ public class KalmanFilter implements Filter{
         return Math.sqrt(getVariance(data));
     }
 
+    public static class Builder{
+        private Training training;
+        private Device device;
+        private RawDataUnit rawDataUnit;
+        private List<RawDataUnit> initalConditions;
+
+        public Builder(Training training, Device device, RawDataUnit rawDataUnit){
+            this.training = training;
+            this.device = device;
+            this.rawDataUnit = rawDataUnit;
+        }
+
+        public Builder initialConditions(List<RawDataUnit> initial){
+            this.initalConditions = initial;
+            return this;
+        }
+
+        public KalmanFilter build(){
+            KalmanFilter kalmanFilter = new KalmanFilter();
+            kalmanFilter.initData(this.training, this.device);
+            kalmanFilter.setRawData(this.rawDataUnit);
+            kalmanFilter.setUpInitialConditions(this.initalConditions);
+            return kalmanFilter;
+        }
+    }
+
 
 }
