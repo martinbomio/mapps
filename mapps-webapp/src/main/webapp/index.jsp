@@ -26,20 +26,20 @@ if(request.getAttribute("error")== null){
   <div class="content">
  	 <div class="image">
      	<img src="images/logo.png" width="100%"  />
-        <center><h1>Upload-Web</h1></center>
+        <h1>LOGIN</h1>
  	 </div>
      <div class="login">
      <div class="loginContent">
     	 <form action="login" method="post">
-    	 <center><span class="error"><%=error%></span></center>
+    	 <span class="error"><%=error%></span>
          <br/>
-     	<label>Username: <input type="email" name="email" id="email" required="required" /></label>
+     	<label>Username: <input type="text" name="username" id="username" required="required" /></label>
         <br/>
         <br/>
         <label>Password: <input type="password" name="password" id="password" required="required" /></label>
         <br/>
         <br/>
-        <center><input type="submit" name="ingresar" value="Ingresar" style="font-size:16px"/></center>
+        <input type="submit" name="ingresar" value="Ingresar" style="font-size:16px"/>
     	 </form>
 	</div>
      </div>
