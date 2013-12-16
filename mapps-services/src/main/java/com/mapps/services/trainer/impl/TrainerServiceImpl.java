@@ -26,9 +26,9 @@ import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
-import com.mapps.services.trainer.exceptions.InvalidParameterException;
 import com.mapps.services.trainer.exceptions.InvalidSportException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
+import com.mapps.services.trainer.exceptions.InvalidParameterException;
 
 /**
  * Implementation of the TrainerService
@@ -169,7 +169,7 @@ public class TrainerServiceImpl implements TrainerService{
     }
 
     @Override
-    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws InvalidParameterException, AuthenticationException {
+    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws AuthenticationException, InvalidParameterException {
            if(invalidTraining(training)||invalidAthlete(athlete)||invalidDevice(device)){
                logger.error("invalid parameter");
                throw new InvalidParameterException();

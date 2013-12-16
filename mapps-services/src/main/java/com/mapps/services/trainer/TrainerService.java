@@ -6,11 +6,7 @@ import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
-import com.mapps.services.trainer.exceptions.AuthenticationException;
-import com.mapps.services.trainer.exceptions.InvalidAthleteException;
-import com.mapps.services.trainer.exceptions.InvalidParameterException;
-import com.mapps.services.trainer.exceptions.InvalidSportException;
-import com.mapps.services.trainer.exceptions.InvalidTrainingException;
+import com.mapps.services.trainer.exceptions.*;
 
 /**
  * Interface that defines the interactions of a trainer with the system.
