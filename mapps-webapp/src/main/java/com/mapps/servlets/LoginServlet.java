@@ -19,6 +19,7 @@ public class LoginServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
@@ -30,4 +31,5 @@ public class LoginServlet extends HttpServlet{
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
     }
+
 }

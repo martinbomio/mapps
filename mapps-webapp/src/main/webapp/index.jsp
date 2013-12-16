@@ -12,7 +12,7 @@ if(request.getAttribute("error")== null){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html5; charset=UTF-8" />
-<title>UMFlix-UploadWeb</title>
+<title>MAPPS</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
 </head>
 
