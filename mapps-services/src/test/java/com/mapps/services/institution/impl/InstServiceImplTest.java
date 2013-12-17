@@ -47,7 +47,9 @@ public class InstServiceImplTest {
         when(validInstitution.getCountry()).thenReturn("paisInstitucion");
 
         try {
+
             institutionService.createInstitution(validInstitution, "validToken");
+
             Assert.assertTrue(true);
         } catch (AuthenticationException e) {
             Assert.fail();

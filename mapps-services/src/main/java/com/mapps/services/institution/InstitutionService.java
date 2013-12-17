@@ -4,9 +4,12 @@ import com.mapps.model.Institution;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 
+import javax.ejb.Local;
+
 /**
  *
  */
+@Local
 public interface InstitutionService {
 
     /**

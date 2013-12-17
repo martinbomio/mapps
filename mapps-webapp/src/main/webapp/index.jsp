@@ -26,7 +26,7 @@ if(request.getAttribute("error")== null){
   <div class="content">
  	 <div class="image">
      	<img src="images/logo.png" width="100%"  />
-        <h1>LOGIN</h1>
+       <center> <h1>LOGIN</h1> </center>
  	 </div>
      <div class="login">
      <div class="loginContent">
@@ -39,8 +39,13 @@ if(request.getAttribute("error")== null){
         <label>Password: <input type="password" name="password" id="password" required="required" /></label>
         <br/>
         <br/>
-        <input type="submit" name="ingresar" value="Ingresar" style="font-size:16px"/>
-    	 </form>
+
+            <input type="submit" name="ingresar" value="LOGIN" style="font-size:16px"/>
+            <input type="button" name="register" value="REGISTER" style="font-size:16px"/>
+    	 <br/>
+         <br/>
+
+         </form>
 	</div>
      </div>
 

@@ -15,6 +15,7 @@ import com.mapps.services.user.impl.UserServiceImpl;
 /**
  * Servlet that handles the login of the users to the system.
  */
+
 public class LoginServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "UserService")
     UserService userService;
@@ -25,7 +26,7 @@ public class LoginServlet extends HttpServlet implements Servlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
-            userService=new UserServiceImpl();
+
             String token = userService.login(username,password);
             req.setAttribute("token", token);
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
