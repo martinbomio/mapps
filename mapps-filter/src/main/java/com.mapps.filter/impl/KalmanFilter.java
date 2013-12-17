@@ -6,6 +6,7 @@ import java.util.List;
 import org.ejml.simple.SimpleMatrix;
 
 import com.mapps.filter.Filter;
+import com.mapps.filter.impl.exceptions.InvalidCoordinatesException;
 import com.mapps.model.Device;
 import com.mapps.model.GPSData;
 import com.mapps.model.IMUData;
@@ -29,6 +30,7 @@ public class KalmanFilter implements Filter{
     private List<SimpleMatrix> xPost;
     private SimpleMatrix pPost;
     private List<ProcessedDataUnit> processedData;
+    private boolean gpsCorrect;
 
     private static double [] latitude0 = new double [3];		// DD-mm-ssss
     private static double [] longitude0 = new double [3];		// DD-mm-ssss
@@ -39,9 +41,14 @@ public class KalmanFilter implements Filter{
 
 
     @Override
-    public void initData(Training training, Device device) {
+    public void initData(Training training, Device device) throws InvalidCoordinatesException {
+        if (training.getLatOrigin() == 0 || training.getLongOrigin() == 0){
+            throw new InvalidCoordinatesException();
+        }
         latitude0 = parseCoordinates(training.getLatOrigin());
         longitude0 = parseCoordinates(training.getLongOrigin());
+        longitude0[2] /= 100;
+        latitude0[2] /= 100;
         this.device = device;
     }
 
@@ -50,10 +57,11 @@ public class KalmanFilter implements Filter{
         this.A = new SimpleMatrix(matrizA(DT));
         this.B = new SimpleMatrix(matrizB(DT));
         this.rawData = rawData;
+        this.gpsCorrect = rawData.isCorrect();
     }
 
     @Override
-    public void process(){
+    public void process() throws InvalidCoordinatesException{
         GPSData gpsData = null;
         boolean isGPSData = false;
         for(IMUData imuData : rawData.getImuData()){
@@ -62,12 +70,15 @@ public class KalmanFilter implements Filter{
                 gpsData = rawData.getGpsData().get(0);
                 this.processedData = new ArrayList<ProcessedDataUnit>();
             }
+            if (gpsData.getLatitude() == 0 || gpsData.getLatitude() == 0){
+                throw new InvalidCoordinatesException();
+            }
             setVariableMatrices(isGPSData);
 
             SimpleMatrix matrixU = new SimpleMatrix(2, 1, false, new double[]{ imuData.getAccelX(), imuData.getAccelY()});
 
             // Time update equations
-            SimpleMatrix xPre = this.A.mult(this.xPost.get(this.xPost.size()-1)).plus(this.B.mult(matrixU));
+            SimpleMatrix xPre = this.A.mult(this.xPost.get(this.xPost.size()-1)).plus(this.B.mult(this.Rgi.mult(matrixU)));
             SimpleMatrix pPre = this.A.mult(this.pPost).mult(this.A.transpose()).plus(this.Q);
 
             // Define Y vector
@@ -143,8 +154,13 @@ public class KalmanFilter implements Filter{
     }
 
     private void setVariableMatrices(boolean isGpsData) {
-        this.C = new SimpleMatrix(createMatrixC(isGpsData));
+        if(this.gpsCorrect){
+            this.C = new SimpleMatrix(createMatrixC(isGpsData));
+        }else {
+            this.C = new SimpleMatrix(createMatrixC(false));
+        }
         this.R = this.R.scale(rawData.getGpsData().get(0).getHDOP());
+
     }
 
     private static double [] parseCoordinates(long origin){
@@ -308,7 +324,7 @@ public class KalmanFilter implements Filter{
             return this;
         }
 
-        public KalmanFilter build(){
+        public KalmanFilter build() throws InvalidCoordinatesException {
             KalmanFilter kalmanFilter = new KalmanFilter();
             kalmanFilter.initData(this.training, this.device);
             kalmanFilter.setRawData(this.rawDataUnit);

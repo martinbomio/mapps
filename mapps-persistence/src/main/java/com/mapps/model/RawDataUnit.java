@@ -38,6 +38,7 @@ public class RawDataUnit implements DataParser{
     @Column(nullable = false)
     private boolean readed;
     private Date date;
+    private boolean correct;
 
     public RawDataUnit(List<IMUData> imuData, List<GPSData> gpsData, List<PulseData> pulseData,
                        Device device, Long timestamp, boolean readed, Date date) {
@@ -48,6 +49,7 @@ public class RawDataUnit implements DataParser{
         this.timestamp = timestamp;
         this.readed = readed;
         this.date = date;
+        this.correct = true;
     }
 
     public RawDataUnit() {
@@ -55,6 +57,14 @@ public class RawDataUnit implements DataParser{
     public RawDataUnit(String data) {
         this.date = new Date();
         this.populate(data);
+    }
+
+    public boolean isCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 
     public Long getId() {
