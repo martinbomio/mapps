@@ -23,7 +23,7 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
     private Encrypter encrypter;
     private int duration = 6000;
 
-    @EJB(beanName = "UserDao")
+    @EJB(beanName = "UserDAO")
     protected UserDAO userDao;
 
     public AuthenticationHandlerImpl() {
