@@ -17,7 +17,7 @@ public interface TrainerService {
     void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException;
     void stopTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException;
     void addAthlete(Athlete athlete,String token) throws InvalidAthleteException, AuthenticationException;
-    void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws InvalidParameterException, AuthenticationException;
+    void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws invalidParameterException, AuthenticationException;
     void modifyAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException;
     void deleteAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException;
     void addSport(Sport sport, String token) throws InvalidSportException, AuthenticationException;

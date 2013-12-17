@@ -141,7 +141,7 @@ ul.nav a { zoom: 1; }  /* the zoom property gives IE the hasLayout trigger it ne
 	width:304px;
 	box-shadow: 0 0 15px #ddd;
 	background: linear-gradient(#E6E6E6, #FFFFFF);
-	height:150px;
+	height:250px;
 }
 .image h1{
 	font-size:16px;
