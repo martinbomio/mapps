@@ -85,8 +85,8 @@ public class ContextListener implements ServletContextListener{
         mapUserPermission.put(user,Permission.CREATE);
         mapUserPermission.put(user,Permission.READ);
 
-        Training training=new Training("nombreTraining",new Date(),3,0,0,55,190,mapAthleteDevice,null,sport,mapUserPermission,inst);
-
+        Training training = new Training("nombreTraining",new Date(),3,34550901,56092246,55,190,mapAthleteDevice,null,sport,mapUserPermission,inst);
+        training.setStarted(true);
         try {
             institutionDAO.addInstitution(inst);
             reportDAO.addReport(report);
