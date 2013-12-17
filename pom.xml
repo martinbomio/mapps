@@ -19,13 +19,4 @@
       <module>mapps-filter</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>rxtx</groupId>
-            <artifactId>RXTXcomm</artifactId>
-            <version>1</version>
-        </dependency>
-    </dependencies>
-
-    
 </project>

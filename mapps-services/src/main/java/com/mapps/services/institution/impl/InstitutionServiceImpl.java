@@ -24,7 +24,7 @@ import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 public class InstitutionServiceImpl implements InstitutionService {
     Logger logger = Logger.getLogger(InstitutionServiceImpl.class);
 
-    @EJB(name = "InstitutionDAO")
+    @EJB(beanName = "InstitutionDAO")
     protected InstitutionDAO institutionDAO;
     @EJB(beanName = "AuthenticationHandler")
     protected AuthenticationHandler authenticationHandler;
