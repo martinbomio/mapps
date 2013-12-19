@@ -39,9 +39,11 @@ public class RawDataUnit implements DataParser{
     private boolean readed;
     private Date date;
     private boolean correct;
+    @ManyToOne
+    private Training training;
 
     public RawDataUnit(List<IMUData> imuData, List<GPSData> gpsData, List<PulseData> pulseData,
-                       Device device, Long timestamp, boolean readed, Date date) {
+                       Device device, Long timestamp, boolean readed, Date date, Training training) {
         this.imuData = imuData;
         this.gpsData = gpsData;
         this.pulseData = pulseData;
@@ -50,10 +52,12 @@ public class RawDataUnit implements DataParser{
         this.readed = readed;
         this.date = date;
         this.correct = true;
+        this.training = training;
     }
 
     public RawDataUnit() {
     }
+
     public RawDataUnit(String data) {
         this.date = new Date();
         this.populate(data);
@@ -129,6 +133,14 @@ public class RawDataUnit implements DataParser{
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
     }
 
     @Override

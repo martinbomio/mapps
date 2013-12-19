@@ -11,9 +11,11 @@ import com.mapps.filter.Filter;
 import com.mapps.filter.impl.KalmanFilter;
 import com.mapps.filter.impl.exceptions.InvalidCoordinatesException;
 import com.mapps.model.Device;
+import com.mapps.model.KalmanState;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Training;
+import com.mapps.persistence.KalmanStateDAO;
 import com.mapps.persistence.ProcessedDataUnitDAO;
 import com.mapps.persistence.RawDataUnitDAO;
 import com.mapps.services.kalman.FilterService;
@@ -29,6 +31,8 @@ public class KalmanFilterService implements FilterService{
     protected RawDataUnitDAO rawDataUnitDAO;
     @EJB(beanName = "ProcessedDataUnitDAO")
     protected ProcessedDataUnitDAO processedDataUnitDAO;
+    @EJB(beanName = "KalmanStateDAO")
+    protected KalmanStateDAO kalmanStateDAO;
 
     public void handleData(RawDataUnit rawDataUnit, Device device, Training training){
         if (!rawDataUnitDAO.initialConditionsSatisfied(training, device)){
@@ -38,8 +42,14 @@ public class KalmanFilterService implements FilterService{
         List<RawDataUnit> initalConditions = rawDataUnitDAO.getInitialConditions(training, device);
         Filter kalmanFilter = null;
         try {
+            KalmanState lastState = kalmanStateDAO.getLastState(training, device);
+            boolean isFirstIteration = lastState == null;
+            ProcessedDataUnit lastXpost = processedDataUnitDAO.getLastProcessedDataUnit(training,device);
             kalmanFilter = new KalmanFilter.Builder(training, device, rawDataUnit)
-                                                                .initialConditions(initalConditions).build();
+                                           .initialConditions(initalConditions)
+                                           .setLastXPos(lastXpost)
+                                           .setIsFirstIteration(isFirstIteration)
+                                           .build();
             kalmanFilter.process();
             List<ProcessedDataUnit> processedDataUnits = kalmanFilter.getResults();
             saveProcessedData(processedDataUnits);

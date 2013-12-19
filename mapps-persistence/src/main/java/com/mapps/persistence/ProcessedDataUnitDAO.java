@@ -1,10 +1,12 @@
 package com.mapps.persistence;
 
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ProcessedDataUnitNotFoundException;
+import com.mapps.model.Device;
 import com.mapps.model.ProcessedDataUnit;
-
-import javax.ejb.Local;
+import com.mapps.model.Training;
 
 /**
  * ProcessedDataUnitDAO interface
@@ -39,4 +41,5 @@ public interface ProcessedDataUnitDAO {
      * @throws ProcessedDataUnitNotFoundException - If the ProcessedDataUnit is not in the database
      */
     ProcessedDataUnit getProcessedDataUnitById (Long processedDataUnitId) throws ProcessedDataUnitNotFoundException;
+    ProcessedDataUnit getLastProcessedDataUnit(Training training, Device device) throws NullParameterException;
 }

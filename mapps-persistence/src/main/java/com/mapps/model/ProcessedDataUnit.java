@@ -26,6 +26,8 @@ public class ProcessedDataUnit {
     double accelerationX;
     @Column(nullable = false)
     double accelerationY;
+    @ManyToOne
+    RawDataUnit rawDataUnit;
 
     public RawDataUnit getRawDataUnit() {
         return rawDataUnit;
@@ -34,9 +36,6 @@ public class ProcessedDataUnit {
     public void setRawDataUnit(RawDataUnit rawDataUnit) {
         this.rawDataUnit = rawDataUnit;
     }
-
-    @ManyToOne
-    RawDataUnit rawDataUnit;
 
     public Device getDevice() {
         return device;

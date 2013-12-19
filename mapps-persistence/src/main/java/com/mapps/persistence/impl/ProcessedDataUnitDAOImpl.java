@@ -1,14 +1,19 @@
 package com.mapps.persistence.impl;
 
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.ProcessedDataUnitNotFoundException;
-import com.mapps.model.ProcessedDataUnit;
-import com.mapps.persistence.ProcessedDataUnitDAO;
-import org.apache.log4j.Logger;
-
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.ProcessedDataUnitNotFoundException;
+import com.mapps.model.Device;
+import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.Training;
+import com.mapps.persistence.ProcessedDataUnitDAO;
 
 /**
  *
@@ -60,5 +65,21 @@ public class ProcessedDataUnitDAOImpl implements ProcessedDataUnitDAO {
         }else{
             throw new ProcessedDataUnitNotFoundException();
         }
+    }
+
+    @Override
+    public ProcessedDataUnit getLastProcessedDataUnit(Training training, Device device) throws NullParameterException {
+        if (training == null || device == null){
+            throw new NullParameterException();
+        }
+        String hql = "select p from ProcessedDataUnit p join p.rawDataUnit r join where " +
+                "(r.device =:device and p.training =:training) order by p.date desc";
+        Query query = entityManager.createQuery(hql);
+        List<ProcessedDataUnit> list = query.getResultList();
+        if (list.size() == 0)
+            return null;
+        else
+            return list.get(0);
+
     }
 }

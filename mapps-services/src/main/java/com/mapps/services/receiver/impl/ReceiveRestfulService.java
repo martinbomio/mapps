@@ -130,6 +130,7 @@ public class ReceiveRestfulService implements ReceiverService{
             }
 
             rawDataUnit.setDevice(device);
+            rawDataUnit.setTraining(training);
             rawDataUnit.setTimestamp(rawDataUnit.getDate().getTime() - training.getDate().getTime());
             rawDataUnitDAO.addRawDataUnit(rawDataUnit);
             kalmanFilterService.handleData(rawDataUnit, device, training);
