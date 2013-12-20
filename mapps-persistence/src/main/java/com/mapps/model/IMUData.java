@@ -115,6 +115,8 @@ public class IMUData implements DataParser{
             throw new IllegalArgumentException();
         }
         String[] split = data.split("/");
+        if (split.length != 6)
+            return;
         this.yaw = Integer.parseInt(split[0]);
         this.pitch = Integer.parseInt(split[1]);
         this.roll = Integer.parseInt(split[2]);

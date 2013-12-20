@@ -11,6 +11,7 @@ import com.mapps.filter.Filter;
 import com.mapps.filter.impl.KalmanFilter;
 import com.mapps.filter.impl.exceptions.InvalidCoordinatesException;
 import com.mapps.model.Device;
+import com.mapps.model.GPSData;
 import com.mapps.model.KalmanState;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.RawDataUnit;
@@ -39,6 +40,7 @@ public class KalmanFilterService implements FilterService{
             logger.info("Initial Conditions not satisfied yet");
             return;
         }
+        checkGPSCorrect(rawDataUnit);
         List<RawDataUnit> initalConditions = rawDataUnitDAO.getInitialConditions(training, device);
         Filter kalmanFilter = null;
         try {
@@ -62,7 +64,19 @@ public class KalmanFilterService implements FilterService{
         }
     }
 
-    private void saveProcessedData(List<ProcessedDataUnit> processedDataUnits) throws NullParameterException {
+    private void checkGPSCorrect(RawDataUnit rawDataUnit) {
+        GPSData gpsData = rawDataUnit.getGpsData().get(0);
+        if (gpsData.getLatitude() == 0 || gpsData.getLongitude() == 0){
+            logger.error("Latitud or Longitud are 0");
+            rawDataUnit.setCorrect(false);
+        }
+        if (String.valueOf(gpsData.getLatitude()).length() != 9 || String.valueOf(gpsData.getLongitude()).length() != 9){
+            logger.info("Wrong gps Data, using previous one");
+            rawDataUnit.setCorrect(false);
+        }
+    }
+
+    public void saveProcessedData(List<ProcessedDataUnit> processedDataUnits) throws NullParameterException {
         for (ProcessedDataUnit data : processedDataUnits){
             processedDataUnitDAO.addProcessedDataUnit(data);
         }

@@ -75,7 +75,7 @@ public class RawDataUnitDAOImplTest {
 
     private void addRawDataUnits(int numb, Device device) throws Exception{
         for(int i = 0; i < numb; i++){
-            RawDataUnit data = new RawDataUnit(null, null,null,device,1L,false,new Date());
+            RawDataUnit data = new RawDataUnit(null, null,null,device,1L,false,new Date(),null);
             rawDataUnitDAO.addRawDataUnit(data);
         }
     }

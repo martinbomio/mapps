@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.mapps.services.trainer.exceptions.*;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
@@ -25,7 +24,11 @@ import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
-import com.mapps.services.trainer.exceptions.invalidParameterException;
+import com.mapps.services.trainer.exceptions.AuthenticationException;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
+import com.mapps.services.trainer.exceptions.InvalidParameterException;
+import com.mapps.services.trainer.exceptions.InvalidSportException;
+import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  * Implementation of the TrainerService
@@ -166,10 +169,11 @@ public class TrainerServiceImpl implements TrainerService{
     }
 
     @Override
-    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws AuthenticationException, invalidParameterException {
+    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws
+                                                            AuthenticationException, InvalidParameterException {
            if(invalidTraining(training)||invalidAthlete(athlete)||invalidDevice(device)){
                logger.error("invalid parameter");
-               throw new invalidParameterException();
+               throw new InvalidParameterException();
            }
 
 
@@ -196,9 +200,9 @@ public class TrainerServiceImpl implements TrainerService{
         } catch (InvalidTokenException e) {
              throw new AuthenticationException();
         } catch (NullParameterException e) {
-            throw new invalidParameterException();
+            throw new InvalidParameterException();
         } catch (TrainingNotFoundException e) {
-            throw new invalidParameterException();
+            throw new InvalidParameterException();
         }
     }
 

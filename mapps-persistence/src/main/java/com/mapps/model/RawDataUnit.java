@@ -165,6 +165,8 @@ public class RawDataUnit implements DataParser{
                 }
             }else if( sensorData[0].equals(Constants.IMUDELIMETER)){
                 for(int i = 1; i< sensorData.length; i++){
+                    if (sensorData[i].equals("}"))
+                        continue;
                     IMUData imu = new IMUData(sensorData[i]);
                     imuData.add(imu);
                 }

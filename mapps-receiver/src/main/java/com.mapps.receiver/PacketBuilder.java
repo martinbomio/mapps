@@ -1,12 +1,10 @@
 package com.mapps.receiver;
 
-import com.mapps.receiver.exceptions.CouldNotInvokeServiceException;
+import java.io.BufferedWriter;
+
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.mapps.receiver.exceptions.CouldNotInvokeServiceException;
 
 /**
  *
@@ -28,31 +26,13 @@ public class PacketBuilder {
             if(builder.length() != 9){
                 String finalPacket = getPacket();
                 logger.info("Packet: " + finalPacket);
-
-
-
                     try{
-
-                    bf.write(finalPacket);
-                    bf.newLine();
-
-                    serviceInvoker.invokeService(finalPacket);
-                } catch (CouldNotInvokeServiceException e) {
-                    logger.error(e);
-                } catch (IOException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }finally {
-                        if(bf!=null){
-                            try {
-                                bf.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                            }
-                        }
+                        serviceInvoker.invokeService(finalPacket);
+                    } catch (CouldNotInvokeServiceException e) {
+                        logger.error(e);
                     }
                 builder.setLength(0);
                 builder.append(this.dirLow + "@");
-
             }
             this.started = true;
         }

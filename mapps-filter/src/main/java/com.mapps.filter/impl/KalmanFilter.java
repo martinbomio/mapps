@@ -49,6 +49,7 @@ public class KalmanFilter implements Filter {
     private static final double DT = 0.1;
     private static final int ACCEL_RANGE = 8192;
     private static final int YPR_RANGE = 100;
+    private static final int INITIAL_DATA_ERROR = 20;
 
 
     @Override
@@ -87,7 +88,8 @@ public class KalmanFilter implements Filter {
             }
             setVariableMatrices(isGPSData, rawData.getGpsData().get(0).getHDOP(), imuData.getYaw());
 
-            SimpleMatrix matrixU = new SimpleMatrix(2, 1, false, new double[]{imuData.getAccelX(), imuData.getAccelY()});
+            SimpleMatrix matrixU = new SimpleMatrix(2, 1, false, new double[]{imuData.getAccelX() / ACCEL_RANGE,
+                                                                                imuData.getAccelY() / YPR_RANGE});
 
             // Time update equations
             SimpleMatrix xPre = this.A.mult(this.lastXpos).plus(this.B.mult(this.Rgi.mult(matrixU)));
@@ -162,7 +164,8 @@ public class KalmanFilter implements Filter {
         double[] cartesianCoordinates;
         double yaw = 0;
         double hdop = 0;
-        int counter = 0;
+        double prevX = 0;
+        double prevY = 0;
         for (RawDataUnit rawData : rawDataUnits) {
             for (IMUData imuData : rawData.getImuData()) {
                 aXList.add(((double) imuData.getAccelX()) / ACCEL_RANGE);
@@ -172,12 +175,14 @@ public class KalmanFilter implements Filter {
             GPSData gpsData = rawData.getGpsData().get(0);
             cartesianCoordinates = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
                                                              parseCoordinates(gpsData.getLongitude()));
+            if (Math.abs(prevX - cartesianCoordinates[0]) > INITIAL_DATA_ERROR ||
+                    Math.abs(prevY - cartesianCoordinates[1]) > INITIAL_DATA_ERROR)
+                continue;
             gpsXList.add(cartesianCoordinates[0]);
             gpsYList.add(cartesianCoordinates[1]);
             hdop += rawData.getGpsData().get(0).getHDOP();
-            counter ++;
         }
-        hdop /= counter;
+        hdop /= (gpsXList.size() * 100);
         Double[] axArray = aXList.toArray(new Double[aXList.size()]);
         Double[] ayArray = aYList.toArray(new Double[aYList.size()]);
         double[][] qMatrix = matrizQInitial(axArray, ayArray);
@@ -309,7 +314,7 @@ public class KalmanFilter implements Filter {
         }
         matrizR[0][0] = Math.pow(Maths.getStdDev(gpsXVector), 2);
         matrizR[1][1] = Math.pow(Maths.getStdDev(gpsYVector), 2);
-        this.gpsError = (Math.sqrt(Math.pow(Maths.getStdDev(gpsXVector),2) + Math.pow(Maths.getStdDev(gpsYVector),2))) / hdop;
+        this.gpsError = (Math.sqrt(matrizR[0][0] + matrizR[1][1])) / hdop;
         return matrizR;
     }
 
@@ -320,8 +325,8 @@ public class KalmanFilter implements Filter {
                 matrizR[i][j] = 0;
             }
         }
-        matrizR[0][0] = this.gpsError * hdop * Math.cos(Math.toRadians(yaw));
-        matrizR[1][1] = this.gpsError * hdop * Math.sin(Math.toRadians(yaw));
+        matrizR[0][0] = this.gpsError * (hdop/YPR_RANGE) * Math.cos(Math.toRadians(yaw/YPR_RANGE));
+        matrizR[1][1] = this.gpsError * (hdop/YPR_RANGE) * Math.sin(Math.toRadians(yaw/YPR_RANGE));
         return matrizR;
     }
 
@@ -332,8 +337,8 @@ public class KalmanFilter implements Filter {
                 matrizQ[i][j] = 0;
             }
         }
-        matrizQ[2][2] = Maths.getStdDev(Ax_vector);
-        matrizQ[3][3] = Maths.getStdDev(Ay_vector);
+        matrizQ[2][2] = Math.pow(Maths.getStdDev(Ax_vector), 2);
+        matrizQ[3][3] = Math.pow(Maths.getStdDev(Ay_vector), 2);
         return matrizQ;
     }
 

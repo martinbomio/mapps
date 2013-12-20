@@ -27,7 +27,7 @@ public class MatrixToStringParser {
     public static String parseMatrixToString(SimpleMatrix matrix){
         StringBuilder builder = new StringBuilder();
         for (int i = 0 ; i<matrix.numRows(); i++){
-            for (int j = 0; j<matrix.numCols(); i++){
+            for (int j = 0; j<matrix.numCols(); j++){
                 builder.append(matrix.get(i,j));
                 if (j != (matrix.numCols()-1))
                     builder.append(",");
