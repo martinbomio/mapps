@@ -53,6 +53,7 @@ public class KalmanFilterService implements FilterService{
                                            .setIsFirstIteration(isFirstIteration)
                                            .build();
             kalmanFilter.process();
+            kalmanStateDAO.addKalmanState(kalmanFilter.getNewState());
             List<ProcessedDataUnit> processedDataUnits = kalmanFilter.getResults();
             saveProcessedData(processedDataUnits);
         } catch (InvalidCoordinatesException e) {

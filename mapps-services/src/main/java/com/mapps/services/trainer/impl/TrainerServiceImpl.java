@@ -1,5 +1,6 @@
 package com.mapps.services.trainer.impl;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -26,7 +27,6 @@ import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
-import com.mapps.services.trainer.exceptions.InvalidParameterException;
 import com.mapps.services.trainer.exceptions.InvalidSportException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
@@ -34,7 +34,7 @@ import com.mapps.services.trainer.exceptions.InvalidTrainingException;
  * Implementation of the TrainerService
  */
 @Stateless(name = "TrainerService")
-public class TrainerServiceImpl implements TrainerService{
+public class TrainerServiceImpl implements TrainerService {
     Logger logger = Logger.getLogger(TrainerServiceImpl.class);
     @EJB(beanName = "TrainingDAO")
     protected TrainingDAO trainingDAO;
@@ -48,26 +48,28 @@ public class TrainerServiceImpl implements TrainerService{
     protected SportDAO sportDAO;
 
 
-    private boolean invalidTraining(Training training){
-        boolean aux=false;
-        if(training.equals(null)||training.getName().equals(null)||training.getDate().equals(null)||training.getLatOrigin()==0
-                ||training.getLongOrigin()==0||training.getSport().equals(null)){
-            aux=true;
+    private boolean invalidTraining(Training training) {
+        boolean aux = false;
+        if (training.equals(null) || training.getName().equals(null) || training.getDate().equals(null) || training.getLatOrigin() == 0
+                || training.getLongOrigin() == 0 || training.getSport().equals(null)) {
+            aux = true;
         }
         return aux;
     }
-    private boolean invalidAthlete(Athlete athlete){
-        boolean aux=false;
-        if(athlete.equals(null)||athlete.getName().equals(null)||(athlete.getIdDocument()).equals(null)
-                ||athlete.getHeight()==0||athlete.getWeight()==0){
-            aux=true;
+
+    private boolean invalidAthlete(Athlete athlete) {
+        boolean aux = false;
+        if (athlete.equals(null) || athlete.getName().equals(null) || (athlete.getIdDocument()).equals(null)
+                || athlete.getHeight() == 0 || athlete.getWeight() == 0) {
+            aux = true;
         }
         return aux;
     }
-    private boolean invalidDevice(Device device){
-        boolean aux=false;
-        if(device.equals(null)||device.getDirHigh().equals(null)||device.getDirLow().equals(null)){
-            aux=true;
+
+    private boolean invalidDevice(Device device) {
+        boolean aux = false;
+        if (device.equals(null) || device.getDirHigh().equals(null) || device.getDirLow().equals(null)) {
+            aux = true;
         }
         return aux;
 
@@ -75,20 +77,20 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
-        if(invalidTraining(training)){
-           logger.error("invalid training");
-           throw new InvalidTrainingException();
+        if (invalidTraining(training)) {
+            logger.error("invalid training");
+            throw new InvalidTrainingException();
         }
-        try{
-            if((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
-                    ||(authenticationHandler.isUserInRole(token, Role.TRAINER))){
-                Training trainingAux=trainingDAO.getTrainingByName(training.getName());
+        try {
+            if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
+                    || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
+                Training trainingAux = trainingDAO.getTrainingByName(training.getName());
                 training.setStarted(true);
                 trainingDAO.updateTraining(trainingAux);
 
-            }else{
-            logger.error("authentication error");
-            throw new AuthenticationException();
+            } else {
+                logger.error("authentication error");
+                throw new AuthenticationException();
             }
 
         } catch (InvalidTokenException e) {
@@ -97,7 +99,7 @@ public class TrainerServiceImpl implements TrainerService{
         } catch (NullParameterException e) {
             logger.error("null training");
             throw new InvalidTrainingException();
-        }  catch (TrainingNotFoundException e) {
+        } catch (TrainingNotFoundException e) {
             logger.error("training not found in database");
             throw new InvalidTrainingException();
         }
@@ -107,23 +109,22 @@ public class TrainerServiceImpl implements TrainerService{
     @Override
     public void stopTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
 
-        if(invalidTraining(training)){
+        if (invalidTraining(training)) {
             logger.error("invalid training");
             throw new InvalidTrainingException();
         }
-        try{
-            if((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
-                    ||(authenticationHandler.isUserInRole(token, Role.TRAINER))){
+        try {
+            if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
+                    || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
 
-                Training trainingAux=trainingDAO.getTrainingByName(training.getName());
+                Training trainingAux = trainingDAO.getTrainingByName(training.getName());
                 training.setStarted(false);
                 trainingDAO.updateTraining(trainingAux);
 
-            }else{
+            } else {
                 logger.error("authentication error");
                 throw new AuthenticationException();
             }
-
 
 
         } catch (InvalidTokenException e) {
@@ -132,7 +133,7 @@ public class TrainerServiceImpl implements TrainerService{
         } catch (NullParameterException e) {
             logger.error("null training");
             throw new InvalidTrainingException();
-        }  catch (TrainingNotFoundException e) {
+        } catch (TrainingNotFoundException e) {
             logger.error("training not found in database");
             throw new InvalidTrainingException();
         }
@@ -141,18 +142,18 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void addAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
-        if(invalidAthlete(athlete)){
+        if (invalidAthlete(athlete)) {
             logger.error("invalid athlete");
             throw new InvalidAthleteException();
         }
-        try{
-        if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
-                authenticationHandler.isUserInRole(token,Role.TRAINER)){
-            athleteDAO.addAthlete(athlete);
-        } else{
-            logger.error("authentication error");
-            throw new AuthenticationException();
-        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                athleteDAO.addAthlete(athlete);
+            } else {
+                logger.error("authentication error");
+                throw new AuthenticationException();
+            }
 
         } catch (InvalidTokenException e) {
             logger.error("Invalid Token");
@@ -170,35 +171,35 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws
-                                                            AuthenticationException, InvalidParameterException {
-           if(invalidTraining(training)||invalidAthlete(athlete)||invalidDevice(device)){
-               logger.error("invalid parameter");
-               throw new InvalidParameterException();
-           }
+            AuthenticationException, InvalidParameterException {
+        if (invalidTraining(training) || invalidAthlete(athlete) || invalidDevice(device)) {
+            logger.error("invalid parameter");
+            throw new InvalidParameterException();
+        }
 
 
         try {
-            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
-                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
-                if(training.getMapAthleteDevice().equals(null)){
-                    Map<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
-                    mapAthleteDevice.put(athlete,device);
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                if (training.getMapAthleteDevice().equals(null)) {
+                    Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
+                    mapAthleteDevice.put(athlete, device);
                     training.setMapAthleteDevice(mapAthleteDevice);
                     trainingDAO.updateTraining(training);
-                }else{
-                    Map<Athlete,Device> aux=training.getMapAthleteDevice();
-                    aux.put(athlete,device);
+                } else {
+                    Map<Athlete, Device> aux = training.getMapAthleteDevice();
+                    aux.put(athlete, device);
                     training.setMapAthleteDevice(aux);
                     trainingDAO.updateTraining(training);
                 }
 
 
-            }else{
+            } else {
                 logger.error("authentication error");
                 throw new AuthenticationException();
             }
         } catch (InvalidTokenException e) {
-             throw new AuthenticationException();
+            throw new AuthenticationException();
         } catch (NullParameterException e) {
             throw new InvalidParameterException();
         } catch (TrainingNotFoundException e) {
@@ -208,15 +209,15 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void modifyAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
-        if(invalidAthlete(athlete)){
+        if (invalidAthlete(athlete)) {
             throw new InvalidAthleteException();
         }
         try {
-            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
-                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 athleteDAO.updateAthlete(athlete);
 
-            }else{
+            } else {
                 throw new AuthenticationException();
             }
         } catch (InvalidTokenException e) {
@@ -232,16 +233,16 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void deleteAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
-        if(invalidAthlete(athlete)){
+        if (invalidAthlete(athlete)) {
             throw new InvalidAthleteException();
         }
         try {
-            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
-                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 athlete.setEnabled(false);
                 athleteDAO.updateAthlete(athlete);
 
-            }else{
+            } else {
                 throw new AuthenticationException();
             }
         } catch (InvalidTokenException e) {
@@ -256,14 +257,14 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public void addSport(Sport sport, String token) throws InvalidSportException, AuthenticationException {
-        if(sport.equals(null)||sport.getName().equals(null)){
+        if (sport.equals(null) || sport.getName().equals(null)) {
             throw new InvalidSportException();
         }
         try {
-            if(authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)||
-                    authenticationHandler.isUserInRole(token,Role.TRAINER)){
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 sportDAO.addSport(sport);
-            }else{
+            } else {
                 throw new AuthenticationException();
             }
         } catch (InvalidTokenException e) {

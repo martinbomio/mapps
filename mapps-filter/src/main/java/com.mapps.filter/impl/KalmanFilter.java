@@ -358,6 +358,7 @@ public class KalmanFilter implements Filter {
     public KalmanState getNewState(){
         return this.newState;
     }
+
     public static class Builder {
         private Training training;
         private Device device;
