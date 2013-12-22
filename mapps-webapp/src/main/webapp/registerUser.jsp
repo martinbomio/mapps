@@ -1,6 +1,26 @@
-<%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.mapps.model.Role" %><%
+    List inst;
+    if((request.getAttribute("institutionNames"))==null){
+        inst=new ArrayList();
+    }else{
+        inst= (List)request.getAttribute("institutionNames");
+    }
+    String token;
+    if(request.getAttribute("token")== null){
+        token="";
+    } else{
+        token=String.valueOf(request.getAttribute("token"));
+    }
+    Role role;
+    if(request.getAttribute("role")==null){
+        role=null;
+    }else{
+        role=(Role)request.getAttribute("role");
+    }
 
---%>
+%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -10,7 +30,16 @@
 </head>
 <body>
 
+<%
+    if(inst!=null && role.toString()=="Administrator"){
+        for(int i=0;i<inst.size();i++){ %>
+<%=inst.get(i) %>
+<%}
 
+}else{ %>
+<%="inst null"%>
+<%  }
+%>
 
     <div class="container">
 

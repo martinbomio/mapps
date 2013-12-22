@@ -3,6 +3,7 @@ package com.mapps.services.user;
 
 import javax.ejb.Local;
 
+import com.mapps.model.Role;
 import com.mapps.model.User;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -36,4 +37,6 @@ public interface UserService {
     void updateUser(User user, String token) throws InvalidUserException, AuthenticationException;
 
     public boolean isAdministrator(String username) throws InvalidUserException;
+
+    public Role userRoleOfToken(String token) throws InvalidUserException, AuthenticationException;
 }

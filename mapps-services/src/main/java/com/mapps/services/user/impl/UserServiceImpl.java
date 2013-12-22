@@ -106,4 +106,20 @@ public class UserServiceImpl implements UserService{
 
         return admin;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public Role userRoleOfToken(String token) throws AuthenticationException {
+        if(token==null){
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
+        try {
+            User aux=authenticationHandler.getUserOfToken(token);
+            Role role=aux.getRole();
+            return role;
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
+    }
 }
