@@ -5,6 +5,7 @@ import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  *
@@ -32,6 +33,8 @@ public interface InstitutionService {
      * @param token that represent the session.
      */
   void updateInstitution(Institution institution, String token)throws AuthenticationException,InvalidInstitutionException;
+
+  public List<String> allInstitutionsNames();
 
 
 }

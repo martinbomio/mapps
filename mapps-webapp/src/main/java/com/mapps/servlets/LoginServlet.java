@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
+import com.mapps.services.user.exceptions.InvalidUserException;
 import com.mapps.services.user.impl.UserServiceImpl;
 
 /**
@@ -28,11 +29,20 @@ public class LoginServlet extends HttpServlet implements Servlet {
         try {
 
             String token = userService.login(username,password);
+            boolean admin=userService.isAdministrator(username);
             req.setAttribute("token", token);
+            if(admin){
+            req.setAttribute("admin","administrator");
+            }else{
+            req.setAttribute("admin","other");
+            }
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
-            req.setAttribute("message", "Invalid username or password");
-            req.getRequestDispatcher("/error.jsp").forward(req, resp);
+            req.setAttribute("error", "Invalid username or password");
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        } catch (InvalidUserException e) {
+            req.setAttribute("error", "Invalid username or password");
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
     }
 

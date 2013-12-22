@@ -41,6 +41,11 @@ public class InstServiceImplTest {
 
     }
     @Test
+    public void testAllInstitutionsNames(){
+
+    }
+
+    @Test
     public void testCreateInstitution(){
         Institution validInstitution = mock(Institution.class);
         when(validInstitution.getName()).thenReturn("nombreInstitucion");

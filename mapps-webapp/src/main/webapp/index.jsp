@@ -21,42 +21,46 @@ if(request.getAttribute("error")== null){
 
 <div class="container">
 
-  <div class="sidebar1">
-    <!-- end .sidebar1 --></div>
-  <div class="content">
- 	 <div class="image">
-     	<img src="images/logo.png" width="100%"  />
-       <center> <h1>LOGIN</h1> </center>
- 	 </div>
-     <div class="login">
-     <div class="loginContent">
-    	 <form action="login" method="post">
-    	 <span class="error"><%=error%></span>
-         <br/>
-     	<label>Username: <input type="text" name="username" id="username" required="required" /></label>
-        <br/>
-        <br/>
-        <label>Password: <input type="password" name="password" id="password" required="required" /></label>
-        <br/>
-        <br/>
+    <div class="sidebar1">
+        <!-- end .sidebar1 --></div>
+    <div class="content">
+        <div class="image">
+            <img src="images/logo.png" width="100%"  />
+            <center> <h1>LOGIN</h1> </center>
+        </div>
+        <div class="login">
+            <div class="loginContent">
+                <form action="login" method="post">
 
-            <input type="submit" name="ingresar" value="LOGIN" style="font-size:16px"/>
-            <input type="button" name="register" value="REGISTER" style="font-size:16px"/>
-    	 <br/>
-         <br/>
+                    <label>Please login below</label>
+                    <br/>
+                    <br/>
+                    <label>Username: <input type="text" name="username" id="username" required="required" /></label>
+                    <br/>
+                    <br/>
+                    <label>Password: <input type="password" name="password" id="password" required="required" /></label>
+                    <br/>
+                    <br/>
+                    <div align="center" >
+                        <input type="submit" name="ingresar" value="Login" style="font-size:16px"/>
 
-         </form>
-	</div>
-     </div>
+                            <span class="error"><%=error%></span>
+                            <br/>
+                            <br/>
 
-    <!-- end .content --></div>
-  <div class="sidebar2">
+                    </div>
+                </form>
+            </div>
+        </div>
 
-    <!-- end .sidebar2 --></div>
-  <div class="footer">
+        <!-- end .content --></div>
+    <div class="sidebar2">
 
-    <!-- end .footer --></div>
-  <!-- end .container --></div>
+        <!-- end .sidebar2 --></div>
+    <div class="footer">
+
+        <!-- end .footer --></div>
+    <!-- end .container --></div>
 </body>
 </html>
 

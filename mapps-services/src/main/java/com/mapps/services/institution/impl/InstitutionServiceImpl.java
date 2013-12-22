@@ -17,6 +17,8 @@ import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 
+import java.util.List;
+
 /**
  *
  */
@@ -108,5 +110,15 @@ public class InstitutionServiceImpl implements InstitutionService {
             logger.error("institution not found in database");
             throw new InvalidInstitutionException();
         }
+    }
+
+    @Override
+    public List<String> allInstitutionsNames() {
+        List<String> aux=null;
+        List<Institution> institutions=institutionDAO.getAllInstitutions();
+        for(int i=0;i<institutions.size();i++){
+            aux.add(institutions.get(i).getName());
+        }
+        return aux;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
