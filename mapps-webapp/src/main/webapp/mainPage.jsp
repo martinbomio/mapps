@@ -6,18 +6,12 @@
     } else{
         admin=String.valueOf(request.getAttribute("admin"));
     }
-    String token;
-    if(request.getAttribute("token")== null){
-        token="";
-    } else{
-        token=String.valueOf(request.getAttribute("token"));
-    }
-    String inst;
-    if(request.getAttribute("inst")== null){
-        inst="";
-    } else{
-        inst=String.valueOf(request.getAttribute("inst"));
-    }
+
+    String token=String.valueOf(request.getAttribute("token"));
+
+
+
+
 
 
 %>
@@ -37,13 +31,11 @@
 </form>
 <%}%>
 MAIN PAGE
-<%
-  if(inst!=null){ %>
 
-    <%=inst%>
-<%  }
+ <%=token%>
 
 
-%>
+
+
 </body>
 </html>

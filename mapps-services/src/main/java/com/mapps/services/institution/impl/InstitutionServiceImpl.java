@@ -17,6 +17,7 @@ import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -114,10 +115,10 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     @Override
     public List<String> allInstitutionsNames() {
-        List<String> aux=null;
+        List<String> aux=new ArrayList<String>();
         List<Institution> institutions=institutionDAO.getAllInstitutions();
         for(int i=0;i<institutions.size();i++){
-            aux.add(institutions.get(i).getName());
+            aux.add((institutions.get(i)).getName());
         }
         return aux;  //To change body of implemented methods use File | Settings | File Templates.
     }

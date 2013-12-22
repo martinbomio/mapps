@@ -23,6 +23,8 @@ public class InstitutionDAOIntegrationTest {
 
     private Institution testInstitution;
     private Institution testInstitution2;
+    private Institution testInstitution3;
+    private Institution testInstitution4;
     private InstitutionDAO institutionDAO;
 
 
@@ -48,6 +50,24 @@ public class InstitutionDAOIntegrationTest {
         }
     }
 
+
+    @Test
+    public void testGetAllInstitutions() throws InstitutionAlreadyExistException, NullParameterException {
+        testInstitution=new Institution("inst","desc","URUGUAY");
+        testInstitution2=new Institution("inst2","desc","URUGUAY");
+        testInstitution3=new Institution("inst3","desc","URUGUAY");
+        testInstitution4=new Institution("inst4","desc","URUGUAY");
+        institutionDAO.addInstitution(testInstitution);
+        institutionDAO.addInstitution(testInstitution2);
+        institutionDAO.addInstitution(testInstitution3);
+        institutionDAO.addInstitution(testInstitution4);
+
+        List<Institution> list= institutionDAO.getAllInstitutions();
+        for(int i=0;i<list.size();i++){
+
+            System.out.println(list.get(i).getName());
+        }
+    }
     @Test
     public void testInstitution() throws InstitutionAlreadyExistException, InstitutionNotFoundException, NullParameterException {
         testInstitution=new Institution("hola","desc","URUGUAY");
@@ -74,5 +94,7 @@ public class InstitutionDAOIntegrationTest {
              System.out.println(list.get(i).getName());
           }
     }
+
+
 
 }
