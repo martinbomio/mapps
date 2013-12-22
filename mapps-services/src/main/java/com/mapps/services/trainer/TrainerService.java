@@ -12,6 +12,8 @@ import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidSportException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
+
+
 /**
  * Interface that defines the interactions of a trainer with the system.
  */

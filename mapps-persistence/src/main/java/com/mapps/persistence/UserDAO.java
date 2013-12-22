@@ -60,4 +60,6 @@ public interface UserDAO {
      * @return all the users of one institution
      */
     public List<User> getAllUsersByInstitution(String institutionName);
+
+
 }

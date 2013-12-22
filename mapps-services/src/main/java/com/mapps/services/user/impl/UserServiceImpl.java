@@ -84,4 +84,26 @@ public class UserServiceImpl implements UserService{
             throw new InvalidUserException();
         }
     }
+
+    @Override
+    public boolean isAdministrator(String username) throws InvalidUserException {
+        if (username == null){
+            logger.error("Not valid user to update");
+            throw new InvalidUserException();
+        }
+        boolean admin=false;
+        try {
+            User aux=userDAO.getUserByUsername(username);
+            String role=aux.getRole().toString();
+            if(role=="Administrator"){
+                admin=true;
+            }
+        } catch (UserNotFoundException e) {
+            logger.error("user not found");
+            throw new InvalidUserException();
+        }
+
+
+        return admin;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

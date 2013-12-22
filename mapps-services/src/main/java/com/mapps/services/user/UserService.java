@@ -34,4 +34,6 @@ public interface UserService {
      * @throws com.mapps.services.user.exceptions.InvalidUserException if the user could not be updated.
      */
     void updateUser(User user, String token) throws InvalidUserException, AuthenticationException;
+
+    public boolean isAdministrator(String username) throws InvalidUserException;
 }
