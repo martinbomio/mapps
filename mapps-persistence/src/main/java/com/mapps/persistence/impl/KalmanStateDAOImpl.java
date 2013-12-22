@@ -30,7 +30,7 @@ public class KalmanStateDAOImpl implements KalmanStateDAO{
             throw new NullParameterException();
         }
         Query query = entityManager.createQuery("from KalmanState k where (k.training=:training and k.device =:device) " +
-                                                        "order by t.date desc");
+                                                        "order by k.date desc");
         query.setParameter("training", training);
         query.setParameter("device", device);
         List<KalmanState> list = query.getResultList();

@@ -128,7 +128,6 @@ public class ReceiveRestfulService implements ReceiverService{
                     throw new InvalidRawDataUnitRuntimeException();
                 }
             }
-
             rawDataUnit.setDevice(device);
             rawDataUnit.setTraining(training);
             rawDataUnit.setTimestamp(rawDataUnit.getDate().getTime() - training.getDate().getTime());

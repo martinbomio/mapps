@@ -1,7 +1,6 @@
 package com.mapps.services.kalman.stub;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +18,7 @@ import com.mapps.services.kalman.impl.KalmanFilterService;
  *
  */
 public class KalmanFilterServiceStub extends KalmanFilterService{
+    public boolean multiple = false;
 
     public void setRawDataUnitDAO(RawDataUnitDAO rdao){
         this.rawDataUnitDAO = rdao;
@@ -34,13 +34,16 @@ public class KalmanFilterServiceStub extends KalmanFilterService{
 
     @Override
     public void saveProcessedData(List<ProcessedDataUnit> processedDataUnits) throws NullParameterException {
-        File output = new File("src/test/resources/testdata/output.txt");
+        save(processedDataUnits, multiple);
+    }
+
+    private void save(List<ProcessedDataUnit> processedDataUnits, boolean append) {
         try{
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(output)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("src/test/resources/testdata/output.csv",append)));
             for (ProcessedDataUnit processed : processedDataUnits){
-                String line = processed.getAccelerationX() + "," + processed.getAccelerationY() + "," +
-                        processed.getVelocityX() + "," + processed.getVelocityY() + "," + processed.getAccelerationX()
-                        + "," + processed.getAccelerationY();
+                String line = processed.getAccelerationX() + "\t" + processed.getAccelerationY() + "\t" +
+                        processed.getVelocityX() + "\t" + processed.getVelocityY() + "\t" + processed.getAccelerationX()
+                        + "\t" + processed.getAccelerationY();
                 out.println(line);
             }
             out.close();

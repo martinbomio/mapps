@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.Mockito;
 
 import com.mapps.model.Device;
+import com.mapps.model.KalmanState;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Training;
@@ -33,14 +34,16 @@ public class KalmanFilterServiceIntegrationTest {
     ArgumentCaptor<List<ProcessedDataUnit>> captor;
     private KalmanFilterServiceStub kService;
     private ProcessedDataUnitDAO pDAO;
+    private RawDataUnitDAO rawDao;
+    private KalmanStateDAO sDAO;
     private Training training;
     private Device device;
 
     @Before
     public void setup() throws Exception{
-        RawDataUnitDAO rawDao = Mockito.mock(RawDataUnitDAO.class);
+        this.rawDao = Mockito.mock(RawDataUnitDAO.class);
         this.pDAO = Mockito.mock(ProcessedDataUnitDAO.class);
-        KalmanStateDAO sDAO = Mockito.mock(KalmanStateDAO.class);
+        this.sDAO = Mockito.mock(KalmanStateDAO.class);
         ProcessedDataUnit pDataUnit = Mockito.mock(ProcessedDataUnit.class);
         this.training = Mockito.mock(Training.class);
         this.device = Mockito.mock(Device.class);
@@ -56,6 +59,7 @@ public class KalmanFilterServiceIntegrationTest {
 
     @Test
     public void testHandleData() throws Exception{
+        File aux = new File("src/test/resources/testdata/output.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         RawDataUnit rData = new RawDataUnit("G:345255840/560288000/6/129:,I:-5844/-438/-120/-343/-97/4493:" +
@@ -64,19 +68,54 @@ public class KalmanFilterServiceIntegrationTest {
         rData.setCorrect(true);
         kService.handleData(rData, device,training);
 
-        File file = new File("src/test/resources/testdata/output.txt");
+        File file = new File("src/test/resources/testdata/output.csv");
         BufferedReader br = new BufferedReader(new FileReader(file));
         int number = 0;
         while(br.readLine() != null){
             number++;
         }
         Assert.assertEquals(number, 6);
+        aux.delete();
     }
 
     @Test
-    public void testMultipleHandleData(){
+    public void testMultipleHandleData() throws Exception{
+        File aux = new File("src/test/resources/testdata/output.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
+        when(sDAO.getLastState(training, device)).thenReturn(createState());
+        List<RawDataUnit> inputs = getRawData("src/test/resources/testdata/data.txt");
+        int numbOfImuData = 0;
+        for (RawDataUnit input : inputs){
+            numbOfImuData += input.getImuData().size();
+            kService.multiple = true;
+            kService.handleData(input, device, training);
+            kService.multiple = false;
+        }
+        File file = new File("src/test/resources/testdata/output.csv");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        int number = 0;
+        while(br.readLine() != null){
+            number++;
+        }
+        Assert.assertEquals(number, numbOfImuData);
+        aux.delete();
+     }
+
+    private KalmanState createState() throws Exception{
+        KalmanState state = new KalmanState();
+        File file = new File("src/test/resources/testdata/state.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        state.setPreviousState(br.readLine());
+        state.setqMatrix(br.readLine());
+        state.setRgi(br.readLine());
+        state.setGpsError(Double.valueOf(br.readLine()));
+        state.setaXBias(Double.valueOf(br.readLine()));
+        state.setAyBias(Double.valueOf(br.readLine()));
+        state.setTraining(this.training);
+        state.setDevice(this.device);
+        br.close();
+        return state;
     }
 
     public List<RawDataUnit> getRawData(String filePath) throws Exception{
@@ -87,7 +126,7 @@ public class KalmanFilterServiceIntegrationTest {
         while((line = br.readLine()) != null){
             String[] split = line.split("@");
             RawDataUnit rawDataUnit = new RawDataUnit(split[1]);
-            rawDataUnit.isCorrect();
+            rawDataUnit.setCorrect(true);
             rawDataUnits.add(rawDataUnit);
         }
         return rawDataUnits;

@@ -61,6 +61,7 @@ public class KalmanFilter implements Filter {
         longitude0 = parseCoordinates(training.getLongOrigin());
         longitude0[2] /= 100;
         latitude0[2] /= 100;
+        this.xPost = new ArrayList<SimpleMatrix>();
         this.device = device;
         this.training = training;
     }
@@ -96,15 +97,24 @@ public class KalmanFilter implements Filter {
             SimpleMatrix pPre = this.A.mult(this.pPost).mult(this.A.transpose()).plus(this.Q);
 
             // Define Y vector
-            double[] vectorY = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
+            SimpleMatrix y_aux;
+            if(gpsCorrect){
+                double[] vectorY = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
                                                          parseCoordinates(gpsData.getLongitude()));
-            SimpleMatrix y_aux = new SimpleMatrix(2, 1, false, vectorY);
+                y_aux = new SimpleMatrix(2, 1, false, vectorY);
+            }else{
+                double[] vector = new double[]{0,0};
+                y_aux = new SimpleMatrix(2,1,false,vector);
+            }
             SimpleMatrix matrixY = y_aux.minus(this.C.mult(xPre));
 
             // Kalman update equations
             SimpleMatrix aux = this.C.mult(pPre).mult(this.C.transpose()).plus(this.R);
             SimpleMatrix matrizK = pPre.mult(this.C.transpose()).mult(aux.invert());
             SimpleMatrix xPostMatrix = xPre.plus(matrizK.mult(matrixY));
+            if(Double.isNaN(xPostMatrix.get(2,0))){
+                System.out.println("HOLA");
+            }
             this.pPost = pPre.minus(matrizK.mult(this.C).mult(pPre));
             this.xPost.add(xPostMatrix);
 
@@ -118,7 +128,6 @@ public class KalmanFilter implements Filter {
     private void createNewState() {
         String pPost = MatrixToStringParser.parseMatrixToString(this.pPost);
         String qMatrix = MatrixToStringParser.parseMatrixToString(this.Q);
-        String rMatrix = MatrixToStringParser.parseMatrixToString(this.R);
         String rgiMatrix = MatrixToStringParser.parseMatrixToString(this.Rgi);
         double axBias = lastXpos.get(4,0);
         double ayBias = lastXpos.get(5,0);
@@ -196,7 +205,6 @@ public class KalmanFilter implements Filter {
 
         double[] xPostArray = new double[]{gpsXList.get(gpsXList.size() - 1), gpsYList.get(gpsYList.size() - 1), 0,
                 0, Maths.getMean(axArray), Maths.getMean(ayArray)};
-        this.xPost = new ArrayList<SimpleMatrix>();
         this.xPost.add(new SimpleMatrix(xPostArray.length, 1, false, xPostArray));
         this.pPost = SimpleMatrix.identity(6);
         this.lastXpos = this.xPost.get(0);

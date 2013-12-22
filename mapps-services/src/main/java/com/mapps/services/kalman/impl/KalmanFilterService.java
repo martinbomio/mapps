@@ -51,6 +51,7 @@ public class KalmanFilterService implements FilterService{
                                            .initialConditions(initalConditions)
                                            .setLastXPos(lastXpost)
                                            .setIsFirstIteration(isFirstIteration)
+                                           .setState(lastState)
                                            .build();
             kalmanFilter.process();
             kalmanStateDAO.addKalmanState(kalmanFilter.getNewState());
