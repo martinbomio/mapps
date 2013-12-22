@@ -72,6 +72,7 @@ public class ContextListener implements ServletContextListener{
         Date date=new Date();
 
         Institution inst = new Institution("CPC", "Carrasco Polo Club", "Uruguay");
+        Institution inst2 = new Institution("CAP", "Club Atletico Peñarol", "Uruguay");
         User user = new User("admin","", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR,"58585");
         User user2 = new User("train","", new Date(), Gender.MALE, "user@mapps.com", "train", "train", inst, Role.TRAINER,"5858544444");
         user.setEnabled(true);
@@ -90,6 +91,7 @@ public class ContextListener implements ServletContextListener{
         training.setStarted(true);
         try {
             institutionDAO.addInstitution(inst);
+            institutionDAO.addInstitution(inst2);
             reportDAO.addReport(report);
             userDAO.addUser(user);
             userDAO.addUser(user2);
