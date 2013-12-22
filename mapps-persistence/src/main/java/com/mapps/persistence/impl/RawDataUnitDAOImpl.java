@@ -71,10 +71,11 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
 
     @Override
     public boolean initialConditionsSatisfied(Training training, Device device) {
-        String sql = "select r from RawDataUnit r join r.device d where ( d=:device and r.date>=:date ) order by r.date asc";
+        String sql = "select r from RawDataUnit r join r.device d join r.training t where ( d=:device and t=:training )" +
+                " order by r.date asc";
         Query query = entityManager.createQuery(sql);
         query.setParameter("device", device);
-        query.setParameter("date", training.getDate());
+        query.setParameter("training", training);
         int numb = query.getResultList().size();
 
         return (numb >= Constants.INITIAL_CONDITIONS_NUMBER);
@@ -82,10 +83,11 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
 
     @Override
     public List<RawDataUnit> getInitialConditions(Training training, Device device) {
-        String sql = "select r from RawDataUnit r join r.device d where ( d=:device and r.date>=:date ) order by r.date asc";
+        String sql = "select r from RawDataUnit r join fetch r.device d join fetch r.training t where ( d=:device and t=:training ) " +
+                "order by r.date asc";
         Query query = entityManager.createQuery(sql);
         query.setParameter("device", device);
-        query.setParameter("date", training.getDate());
+        query.setParameter("training", training);
         query.setMaxResults(Constants.INITIAL_CONDITIONS_NUMBER);
         List<RawDataUnit> rawDataUnits = query.getResultList();
         return  rawDataUnits;

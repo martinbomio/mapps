@@ -236,10 +236,12 @@ public class KalmanFilter implements Filter {
 
     private double[] transformCoordinateSystem(double[] latVector, double[] longVector) {
         double[] coordenadas = new double[2];
-        double deltaSecondsLatitude = (latVector[0] - latitude0[0]) * 3600 + (latVector[1] - latitude0[1]) *
-                60 + latVector[2] / 100000 * 60 - latitude0[2];
-        double deltaSecondsLongitude = (longVector[0] - longitude0[0]) * 3600 + (longVector[1] - longitude0[1]) *
-                60 + longVector[2] / 100000 * 60 - longitude0[2];
+        //double deltaSecondsLatitude = (latVector[0] - latitude0[0]) * 3600 + (latVector[1] - latitude0[1]) *
+        //        60 + latVector[2] / 100000 * 60 - latitude0[2];
+        //double deltaSecondsLongitude = (longVector[0] - longitude0[0]) * 3600 + (longVector[1] - longitude0[1]) *
+        //        60 + longVector[2] / 100000 * 60 - longitude0[2];
+        double deltaSecondsLatitude = latVector[2] / 100000 * 60 - latitude0[2];
+        double deltaSecondsLongitude = longVector[2] / 100000 * 60 - longitude0[2];
         double theta = latVector[0] + latVector[1] / 60.0 + latVector[2] / 3600.0;
         double longitudeToMeters = (111412.88 * Math.cos(Math.toRadians(theta)) - 93.5 *
                 Math.cos(3 * Math.toRadians(theta)) + 0.12 * Math.cos(5 * Math.toRadians(theta))) / 3600.0;

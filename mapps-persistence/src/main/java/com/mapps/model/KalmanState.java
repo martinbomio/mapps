@@ -16,11 +16,11 @@ public class KalmanState {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String previousState;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String qMatrix;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String rgi;
     private double gpsError;
     private double aXBias;

@@ -29,6 +29,7 @@ public class ProcessedDataUnit {
     @ManyToOne
     RawDataUnit rawDataUnit;
 
+
     public RawDataUnit getRawDataUnit() {
         return rawDataUnit;
     }
