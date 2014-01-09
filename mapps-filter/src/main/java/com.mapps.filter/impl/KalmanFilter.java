@@ -102,6 +102,9 @@ public class KalmanFilter implements Filter {
                 double[] vectorY = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
                                                          parseCoordinates(gpsData.getLongitude()));
                 y_aux = new SimpleMatrix(2, 1, false, vectorY);
+                if( checkCoordenates(vectorY)){
+                    this.C = new SimpleMatrix(createMatrixC(false));
+                }
             }else{
                 double[] vector = new double[]{0,0};
                 y_aux = new SimpleMatrix(2,1,false,vector);
@@ -112,17 +115,19 @@ public class KalmanFilter implements Filter {
             SimpleMatrix aux = this.C.mult(pPre).mult(this.C.transpose()).plus(this.R);
             SimpleMatrix matrizK = pPre.mult(this.C.transpose()).mult(aux.invert());
             SimpleMatrix xPostMatrix = xPre.plus(matrizK.mult(matrixY));
-            if(Double.isNaN(xPostMatrix.get(2,0))){
-                System.out.println("HOLA");
-            }
             this.pPost = pPre.minus(matrizK.mult(this.C).mult(pPre));
             this.xPost.add(xPostMatrix);
-
+            this.lastXpos = xPostMatrix;
             ProcessedDataUnit processedDataUnit = createProcessedDataFromXPost(xPostMatrix, imuData);
             this.processedData.add(processedDataUnit);
             isGPSData = false;
         }
         createNewState();
+    }
+
+    private boolean checkCoordenates(double[] vectorY) {
+        return (Math.abs(lastXpos.get(0, 0) - vectorY[0]) > INITIAL_DATA_ERROR ||
+                Math.abs(lastXpos.get(1, 0) - vectorY[1]) > INITIAL_DATA_ERROR);
     }
 
     private void createNewState() {
@@ -236,10 +241,6 @@ public class KalmanFilter implements Filter {
 
     private double[] transformCoordinateSystem(double[] latVector, double[] longVector) {
         double[] coordenadas = new double[2];
-        //double deltaSecondsLatitude = (latVector[0] - latitude0[0]) * 3600 + (latVector[1] - latitude0[1]) *
-        //        60 + latVector[2] / 100000 * 60 - latitude0[2];
-        //double deltaSecondsLongitude = (longVector[0] - longitude0[0]) * 3600 + (longVector[1] - longitude0[1]) *
-        //        60 + longVector[2] / 100000 * 60 - longitude0[2];
         double deltaSecondsLatitude = latVector[2] / 100000 * 60 - latitude0[2];
         double deltaSecondsLongitude = longVector[2] / 100000 * 60 - longitude0[2];
         double theta = latVector[0] + latVector[1] / 60.0 + latVector[2] / 3600.0;
