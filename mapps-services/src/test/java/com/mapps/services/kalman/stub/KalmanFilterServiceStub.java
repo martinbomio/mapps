@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.mapps.exceptions.NullParameterException;
+import com.mapps.model.KalmanState;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.persistence.KalmanStateDAO;
 import com.mapps.persistence.ProcessedDataUnitDAO;
@@ -37,18 +38,48 @@ public class KalmanFilterServiceStub extends KalmanFilterService{
         save(processedDataUnits, multiple);
     }
 
+    @Override
+    public void saveKalmanState(KalmanState state) throws NullParameterException {
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("src/test/resources/testdata/state.csv", true)));
+            String row = createRow(state);
+            out.println(row);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void save(List<ProcessedDataUnit> processedDataUnits, boolean append) {
         try{
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("src/test/resources/testdata/output.csv",append)));
             for (ProcessedDataUnit processed : processedDataUnits){
                 String line = processed.getAccelerationX() + "\t" + processed.getAccelerationY() + "\t" +
-                        processed.getVelocityX() + "\t" + processed.getVelocityY() + "\t" + processed.getAccelerationX()
-                        + "\t" + processed.getAccelerationY();
+                        processed.getVelocityX() + "\t" + processed.getVelocityY() + "\t" + processed.getPositionX()
+                        + "\t" + processed.getPositionY();
                 out.println(line);
             }
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String createRow(KalmanState state) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(state.getaXBias());
+        sb.append("\t");
+        sb.append(state.getAyBias());
+        sb.append("\t");
+        sb.append(state.getGpsError());
+        sb.append("\t");
+        sb.append(state.getPreviousState());
+        sb.append("\t");
+        sb.append(state.getqMatrix());
+        sb.append("\t");
+        sb.append(state.getRgi());
+        sb.append("\t");
+        sb.append(state.getDate().getTime());
+        return sb.toString();
     }
 }

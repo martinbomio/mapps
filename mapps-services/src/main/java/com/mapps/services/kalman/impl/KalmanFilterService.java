@@ -54,7 +54,7 @@ public class KalmanFilterService implements FilterService{
                                            .setState(lastState)
                                            .build();
             kalmanFilter.process();
-            kalmanStateDAO.addKalmanState(kalmanFilter.getNewState());
+            saveKalmanState(kalmanFilter.getNewState());
             List<ProcessedDataUnit> processedDataUnits = kalmanFilter.getResults();
             saveProcessedData(processedDataUnits);
         } catch (InvalidCoordinatesException e) {
@@ -82,6 +82,15 @@ public class KalmanFilterService implements FilterService{
         for (ProcessedDataUnit data : processedDataUnits){
             processedDataUnitDAO.addProcessedDataUnit(data);
         }
+    }
+
+    /**
+     * This method was created for testing
+     * @param state
+     * @throws NullParameterException
+     */
+    public void saveKalmanState(KalmanState state) throws NullParameterException {
+        kalmanStateDAO.addKalmanState(state);
     }
 
 

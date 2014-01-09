@@ -4,8 +4,11 @@ import junit.framework.Assert;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -81,6 +84,7 @@ public class KalmanFilterServiceIntegrationTest {
     @Test
     public void testMultipleHandleData() throws Exception{
         File aux = new File("src/test/resources/testdata/output.csv");
+        File stateAux = new File("src/test/resources/testdata/state.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         when(sDAO.getLastState(training, device)).thenReturn(createState());
@@ -100,7 +104,55 @@ public class KalmanFilterServiceIntegrationTest {
         }
         Assert.assertEquals(number, numbOfImuData);
         aux.delete();
+        stateAux.delete();
      }
+
+    @Test
+    public void testMultipleHandleDataRealStates() throws Exception{
+        File aux = new File("src/test/resources/testdata/output.csv");
+        File stateAux = new File("src/test/resources/testdata/state.csv");
+        when(training.getLatOrigin()).thenReturn(34523361L);
+        when(training.getLongOrigin()).thenReturn(56025285L);
+        List<RawDataUnit> inputs = getRawData("src/test/resources/testdata/data.txt");
+        int numbOfImuData = 0;
+        int latest = 0;
+        for (RawDataUnit input : inputs){
+            numbOfImuData += input.getImuData().size();
+            kService.multiple = true;
+            kService.handleData(input, device, training);
+            kService.multiple = false;
+            when(sDAO.getLastState(training, device)).thenReturn(loadLatestState(latest));
+            latest++;
+        }
+        Assert.assertEquals(latest, 159);
+        aux.delete();
+        stateAux.delete();
+    }
+
+    private KalmanState loadLatestState(int latest) throws Exception{
+        FileInputStream fs= new FileInputStream("src/test/resources/testdata/state.csv");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+        for(int i = 0; i < latest; ++i)
+            br.readLine();
+        String row = br.readLine();
+        br.close();
+        fs.close();
+        return createStateFromCSVRow(row);
+    }
+
+    private KalmanState createStateFromCSVRow(String row) {
+        String[] values = row.split("\t");
+        double aXBias = Double.valueOf(values[0]);
+        double aYBias = Double.valueOf(values[1]);
+        double gpsError = Double.valueOf(values[2]);
+        String prevState = values[3];
+        String qMatrix = values[4];
+        String rgi = values[5];
+        Date date = new Date(Long.valueOf(values[6]));
+        KalmanState state = new KalmanState(prevState, qMatrix, rgi, gpsError, aXBias,
+                                            aYBias, date, this.training, this.device);
+        return state;
+    }
 
     private KalmanState createState() throws Exception{
         KalmanState state = new KalmanState();
