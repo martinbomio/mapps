@@ -122,4 +122,16 @@ public class InstitutionServiceImpl implements InstitutionService {
         }
         return aux;  //To change body of implemented methods use File | Settings | File Templates.
     }
+    @Override
+    public Institution getInstitutionByName(String name){
+        Institution aux=null;
+        if(name!=null){
+            try {
+                aux=institutionDAO.getInstitutionByName(name);
+            } catch (InstitutionNotFoundException e) {
+                logger.error("institution not found in database");
+            }
+        }
+    return aux;
+    }
 }

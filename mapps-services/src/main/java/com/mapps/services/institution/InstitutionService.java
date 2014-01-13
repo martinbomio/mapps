@@ -35,6 +35,6 @@ public interface InstitutionService {
   void updateInstitution(Institution institution, String token)throws AuthenticationException,InvalidInstitutionException;
 
   public List<String> allInstitutionsNames();
-
+  public Institution getInstitutionByName(String name);
 
 }

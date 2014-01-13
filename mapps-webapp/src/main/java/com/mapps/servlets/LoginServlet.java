@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mapps.model.Role;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -29,13 +30,12 @@ public class LoginServlet extends HttpServlet implements Servlet {
         try {
 
             String token = userService.login(username,password);
-            boolean admin=userService.isAdministrator(username);
+            Role role=userService.userRoleOfToken(token);
             req.setAttribute("token", token);
-            if(admin){
-            req.setAttribute("admin","administrator");
-            }else{
-            req.setAttribute("admin","other");
-            }
+
+            req.setAttribute("role",role);
+
+
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Invalid username or password");

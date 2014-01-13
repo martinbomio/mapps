@@ -1,11 +1,15 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %><%
-    String admin;
-    if(request.getAttribute("admin")== null){
-        admin="";
-    } else{
-        admin=String.valueOf(request.getAttribute("admin"));
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.mapps.model.Role" %><%
+
+    Role role;
+    if(request.getAttribute("role")==null){
+        role=null;
+    }else{
+        role=(Role)request.getAttribute("role");
     }
+
+
 
     String token=String.valueOf(request.getAttribute("token"));
 
@@ -23,7 +27,7 @@
 </head>
 <body>
 
-<%if(admin=="administrator"){  %>
+<%if(role.toString()=="Administrator"){  %>
 <form action="registerUser" method="post">
 
 <input type="hidden" name="token" value=<%=token%>/>
