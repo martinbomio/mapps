@@ -1,11 +1,13 @@
 package com.mapps.services.report.impl;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Maps;
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.AthleteNotFoundException;
@@ -45,8 +47,22 @@ public class ReportServiceImpl implements ReportService {
     AuthenticationHandler authenticationHandler;
 
     @Override
-    public List<ProcessedDataUnit> getTrainingsReport(Training training, String token) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Map<Athlete, List<ProcessedDataUnit>> getTrainingsReport(String trainingID, String token) throws InvalidTrainingException, AuthenticationException {
+        Map<Athlete, List<ProcessedDataUnit>> dataMap = Maps.newHashMap();
+        try {
+            Training training = trainingDAO.getTrainingByName(trainingID);
+            for (Athlete athlete : training.getMapAthleteDevice().keySet()){
+                List<ProcessedDataUnit> dataUnits = getAthleteStats(trainingID, athlete.getIdDocument(), token);
+                dataMap.put(athlete, dataUnits);
+            }
+            return dataMap;
+        } catch (TrainingNotFoundException e) {
+            logger.error("Invalid Training name");
+            throw new InvalidTrainingException();
+        } catch (InvalidAthleteException e) {
+            logger.error("Invalid athelete");
+            throw new IllegalStateException();
+        }
     }
 
     @Override

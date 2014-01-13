@@ -4,11 +4,11 @@ import junit.framework.Assert;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.embeddable.EJBContainer;
-import javax.naming.NamingException;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,14 +40,18 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
     private InstitutionDAO institutionDAO;
     private AthleteDAO athleteDAO;
     private RawDataUnitDAO rawDataUnitDAO;
+    private Training training;
+    private Athlete athlete;
+    private Device device;
 
     @BeforeClass
     public static void startTheContainer(){
 
-        ejbContainer= EJBContainer.createEJBContainer();
+
     }
     @Before
-    public void lookupABean() throws NamingException {
+    public void lookupABean() throws Exception {
+        ejbContainer= EJBContainer.createEJBContainer();
 
         Object processed = ejbContainer.getContext().lookup("java:global/mapps-persistence/ProcessedDataUnitDAO");
         Object training = ejbContainer.getContext().lookup("java:global/mapps-persistence/TrainingDAO");
@@ -68,10 +72,32 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         institutionDAO = (InstitutionDAO) institution;
         athleteDAO = (AthleteDAO) athlete;
         rawDataUnitDAO = (RawDataUnitDAO) raw;
+
+        initData();
     }
 
-    @AfterClass
-    public static void stopTheContainer(){
+    private void initData() throws Exception{
+        Institution institution = new Institution("CPC", "", "Uruguay");
+        institutionDAO.addInstitution(institution);
+        this.device = new Device("dirHigh", "dirLow", 1, institution);
+        deviceDAO.addDevice(device);
+        this.athlete = new Athlete("martin", "b", new Date(), Gender.MALE, "m@gmail.com", 1D, 1D, "aaa", institution);
+        athleteDAO.addAthlete(athlete);
+        Map<Athlete, Device> map = new HashMap<Athlete, Device>();
+        map.put(athlete, device);
+        this.training = new Training("training", new Date(), 1, 0L, 0L, 1, 1, map, null, null, null, institution);
+        trainingDAO.addTraining(training);
+        RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, false, new Date(), training);
+        rawDataUnitDAO.addRawDataUnit(rawData);
+
+        ProcessedDataUnit pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, new Date());
+        processedDAO.addProcessedDataUnit(pUnit);
+        pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, new Date());
+        processedDAO.addProcessedDataUnit(pUnit);
+    }
+
+    @After
+    public void stopTheContainer(){
         if(ejbContainer!=null){
             ejbContainer.close();
         }
@@ -79,22 +105,6 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
 
     @Test
     public void testGetLastProcessedDataUnit() throws Exception{
-        Institution institution = new Institution("CPC", "", "Uruguay");
-        institutionDAO.addInstitution(institution);
-        Device device = new Device("dirHigh", "dirLow", 1, institution);
-        deviceDAO.addDevice(device);
-        Athlete athlete = new Athlete("martin", "b", new Date(), Gender.MALE, "m@gmail.com", 1D, 1D, "aaa", institution);
-        athleteDAO.addAthlete(athlete);
-        Map<Athlete, Device> map = new HashMap<Athlete, Device>();
-        map.put(athlete, device);
-        Training training = new Training("training", new Date(), 1, 0L, 0L, 1, 1, map, null, null, null, institution);
-        trainingDAO.addTraining(training);
-        RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, false, new Date(), training);
-        rawDataUnitDAO.addRawDataUnit(rawData);
-
-        ProcessedDataUnit pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData);
-        processedDAO.addProcessedDataUnit(pUnit);
-
         ProcessedDataUnit last = processedDAO.getLastProcessedDataUnit(training, device);
         Assert.assertEquals(last.getAccelerationX(), 1D);
         Assert.assertEquals(last.getAccelerationY(), 1D);
@@ -102,5 +112,14 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         Assert.assertEquals(last.getVelocityY(), 1D);
         Assert.assertEquals(last.getPositionX(), 1D);
         Assert.assertEquals(last.getPositionY(), 1D);
+    }
+
+    @Test
+    public void testGetProcessedDataUnitsFromAthleteInTraining() throws Exception{
+        List<ProcessedDataUnit> dataUnits = processedDAO.getProcessedDataUnitsFromAthleteInTraining(training, athlete);
+        Assert.assertEquals(dataUnits.size(), 2);
+        Date first = dataUnits.get(0).getDate();
+        Date last = dataUnits.get(dataUnits.size() - 1).getDate();
+        Assert.assertTrue(first.getTime() < last.getTime());
     }
 }

@@ -74,7 +74,7 @@ public class ProcessedDataUnitDAOImpl implements ProcessedDataUnitDAO {
             throw new NullParameterException();
         }
         String hql = "select p from ProcessedDataUnit p join p.rawDataUnit r where " +
-                "(r.device =:device and r.training =:training) order by r.date desc";
+                "(r.device =:device and r.training =:training) order by p.date desc";
         Query query = entityManager.createQuery(hql);
         query.setParameter("device", device);
         query.setParameter("training", training);
@@ -91,7 +91,7 @@ public class ProcessedDataUnitDAOImpl implements ProcessedDataUnitDAO {
         if (training == null || athlete == null)
             throw new NullParameterException();
         String hql = "select p from ProcessedDataUnit p join p.rawDataUnit r join r.training t join t.mapAthleteDevice m" +
-                " where (t == :training and index(m)=:athlete)";
+                " where (t = :training and index(m)=:athlete) order by p.date asc";
         Query query = entityManager.createQuery(hql);
         query.setParameter("training", training);
         query.setParameter("athlete", athlete);
