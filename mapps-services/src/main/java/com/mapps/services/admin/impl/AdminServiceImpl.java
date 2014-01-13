@@ -75,6 +75,21 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    public User getUserByUsername(String name) throws InvalidUserException {
+        User aux=null;
+        if(name!=null){
+            try {
+                aux=userDAO.getUserByUsername(name);
+            }
+            catch (UserNotFoundException e) {
+              throw new InvalidUserException();
+            }
+        }
+        return aux;
+    }
+
+
+    @Override
     public void deleteUser(User user, String token) throws AuthenticationException{
         if (user == null || user.getUserName() == null){
             logger.error("Invalid User");

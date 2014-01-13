@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,13 +24,13 @@ import com.mapps.services.user.UserService;
 /**
  *
  */
-@WebService()
+@WebServlet(name = "addAthlete", urlPatterns = "/addAthlete/*")
 public class AddAthleteServlet extends HttpServlet implements Servlet {
     @EJB(beanName="UserService")
     UserService userService;
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
-    @EJB(beanName="institutionService")
+    @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
 
     @Override
@@ -71,10 +72,10 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
             req.setAttribute("info","athlete successfully added to the system");
 
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error","Invalid athlete");
+            req.setAttribute("error", "Invalid athlete");
 
         } catch (AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+            req.setAttribute("error", "Authentication error");
 
         }
 

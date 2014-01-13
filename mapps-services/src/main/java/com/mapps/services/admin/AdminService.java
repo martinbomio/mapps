@@ -72,4 +72,5 @@ public interface AdminService{
      * @throws AuthenticationException when the caller has not ADMIN privileges.
      */
     void disableDevice(Device device, String token) throws AuthenticationException;
+    public User getUserByUsername(String name) throws InvalidUserException;
 }

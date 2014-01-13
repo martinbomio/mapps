@@ -13,6 +13,7 @@ import com.mapps.services.user.UserService;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.util.Date;
 /**
  *
  */
+@WebServlet(name = "addTraining", urlPatterns = "/addTraining/*")
 public class AddTrainingServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName="UserService")
@@ -30,7 +32,7 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
 
-    @EJB(beanName="institutionService")
+    @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
 
     @Override
@@ -64,11 +66,11 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
                 null,null,sportAux,null,instAux);
         try {
             trainerService.addTraining(training,token);
-            req.setAttribute("info","El entrenamiento fue ingresado con exito en el sistema");
+            req.setAttribute("info", "El entrenamiento fue ingresado con exito en el sistema");
         } catch (AuthenticationException e) {
-            req.setAttribute("error","Error de autentificación");
+            req.setAttribute("error", "Error de autentificación");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error","Entrenamiento invalido");
+            req.setAttribute("error", "Entrenamiento invalido");
         }
     }
 }

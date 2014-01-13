@@ -3,6 +3,7 @@ package com.mapps.servlets;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import com.mapps.services.trainer.exceptions.InvalidSportException;
 /**
  *
  */
+@WebServlet(name = "addSport", urlPatterns = "/addSport/*")
 public class AddSportServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName = "TrainerService")

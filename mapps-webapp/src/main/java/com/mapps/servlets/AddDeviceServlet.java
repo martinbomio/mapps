@@ -3,6 +3,8 @@ package com.mapps.servlets;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.services.admin.AdminService;
+import com.mapps.services.admin.exceptions.DeviceAlreadyExistsException;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
@@ -12,6 +14,7 @@ import com.mapps.services.user.UserService;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +23,7 @@ import java.io.IOException;
 /**
  *
  */
+@WebServlet(name = "addDevice", urlPatterns = "/addDevice/*")
 public class AddDeviceServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName="UserService")
@@ -28,7 +32,10 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
 
-    @EJB(beanName="institutionService")
+    @EJB(beanName="AdminService")
+    AdminService adminService;
+
+    @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
 
     @Override
@@ -54,13 +61,17 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         Device device=new Device(dirHigh,dirLow,panId,instAux);
         device.setAvailable(true);
         try {
-            trainerService.addDevice(device,token);
+            adminService.addDevice(device,token);
+            req.setAttribute("info","El device fue ingresado al sistema con exito");
 
-        } catch (InvalidDeviceException e) {
-           req.setAttribute("error","Invalid device");
+        } catch (com.mapps.services.admin.exceptions.InvalidDeviceException e) {
+            req.setAttribute("error", "Device no valido");
 
-        } catch (AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+        } catch (DeviceAlreadyExistsException e) {
+            req.setAttribute("error", "Device no valido");
+
+        } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
+            req.setAttribute("error", "Error de autentificación");
 
         }
     }
