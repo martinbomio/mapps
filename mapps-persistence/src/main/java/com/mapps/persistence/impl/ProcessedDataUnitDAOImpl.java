@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ProcessedDataUnitNotFoundException;
+import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.Training;
@@ -83,5 +84,18 @@ public class ProcessedDataUnitDAOImpl implements ProcessedDataUnitDAO {
         else
             return list.get(0);
 
+    }
+
+    @Override
+    public List<ProcessedDataUnit> getProcessedDataUnitsFromAthleteInTraining(Training training, Athlete athlete) throws NullParameterException {
+        if (training == null || athlete == null)
+            throw new NullParameterException();
+        String hql = "select p from ProcessedDataUnit p join p.rawDataUnit r join r.training t join t.mapAthleteDevice m" +
+                " where (t == :training and index(m)=:athlete)";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("training", training);
+        query.setParameter("athlete", athlete);
+        List<ProcessedDataUnit> list = query.getResultList();
+        return list;
     }
 }

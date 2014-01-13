@@ -1,9 +1,11 @@
 package com.mapps.persistence;
 
+import java.util.List;
 import javax.ejb.Local;
 
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ProcessedDataUnitNotFoundException;
+import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.Training;
@@ -42,4 +44,5 @@ public interface ProcessedDataUnitDAO {
      */
     ProcessedDataUnit getProcessedDataUnitById (Long processedDataUnitId) throws ProcessedDataUnitNotFoundException;
     ProcessedDataUnit getLastProcessedDataUnit(Training training, Device device) throws NullParameterException;
+    List<ProcessedDataUnit> getProcessedDataUnitsFromAthleteInTraining(Training training, Athlete athlete) throws NullParameterException;
 }

@@ -7,14 +7,15 @@ import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+
 
 /**
  *
@@ -40,16 +41,12 @@ public class RegisterUserServletLink extends HttpServlet implements Servlet {
         } catch (AuthenticationException e) {
             req.setAttribute("error","Authentication error");
         }
-        List<String> instNames=institutionService.allInstitutionsNames();
+        List<String> instNames = institutionService.allInstitutionsNames();
 
         req.setAttribute("token",token);
 
         req.setAttribute("institutionNames",instNames);
 
         req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
-
-
-
     }
-
 }

@@ -1,11 +1,13 @@
 package com.mapps.services.report;
 
-import com.mapps.model.Athlete;
+import java.util.List;
+import javax.ejb.Local;
+
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.Training;
-
-import javax.ejb.Local;
-import java.util.List;
+import com.mapps.services.report.exceptions.AuthenticationException;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
+import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  *
@@ -14,9 +16,9 @@ import java.util.List;
 @Local
 public interface ReportService {
 
-  List<ProcessedDataUnit> getTrainingsReport(Training training, String token);
+    List<ProcessedDataUnit> getTrainingsReport(Training training, String token);
 
-  List<ProcessedDataUnit> getAthleteStats(Training training,Athlete athlete,String token);
+    List<ProcessedDataUnit> getAthleteStats(String trainingID, String AthleteCI, String token) throws AuthenticationException, InvalidTrainingException, InvalidAthleteException;
 
-  List<Integer> getThresholds(Training training, String token);
+    List<Integer> getThresholds(Training training, String token);
 }
