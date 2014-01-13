@@ -1,11 +1,12 @@
 package com.mapps.servlets;
 
-import com.mapps.model.Athlete;
+import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.services.admin.AdminService;
 import com.mapps.services.institution.InstitutionService;
+import com.mapps.services.institution.exceptions.AuthenticationException;
+import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.trainer.TrainerService;
-import com.mapps.services.trainer.exceptions.AuthenticationException;
-import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
 
 import javax.ejb.EJB;
@@ -20,9 +21,8 @@ import java.io.IOException;
 /**
  *
  */
-@WebServlet(name = "deleteAthlete", urlPatterns = "/deleteAthlete/*")
-public class DeleteAthleteServlet extends HttpServlet implements Servlet {
-
+@WebServlet(name = "deleteInstitution", urlPatterns = "/deleteInstitution/*")
+public class DeleteInstitutionServlet  extends HttpServlet implements Servlet {
     @EJB(beanName="UserService")
     UserService userService;
 
@@ -32,6 +32,9 @@ public class DeleteAthleteServlet extends HttpServlet implements Servlet {
     @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
 
+    @EJB(beanName="AdminService")
+    AdminService adminService;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
         String token = req.getParameter("token");
@@ -39,23 +42,23 @@ public class DeleteAthleteServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error","Invalid user");
+            req.setAttribute("error","Usuario no valido");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+            req.setAttribute("error","Error de autentificación");
         }
         req.setAttribute("token", token);
         req.setAttribute("role",userRole);
 
-        String idDocument=req.getParameter("idDocument");
+        String institutionName=req.getParameter("instName");
+        Institution inst=institutionService.getInstitutionByName(institutionName);
+
         try {
-            Athlete delAthlete=trainerService.getAthleteByIdDocument(idDocument);
-            delAthlete.setEnabled(false);
-            trainerService.modifyAthlete(delAthlete,token);
-            req.setAttribute("info","El atleta fue eliminado del sistema");
-        } catch (InvalidAthleteException e) {
-            req.setAttribute("error","Atleta no valido");
+            institutionService.deleteInstitution(inst,token);
+            req.setAttribute("info","La institución fue borrada del sistema con éxito");
         } catch (AuthenticationException e) {
-            req.setAttribute("error","error de autentificación");
+            req.setAttribute("error","Error de autentificación");
+        } catch (InvalidInstitutionException e) {
+            req.setAttribute("error","Institución no válida");
         }
 
     }

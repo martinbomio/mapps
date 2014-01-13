@@ -13,6 +13,7 @@ import com.mapps.services.user.UserService;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.util.Date;
 /**
  *
  */
+@WebServlet(name = "modifyAthlete", urlPatterns = "/modifyAthlete/*")
 public class ModifyAthleteServlet extends HttpServlet implements Servlet {
     @EJB(beanName="UserService")
     UserService userService;
@@ -29,7 +31,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
 
-    @EJB(beanName="institutionService")
+    @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
 
     @Override

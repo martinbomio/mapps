@@ -1,11 +1,12 @@
 package com.mapps.servlets;
 
-import com.mapps.model.Athlete;
 import com.mapps.model.Role;
+import com.mapps.model.User;
+import com.mapps.services.admin.AdminService;
+import com.mapps.services.admin.exceptions.AuthenticationException;
+import com.mapps.services.admin.exceptions.InvalidUserException;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
-import com.mapps.services.trainer.exceptions.AuthenticationException;
-import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
 
 import javax.ejb.EJB;
@@ -20,14 +21,17 @@ import java.io.IOException;
 /**
  *
  */
-@WebServlet(name = "deleteAthlete", urlPatterns = "/deleteAthlete/*")
-public class DeleteAthleteServlet extends HttpServlet implements Servlet {
+@WebServlet(name = "deleteUser", urlPatterns = "/deleteUser/*")
+public class DeleteUserServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName="UserService")
     UserService userService;
 
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
+
+    @EJB(beanName="AdminService")
+    AdminService adminService;
 
     @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
@@ -39,25 +43,26 @@ public class DeleteAthleteServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error","Invalid user");
+            req.setAttribute("error","Usuario no valido");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+            req.setAttribute("error","Error de autentificación");
         }
         req.setAttribute("token", token);
         req.setAttribute("role",userRole);
 
-        String idDocument=req.getParameter("idDocument");
-        try {
-            Athlete delAthlete=trainerService.getAthleteByIdDocument(idDocument);
-            delAthlete.setEnabled(false);
-            trainerService.modifyAthlete(delAthlete,token);
-            req.setAttribute("info","El atleta fue eliminado del sistema");
-        } catch (InvalidAthleteException e) {
-            req.setAttribute("error","Atleta no valido");
-        } catch (AuthenticationException e) {
-            req.setAttribute("error","error de autentificación");
-        }
+        String username=req.getParameter("username");
+        try{
+        User user= adminService.getUserByUsername(username);
+        adminService.deleteUser(user,token);
+            req.setAttribute("info","El usuario fue borrado del sistema con éxito");
 
+        } catch (InvalidUserException e) {
+            req.setAttribute("error","Usuario no valido");
+
+        } catch (AuthenticationException e) {
+            req.setAttribute("error","Error de autentificación");
+
+        }
     }
 
 }

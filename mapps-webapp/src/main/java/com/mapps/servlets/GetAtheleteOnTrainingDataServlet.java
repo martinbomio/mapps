@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import com.mapps.wrappers.AthleteInfoWrapper;
  *
  *
  */
+@WebServlet(name = "getAtheleteOnTrainingData", urlPatterns = "/getAtheleteOnTrainingData/*")
 public class GetAtheleteOnTrainingDataServlet extends HttpServlet {
     @EJB(name = "ReportService")
     protected ReportService reportService;

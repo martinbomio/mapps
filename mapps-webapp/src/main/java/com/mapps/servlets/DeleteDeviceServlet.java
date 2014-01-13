@@ -2,6 +2,7 @@ package com.mapps.servlets;
 
 import com.mapps.model.Device;
 import com.mapps.model.Role;
+import com.mapps.services.admin.AdminService;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
@@ -11,6 +12,7 @@ import com.mapps.services.user.UserService;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +21,7 @@ import java.io.IOException;
 /**
  *
  */
+@WebServlet(name = "deleteDevice", urlPatterns = "/deleteDevice/*")
 public class DeleteDeviceServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName="UserService")
@@ -27,8 +30,11 @@ public class DeleteDeviceServlet extends HttpServlet implements Servlet {
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
 
-    @EJB(beanName="institutionService")
+    @EJB(beanName="InstitutionService")
     InstitutionService institutionService;
+
+    @EJB(beanName="AdminService")
+    AdminService adminService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
@@ -48,15 +54,17 @@ public class DeleteDeviceServlet extends HttpServlet implements Servlet {
         try{
 
         Device device=trainerService.getDeviceByDir(dirLow);
-        device.setAvailable(false);
-        trainerService.modifyDevice(device,token);
+        adminService.disableDevice(device,token);
         req.setAttribute("error","El device fue borrado del sistema con éxito");
 
         } catch (InvalidDeviceException e) {
             req.setAttribute("error","Device no valido");
-        } catch (AuthenticationException e) {
+
+        } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
             req.setAttribute("error","Error de autentificación");
+
         }
+    }
 
     }
-}
+
