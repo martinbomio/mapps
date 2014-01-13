@@ -1,5 +1,15 @@
 package com.mapps.servlets;
 
+import java.io.IOException;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.jws.WebService;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.mapps.model.Athlete;
 import com.mapps.model.Gender;
 import com.mapps.model.Institution;
@@ -10,26 +20,15 @@ import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
 
-import javax.ejb.EJB;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Date;
-
 /**
  *
  */
+@WebService()
 public class AddAthleteServlet extends HttpServlet implements Servlet {
-
     @EJB(beanName="UserService")
     UserService userService;
-
     @EJB(beanName="TrainerService")
     TrainerService trainerService;
-
     @EJB(beanName="institutionService")
     InstitutionService institutionService;
 

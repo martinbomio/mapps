@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
+import com.mapps.model.Athlete;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
+import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
+import com.mapps.wrappers.AthleteInfoWrapper;
 
 /**
  *
@@ -23,6 +25,8 @@ import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 public class GetAtheleteOnTrainingDataServlet extends HttpServlet {
     @EJB(name = "ReportService")
     protected ReportService reportService;
+    @EJB(name = "TrainerService")
+    protected TrainerService trainerService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,14 +34,14 @@ public class GetAtheleteOnTrainingDataServlet extends HttpServlet {
         String athleteData = req.getParameter("a");
         String token = req.getParameter("id");
         String athleteCI = athleteData.split("-")[1];
-
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
-            String json = new Gson().toJson(stats);
+            Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
+            AthleteInfoWrapper wrapper = new AthleteInfoWrapper(athlete, stats);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             Writer writer = resp.getWriter();
-            writer.write(json);
+            writer.write(wrapper.toJson());
             writer.close();
         } catch (AuthenticationException e) {
             req.setAttribute("error", "El usuario no tiene permisos de entrenador para realizarr esta operación.");

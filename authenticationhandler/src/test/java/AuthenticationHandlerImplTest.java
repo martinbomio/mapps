@@ -39,9 +39,9 @@ public class AuthenticationHandlerImplTest {
 
         //mock user
         User user = mock(User.class);
-        when(user.getUserName()).thenReturn("hugo@gmail.com");
+        when(user.getUserName()).thenReturn("hugogmail.com");
         when(user.getName()).thenReturn("huguito");
-        when(user.getPassword()).thenReturn("hugo@password@123");
+        when(user.getPassword()).thenReturn("hugopassword123");
         when(user.getRole()).thenReturn(Role.USER);
 
         //mock exception
@@ -49,15 +49,15 @@ public class AuthenticationHandlerImplTest {
 
         //mock userDao
         userDao = mock(UserDAO.class);
-        when(userDao.getUserByUsername("hugo@gmail.com")).thenReturn(user);
-        when(userDao.getUserByUsername("unregisteredUser@gmail.com")).thenThrow(userNotFoundException);
+        when(userDao.getUserByUsername("hugogmail.com")).thenReturn(user);
+        when(userDao.getUserByUsername("unregisteredUsergmail.com")).thenThrow(userNotFoundException);
 
         //mock unregisteredUser & mock registeredUser
         registeredUser = mock(User.class);
-        when(registeredUser.getUserName()).thenReturn("hugo@gmail.com");
-        when(registeredUser.getPassword()).thenReturn("hugo@password@123");
+        when(registeredUser.getUserName()).thenReturn("hugogmail.com");
+        when(registeredUser.getPassword()).thenReturn("hugopassword123");
         unregisteredUser = mock(User.class);
-        when(unregisteredUser.getUserName()).thenReturn("unregisteredUser@gmail.com");
+        when(unregisteredUser.getUserName()).thenReturn("unregisteredUsergmail.com");
 
 
         AuthenticationHandlerToTest authenticationHandlerToTest = new AuthenticationHandlerToTest();
@@ -128,7 +128,7 @@ public class AuthenticationHandlerImplTest {
     @Test
     public void testValidateTokenPasswordOfTokenNotCorrect() {
         Encrypter encrypter = new Encrypter();
-        Token token = new Token("hugo@gmail.com", "differentPass");
+        Token token = new Token("hugogmail.com", "differentPass");
         assertFalse(authenticationHandler.validateToken(token.toString()));
     }
 
@@ -178,7 +178,7 @@ public class AuthenticationHandlerImplTest {
             String name = registeredUser.getUserName();
             String pass = registeredUser.getPassword();
             User user = authenticationHandler.getUserOfToken(token);
-            verify(userDao, times(3)).getUserByUsername("hugo@gmail.com");
+            verify(userDao, times(3)).getUserByUsername("hugogmail.com");
             User userInDao = userDao.getUserByUsername(registeredUser.getUserName());
             assertTrue(userInDao.equals(user));
         } catch (InvalidUserException e) {
