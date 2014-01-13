@@ -105,6 +105,18 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
+    @Override
+    public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException {
+        Athlete aux=null;
+        if(idDocument!=null){
+            try {
+                aux=athleteDAO.getAthleteByIdDocument(idDocument);
+            } catch (AthleteNotFoundException e) {
+               throw new InvalidAthleteException();
+            }
+        }
+        return aux;
+    }
 
     @Override
     public void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {

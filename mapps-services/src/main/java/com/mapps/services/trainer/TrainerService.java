@@ -26,6 +26,6 @@ public interface TrainerService {
     void addSport(Sport sport, String token) throws InvalidSportException, AuthenticationException;
     public void addDevice(Device device,String token) throws InvalidDeviceException, AuthenticationException;
     void addTraining(Training training,String token) throws AuthenticationException, InvalidTrainingException;
-
     Sport getSportByName(String sportName);
+    public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException;
 }
