@@ -28,7 +28,7 @@ public class RegisterUserServletLink extends HttpServlet implements Servlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
         String token = req.getParameter("token");
         logger.info(token);
 
@@ -36,22 +36,18 @@ public class RegisterUserServletLink extends HttpServlet implements Servlet {
             Role role=userService.userRoleOfToken(token);
             req.setAttribute("role",role);
         } catch (InvalidUserException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            req.setAttribute("error","Invalid user");
         } catch (AuthenticationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            req.setAttribute("error","Authentication error");
         }
         List<String> instNames=institutionService.allInstitutionsNames();
 
         req.setAttribute("token",token);
 
         req.setAttribute("institutionNames",instNames);
-        try {
-            req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
+        req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
+
 
 
     }

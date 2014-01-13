@@ -42,9 +42,9 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            req.setAttribute("error","Invalid user");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            req.setAttribute("error","Authentication error");
         }
         req.setAttribute("token", token);
         req.setAttribute("role",userRole);
@@ -74,6 +74,7 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         Date birth=new Date(req.getParameter("date"));
 
         User user=new User(name,lastName,birth,gender,email,userName,password,instAux,role,idDocument);
+        user.setEnabled(true);
 
         try {
             adminService.createUser(user,token);

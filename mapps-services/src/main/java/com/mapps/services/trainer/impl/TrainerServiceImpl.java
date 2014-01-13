@@ -1,20 +1,18 @@
 package com.mapps.services.trainer.impl;
 
 import java.security.InvalidParameterException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.mapps.exceptions.*;
+import com.mapps.services.trainer.exceptions.*;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
-import com.mapps.exceptions.AthleteAlreadyExistException;
-import com.mapps.exceptions.AthleteNotFoundException;
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.SportAlreadyExistException;
-import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Role;
@@ -25,10 +23,6 @@ import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
-import com.mapps.services.trainer.exceptions.AuthenticationException;
-import com.mapps.services.trainer.exceptions.InvalidAthleteException;
-import com.mapps.services.trainer.exceptions.InvalidSportException;
-import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  * Implementation of the TrainerService
@@ -76,6 +70,43 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    public void addTraining(Training training,String token) throws AuthenticationException, InvalidTrainingException {
+        if(invalidTraining(training)){
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                trainingDAO.addTraining(training);
+            } else {
+                logger.error("authentication error");
+                throw new AuthenticationException();
+            }
+
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (TrainingAlreadyExistException e) {
+            throw new InvalidTrainingException();
+        } catch (NullParameterException e) {
+            throw new InvalidTrainingException();
+        }
+
+    }
+
+    @Override
+    public Sport getSportByName(String sportName) {
+        Sport aux=null;
+        if(sportName!=null){
+            try {
+                aux=sportDAO.getSportByName(sportName);
+            } catch (SportNotFoundException e) {
+                logger.error("sport not found");
+            }
+        }
+        return aux;
+    }
+
+    @Override
     public void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
         if (invalidTraining(training)) {
             logger.error("invalid training");
@@ -85,6 +116,8 @@ public class TrainerServiceImpl implements TrainerService {
             if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
+                Date date=new Date();
+                training.setDate(date);
                 training.setStarted(true);
                 trainingDAO.updateTraining(trainingAux);
 
@@ -141,6 +174,34 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    public void addDevice(Device device,String token) throws InvalidDeviceException, AuthenticationException {
+       if(invalidDevice(device)){
+           logger.error("invalid device");
+           throw new InvalidDeviceException();
+       }
+     try{
+        if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+            deviceDAO.addDevice(device);
+        } else {
+            logger.error("authentication error");
+            throw new AuthenticationException();
+        }
+    } catch (InvalidTokenException e) {
+         logger.error("Invalid Token");
+         throw new AuthenticationException();
+     } catch (DeviceAlreadyExistException e) {
+         logger.error("Athlete already exist");
+         throw new InvalidDeviceException();
+     } catch (NullParameterException e) {
+         logger.error("Athlete is null");
+         throw new InvalidDeviceException();
+     }
+
+
+    }
+
+    @Override
     public void addAthlete(Athlete athlete, String token) throws InvalidAthleteException, AuthenticationException {
         if (invalidAthlete(athlete)) {
             logger.error("invalid athlete");
@@ -169,12 +230,36 @@ public class TrainerServiceImpl implements TrainerService {
 
     }
 
+
     @Override
-    public void addAthleteToTraining(Training training, Device device, Athlete athlete, String token) throws
-            AuthenticationException, InvalidParameterException {
+    public void addAthleteToTraining(String trainingName, String dirDevice, String idAthlete, String token) throws
+            AuthenticationException, InvalidParException {
+
+        Athlete athlete= null;
+        try {
+            athlete = athleteDAO.getAthleteByIdDocument(idAthlete);
+        } catch (AthleteNotFoundException e) {
+            throw new InvalidParException();
+        }
+
+        Device device= null;
+        try {
+            device = deviceDAO.getDeviceByDir(dirDevice);
+        } catch (DeviceNotFoundException e) {
+            throw new InvalidParException();
+        }
+
+        Training training= null;
+        try {
+            training = trainingDAO.getTrainingByName(trainingName);
+        } catch (TrainingNotFoundException e) {
+            throw new InvalidParException();
+        }
+
+
         if (invalidTraining(training) || invalidAthlete(athlete) || invalidDevice(device)) {
             logger.error("invalid parameter");
-            throw new InvalidParameterException();
+            throw new InvalidParException();
         }
 
 
@@ -201,9 +286,9 @@ public class TrainerServiceImpl implements TrainerService {
         } catch (InvalidTokenException e) {
             throw new AuthenticationException();
         } catch (NullParameterException e) {
-            throw new InvalidParameterException();
+            throw new InvalidParException();
         } catch (TrainingNotFoundException e) {
-            throw new InvalidParameterException();
+            throw new InvalidParException();
         }
     }
 
