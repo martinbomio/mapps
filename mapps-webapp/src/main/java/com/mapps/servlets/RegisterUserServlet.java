@@ -1,11 +1,15 @@
 package com.mapps.servlets;
 
+import com.mapps.model.Gender;
+import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.model.User;
+import com.mapps.services.admin.AdminService;
+import com.mapps.services.admin.exceptions.AuthenticationException;
+import com.mapps.services.admin.exceptions.InvalidUserException;
+import com.mapps.services.admin.exceptions.UserAlreadyExistsException;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.user.UserService;
-import com.mapps.services.user.exceptions.AuthenticationException;
-import com.mapps.services.user.exceptions.InvalidUserException;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
@@ -14,48 +18,78 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  *
  */
 public class RegisterUserServlet extends HttpServlet implements Servlet {
-    Logger logger = Logger.getLogger(RegisterUserServlet.class);
+
     @EJB(beanName = "UserService")
     UserService userService;
+
+    @EJB(beanName = "AdminService")
+    AdminService adminService;
+
     @EJB(beanName = "InstitutionService")
     InstitutionService institutionService;
 
-
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+
         String token = req.getParameter("token");
-        logger.info(token);
+        Role userRole= null;
+        try {
+            userRole = userService.userRoleOfToken(token);
+        } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        req.setAttribute("token", token);
+        req.setAttribute("role",userRole);
+
+        String name=req.getParameter("name");
+        String lastName=req.getParameter("lastName");
+        String email=req.getParameter("email");
+        String userName=req.getParameter("username");
+        String password=req.getParameter("password");
+        String idDocument=req.getParameter("idDocument");
+        Gender gender=null;
+        if(req.getParameter("gender")=="male"){
+            gender=Gender.MALE;
+        }else{
+            gender=Gender.FEMALE;
+        }
+        Role role=null;
+        if(req.getParameter("role")=="1"){
+            role=Role.ADMINISTRATOR;
+        }else if(req.getParameter("role")=="2"){
+            role=Role.TRAINER;
+        }else{
+            role=Role.USER;
+        }
+        String instName=req.getParameter("institution");
+        Institution instAux=institutionService.getInstitutionByName(instName);
+        Date birth=new Date(req.getParameter("date"));
+
+        User user=new User(name,lastName,birth,gender,email,userName,password,instAux,role,idDocument);
 
         try {
-            Role role=userService.userRoleOfToken(token);
-            req.setAttribute("role",role);
-        } catch (InvalidUserException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            adminService.createUser(user,token);
+            req.setAttribute("info","user added to system");
+            req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
+
         } catch (AuthenticationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        List<String> instNames=institutionService.allInstitutionsNames();
-
-        req.setAttribute("token",token);
-
-        req.setAttribute("institutionNames",instNames);
-        try {
+            req.setAttribute("error","Authentication error");
             req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvalidUserException e) {
+            req.setAttribute("error","invalid user error");
+            req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
+        } catch (UserAlreadyExistsException e) {
+            req.setAttribute("error","user already exists error");
+            req.getRequestDispatcher("/registerUser.jsp").forward(req, resp);
         }
-
 
     }
-
 }

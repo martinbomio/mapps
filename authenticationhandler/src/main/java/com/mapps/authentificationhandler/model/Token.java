@@ -55,8 +55,8 @@ public class Token {
             String[] pieces = decrypted.split("@",4);
             String s = pieces[0];
             long createdAt = Long.valueOf(s);
-            String username = pieces[1]+"@"+pieces[2];
-            String password = pieces[3];
+            String username = pieces[1];
+            String password = pieces[2];
             return new Token(username,password,createdAt);
         } catch (ErrorInDecryptionException e) {
             logger.warn("getToken token not valid");
