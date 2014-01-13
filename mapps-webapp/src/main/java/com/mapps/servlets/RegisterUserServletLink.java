@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
+@WebServlet(name = "registerUserLink", urlPatterns = "/registerUserLink/*")
 public class RegisterUserServletLink extends HttpServlet implements Servlet {
     Logger logger = Logger.getLogger(RegisterUserServletLink.class);
     @EJB(beanName = "UserService")
@@ -39,7 +41,7 @@ public class RegisterUserServletLink extends HttpServlet implements Servlet {
         } catch (InvalidUserException e) {
             req.setAttribute("error","Invalid user");
         } catch (AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+            req.setAttribute("error", "Authentication error");
         }
         List<String> instNames = institutionService.allInstitutionsNames();
 

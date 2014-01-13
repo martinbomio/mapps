@@ -8,25 +8,7 @@
     <listener-class>com.mapps.init.ContextListener</listener-class>
   </listener>
 
-  <servlet>
-    <servlet-name>registerLink</servlet-name>
-    <servlet-class>com.mapps.servlets.RegisterUserServletLink</servlet-class>
-  </servlet>
 
-    <servlet>
-        <servlet-name>register</servlet-name>
-        <servlet-class>com.mapps.servlets.RegisterUserServlet</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>registerLink</servlet-name>
-    <url-pattern>/registerUserLink/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-        <servlet-name>register</servlet-name>
-        <url-pattern>/registerUser/*</url-pattern>
-  </servlet-mapping>
 
 </web-app>
 

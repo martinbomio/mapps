@@ -14,6 +14,7 @@ import com.mapps.services.user.UserService;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import java.util.Date;
 /**
  *
  */
+@WebServlet(name = "registerUser", urlPatterns = "/registerUser/*")
 public class RegisterUserServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName = "UserService")
@@ -42,9 +44,9 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error","Invalid user");
+            req.setAttribute("error", "Invalid user");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error","Authentication error");
+            req.setAttribute("error", "Authentication error");
         }
         req.setAttribute("token", token);
         req.setAttribute("role",userRole);
