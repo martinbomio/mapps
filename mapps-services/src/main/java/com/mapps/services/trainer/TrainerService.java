@@ -28,4 +28,7 @@ public interface TrainerService {
     void addTraining(Training training,String token) throws AuthenticationException, InvalidTrainingException;
     Sport getSportByName(String sportName);
     public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException;
+    public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException;
+    public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
+    public Training getTrainingByName(String name) throws InvalidTrainingException;
 }

@@ -106,6 +106,32 @@ public class TrainerServiceImpl implements TrainerService {
         return aux;
     }
     @Override
+    public Training getTrainingByName(String name) throws InvalidTrainingException {
+        Training aux=null;
+        if(name!=null){
+            try {
+                aux=trainingDAO.getTrainingByName(name);
+            } catch (TrainingNotFoundException e) {
+                throw new InvalidTrainingException();
+            }
+        }
+        return aux;
+    }
+
+    @Override
+    public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException {
+        Device aux=null;
+        if(dirDevice!=null){
+            try {
+                aux=deviceDAO.getDeviceByDir(dirDevice);
+            }  catch (DeviceNotFoundException e) {
+                logger.error("device not found");
+                throw new InvalidDeviceException();
+            }
+        }
+        return aux;
+    }
+    @Override
     public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException {
         Athlete aux=null;
         if(idDocument!=null){
@@ -182,6 +208,29 @@ public class TrainerServiceImpl implements TrainerService {
             logger.error("training not found in database");
             throw new InvalidTrainingException();
         }
+
+    }
+    @Override
+    public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException {
+        if (invalidDevice(device)) {
+            throw new InvalidDeviceException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                deviceDAO.updateDevice(device);
+
+            } else {
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (DeviceNotFoundException e) {
+            throw new InvalidDeviceException();
+        } catch (NullParameterException e) {
+            throw new InvalidDeviceException();
+        }
+
 
     }
 
