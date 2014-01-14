@@ -7,13 +7,15 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="./jqwidgets/jqxinput.js"></script>
-    <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxmenu.js"></script>
     <link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
 
 <script type="text/javascript">
+
+	
+
 	$(document).ready(function () {
 		
 		// Tab-bar navigation links
@@ -29,6 +31,16 @@
 			$("#contenedor").load('configuracion.html');
 		});
 		
+		
+	
+		// Create a jqxMenu
+        $("#jqxMenu").jqxMenu({ width: '120', mode: 'vertical'});
+        $("#jqxMenu").css('visibility', 'visible');
+		
+		$("#agregar").click(function(event) {
+			$("#main_div").load('agregarDeportista.html');
+		});
+
    	});
 </script>
 
@@ -45,9 +57,16 @@
         
     </div>
     <div id="main_div">
-
+		<div></div>
+        
     </div>
     <div id="sidebar_right">
-      
+		<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+        	<ul>
+                <li id="agregar"> Agregar </li>
+                <li> Editar </li>
+                <li> Eliminar </li>
+        	</ul>
+        </div>
     </div>
 </div>
