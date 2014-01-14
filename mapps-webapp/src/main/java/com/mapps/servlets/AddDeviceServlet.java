@@ -39,9 +39,9 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error", "Invalid user");
+            req.setAttribute("error", "Usuario no válido");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error", "Authentication error");
+            req.setAttribute("error", "Error de autentificación");
         }
         req.setAttribute("token", token);
         req.setAttribute("role", userRole);

@@ -39,9 +39,9 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
         try {
             userRole = userService.userRoleOfToken(token);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error", "Invalid user");
+            req.setAttribute("error", "Usuario no válido");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error", "Authentication error");
+            req.setAttribute("error", "Error de autentificación");
         }
         req.setAttribute("token", token);
         req.setAttribute("role", userRole);
@@ -69,11 +69,11 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
 
         try {
             trainerService.addAthlete(athlete, token);
-            req.setAttribute("info", "athlete successfully added to the system");
+            req.setAttribute("info", "El atleta fue ingresado con éxito al sistema");
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error", "Invalid athlete");
+            req.setAttribute("error", "Atleta no válido");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Authentication error");
+            req.setAttribute("error", "Error de autentificación");
         }
     }
 }
