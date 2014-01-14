@@ -29,6 +29,9 @@
 		$("#tab_4").click(function(event) {
 			$("#contenedor").load('mi_club.html');
 		});
+        $("#addSport").click(function(event) {
+            $("#main_div").load('addSport.jsp');
+        })
 		
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '150', mode: 'vertical'});
@@ -50,8 +53,7 @@
     	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         	<ul>
         	<li><a href="#">Home</a></li>
-            <li>About Us</li>
-            <li>Services</li>
+            <li id="addSport">Ingresar Deporte</li>
             <li>Products</li>
             <li><a href="#">Gallery</a></li>
             <li><a href="#">Events</a></li>
