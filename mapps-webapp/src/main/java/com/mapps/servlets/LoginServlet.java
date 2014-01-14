@@ -34,10 +34,10 @@ public class LoginServlet extends HttpServlet implements Servlet {
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Invalid username or password");
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
         } catch (InvalidUserException e) {
             req.setAttribute("error", "Invalid username or password");
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
         }
     }
 

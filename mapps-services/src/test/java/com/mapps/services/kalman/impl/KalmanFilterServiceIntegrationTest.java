@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +43,10 @@ public class KalmanFilterServiceIntegrationTest {
     private KalmanStateDAO sDAO;
     private Training training;
     private Device device;
+    private final Lock lock = new ReentrantLock();
 
     @Before
-    public void setup() throws Exception{
+    public void setup() throws Exception {
         this.rawDao = Mockito.mock(RawDataUnitDAO.class);
         this.pDAO = Mockito.mock(ProcessedDataUnitDAO.class);
         this.sDAO = Mockito.mock(KalmanStateDAO.class);
@@ -51,9 +54,9 @@ public class KalmanFilterServiceIntegrationTest {
         this.training = Mockito.mock(Training.class);
         this.device = Mockito.mock(Device.class);
         when(rawDao.getInitialConditions(training, device)).thenReturn(getRawData("src/test/resources/testdata/initial_data.txt"));
-        when(rawDao.initialConditionsSatisfied(training,device)).thenReturn(true);
+        when(rawDao.initialConditionsSatisfied(training, device)).thenReturn(true);
         when(sDAO.getLastState(training, device)).thenReturn(null);
-        when(pDAO.getLastProcessedDataUnit(training,device)).thenReturn(pDataUnit);
+        when(pDAO.getLastProcessedDataUnit(training, device)).thenReturn(pDataUnit);
         this.kService = new KalmanFilterServiceStub();
         this.kService.setProcessedDataUnitDAO(pDAO);
         this.kService.setRawDataUnitDAO(rawDao);
@@ -61,36 +64,40 @@ public class KalmanFilterServiceIntegrationTest {
     }
 
     @Test
-    public void testHandleData() throws Exception{
-        File aux = new File("src/test/resources/testdata/output.csv");
+    public void testHandleData() throws Exception {
+        lock.lock();
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         RawDataUnit rData = new RawDataUnit("G:345255840/560288000/6/129:,I:-5844/-438/-120/-343/-97/4493:" +
-                                             "-5844/-438/-120/-350/-98/4509:,I:-5844/-438/-120/-344/-99/4525:-5844/-438/-119/-351/-103/4497:,I:" +
-                                             ",I:-5843/-438/-120/-336/-109/4507:-5843/-437/-120/-337/-95/4496:,\n");
+                                                    "-5844/-438/-120/-350/-98/4509:,I:-5844/-438/-120/-344/-99/4525:-5844/-438/-119/-351/-103/4497:,I:" +
+                                                    ",I:-5843/-438/-120/-336/-109/4507:-5843/-437/-120/-337/-95/4496:,\n");
         rData.setCorrect(true);
-        kService.handleData(rData, device,training);
+        kService.handleData(rData, device, training);
 
         File file = new File("src/test/resources/testdata/output.csv");
         BufferedReader br = new BufferedReader(new FileReader(file));
         int number = 0;
-        while(br.readLine() != null){
+        while (br.readLine() != null) {
             number++;
         }
-        Assert.assertEquals(number, 6);
-        aux.delete();
+        try {
+            Assert.assertEquals(number, 6);
+        } finally {
+            file.delete();
+            lock.unlock();
+        }
     }
 
     @Test
-    public void testMultipleHandleData() throws Exception{
-        File aux = new File("src/test/resources/testdata/output.csv");
+    public void testMultipleHandleData() throws Exception {
+        lock.lock();
         File stateAux = new File("src/test/resources/testdata/state.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         when(sDAO.getLastState(training, device)).thenReturn(createState());
         List<RawDataUnit> inputs = getRawData("src/test/resources/testdata/data.txt");
         int numbOfImuData = 0;
-        for (RawDataUnit input : inputs){
+        for (RawDataUnit input : inputs) {
             numbOfImuData += input.getImuData().size();
             kService.multiple = true;
             kService.handleData(input, device, training);
@@ -99,16 +106,23 @@ public class KalmanFilterServiceIntegrationTest {
         File file = new File("src/test/resources/testdata/output.csv");
         BufferedReader br = new BufferedReader(new FileReader(file));
         int number = 0;
-        while(br.readLine() != null){
+        while (br.readLine() != null) {
             number++;
         }
+        try{
         Assert.assertEquals(number, numbOfImuData);
-        aux.delete();
-        stateAux.delete();
-     }
+
+        }finally {
+            file.delete();
+            stateAux.delete();
+            lock.unlock();
+        }
+
+    }
 
     @Test
-    public void testMultipleHandleDataRealStates() throws Exception{
+    public void testMultipleHandleDataRealStates() throws Exception {
+        lock.lock();
         File aux = new File("src/test/resources/testdata/output.csv");
         File stateAux = new File("src/test/resources/testdata/state.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
@@ -116,7 +130,7 @@ public class KalmanFilterServiceIntegrationTest {
         List<RawDataUnit> inputs = getRawData("src/test/resources/testdata/data.txt");
         int numbOfImuData = 0;
         int latest = 0;
-        for (RawDataUnit input : inputs){
+        for (RawDataUnit input : inputs) {
             numbOfImuData += input.getImuData().size();
             kService.multiple = true;
             kService.handleData(input, device, training);
@@ -124,15 +138,19 @@ public class KalmanFilterServiceIntegrationTest {
             when(sDAO.getLastState(training, device)).thenReturn(loadLatestState(latest));
             latest++;
         }
-        Assert.assertEquals(latest, 159);
-        aux.delete();
-        stateAux.delete();
+        try{
+            Assert.assertEquals(latest, 159);
+        }finally {
+            aux.delete();
+            stateAux.delete();
+            lock.unlock();
+        }
     }
 
-    private KalmanState loadLatestState(int latest) throws Exception{
-        FileInputStream fs= new FileInputStream("src/test/resources/testdata/state.csv");
+    private KalmanState loadLatestState(int latest) throws Exception {
+        FileInputStream fs = new FileInputStream("src/test/resources/testdata/state.csv");
         BufferedReader br = new BufferedReader(new InputStreamReader(fs));
-        for(int i = 0; i < latest; ++i)
+        for (int i = 0; i < latest; ++i)
             br.readLine();
         String row = br.readLine();
         br.close();
@@ -154,7 +172,7 @@ public class KalmanFilterServiceIntegrationTest {
         return state;
     }
 
-    private KalmanState createState() throws Exception{
+    private KalmanState createState() throws Exception {
         KalmanState state = new KalmanState();
         File file = new File("src/test/resources/testdata/state.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -170,12 +188,12 @@ public class KalmanFilterServiceIntegrationTest {
         return state;
     }
 
-    public List<RawDataUnit> getRawData(String filePath) throws Exception{
+    public List<RawDataUnit> getRawData(String filePath) throws Exception {
         List<RawDataUnit> rawDataUnits = new ArrayList<RawDataUnit>();
         File file = new File(filePath);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
-        while((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             String[] split = line.split("@");
             RawDataUnit rawDataUnit = new RawDataUnit(split[1]);
             rawDataUnit.setCorrect(true);

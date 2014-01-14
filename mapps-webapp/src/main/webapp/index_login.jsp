@@ -12,11 +12,15 @@
     <link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
-
+<%
+String error = String.valueOf(request.getAttribute("error"));
+if (error.equals("null"))
+	error = "";
+%>
 <script type="text/javascript">
 	$(document).ready(function () {
     	$("#username").jqxInput({placeHolder: "Usuario", height: 35, width: 220, minLength: 1  });
-		$("#password").jqxInput({placeHolder: "ContraseÃ±a", height: 35, width: 220, minLength: 1 });
+		$("#password").jqxPassword({placeHolder: "Contraseña", height: 35, width: 220, minLength: 1 });
 		$("#loginButton").jqxButton({ width: '100', height: '30'});
     });
 </script>
@@ -36,11 +40,11 @@
 <div id="container" style="border-top:solid 1px; border-bottom:solid 1px;">
     <div id="login_container" >
         <form action="login" method="post">
+        	<center><span class="error"><%= error %></span></center>
             <div id="usernameField" class="loginForm" > Nombre de usuario: </div>
             	<input type="text" class="loginField" name="username" id="username" style="margin-left:20%;" required="required" />
             <div id="passwordField" class="loginForm" > Contrase&ntilde;a: </div>
             	<input type="text" class="loginField" name="password" id="password" style="margin-left:20%; margin-bottom:30px;" required="required" />
-            
             <div id="submit" align="center" >
                 <input id="loginButton" type="submit" name="ingresar" value="INGRESAR" />
             </div>
