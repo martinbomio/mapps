@@ -9,7 +9,7 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
-    <!-- TemplateBeginEditable name="EditRegion3" -->EditRegion3
+    <!-- TemplateBeginEditable name="EditRegion3" -->
 	
 	<!-- TemplateEndEditable -->
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -17,21 +17,28 @@
 </head>
 
 <body>
+<!-- TemplateBeginEditable name="EditRegion4" -->
+<script type="text/javascript">
+
+</script>
+<!-- TemplateEndEditable -->
 
 <div id="header">
 	<div id="header_izq">
     
     </div>
     <div id="header_central">
-	<!-- TemplateBeginEditable name="EditRegion1" -->EditRegion1<!-- TemplateEndEditable -->
+	<!-- TemplateBeginEditable name="EditRegion1" -->
+	
+	<!-- TemplateEndEditable -->
     </div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
-<!-- TemplateBeginEditable name="EditRegion2" -->EditRegion2
-    <div id="tabs">
+<!-- TemplateBeginEditable name="EditRegion2" -->
+<div id="tabs">
 	  <div id="tab_1" class="tab active" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab">JUGADORES</div>
         <div id="tab_3" class="tab">ENTRENAMIENTOS</div>

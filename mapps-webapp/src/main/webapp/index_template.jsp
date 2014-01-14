@@ -9,7 +9,7 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
-    <!-- InstanceBeginEditable name="EditRegion3" -->EditRegion3
+    <!-- InstanceBeginEditable name="EditRegion3" -->
     <script type="text/javascript" src="./jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
 	
@@ -25,7 +25,7 @@
     
     </div>
     <div id="header_central">
-	<!-- InstanceBeginEditable name="EditRegion1" -->EditRegion1
+	<!-- InstanceBeginEditable name="EditRegion1" -->
 	
 	<!-- InstanceEndEditable -->
     </div>
@@ -34,7 +34,7 @@
     </div>
 </div>
 <div id="contenedor">
-<!-- InstanceBeginEditable name="EditRegion2" -->EditRegion2
+<!-- InstanceBeginEditable name="EditRegion2" -->
     <div id="tabs">
 		<div id="tab_1" class="tab active" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab">JUGADORES</div>
