@@ -20,6 +20,7 @@ import com.mapps.services.kalman.impl.KalmanFilterService;
  */
 public class KalmanFilterServiceStub extends KalmanFilterService{
     public boolean multiple = false;
+    public String output_URL = "src/test/resources/testdata/output.csv";
 
     public void setRawDataUnitDAO(RawDataUnitDAO rdao){
         this.rawDataUnitDAO = rdao;
@@ -52,7 +53,7 @@ public class KalmanFilterServiceStub extends KalmanFilterService{
 
     private void save(List<ProcessedDataUnit> processedDataUnits, boolean append) {
         try{
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("src/test/resources/testdata/output.csv",append)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(output_URL,append)));
             for (ProcessedDataUnit processed : processedDataUnits){
                 String line = processed.getAccelerationX() + "\t" + processed.getAccelerationY() + "\t" +
                         processed.getVelocityX() + "\t" + processed.getVelocityY() + "\t" + processed.getPositionX()

@@ -33,10 +33,10 @@ public class LoginServlet extends HttpServlet implements Servlet {
             req.setAttribute("role", role);
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Invalid username or password");
+            req.setAttribute("error", "Nombre de Usuario o Contraseña no válido");
             req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
         } catch (InvalidUserException e) {
-            req.setAttribute("error", "Invalid username or password");
+            req.setAttribute("error", "Nombre de Usuario o Contraseña no válido");
             req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
         }
     }

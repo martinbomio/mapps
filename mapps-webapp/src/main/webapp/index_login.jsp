@@ -9,6 +9,7 @@
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxpasswordinput.js"></script>
     <link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
@@ -20,7 +21,7 @@ if (error.equals("null"))
 <script type="text/javascript">
 	$(document).ready(function () {
     	$("#username").jqxInput({placeHolder: "Usuario", height: 35, width: 220, minLength: 1  });
-		$("#password").jqxPassword({placeHolder: "Contraseña", height: 35, width: 220, minLength: 1 });
+		$("#password").jqxPasswordInput({placeHolder: "Contraseña", height: 35, width: 220, minLength: 1 });
 		$("#loginButton").jqxButton({ width: '100', height: '30'});
     });
 </script>

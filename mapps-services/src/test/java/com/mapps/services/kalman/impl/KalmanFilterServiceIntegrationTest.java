@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +41,6 @@ public class KalmanFilterServiceIntegrationTest {
     private KalmanStateDAO sDAO;
     private Training training;
     private Device device;
-    private final Lock lock = new ReentrantLock();
 
     @Before
     public void setup() throws Exception {
@@ -65,7 +62,6 @@ public class KalmanFilterServiceIntegrationTest {
 
     @Test
     public void testHandleData() throws Exception {
-        lock.lock();
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         RawDataUnit rData = new RawDataUnit("G:345255840/560288000/6/129:,I:-5844/-438/-120/-343/-97/4493:" +
@@ -84,14 +80,13 @@ public class KalmanFilterServiceIntegrationTest {
             Assert.assertEquals(number, 6);
         } finally {
             file.delete();
-            lock.unlock();
         }
     }
 
     @Test
     public void testMultipleHandleData() throws Exception {
-        lock.lock();
         File stateAux = new File("src/test/resources/testdata/state.csv");
+        kService.output_URL = "src/test/resources/testdata/output-multiple.csv";
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
         when(sDAO.getLastState(training, device)).thenReturn(createState());
@@ -103,7 +98,7 @@ public class KalmanFilterServiceIntegrationTest {
             kService.handleData(input, device, training);
             kService.multiple = false;
         }
-        File file = new File("src/test/resources/testdata/output.csv");
+        File file = new File("src/test/resources/testdata/output-multiple.csv");
         BufferedReader br = new BufferedReader(new FileReader(file));
         int number = 0;
         while (br.readLine() != null) {
@@ -115,15 +110,14 @@ public class KalmanFilterServiceIntegrationTest {
         }finally {
             file.delete();
             stateAux.delete();
-            lock.unlock();
         }
 
     }
 
     @Test
     public void testMultipleHandleDataRealStates() throws Exception {
-        lock.lock();
-        File aux = new File("src/test/resources/testdata/output.csv");
+        kService.output_URL = "src/test/resources/testdata/output-real-state.csv";
+        File aux = new File("src/test/resources/testdata/output-real-state.csv");
         File stateAux = new File("src/test/resources/testdata/state.csv");
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
@@ -143,7 +137,6 @@ public class KalmanFilterServiceIntegrationTest {
         }finally {
             aux.delete();
             stateAux.delete();
-            lock.unlock();
         }
     }
 
