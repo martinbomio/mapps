@@ -13,7 +13,7 @@ import com.mapps.services.util.StatsDecoder;
  *
  *
  */
-public class AthleteInfoWrapper {
+public class AthleteStatsWrapper {
     private Athlete athlete;
     private List<Double> accelX;
     private List<Double> accelY;
@@ -25,7 +25,7 @@ public class AthleteInfoWrapper {
     private double distanceTraveled;
     private double averageSpeed;
 
-    public AthleteInfoWrapper(Athlete athlete, List<ProcessedDataUnit> pDataUnits) {
+    public AthleteStatsWrapper(Athlete athlete, List<ProcessedDataUnit> pDataUnits) {
         this.athlete = athlete;
         StatsDecoder statsDecoder = new StatsDecoder(pDataUnits);
         this.distanceTraveled = statsDecoder.getDistanceTraveled();

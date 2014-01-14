@@ -24,18 +24,13 @@ public class LoginServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
-
-            String token = userService.login(username,password);
-            Role role=userService.userRoleOfToken(token);
+            String token = userService.login(username, password);
+            Role role = userService.userRoleOfToken(token);
             req.setAttribute("token", token);
-
-            req.setAttribute("role",role);
-
-
+            req.setAttribute("role", role);
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Invalid username or password");

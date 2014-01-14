@@ -16,7 +16,7 @@ import com.mapps.services.report.exceptions.AuthenticationException;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
-import com.mapps.wrappers.AthleteInfoWrapper;
+import com.mapps.wrappers.AthleteStatsWrapper;
 
 /**
  *
@@ -37,7 +37,7 @@ import com.mapps.wrappers.AthleteInfoWrapper;
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
             Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
-            AthleteInfoWrapper wrapper = new AthleteInfoWrapper(athlete, stats);
+            AthleteStatsWrapper wrapper = new AthleteStatsWrapper(athlete, stats);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             Writer writer = resp.getWriter();

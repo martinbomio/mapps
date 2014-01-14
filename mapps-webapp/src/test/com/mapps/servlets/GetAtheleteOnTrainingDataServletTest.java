@@ -30,7 +30,7 @@ import com.mapps.model.Training;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.servlets.stubs.GetAthleteOnTrainingDataServletStub;
-import com.mapps.wrappers.AthleteInfoWrapper;
+import com.mapps.wrappers.AthleteStatsWrapper;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -71,7 +71,7 @@ public class GetAtheleteOnTrainingDataServletTest {
         File file = new File("src/test/resources/stats.json");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String json = br.readLine();
-        AthleteInfoWrapper wrapper = new Gson().fromJson(json, AthleteInfoWrapper.class);
+        AthleteStatsWrapper wrapper = new Gson().fromJson(json, AthleteStatsWrapper.class);
         Assert.assertEquals(wrapper.toJson(), json);
         file.delete();
     }
