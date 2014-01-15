@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/mapps_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>
-	<!-- TemplateBeginEditable name="EditRegion5" -->
+	<!-- InstanceBeginEditable name="EditRegion5" -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -13,35 +13,35 @@
 
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
-    <!-- TemplateEndEditable -->
+    <!-- InstanceEndEditable -->
 </head>
 
 <body>
-<!-- TemplateBeginEditable name="EditRegion4" -->
+<!-- InstanceBeginEditable name="EditRegion4" -->
 <script type="text/javascript">
 
 </script>
-<!-- TemplateEndEditable -->
+<!-- InstanceEndEditable -->
 
 <div id="header">
 	<div id="header_izq">
     
     </div>
     <div id="header_central">
-	<!-- TemplateBeginEditable name="EditRegion1" -->
+	<!-- InstanceBeginEditable name="EditRegion1" -->
 	
-	<!-- TemplateEndEditable -->
+	<!-- InstanceEndEditable -->
     </div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
-<!-- TemplateBeginEditable name="EditRegion2" -->
+<!-- InstanceBeginEditable name="EditRegion2" -->
 <div id="tabs">
 	  	<div id="tab_1" class="tab" onclick="location.href='index_template.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='jugadores/jugadores.jsp'">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href='entrenamientos/entrenamientos.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_3" class="tab" onclick="window.location.reload()">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='miclub/miclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='configuracion/configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
   </div>
@@ -58,10 +58,10 @@
         
         </div>
     </div>
-<!-- TemplateEndEditable -->    
+<!-- InstanceEndEditable -->    
 </div>
 <div id="pie">
 
 </div>
 </body>
-</html>
+<!-- InstanceEnd --></html>
