@@ -20,17 +20,15 @@
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
-
 if (token.equals("null") || token.equals("")){
-    response.sendRedirect("../index_login.jsp");
+	request.getRequestDispatcher("index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");
+	role = (Role) session.getAttribute("role");	
 }
-
 %>
 <body>
 <!-- InstanceBeginEditable name="EditRegion4" -->
