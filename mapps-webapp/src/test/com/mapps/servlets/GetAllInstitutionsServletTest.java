@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,8 +54,10 @@ public class GetAllInstitutionsServletTest {
 
         BufferedReader br = new BufferedReader(new FileReader(file));
         String json = br.readLine();
-        List<String> inst = new Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
-        Assert.assertTrue(inst.contains("CPC"));
-        Assert.assertTrue(inst.contains("SPC"));
+        Map<String, String[]> inst = new Gson().fromJson(json, new TypeToken<Map<String, String[]>>(){}.getType());
+        String[] array = inst.get("name");
+        Assert.assertEquals(array.length, 2);
+        Assert.assertEquals(array[0], "CPC");
+        Assert.assertEquals(array[1], "SPC");
     }
 }

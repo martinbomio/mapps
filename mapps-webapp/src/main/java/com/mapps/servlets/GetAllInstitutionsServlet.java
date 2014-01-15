@@ -3,6 +3,7 @@ package com.mapps.servlets;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mapps.services.institution.InstitutionService;
 
@@ -31,8 +33,9 @@ public class GetAllInstitutionsServlet extends HttpServlet implements Servlet {
         List<String> instNames = institutionService.allInstitutionsNames();
         Writer writer = resp.getWriter();
         resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        String json = new Gson().toJson(instNames);
+        Map<String, String[]> map = Maps.newHashMap();
+        map.put("name", instNames.toArray(new String[instNames.size()]));
+        String json = new Gson().toJson(map);
         writer.write(json);
         writer.close();
     }

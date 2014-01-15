@@ -27,6 +27,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
     <!-- InstanceEndEditable -->
@@ -49,14 +50,23 @@ if ( session.getAttribute("role") == null){
 	$(document).ready(function () {
 		//Get Institutions
 		var url = "/mapps/getAllInstitutions";
-        // prepare the data
-        var source =
-        {
-			datatype: "json",
-			url: url,
-			async: false
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source);
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+            	$("#institution").jqxDropDownList(
+                		{
+                			source: response,
+                			displayMember: "name",
+                			valueMember: "name",
+                			selectedIndex: 1,
+                			width: '200',
+                			height: '25',
+                			dropDownHeight: '100'
+                			}
+                		);
+            	}
+            });
 	// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '150', mode: 'vertical'});
         $("#jqxMenu").css('visibility', 'visible');
@@ -67,20 +77,19 @@ if ( session.getAttribute("role") == null){
 		//username
 		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 25, width: 200, minLength: 1});
 		//password
-		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 300 , height: 20 , showStrength: true, showStrengthPosition: "right"});
+		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, minLength: 1});
 		//email
 		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3});
 		//Drop list
-		$("#gender").jqxDropDownList({ source: ["Male", "Female", "Unknown"], selectedIndex: 1, width: '200', height: '25'});
+		$("#gender").jqxDropDownList({ source: ["Male", "Female", "Unknown"], selectedIndex: 1, width: '200', height: '25', dropDownHeight: '100'});
 		//Date
 		$("#date").jqxDateTimeInput({width: '250px', height: '25px'});
 		//document
 		$("#document").jqxMaskedInput({ width: 250, height: 25, mask: '#.###.###-#'});
 		//rol
-		$("#role").jqxDropDownList({ source: ["User", "Trainer", "Administrator"], selectedIndex: 1, width: '200', height: '25'});
+		$("#role").jqxDropDownList({ source: ["User", "Trainer", "Administrator"], selectedIndex: 1, width: '200', height: '25', dropDownHeight: '75'});
 		//institution
-		$("#institution").jqxDropDownList({ source: dataAdapter, selectedIndex: 1, width: '200', height: '25'});
-
+		
 	});
 </script>
 <!-- InstanceEndEditable -->
@@ -135,7 +144,7 @@ if ( session.getAttribute("role") == null){
                           </tr>
                           <tr>
                             <td>Contraseña: </td>
-                            <td><input name="password" id="password" type="text" required /></td>
+                            <td><input name="password" id="password" type="password" requiered/></td>
                           </tr>
                           <tr>
                             <td>Mail: </td>
