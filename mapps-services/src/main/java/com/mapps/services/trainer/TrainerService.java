@@ -36,4 +36,5 @@ public interface TrainerService {
     public List<String> getAllAthletesId();
     public List<String> getAllDevicesDirs();
     public List<Athlete> getAllAthletes();
+    public List<Athlete> getAllAthletesOfInstitution(String instName);
 }

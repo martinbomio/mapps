@@ -3,6 +3,7 @@ package com.mapps.services.user.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.mapps.model.Institution;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
@@ -106,7 +107,27 @@ public class UserServiceImpl implements UserService{
 
         return admin;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
+    @Override
+    public String getInstitutionOfUser(String username) throws InvalidUserException {
+        try {
+            User aux=userDAO.getUserByUsername(username);
+            Institution instAux= aux.getInstitution();
+            String instName=instAux.getName();
+            return  instName;
+        } catch (UserNotFoundException e) {
+            throw new InvalidUserException();
+        }
+    }
+    @Override
+    public String getUserOfToken(String token) throws AuthenticationException {
+        try {
+            User aux = authenticationHandler.getUserOfToken(token);
+            String username = aux.getUserName();
+            return username;
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        }
+    }
     @Override
     public Role userRoleOfToken(String token) throws AuthenticationException {
         if(token==null){

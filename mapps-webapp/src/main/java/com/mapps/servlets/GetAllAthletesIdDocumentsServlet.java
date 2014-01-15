@@ -36,7 +36,7 @@ public class GetAllAthletesIdDocumentsServlet extends HttpServlet implements Ser
         Writer writer = resp.getWriter();
         resp.setContentType("application/json");
         Map<String,String[]> map= Maps.newHashMap();
-        map.put("name",athletesId.toArray(new String[athletesId.size()]));
+        map.put("athletesId",athletesId.toArray(new String[athletesId.size()]));
         String json = new Gson().toJson(map);
         writer.write(json);
         writer.close();

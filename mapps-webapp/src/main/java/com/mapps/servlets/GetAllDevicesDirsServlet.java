@@ -34,7 +34,7 @@ public class GetAllDevicesDirsServlet extends HttpServlet implements Servlet {
         Writer writer = resp.getWriter();
         resp.setContentType("application/json");
         Map<String,String[]> map= Maps.newHashMap();
-        map.put("name",devicesDirs.toArray(new String[devicesDirs.size()]));
+        map.put("devicesDirs",devicesDirs.toArray(new String[devicesDirs.size()]));
         String json=new Gson().toJson(map);
         writer.write(json);
         writer.close();

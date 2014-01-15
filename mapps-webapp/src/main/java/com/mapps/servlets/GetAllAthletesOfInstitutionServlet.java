@@ -4,6 +4,9 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mapps.model.Athlete;
 import com.mapps.services.trainer.TrainerService;
+import com.mapps.services.user.UserService;
+import com.mapps.services.user.exceptions.AuthenticationException;
+import com.mapps.services.user.exceptions.InvalidUserException;
 
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
@@ -20,15 +23,31 @@ import java.util.Map;
 /**
  *
  */
-@WebServlet(name = "getAllAthletes", urlPatterns = "/getAllAthletes/*")
-public class GetAllAthletesServlet extends HttpServlet implements Servlet {
+@WebServlet(name = "getAllAthletesOfInstitution", urlPatterns = "/getAllAthletesOfInstitution/*")
+public class GetAllAthletesOfInstitutionServlet extends HttpServlet implements Servlet {
 
     @EJB(beanName = "TrainerService")
     protected TrainerService trainerService;
+    @EJB(beanName = "UserService")
+    protected UserService userService;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Athlete> athletes = trainerService.getAllAthletes();
+         String token=String.valueOf(req.getSession().getAttribute("token"));
+        String username= "";
+        try {
+            username = userService.getUserOfToken(token);
+        } catch (AuthenticationException e) {
+            req.setAttribute("error", "Error de autentificación");
+        }
+        String instName= null;
+        try {
+            instName = userService.getInstitutionOfUser(username);
+        } catch (InvalidUserException e) {
+            req.setAttribute("error", "Error de autentificación");
+        }
+        List<Athlete> athletes = trainerService.getAllAthletesOfInstitution(instName);
         Writer writer = resp.getWriter();
         resp.setContentType("application/json");
         Map<String,List<Athlete>> map= Maps.newHashMap();

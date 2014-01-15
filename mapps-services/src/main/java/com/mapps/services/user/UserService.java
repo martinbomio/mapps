@@ -39,4 +39,7 @@ public interface UserService {
     public boolean isAdministrator(String username) throws InvalidUserException;
 
     public Role userRoleOfToken(String token) throws InvalidUserException, AuthenticationException;
+
+    public String getUserOfToken(String token) throws AuthenticationException;
+    public String getInstitutionOfUser(String username) throws InvalidUserException;
 }

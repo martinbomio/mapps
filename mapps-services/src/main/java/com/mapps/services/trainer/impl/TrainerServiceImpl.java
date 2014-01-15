@@ -109,8 +109,13 @@ public class TrainerServiceImpl implements TrainerService {
         return aux;
     }
     @Override
-    public List<Athlete> getAllAthletes(){
+     public List<Athlete> getAllAthletes(){
         List<Athlete> aux=athleteDAO.getAllAthletes();
+        return aux;
+    }
+    @Override
+    public List<Athlete> getAllAthletesOfInstitution(String instName){
+        List<Athlete> aux=athleteDAO.getAllAthletesByInstitution(instName);
         return aux;
     }
 

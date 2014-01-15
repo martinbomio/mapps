@@ -32,7 +32,7 @@ public class GetAllSportsServlet extends HttpServlet implements Servlet {
         Writer writer = resp.getWriter();
         resp.setContentType("application/json");
         Map<String, String[]> map = Maps.newHashMap();
-        map.put("name", sportNames.toArray(new String[sportNames.size()]));
+        map.put("sportNames", sportNames.toArray(new String[sportNames.size()]));
         String json = new Gson().toJson(map);
         writer.write(json);
         writer.close();
