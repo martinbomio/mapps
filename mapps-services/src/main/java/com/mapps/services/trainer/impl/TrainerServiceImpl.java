@@ -1,9 +1,7 @@
 package com.mapps.services.trainer.impl;
 
 import java.security.InvalidParameterException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -91,6 +89,39 @@ public class TrainerServiceImpl implements TrainerService {
             throw new InvalidTrainingException();
         }
 
+    }
+    @Override
+    public List<String> getAllSportsNames(){
+        List<String> aux=new ArrayList<String>();
+        List<Sport> sports=sportDAO.getAllSports();
+        for(int i=0;i<sports.size();i++){
+            aux.add((sports.get(i)).getName());
+        }
+        return aux;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    @Override
+    public List<String> getAllAthletesId(){
+        List<String> aux=new ArrayList<String>();
+        List<Athlete> athletesId=athleteDAO.getAllAthletes();
+        for(int i=0;i<athletesId.size();i++){
+            aux.add((athletesId.get(i)).getIdDocument());
+        }
+        return aux;
+    }
+    @Override
+    public List<Athlete> getAllAthletes(){
+        List<Athlete> aux=athleteDAO.getAllAthletes();
+        return aux;
+    }
+
+    @Override
+    public List<String> getAllDevicesDirs() {
+        List<String> aux=new ArrayList<String>();
+        List<Device> devices=deviceDAO.getAllDevices();
+        for(int i=0;i<devices.size();i++){
+            aux.add((devices.get(i)).getDirLow());
+        }
+        return aux;
     }
 
     @Override

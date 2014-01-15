@@ -1,6 +1,7 @@
 package com.mapps.services.trainer;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 import javax.ejb.Local;
 
 import com.mapps.model.Athlete;
@@ -31,4 +32,8 @@ public interface TrainerService {
     public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException;
     public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
     public Training getTrainingByName(String name) throws InvalidTrainingException;
+    public List<String> getAllSportsNames();
+    public List<String> getAllAthletesId();
+    public List<String> getAllDevicesDirs();
+    public List<Athlete> getAllAthletes();
 }

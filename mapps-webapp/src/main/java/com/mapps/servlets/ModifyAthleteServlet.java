@@ -54,7 +54,15 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
         String idDocument = req.getParameter("idDocument");
         String instName = req.getParameter("institution");
         Institution instAux = institutionService.getInstitutionByName(instName);
-
+        //Athlete athlete = trainerService.getAthleteByIdDocument(idDocument);
+        //athlete.setName(name);
+        //athlete.setLastName(lastName);
+        //athlete.setBirth(birth);
+        //athlete.setGender(gender);
+        //athlete.setEmail(email);
+        //athlete.setWeight(weight);
+        //athlete.setHeight(height);
+        //athlete.setInstitution(instAux);
         Athlete athlete = new Athlete(name, lastName, birth, gender, email, weight, height, idDocument, instAux);
         athlete.setEnabled(true);
 

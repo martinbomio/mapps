@@ -121,6 +121,11 @@ public class AthleteDAOImpl implements AthleteDAO{
         List<Athlete> results=query.getResultList();
         return results;
     }
+    @Override
+    public List<Athlete> getAllAthletes(){
+        Query query = entityManager.createQuery("from Athlete");
+        return query.getResultList();
+    }
 
 
 }

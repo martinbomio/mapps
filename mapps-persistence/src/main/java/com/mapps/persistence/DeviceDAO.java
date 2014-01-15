@@ -57,4 +57,5 @@ public interface DeviceDAO {
      * @return all the Devices of one institution
      */
     List<Device> getAllDevicesByInstitution(String institutionName);
+    public List<Device> getAllDevices();
 }

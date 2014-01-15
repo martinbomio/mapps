@@ -68,6 +68,8 @@ public interface AthleteDAO {
      */
     List<Athlete> getAllAthletesByInstitution(String institutionName);
 
+    public List<Athlete> getAllAthletes();
+
 
 
 }

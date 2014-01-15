@@ -108,4 +108,9 @@ public class DeviceDAOImpl implements DeviceDAO{
         List<Device> results=query.getResultList();
         return results;
     }
+    @Override
+    public List<Device> getAllDevices(){
+        Query query = entityManager.createQuery("from Device");
+        return query.getResultList();
+    }
 }
