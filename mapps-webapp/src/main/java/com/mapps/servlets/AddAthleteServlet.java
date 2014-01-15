@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.mapps.model.Athlete;
 import com.mapps.model.Gender;
 import com.mapps.model.Institution;
-import com.mapps.model.Role;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
@@ -60,13 +59,13 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
         try {
             trainerService.addAthlete(athlete, token);
             req.setAttribute("info", "El atleta fue ingresado con éxito al sistema");
-            req.getRequestDispatcher("/jugadores.jsp").forward(req, resp);
+            req.getRequestDispatcher("/athletes/athletes.jsp").forward(req, resp);
         } catch (InvalidAthleteException e) {
             req.setAttribute("error", "Atleta no válido");
-            req.getRequestDispatcher("/jugadores_agregar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/athletes/add_athletes.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Error de autentificación");
-            req.getRequestDispatcher("/jugadores_agregar.jsp").forward(req, resp);
+            req.getRequestDispatcher("/athletes/add_athletes.jsp").forward(req, resp);
         }
     }
 }

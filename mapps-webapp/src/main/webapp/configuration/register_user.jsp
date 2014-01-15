@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
     <!-- InstanceEndEditable -->
@@ -35,7 +36,7 @@
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	request.getRequestDispatcher("index_login.jsp");	
+	response.sendRedirect("../index_login.jsp");
 }
 Role role;
 if ( session.getAttribute("role") == null){
@@ -54,12 +55,11 @@ if ( session.getAttribute("role") == null){
             url: url,
             type: "GET",
             success: function (response){
+            	var names = response['name']
             	$("#institution").jqxDropDownList(
                 		{
-                			source: response,
-                			displayMember: "name",
-                			valueMember: "name",
-                			selectedIndex: 1,
+                			source: names,
+                			selectedIndex: 0,
                 			width: '200',
                 			height: '25',
                 			dropDownHeight: '100'
@@ -81,16 +81,59 @@ if ( session.getAttribute("role") == null){
 		//email
 		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3});
 		//Drop list
-		$("#gender").jqxDropDownList({ source: ["Male", "Female", "Unknown"], selectedIndex: 1, width: '200', height: '25', dropDownHeight: '100'});
+		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100'});
 		//Date
-		$("#date").jqxDateTimeInput({width: '250px', height: '25px'});
+		$("#date").jqxDateTimeInput({width: '200px', height: '25px'});
 		//document
-		$("#document").jqxMaskedInput({ width: 250, height: 25, mask: '#.###.###-#'});
+		$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#'});
 		//rol
-		$("#role").jqxDropDownList({ source: ["User", "Trainer", "Administrator"], selectedIndex: 1, width: '200', height: '25', dropDownHeight: '75'});
-		//institution
-		
+		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75'});
+		//register
+		$("#register_button").jqxButton({ width: '150'});
+		$("#register_button").on('click', function (){ 
+	        $('#register_form').jqxValidator('validate');
+	    });
+		$("#register_form").jqxValidator({
+            rules: [
+                    {
+                        input: "#name", message: "El nobre es obligatorio!", action: 'keyup, blur', rule: 'required'
+                    },
+                    {
+                        input: "#lastname", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
+                    },
+                    { input: "#username", message: "El nombre de usuario es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#password", message: "La contraseña es obligatoria!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
+                    { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {
+                        input: "#gender", message: "El Género es obligatorio!", action: 'blur', rule: function (input, commit) {
+                            var index = $("#gender").jqxDropDownList('getSelectedIndex');
+                            return index != -1;
+                        }
+                    },
+                    {
+                    	input: "#date", message: "La Fecha de Nacimiento es obligatoria!", action: 'keyup, blur', rule: 'required' 
+                    },
+                    {
+                        input: "#role", message: "El rol es obligatorio!", action: 'blur', rule: function (input, commit) {
+                            var index = $("#role").jqxDropDownList('getSelectedIndex');
+                            return index != -1;
+                        }
+                    },
+                    {
+                        input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
+                            var index = $("#institution").jqxDropDownList('getSelectedIndex');
+                            return index != -1;
+                        }
+                    }
+            ],  hintType: "label"
+        });
 	});
+	
+	$('#register_form').on('validationSuccess', function (event) {
+        $('#register_button').submit();
+    });
 </script>
 <!-- InstanceEndEditable -->
 
@@ -128,7 +171,7 @@ if ( session.getAttribute("role") == null){
         
         <div id="main_div">
         	<div id="start_training_div">
-            	<form action="/registerUser" method="post">
+            	<form action="/mapps/registerUser" method="post" id="register_form">
                 	<table width="200" border="0">
                           <tr>
                             <td>Nombre: </td>
@@ -169,6 +212,9 @@ if ( session.getAttribute("role") == null){
                           <tr>
                             <td>Institución: </td>
                             <td><div id='institution'></div></td>
+                          </tr>
+                          <tr>
+                            <td><center></center><input type="submit" value="Registrar" id="register_button" /></center></td>
                           </tr>
                         </table>
                 </form>
