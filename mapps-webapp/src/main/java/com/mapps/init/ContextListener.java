@@ -78,6 +78,7 @@ public class ContextListener implements ServletContextListener{
         user.setEnabled(true);
         Sport sport=new Sport("Futbol");
         Athlete athlete=new Athlete("pepe","apellido",null,Gender.MALE,"pepe@gmail.com",78,1.8,"44475993",inst);
+        Athlete mario = new Athlete("Mario","Gomez",null,Gender.MALE,"mario@gmail.com",78,1.80,"4.447.599-3",inst);
         Device device =new Device("0013A200","40aad87e",55,inst);
         Report report=new Report("url",date,"report one",ReportType.TRAINNING);
 
@@ -98,6 +99,7 @@ public class ContextListener implements ServletContextListener{
             userDAO.addUser(user2);
             sportDAO.addSport(sport);
             athleteDAO.addAthlete(athlete);
+            athleteDAO.addAthlete(mario);
             deviceDAO.addDevice(device);
             trainingDAO.addTraining(training);
 

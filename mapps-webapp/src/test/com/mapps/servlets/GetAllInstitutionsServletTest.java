@@ -59,5 +59,7 @@ public class GetAllInstitutionsServletTest {
         Assert.assertEquals(array.length, 2);
         Assert.assertEquals(array[0], "CPC");
         Assert.assertEquals(array[1], "SPC");
+        br.close();
+        file.delete();
     }
 }
