@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.mapps.model.Role" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/jugadores_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -17,7 +18,20 @@
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
     <!-- InstanceEndEditable -->
 </head>
+<%
+String token = String.valueOf(session.getAttribute("token"));
 
+if (token.equals("null") || token.equals("")){
+    response.sendRedirect("../index_login.jsp");
+}
+Role role;
+if ( session.getAttribute("role") == null){
+	role = null;	
+}else{
+	role = (Role) session.getAttribute("role");
+}
+
+%>
 <body>
 <!-- InstanceBeginEditable name="EditRegion4" -->
 <script type="text/javascript">
@@ -56,11 +70,11 @@
 <div id="contenedor">
 <!-- InstanceBeginEditable name="EditRegion2" -->
     <div id="tabs">
-	    <div id="tab_1" class="tab" onclick="location.href='../index_template.jsp'" style="margin-left:180px;">INICIO</div>
-        <div id="tab_2" class="tab active" onclick="location.href='../jugadores/jugadores.jsp'">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href='../entrenamientos/entrenamientos.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab" onclick="location.href='../miclub/miclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuracion/configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+	    <div id="tab_1" class="tab" onclick="location.href='index.jsp'" style="margin-left:180px;">INICIO</div>
+        <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
+        <div id="tab_3" class="tab" onclick="location.href='entrenamientos.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_4" class="tab" onclick="location.href='miclub.jsp'">MI CLUB</div>
+        <div id="tab_5" class="tab" onclick="location.href='configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">

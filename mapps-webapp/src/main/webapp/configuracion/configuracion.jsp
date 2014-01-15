@@ -39,7 +39,7 @@
 <div id="contenedor">
 <!-- InstanceBeginEditable name="EditRegion2" -->
 <div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='index_template.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='index.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='jugadores/jugadores.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='entrenamientos/entrenamientos.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='miclub/miclub.jsp'">MI CLUB</div>

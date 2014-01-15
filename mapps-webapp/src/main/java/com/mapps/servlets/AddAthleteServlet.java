@@ -60,10 +60,13 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
         try {
             trainerService.addAthlete(athlete, token);
             req.setAttribute("info", "El atleta fue ingresado con éxito al sistema");
+            req.getRequestDispatcher("/jugadores.jsp").forward(req, resp);
         } catch (InvalidAthleteException e) {
             req.setAttribute("error", "Atleta no válido");
+            req.getRequestDispatcher("/jugadores_agregar.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Error de autentificación");
+            req.getRequestDispatcher("/jugadores_agregar.jsp").forward(req, resp);
         }
     }
 }

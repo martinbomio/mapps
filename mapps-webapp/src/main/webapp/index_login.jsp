@@ -45,7 +45,7 @@ if (error.equals("null"))
             <div id="usernameField" class="loginForm" > Nombre de usuario: </div>
             	<input type="text" class="loginField" name="username" id="username" style="margin-left:20%;" required="required" />
             <div id="passwordField" class="loginForm" > Contrase&ntilde;a: </div>
-            	<input type="text" class="loginField" name="password" id="password" style="margin-left:20%; margin-bottom:30px;" required="required" />
+            	<input type="password" class="loginField" name="password" id="password" style="margin-left:20%; margin-bottom:30px;" required="required" />
             <div id="submit" align="center" >
                 <input id="loginButton" type="submit" name="ingresar" value="INGRESAR" />
             </div>
