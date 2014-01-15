@@ -29,11 +29,11 @@ public class LogoutServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getParameter("token");
-        Role userRole = null;
-        token = userService.logout(token);
-        req.setAttribute("token", token);
-        req.setAttribute("role", userRole);
+
+        String token = String.valueOf(req.getSession().getAttribute("token"));
+        String logout = userService.logout(token);
+        req.getSession().setAttribute("token",logout);
+        req.getSession().setAttribute("role",null);
     }
 
 }

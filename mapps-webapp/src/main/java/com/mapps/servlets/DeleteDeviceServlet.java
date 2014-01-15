@@ -33,17 +33,8 @@ public class DeleteDeviceServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getParameter("token");
-        Role userRole = null;
-        try {
-            userRole = userService.userRoleOfToken(token);
-        } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error", "Usuario no valido");
-        } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
-        }
-        req.setAttribute("token", token);
-        req.setAttribute("role", userRole);
+        String token = String.valueOf(req.getSession().getAttribute("token"));
+
 
         String dirLow = req.getParameter("dirLow");
         try {

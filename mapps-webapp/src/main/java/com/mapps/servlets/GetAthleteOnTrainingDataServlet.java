@@ -44,7 +44,7 @@ import com.mapps.wrappers.AthleteStatsWrapper;
             writer.write(wrapper.toJson());
             writer.close();
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "El usuario no tiene permisos de entrenador para realizarr esta operación.");
+            req.setAttribute("error", "El usuario no tiene permisos de entrenador para realizar esta operación.");
             req.getRequestDispatcher("/athleteStats.jsp").forward(req, resp);
         } catch (InvalidTrainingException e) {
             req.setAttribute("error", "El entrenamiento seleccionado no es válido");

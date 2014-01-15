@@ -30,17 +30,7 @@ public class AddAthleteToTrainingServlet extends HttpServlet implements Servlet 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getParameter("token");
-        Role userRole = null;
-        try {
-            userRole = userService.userRoleOfToken(token);
-        } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
-            req.setAttribute("error", "Usuario inválido");
-        } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
-        }
-        req.setAttribute("token", token);
-        req.setAttribute("role", userRole);
+        String token = String.valueOf(req.getSession().getAttribute("token"));
 
         String trainingName = req.getParameter("trainingName");
         String dirDevice = req.getParameter("dirDevice");
@@ -48,6 +38,7 @@ public class AddAthleteToTrainingServlet extends HttpServlet implements Servlet 
 
         try {
             trainerService.addAthleteToTraining(trainingName, dirDevice, idAthlete, token);
+            req.setAttribute("info","El atleta fue ingresado al entrenamiento con éxito");
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Error de autentificación");
         } catch (InvalidParException e) {
