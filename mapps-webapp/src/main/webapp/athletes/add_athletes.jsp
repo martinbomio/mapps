@@ -68,11 +68,11 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 <!-- InstanceBeginEditable name="EditRegion2" -->
     <div id="tabs">
-	    <div id="tab_1" class="tab" onclick="location.href='index.jsp'" style="margin-left:180px;">INICIO</div>
-        <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href='entrenamientos.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab" onclick="location.href='miclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+        <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
+        <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
+        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -80,7 +80,7 @@ if ( session.getAttribute("role") == null){
         </div>
         <div id="main_div">
         	<div id="navigation" class="navigation">
-            	<a href="jugadores.jsp">JUGADORES</a> -> Agregar
+            	<a href="./athletes.jsp">JUGADORES</a> -> Agregar
             </div>
         	<form action="" method="post" name="agregar_deportista" id="agregar_deportista">
             	<div id="title" style="margin:15px;">
@@ -144,7 +144,7 @@ if ( session.getAttribute("role") == null){
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <li><a href="#"> Agregar </a></li>
-             	   <li><a href="jugadores_editar.jsp"> Editar </a></li>
+             	   <li><a href="edit_athletes.jsp"> Editar </a></li>
              	   <li><a href="#"> Eliminar </a></li>
         		</ul>
   			</div>
