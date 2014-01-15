@@ -3,15 +3,15 @@
 <%@ page import="com.mapps.model.Role" %><%
 
     Role role;
-    if(request.getAttribute("role")==null){
+    if(session.getAttribute("role")==null){
         role=null;
     }else{
-        role=(Role)request.getAttribute("role");
+        role=(Role)session.getAttribute("role");
     }
 
 
 
-    String token=String.valueOf(request.getAttribute("token"));
+    String token=String.valueOf(session.getAttribute("token"));
 
 
 

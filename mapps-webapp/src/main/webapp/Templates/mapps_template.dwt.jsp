@@ -15,7 +15,18 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
     <!-- TemplateEndEditable -->
 </head>
-
+<%
+String token = String.valueOf(session.getAttribute("token");
+if (token.equals("null") || token.equals("")){
+	request.getRequestDispatcher("index_login.jsp");	
+}
+Role role;
+if ( session.getAttribute("role") == null){
+	role = null;	
+}else{
+	role = (Role) session.getAttribute("role")	
+}
+%>
 <body>
 <!-- TemplateBeginEditable name="EditRegion4" -->
 <script type="text/javascript">

@@ -29,8 +29,8 @@ public class LoginServlet extends HttpServlet implements Servlet {
         try {
             String token = userService.login(username, password);
             Role role = userService.userRoleOfToken(token);
-            req.setAttribute("token", token);
-            req.setAttribute("role", role);
+            req.getSession().setAttribute("token", token);
+            req.getSession().setAttribute("role", role);
             req.getRequestDispatcher("/mainPage.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Nombre de Usuario o Contraseña no válido");
