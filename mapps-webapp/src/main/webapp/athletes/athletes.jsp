@@ -1,9 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
 <%@ page import="com.mapps.model.Role" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/jugadores_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- InstanceBeginEditable name="EditRegion5" -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -18,20 +17,20 @@
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
-    <!-- InstanceEndEditable -->
+
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
-
 if (token.equals("null") || token.equals("")){
-    response.sendRedirect("../index_login.jsp");
+	response.sendRedirect("../index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");
+	role = (Role) session.getAttribute("role");	
 }
 String info = String.valueOf(request.getParameter("info"));
 if (info.equals("null"))
@@ -42,12 +41,12 @@ if (error.equals("null"))
 
 %>
 <body>
-<!-- InstanceBeginEditable name="EditRegion4" -->
+
 <script type="text/javascript">
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '120', mode: 'vertical'});
+        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
         var url = "/mapps/getAllAthletesOfInstitution";
         $.ajax({
@@ -112,7 +111,7 @@ if (error.equals("null"))
         });
   
         // Create jqxListBox
-        $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '100%',
+        $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = data[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -124,25 +123,23 @@ if (error.equals("null"))
         updatePanel(0);
 	}
 </script>
-<!-- InstanceEndEditable -->
+
 
 <div id="header">
 	<div id="header_izq">
     
     </div>
     <div id="header_central">
-	<!-- InstanceBeginEditable name="EditRegion1" -->
-	
-	<!-- InstanceEndEditable -->
+
     </div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
-<!-- InstanceBeginEditable name="EditRegion2" -->
+
     <div id="tabs">
-	    <div id="tab_1" class="tab" onclick="location.href='index_template.jsp'" style="margin-left:180px;">INICIO</div>
+	    <div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -171,17 +168,16 @@ if (error.equals("null"))
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li><a href="add_athletes.jsp"> Agregar </a></li>
-             	   <li><a href="edit_athletes.jsp"> Editar </a></li>
-             	   <li><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
+             	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
+             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>
-    </div>
-<!-- InstanceEndEditable -->    
+    </div>    
 </div>
 <div id="pie">
 
 </div>
 </body>
-<!-- InstanceEnd --></html>
+</html>

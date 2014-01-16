@@ -22,6 +22,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css" /> 
     <!-- InstanceEndEditable -->
 </head>
@@ -43,7 +44,7 @@ if ( session.getAttribute("role") == null){
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '120', mode: 'vertical'});
+        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
 		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1  });
@@ -232,9 +233,9 @@ if ( session.getAttribute("role") == null){
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li><a href="add_athletes.jsp"> Agregar </a></li>
-             	   <li><a href="#"> Editar </a></li>
-             	   <li><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
+             	   <li style="height:35px;"><a href="#"> Editar </a></li>
+             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>

@@ -2,9 +2,8 @@
 <%@ page import="com.mapps.model.Role" %>
 <%@ page import="com.mapps.model.Gender" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/configuration_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- InstanceBeginEditable name="EditRegion5" -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -30,23 +29,24 @@
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
-    <!-- InstanceEndEditable -->
+    
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	response.sendRedirect("../index_login.jsp");
+	response.sendRedirect("../index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");
+	role = (Role) session.getAttribute("role");	
 }
 %>
 <body>
-<!-- InstanceBeginEditable name="EditRegion4" -->
+
 <script type="text/javascript">
 	$(document).ready(function () {
 		//Get Institutions
@@ -68,28 +68,28 @@ if ( session.getAttribute("role") == null){
             	}
             });
 	// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '150', mode: 'vertical'});
+        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//lastname
-		$("#lastname").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1});
+		$("#lastname").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//username
-		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 25, width: 200, minLength: 1});
+		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//password
-		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, minLength: 1});
+		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, minLength: 1, theme: 'metro'});
 		//email
-		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3});
+		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3, theme: 'metro'});
 		//Drop list
-		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100'});
+		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100', theme: 'metro'});
 		//Date
-		$("#date").jqxDateTimeInput({width: '200px', height: '25px'});
+		$("#date").jqxDateTimeInput({width: '200px', height: '25px', theme: 'metro'});
 		//document
-		$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#'});
+		$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#', theme: 'metro'});
 		//rol
-		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75'});
+		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75', theme: 'metro'});
 		//register
-		$("#register_button").jqxButton({ width: '150'});
+		$("#register_button").jqxButton({ width: '150', theme: 'metro'});
 		$("#register_button").on('click', function (){ 
 	        $('#register_form').jqxValidator('validate');
 	    });
@@ -135,40 +135,31 @@ if ( session.getAttribute("role") == null){
         $('#register_button').submit();
     });
 </script>
-<!-- InstanceEndEditable -->
 
 <div id="header">
 	<div id="header_izq">
     
     </div>
     <div id="header_central">
-	<!-- InstanceBeginEditable name="EditRegion1" -->
 	
-	<!-- InstanceEndEditable -->
-    </div>
+	</div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
 
-<div id="tabs">
-	  <div id="tab_1" class="tab active" style="margin-left:180px;">INICIO</div>
-        <div id="tab_2" class="tab">JUGADORES</div>
-        <div id="tab_3" class="tab">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab">MI CLUB</div>
-        <div id="tab_5" class="tab" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
-  </div>
+	<div id="tabs">
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+        <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
+        <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+  	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
-        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
-        	<ul>
-        		<li><a href="register_user.jsp">Registrar Usuario</a></li>
-        	</ul>
-        	</div>
-        </div>
-		<!-- InstanceBeginEditable name="EditRegion7" -->EditRegion7
-        
+
+        </div>	   
         <div id="main_div">
         	<div id="start_training_div">
             	<form action="/mapps/registerUser" method="post" id="register_form">
@@ -221,14 +212,23 @@ if ( session.getAttribute("role") == null){
             </div>
         </div>
         <div id="sidebar_right">
-        
+        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+        		<ul>
+             	   <li style="height:35px;"><a href="#"> Agregar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="#"> Editar / Eliminar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="#"> Agregar un Deporte </a></li>
+                   <li style="height:35px;"><a href="#"> Agregar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="#"> Editar / Eliminar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+        		</ul>
+  			</div>
         </div>
     </div>
-    <!-- InstanceEndEditable -->
+ 
     
 </div>
 <div id="pie">
 
 </div>
 </body>
-<!-- InstanceEnd --></html>
+</html>

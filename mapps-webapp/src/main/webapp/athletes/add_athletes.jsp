@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
 <%@ page import="com.mapps.model.Role" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/jugadores_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- InstanceBeginEditable name="EditRegion5" -->
+	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
      <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -29,8 +29,9 @@
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
-    <!-- InstanceEndEditable -->
+    
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
@@ -52,9 +53,22 @@ if (error.equals("null"))
 	error = "";
 %>
 <body>
-<!-- InstanceBeginEditable name="EditRegion4" -->
+
 <script type="text/javascript">
-$(document).ready(function () {
+
+	$(document).ready(function () {
+		// Create a jqxMenu
+        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").css('visibility', 'visible');
+		
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#idDocument").jqxInput({placeHolder: "1234567-8", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		
+		$("#validate").jqxButton({ width: '150', theme: 'metro'});
 	
 	//getAllInstitutions
 	var url = "/mapps/getAllInstitutions";
@@ -139,23 +153,21 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
     $('#addAthlete_button').submit();
 });
 </script>
-<!-- InstanceEndEditable -->
+
 
 <div id="header">
 	<div id="header_izq">
     
     </div>
     <div id="header_central">
-	<!-- InstanceBeginEditable name="EditRegion1" -->
-	
-	<!-- InstanceEndEditable -->
+
     </div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
-<!-- InstanceBeginEditable name="EditRegion2" -->
+
     <div id="tabs">
 	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
@@ -220,17 +232,16 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li><a href="#"> Agregar </a></li>
-             	   <li><a href="edit_athletes.jsp"> Editar </a></li>
-             	   <li><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="#"> Agregar </a></li>
+             	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
+             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>
     </div>
-<!-- InstanceEndEditable -->    
 </div>
 <div id="pie">
 
 </div>
 </body>
-<!-- InstanceEnd --></html>
+</html>
