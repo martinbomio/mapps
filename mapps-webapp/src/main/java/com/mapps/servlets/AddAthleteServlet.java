@@ -68,16 +68,12 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
 
         try {
             trainerService.addAthlete(athlete, token);
-            req.setAttribute("info", "El atleta fue ingresado con éxito al sistema");
-            req.getRequestDispatcher("athletes/athletes.jsp").forward(req, resp);
 
-            //resp.sendRedirect("athletes/athletes.jsp");
+            resp.sendRedirect("athletes/athletes.jsp?info=El atleta fue ingresado con éxito al sistema");
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error", "Atleta no válido o ya existente");
-            req.getRequestDispatcher("athletes/add_athletes.jsp").forward(req, resp);
+            resp.sendRedirect("athletes/add_athletes.jsp?error=Atleta no válido o ya existente");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
-            req.getRequestDispatcher("athletes/add_athletes.jsp").forward(req, resp);
+            resp.sendRedirect("athletes/add_athletes.jsp?error=Error de autentificación");
         }
     }
 }

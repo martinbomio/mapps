@@ -40,7 +40,7 @@ public class AddAthleteToTrainingServlet extends HttpServlet implements Servlet 
             trainerService.addAthleteToTraining(trainingName, dirDevice, idAthlete, token);
             req.setAttribute("info","El atleta fue ingresado al entrenamiento con éxito");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            resp.sendRedirect("athletes/add_athletes.jsp?error=Error de autentificación");
         } catch (InvalidParException e) {
             req.setAttribute("error", "Parametros invalidos");
         }

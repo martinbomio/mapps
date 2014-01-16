@@ -10,10 +10,10 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
 
-	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
     <!-- InstanceEndEditable -->
 </head>
 <%

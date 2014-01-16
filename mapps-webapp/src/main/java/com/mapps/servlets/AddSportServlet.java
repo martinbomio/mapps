@@ -34,14 +34,13 @@ public class AddSportServlet extends HttpServlet implements Servlet {
         Sport newSport = new Sport(sportName);
         try {
             trainerService.addSport(newSport, token);
-            req.setAttribute("info", "El deporte fue ingresado al sistema con exito");
-            req.getRequestDispatcher("/addSport.jsp").forward(req, resp);
+            resp.sendRedirect("./configuration/configuration.jsp");
         } catch (InvalidSportException e) {
-            req.setAttribute("error", "Deporte no válido");
-            req.getRequestDispatcher("/addSport.jsp").forward(req, resp);
+            //1:Deporte no valido o existente
+            resp.sendRedirect("athletes/add_athletes.jsp?error=1");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
-            req.getRequestDispatcher("/addSport.jsp").forward(req, resp);
+            //2:Error de autentificacion
+            resp.sendRedirect("athletes/add_athletes.jsp?error=2");
         }
     }
 }

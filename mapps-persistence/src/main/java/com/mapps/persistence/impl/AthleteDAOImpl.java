@@ -69,7 +69,7 @@ public class AthleteDAOImpl implements AthleteDAO{
     @Override
     public void updateAthlete(Athlete athlete) throws AthleteNotFoundException, NullParameterException {
         if(athlete!=null){
-        Athlete athAux=getAthleteById(athlete.getId());
+        Athlete athAux=getAthleteByIdDocument(athlete.getIdDocument());
         if(athAux!=null){
             entityManager.merge(athlete);
             logger.info("A Athlete was updated in the database");

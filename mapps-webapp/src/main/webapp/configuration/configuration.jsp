@@ -27,6 +27,12 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+String error = String.valueOf(request.getParameter("error"));
+if (error.equals("null"))
+	error = "";
 %>
 <body>
 <!-- InstanceBeginEditable name="EditRegion4" -->

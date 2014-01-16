@@ -56,7 +56,6 @@ public class TrainerServiceImplTest {
         trainerService.setSportDAO(sportDAO);
 
     }
-
     @Test
     public void testStartTraining(){
         Training startTraining=mock(Training.class);

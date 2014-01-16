@@ -52,7 +52,7 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         } catch (DeviceAlreadyExistsException e) {
             req.setAttribute("error", "Device no valido");
         } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            resp.sendRedirect("athletes/add_athletes.jsp?error=Error de autentificación");
         }
     }
 }

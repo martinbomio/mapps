@@ -76,18 +76,18 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
 
         try {
             adminService.createUser(user, token);
-            req.setAttribute("info", "user added to system");
-            req.getRequestDispatcher("/configuration/configuration.jsp").forward(req, resp);
+            resp.sendRedirect("/configuration/configuration.jsp?info=El usuario se agrego al sistema con exito");
 
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Authentication error");
-            req.getRequestDispatcher("/configuration/register_user.jsp").forward(req, resp);
+
+            resp.sendRedirect("/configuration/register_user.jsp?error=Error de autentificación");
+
         } catch (InvalidUserException e) {
-            req.setAttribute("error", "invalid user error");
-            req.getRequestDispatcher("/configuration/register_user.jsp").forward(req, resp);
+            resp.sendRedirect("/configuration/register_user.jsp?error=Usuario no valido");
+
         } catch (UserAlreadyExistsException e) {
-            req.setAttribute("error", "user already exists error");
-            req.getRequestDispatcher("/configuration/register_user.jsp").forward(req, resp);
+            resp.sendRedirect("/configuration/register_user.jsp?error=Usuario ya existe en el sistema");
+
         }
 
     }
