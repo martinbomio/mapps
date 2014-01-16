@@ -1,6 +1,8 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
@@ -19,12 +21,14 @@ import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
+import org.apache.log4j.Logger;
 
 /**
  *
  */
 @WebServlet(name = "modifyAthlete", urlPatterns = "/modifyAthlete/*")
 public class ModifyAthleteServlet extends HttpServlet implements Servlet {
+    Logger logger= Logger.getLogger(ModifyAthleteServlet.class);
     @EJB(beanName = "UserService")
     UserService userService;
     @EJB(beanName = "TrainerService")
@@ -39,7 +43,16 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
 
         String name = req.getParameter("name");
         String lastName = req.getParameter("lastName");
-        Date birth = new Date(req.getParameter("date"));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birth = null;
+        try {
+            birth = formatter.parse(req.getParameter("date"));
+        } catch (ParseException e) {
+            logger.error("Date fromat exception");
+            throw new IllegalStateException();
+        }
+
+
         Gender gender = null;
         if (req.getParameter("gender").equalsIgnoreCase("male")) {
             gender = Gender.MALE;
@@ -54,16 +67,21 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
         String idDocument = req.getParameter("idDocument");
         String instName = req.getParameter("institution");
         Institution instAux = institutionService.getInstitutionByName(instName);
-        //Athlete athlete = trainerService.getAthleteByIdDocument(idDocument);
-        //athlete.setName(name);
-        //athlete.setLastName(lastName);
-        //athlete.setBirth(birth);
-        //athlete.setGender(gender);
-        //athlete.setEmail(email);
-        //athlete.setWeight(weight);
-        //athlete.setHeight(height);
-        //athlete.setInstitution(instAux);
-        Athlete athlete = new Athlete(name, lastName, birth, gender, email, weight, height, idDocument, instAux);
+        Athlete athlete = null;
+        try {
+            athlete = trainerService.getAthleteByIdDocument(idDocument);
+        } catch (InvalidAthleteException e) {
+            req.setAttribute("error","Atleta no válido");
+        }
+        athlete.setName(name);
+        athlete.setLastName(lastName);
+        athlete.setBirth(birth);
+        athlete.setGender(gender);
+        athlete.setEmail(email);
+        athlete.setWeight(weight);
+        athlete.setHeight(height);
+        athlete.setInstitution(instAux);
+       // Athlete athlete = new Athlete(name, lastName, birth, gender, email, weight, height, idDocument, instAux);
         athlete.setEnabled(true);
 
         try {

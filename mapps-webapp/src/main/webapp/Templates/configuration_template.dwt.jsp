@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.mapps.model.Role" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/mapps_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -16,15 +17,15 @@
     <!-- InstanceEndEditable -->
 </head>
 <%
-String token = String.valueOf(session.getAttribute("token");
+String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	request.getRequestDispatcher("index_login.jsp");	
+	response.sendRedirect("index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
 }else{
-	role = (Role) session.getAttribute("role")	
+	role = (Role) session.getAttribute("role");	
 }
 %>
 <body>

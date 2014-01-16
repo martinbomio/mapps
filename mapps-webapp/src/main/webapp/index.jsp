@@ -20,7 +20,7 @@
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	request.getRequestDispatcher("index_login.jsp");	
+	response.sendRedirect("index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){

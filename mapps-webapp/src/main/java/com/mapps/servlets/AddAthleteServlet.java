@@ -1,7 +1,10 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -18,12 +21,14 @@ import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
+import org.apache.log4j.Logger;
 
 /**
  *
  */
 @WebServlet(name = "addAthlete", urlPatterns = "/addAthlete/*")
 public class AddAthleteServlet extends HttpServlet implements Servlet {
+    Logger logger= Logger.getLogger(AddAthleteServlet.class);
     @EJB(beanName = "UserService")
     UserService userService;
     @EJB(beanName = "TrainerService")
@@ -37,7 +42,14 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
 
         String name = req.getParameter("name");
         String lastName = req.getParameter("lastName");
-        Date birth = new Date(req.getParameter("date"));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birth = null;
+        try {
+            birth = formatter.parse(req.getParameter("date"));
+        } catch (ParseException e) {
+            logger.error("Date fromat exception");
+            throw new IllegalStateException();
+        }
         Gender gender = null;
         if (req.getParameter("gender").equalsIgnoreCase("male")) {
             gender = Gender.MALE;
