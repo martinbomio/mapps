@@ -49,7 +49,7 @@ if (error.equals("null"))
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '120', mode: 'vertical'});
         $("#jqxMenu").css('visibility', 'visible');
-        var url = "/mapps/getAllAthletesOfInstitution"
+        var url = "/mapps/getAllAthletesOfInstitution";
         $.ajax({
             url: url,
             type: "GET",
@@ -144,9 +144,9 @@ if (error.equals("null"))
     <div id="tabs">
 	    <div id="tab_1" class="tab" onclick="location.href='index_template.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href='../trainings/trainings.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab" onclick="location.href='../miclub/miclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuracion/configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+        <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
+        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">

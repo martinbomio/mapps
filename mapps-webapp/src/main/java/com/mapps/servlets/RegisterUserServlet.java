@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,18 +50,20 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
         String idDocument = req.getParameter("document");
-        Gender gender = Gender.UNKNOWN;;
+        Gender gender = Gender.UNKNOWN;
+        ;
         if (req.getParameter("gender").equalsIgnoreCase("hombre")) {
             gender = Gender.MALE;
-        } else if (req.getParameter("gender").equalsIgnoreCase("mujer")){
+        } else if (req.getParameter("gender").equalsIgnoreCase("mujer")) {
             gender = Gender.FEMALE;
         }
-        Role role = role = Role.USER;;
+        Role role = role = Role.USER;
+        ;
         if (req.getParameter("role").equalsIgnoreCase("administrador")) {
             role = Role.ADMINISTRATOR;
         } else if (req.getParameter("role").equalsIgnoreCase("entrenador")) {
             role = Role.TRAINER;
-        } 
+        }
         String instName = req.getParameter("institution");
         Institution instAux = institutionService.getInstitutionByName(instName);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

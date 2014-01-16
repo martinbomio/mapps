@@ -96,7 +96,7 @@ if ( session.getAttribute("role") == null){
 		$("#register_form").jqxValidator({
             rules: [
                     {
-                        input: "#name", message: "El nobre es obligatorio!", action: 'keyup, blur', rule: 'required'
+                        input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
                     },
                     {
                         input: "#lastname", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'

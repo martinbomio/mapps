@@ -18,7 +18,7 @@ public abstract class Person{
     protected Gender gender;
     @Email
     protected String email;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     protected String idDocument;
     @ManyToOne
     protected Institution institution;

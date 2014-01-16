@@ -17,6 +17,10 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxpanel.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css" /> 
     <!-- InstanceEndEditable -->
@@ -24,7 +28,7 @@
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	request.getRequestDispatcher("index_login.jsp");	
+	response.sendRedirect("../index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
@@ -42,19 +46,83 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '120', mode: 'vertical'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$('#list').jqxListMenu({autoSeparators: true, enableScrolling: false, showHeader: false, width: '370px', placeHolder: 'Seleccione un jugador' });
-		$("#list_players").jqxPanel({ width: 390, height: 380});
-		
 		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1  });
 		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 200, minLength: 1  });
+		$("#document").jqxInput({placeHolder: "C.I", height: 30, width: 200, minLength: 1  });
+		$('#document').jqxInput({disabled: true });
+		$("#date").jqxInput({placeHolder: "Fecha de Nacimiento", height: 30, width: 200, minLength: 1  });
+		$('#date').jqxInput({disabled: true });
 		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: 200, minLength: 1  });
 		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: 200, minLength: 1  });
-		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: 200, minLength: 1  });
-		
+		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: 200, minLength: 1  });
+		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '30', dropDownHeight: '100'});
 		$("#validate").jqxButton({ width: '150'});
-		
+		$("#validate").on('click', function (){ 
+	        $('#edit_athlete').jqxValidator('validate');
+	    });
+		$("#edit_athlete").jqxValidator({
+            rules: [
+                    {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#weight", message: "El peso es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#height", message: "La altura es obligatoria!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
+                    { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#gender", message: "El Género es obligatorio!", action: 'blur', rule: function (input, commit) {
+                        var index = $("#gender").jqxDropDownList('getSelectedIndex');
+                        return index != -1;
+                       }
+                    },
+            ],  hintType: "label"
+	        });
+		$('#edit_athlete').on('validationSuccess', function (event) {
+	        $('#validate').submit();
+	    });
+		//Get athletes
+		var url = "/mapps/getAllAthletesOfInstitution";		
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+				create_list(response);	            	
+            }});
+		});
 	
-   	});
+	function create_list(response){
+		var athletes = response['athletes'];
+		$('#list_players').on('select', function (event) {
+            updatePanel(athletes[event.args.index]);
+        });
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '390',
+            renderer: function (index, label, value) {
+                var datarecord = athletes[index];
+                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
+                var img = '<img height="50" width="40" src="../images/logo.png"/>';
+                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                return table;
+            }
+        });
+		updatePanel(athletes[0]);
+	}
+	
+	function updatePanel(athlete){
+		$('#name').jqxInput('val', athlete['name']);
+		$('#lastName').jqxInput('val', athlete['lastName']);
+		$('#document').jqxInput('val', athlete['idDocument']);
+		$('#weight').jqxInput('val', athlete['weight']);
+		$('#height').jqxInput('val', athlete['height']);
+		$('#email').jqxInput('val', athlete['email']);
+		var index = 2;
+		if (athlete['gender'] == "FEMALE"){
+			index = 1;
+		}else if (athlete['gender'] == "MALE"){
+			index = 0;
+		}
+		$("#gender_list").jqxDropDownList({selectedIndex: index });
+		$("#document-hidden").val(athlete.idDocument);
+		$("#date").jqxInput('val', athlete.birth);
+	}
 </script>
 
     <style type="text/css">
@@ -113,57 +181,10 @@ if ( session.getAttribute("role") == null){
                     <label> 1) Seleccione un jugador </label>
                 </div>
                 <div id="list_players">
-                    <ul id="list" data-role="listmenu">
-                        <li>
-                            <img src="../../images/andrew.png" alt="" /><div>
-                                Andrew Fuller</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/anne.png" alt="" /><div>
-                                Anne Dodsworth</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/janet.png" alt="" /><div>
-                                Janet Leverling</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/laura.png" alt="" /><div>
-                                Laura Callahan</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/margaret.png" alt="" /><div>
-                                Margaret Peacock</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/michael.png" alt="" /><div>
-                                Michael Suyama</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/nancy.png" alt="" /><div>
-                                Nancy Divolio</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/robert.png" alt="" /><div>
-                                Robert King</div>
-                            
-                        </li>
-                        <li>
-                            <img src="../../images/steven.png" alt="" /><div>
-                                Steven Buchanan</div>
-                            
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                <form action="" method="post" name="agregar_deportista" id="agregar_deportista">
+                <form action="/mapps/modifyAthlete" method="post" name="agregar_deportista" id="edit_athlete">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>
@@ -176,6 +197,14 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> Apellido: </div>
                             <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
                         </div>
+                        <div id="ci">
+                            <div class="tag_form_editar"> C.I.: </div>
+                            <div class="input"><input type="text" id="document" required="required" /></div>
+                        </div>
+                        <div id="birth">
+                            <div class="tag_form_editar">Nacimiento: </div>
+                            <div class="input"><input type="text" id="date" required="required" /></div>
+                        </div>
                         <div id="peso">
                             <div class="tag_form_editar"> Peso: </div>
                             <div class="input"><input type="text" name="weight" id="weight" required="required" /></div>
@@ -184,33 +213,19 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> Altura: </div>
                             <div class="input"><input type="text" name="height" id="height" required="required" /></div>
                         </div>
-                        <div id="sexo">
-                            <div class="tag_form_editar"> Sexo: </div>
-                            <div class="input">
-                                <select name="gender">
-                                    <option value="male">M</option>
-                                    <option value="female">F</option>
-                                </select>
-                            </div>
+                        <div id='gender' style="display:inline-block">
+                        	<div class="tag_form_editar"> Sexo: </div>
+                            <div id="gender_list" style="display:inline-block; margin-top:10px"></div>
                         </div>
                         <div id="e_mail">
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" required="required" /></div>
                         </div>
-                        <div id="institucion">
-                            <div class="tag_form_editar"> Instituci&oacute;n </div>
-                            <div class="input">
-                                <select name="institution">
-                                <& 
-                                &>
-                                    <option value="<% %>"><% %></option>
-                                </select>
-                            </div>
-                        </div>
                     	<div style="margin-left:100px; margin-top:50px;">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    		<input type="submit" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
+                    <input type="hidden" id="document-hidden" name="document"></input>
                 </form>
             </div>
         </div>
