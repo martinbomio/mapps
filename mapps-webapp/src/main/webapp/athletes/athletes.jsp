@@ -33,6 +33,12 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");
 }
+String info = String.valueOf(request.getAttribute("info"));
+if (info.equals("null"))
+	info = "";
+String error = String.valueOf(request.getAttribute("error"));
+if (error.equals("null"))
+	error = "";
 
 %>
 <body>
@@ -138,7 +144,7 @@ if ( session.getAttribute("role") == null){
     <div id="tabs">
 	    <div id="tab_1" class="tab" onclick="location.href='index_template.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href=../'entrenamientos/entrenamientos.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_3" class="tab" onclick="location.href='../trainings/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../miclub/miclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuracion/configuracion.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
     </div>
@@ -147,6 +153,7 @@ if ( session.getAttribute("role") == null){
         
         </div>
         <div id="main_div">
+        <%=info %>
         	<div id="title" style="margin:15px;">
            			<label> Todos mis jugadores </label>
             </div>

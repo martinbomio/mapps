@@ -50,18 +50,16 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
             logger.error("Date fromat exception");
             throw new IllegalStateException();
         }
-        Gender gender = null;
-        if (req.getParameter("gender").equalsIgnoreCase("male")) {
+        Gender gender = Gender.UNKNOWN;;
+        if (req.getParameter("gender").equalsIgnoreCase("hombre")) {
             gender = Gender.MALE;
-        } else if (req.getParameter("gender").equalsIgnoreCase("female")){
+        } else if (req.getParameter("gender").equalsIgnoreCase("mujer")){
             gender = Gender.FEMALE;
-        }else{
-            gender = Gender.UNKNOWN;
         }
         String email = req.getParameter("email");
         double weight = Double.parseDouble(req.getParameter("weight"));
         double height = Double.parseDouble(req.getParameter("height"));
-        String idDocument = req.getParameter("idDocument");
+        String idDocument = req.getParameter("document");
         String instName = req.getParameter("institution");
         Institution instAux = institutionService.getInstitutionByName(instName);
 
@@ -71,13 +69,15 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
         try {
             trainerService.addAthlete(athlete, token);
             req.setAttribute("info", "El atleta fue ingresado con éxito al sistema");
-            req.getRequestDispatcher("/athletes/athletes.jsp").forward(req, resp);
+            req.getRequestDispatcher("athletes/athletes.jsp").forward(req, resp);
+
+            //resp.sendRedirect("athletes/athletes.jsp");
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error", "Atleta no válido");
-            req.getRequestDispatcher("/athletes/add_athletes.jsp").forward(req, resp);
+            req.setAttribute("error", "Atleta no válido o ya existente");
+            req.getRequestDispatcher("athletes/add_athletes.jsp").forward(req, resp);
         } catch (AuthenticationException e) {
             req.setAttribute("error", "Error de autentificación");
-            req.getRequestDispatcher("/athletes/add_athletes.jsp").forward(req, resp);
+            req.getRequestDispatcher("athletes/add_athletes.jsp").forward(req, resp);
         }
     }
 }
