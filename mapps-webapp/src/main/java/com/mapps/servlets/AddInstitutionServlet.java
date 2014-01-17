@@ -40,11 +40,11 @@ public class AddInstitutionServlet extends HttpServlet implements Servlet {
         Institution institution = new Institution(name, description, country);
         try {
             institutionService.createInstitution(institution, token);
-            req.setAttribute("info", "La instituci贸n fue ingresada al sistema con 茅xito");
+            resp.sendRedirect("configuration/configuration.jsp");
         } catch (AuthenticationException e) {
-            resp.sendRedirect("athletes/add_athletes.jsp?error=Error de autentificaci贸n");
+            resp.sendRedirect("configuration/add_institution.jsp?error=Error de autentificaci贸n");
         } catch (InvalidInstitutionException e) {
-            req.setAttribute("error", "Instituci贸n no v谩lida");
+        	resp.sendRedirect("configuration/add_institution.jsp?error=Instituci髇 no v醠ida");
         }
     }
 }
