@@ -1,16 +1,25 @@
 package com.mapps.services.trainer.impl;
 
-import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.mapps.exceptions.*;
-import com.mapps.services.trainer.exceptions.*;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
+import com.mapps.exceptions.AthleteAlreadyExistException;
+import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.exceptions.DeviceAlreadyExistException;
+import com.mapps.exceptions.DeviceNotFoundException;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.SportAlreadyExistException;
+import com.mapps.exceptions.SportNotFoundException;
+import com.mapps.exceptions.TrainingAlreadyExistException;
+import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Role;
@@ -21,6 +30,12 @@ import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.trainer.TrainerService;
+import com.mapps.services.trainer.exceptions.AuthenticationException;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
+import com.mapps.services.trainer.exceptions.InvalidDeviceException;
+import com.mapps.services.trainer.exceptions.InvalidParException;
+import com.mapps.services.trainer.exceptions.InvalidSportException;
+import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  * Implementation of the TrainerService
@@ -68,8 +83,8 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public void addTraining(Training training,String token) throws AuthenticationException, InvalidTrainingException {
-        if(invalidTraining(training)){
+    public void addTraining(Training training, String token) throws AuthenticationException, InvalidTrainingException {
+        if (invalidTraining(training)) {
             throw new AuthenticationException();
         }
         try {
@@ -90,40 +105,44 @@ public class TrainerServiceImpl implements TrainerService {
         }
 
     }
+
     @Override
-    public List<String> getAllSportsNames(){
-        List<String> aux=new ArrayList<String>();
-        List<Sport> sports=sportDAO.getAllSports();
-        for(int i=0;i<sports.size();i++){
+    public List<String> getAllSportsNames() {
+        List<String> aux = new ArrayList<String>();
+        List<Sport> sports = sportDAO.getAllSports();
+        for (int i = 0; i < sports.size(); i++) {
             aux.add((sports.get(i)).getName());
         }
         return aux;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
     @Override
-    public List<String> getAllAthletesId(){
-        List<String> aux=new ArrayList<String>();
-        List<Athlete> athletesId=athleteDAO.getAllAthletes();
-        for(int i=0;i<athletesId.size();i++){
+    public List<String> getAllAthletesId() {
+        List<String> aux = new ArrayList<String>();
+        List<Athlete> athletesId = athleteDAO.getAllAthletes();
+        for (int i = 0; i < athletesId.size(); i++) {
             aux.add((athletesId.get(i)).getIdDocument());
         }
         return aux;
     }
+
     @Override
-     public List<Athlete> getAllAthletes(){
-        List<Athlete> aux=athleteDAO.getAllAthletes();
+    public List<Athlete> getAllAthletes() {
+        List<Athlete> aux = athleteDAO.getAllAthletes();
         return aux;
     }
+
     @Override
-    public List<Athlete> getAllAthletesOfInstitution(String instName){
-        List<Athlete> aux=athleteDAO.getAllAthletesByInstitution(instName);
+    public List<Athlete> getAllAthletesOfInstitution(String instName) {
+        List<Athlete> aux = athleteDAO.getAllAthletesByInstitution(instName);
         return aux;
     }
 
     @Override
     public List<String> getAllDevicesDirs() {
-        List<String> aux=new ArrayList<String>();
-        List<Device> devices=deviceDAO.getAllDevices();
-        for(int i=0;i<devices.size();i++){
+        List<String> aux = new ArrayList<String>();
+        List<Device> devices = deviceDAO.getAllDevices();
+        for (int i = 0; i < devices.size(); i++) {
             aux.add((devices.get(i)).getDirLow());
         }
         return aux;
@@ -131,22 +150,23 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Sport getSportByName(String sportName) {
-        Sport aux=null;
-        if(sportName!=null){
+        Sport aux = null;
+        if (sportName != null) {
             try {
-                aux=sportDAO.getSportByName(sportName);
+                aux = sportDAO.getSportByName(sportName);
             } catch (SportNotFoundException e) {
                 logger.error("sport not found");
             }
         }
         return aux;
     }
+
     @Override
     public Training getTrainingByName(String name) throws InvalidTrainingException {
-        Training aux=null;
-        if(name!=null){
+        Training aux = null;
+        if (name != null) {
             try {
-                aux=trainingDAO.getTrainingByName(name);
+                aux = trainingDAO.getTrainingByName(name);
             } catch (TrainingNotFoundException e) {
                 throw new InvalidTrainingException();
             }
@@ -156,25 +176,26 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException {
-        Device aux=null;
-        if(dirDevice!=null){
+        Device aux = null;
+        if (dirDevice != null) {
             try {
-                aux=deviceDAO.getDeviceByDir(dirDevice);
-            }  catch (DeviceNotFoundException e) {
+                aux = deviceDAO.getDeviceByDir(dirDevice);
+            } catch (DeviceNotFoundException e) {
                 logger.error("device not found");
                 throw new InvalidDeviceException();
             }
         }
         return aux;
     }
+
     @Override
     public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException {
-        Athlete aux=null;
-        if(idDocument!=null){
+        Athlete aux = null;
+        if (idDocument != null) {
             try {
-                aux=athleteDAO.getAthleteByIdDocument(idDocument);
+                aux = athleteDAO.getAthleteByIdDocument(idDocument);
             } catch (AthleteNotFoundException e) {
-               throw new InvalidAthleteException();
+                throw new InvalidAthleteException();
             }
         }
         return aux;
@@ -246,6 +267,7 @@ public class TrainerServiceImpl implements TrainerService {
         }
 
     }
+
     @Override
     public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException {
         if (invalidDevice(device)) {
@@ -271,29 +293,29 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public void addDevice(Device device,String token) throws InvalidDeviceException, AuthenticationException {
-       if(invalidDevice(device)){
-           logger.error("invalid device");
-           throw new InvalidDeviceException();
-       }
-     try{
-        if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
-                authenticationHandler.isUserInRole(token, Role.TRAINER)) {
-            deviceDAO.addDevice(device);
-        } else {
-            logger.error("authentication error");
-            throw new AuthenticationException();
+    public void addDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException {
+        if (invalidDevice(device)) {
+            logger.error("invalid device");
+            throw new InvalidDeviceException();
         }
-    } catch (InvalidTokenException e) {
-         logger.error("Invalid Token");
-         throw new AuthenticationException();
-     } catch (DeviceAlreadyExistException e) {
-         logger.error("Athlete already exist");
-         throw new InvalidDeviceException();
-     } catch (NullParameterException e) {
-         logger.error("Athlete is null");
-         throw new InvalidDeviceException();
-     }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                deviceDAO.addDevice(device);
+            } else {
+                logger.error("authentication error");
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid Token");
+            throw new AuthenticationException();
+        } catch (DeviceAlreadyExistException e) {
+            logger.error("Athlete already exist");
+            throw new InvalidDeviceException();
+        } catch (NullParameterException e) {
+            logger.error("Athlete is null");
+            throw new InvalidDeviceException();
+        }
 
 
     }
@@ -332,21 +354,21 @@ public class TrainerServiceImpl implements TrainerService {
     public void addAthleteToTraining(String trainingName, String dirDevice, String idAthlete, String token) throws
             AuthenticationException, InvalidParException {
 
-        Athlete athlete= null;
+        Athlete athlete = null;
         try {
             athlete = athleteDAO.getAthleteByIdDocument(idAthlete);
         } catch (AthleteNotFoundException e) {
             throw new InvalidParException();
         }
 
-        Device device= null;
+        Device device = null;
         try {
             device = deviceDAO.getDeviceByDir(dirDevice);
         } catch (DeviceNotFoundException e) {
             throw new InvalidParException();
         }
 
-        Training training= null;
+        Training training = null;
         try {
             training = trainingDAO.getTrainingByName(trainingName);
         } catch (TrainingNotFoundException e) {
