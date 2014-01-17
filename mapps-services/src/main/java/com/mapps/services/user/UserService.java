@@ -42,4 +42,5 @@ public interface UserService {
 
     public String getUserOfToken(String token) throws AuthenticationException;
     public String getInstitutionOfUser(String username) throws InvalidUserException;
+    public User getUserByUsername(String username) throws InvalidUserException;
 }

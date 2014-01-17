@@ -3,6 +3,9 @@ package com.mapps.services.user.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.model.Athlete;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
@@ -83,6 +86,18 @@ public class UserServiceImpl implements UserService {
             logger.error("Not valid user to update");
             throw new InvalidUserException();
         }
+    }
+    @Override
+    public User getUserByUsername(String username) throws InvalidUserException {
+        User aux=null;
+        if(username!=null){
+            try {
+                aux=userDAO.getUserByUsername(username);
+            } catch (UserNotFoundException e) {
+                throw new InvalidUserException();
+            }
+        }
+        return aux;
     }
 
     @Override
