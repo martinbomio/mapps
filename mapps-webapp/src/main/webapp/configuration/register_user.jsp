@@ -149,7 +149,6 @@ if ( session.getAttribute("role") == null){
     </div>
 </div>
 <div id="contenedor">
-
 	<div id="tabs">
 	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
@@ -163,7 +162,7 @@ if ( session.getAttribute("role") == null){
         </div>	   
         <div id="main_div">
         	<div id="navigation" class="navigation">
-            	<a href="./configuration.jsp">CONFIGURACION</a> >> Agregar un Usuario
+            	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un Usuario
             </div>
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
@@ -229,11 +228,13 @@ if ( session.getAttribute("role") == null){
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <li style="height:35px;"><a href="#"> Agregar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="#"> Editar / Eliminar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="#"> Agregar un Deporte </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Editar / Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
+                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
+                   <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

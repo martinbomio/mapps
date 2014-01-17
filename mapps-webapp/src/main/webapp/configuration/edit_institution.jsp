@@ -49,58 +49,23 @@ if ( session.getAttribute("role") == null){
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		//Get Institutions
-		var url = "/mapps/getAllInstitutions";
-		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	var names = response['name'];
-            	$("#institution").jqxDropDownList(
-                		{
-                			source: names,
-                			selectedIndex: 0,
-                			width: '200',
-                			height: '25',
-                			dropDownHeight: '75'
-                			}
-                		);
-            	}
-            });
+	
 			
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
+		
 		//name
-		$("#panId").jqxInput({placeHolder: "PAN ID", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		//lastname
-		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro', disabled: true });
+		//country
+		$("#country").jqxInput({height: 25, width: 200, minLength: 1, theme: 'metro' });
 	
 		//register
-		$("#validate").jqxButton({ width: '150', theme: 'metro'});
-		$("#register_button").on('click', function (){ 
-	        $('#device_form').jqxValidator('validate');
-	    });
-		$("#device_form").jqxValidator({
-            rules: [
-					{input: "#panId", message: "El PAN ID es obligatoria!", action: 'keyup, blur', rule: 'required'},
-					{input: "#panId", message: "El PAN ID debe ser un número!", action: 'keyup, blur', rule: function(){
-						var pan = $('#panId').jqxInput('val');
-						return $.isNumeric(pan);
-					}},
-					{input: "#dirLow", message: "La dirección es obligatoria!", action: 'keyup, blur', rule: 'required'},
-					{input: "#dirLow", message: "La Dirección debe ser de 8 caracteres!", action: 'keyup, blur', rule: 'length=8,8'},
-					{input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
-                            var index = $("#institution").jqxDropDownList('getSelectedIndex');
-                            return index != -1;
-                        }
-                    }
-                    ]
-			});
-		});
-	$('#device_form').on('validationSuccess', function (event) {
-        $('#validate').submit();
-    });
+		$("#validate").jqxButton({ width: '150', height: '35', theme: 'metro'});
+	
+	
+	
+	});
 </script>
 
 <div id="header">
@@ -128,31 +93,41 @@ if ( session.getAttribute("role") == null){
 
         </div>	   
         <div id="main_div">
-			<div id="navigation" class="navigation">
-            	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un dispositivo
+        	<div id="navigation" class="navigation">
+            	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Editar una Institución
             </div>
-        	<form action="/mapps/addDevice" method="post" name="device_form" id="device_form">
+	        <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
             	<div id="title" style="margin:15px;">
-           			<label> Rellene el siguiente formulario </label>
+                    <label> 1) Seleccione una instituci&oacute;n </label>
                 </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
-                	<div id="pan_id">
-                    	<div class="tag_form"> PAN ID:  </div>
-                    	<div class="input"><input type="text" name="panId" id="panId" required="required" /></div>
+        		<div id="list_institutions">
+                </div>
+            </div>
+            <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+                <form action="/mapps/..." method="post" name="edit_institution" id="edit_institution">
+                    <div id="title" style="margin:15px;">
+                        <label> 2) Modifique los datos que desee </label>
                     </div>
-                    <div id="dir_low">
-                        <div class="tag_form"> DIR LOW: </div>
-                        <div class="input"><input type="text" name="dirLow" id="dirLow" required="required" /></div>
+                    <div id="campos" style="margin-left:40px;">
+                        <div id="nombre">
+                        <div class="tag_form_editar"> Nombre:  </div>
+                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                        </div>
+                        <div id="Descripcion">
+                            <div class="tag_form_editar" style="vertical-align:top;"> Descripción: </div>
+                            <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:200px; height:200px;" type="text" name="description" id="description" required="required" ></textarea></div>
+                        </div>
+                        <div>
+                            <div class="tag_form_editar"> País: </div>
+                            <div class="input"><input name="country"  id="country" type="text" required /></div>
+                        </div>
+                    	<div style="margin-left:70px; margin-top:20px;">
+                    		<input type="submit" id="validate" value="CONFIRMAR"/>
+                   		</div>
                     </div>
-                    <div id="institucion" style="display: inline-block;">
-                        <div class="tag_form"> Instituci&oacute;n </div>
-                        <div id='institution' style="display: inline-block;"></div>
-                    </div>
-                    <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="submit" id="validate" value="CONFIRMAR"/>
-                    </div>
-				</div>
-            </form>
+                    <input type="hidden" id="document-hidden" name="document"></input>
+                </form>
+            </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
@@ -162,9 +137,9 @@ if ( session.getAttribute("role") == null){
                    <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
              	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
                    <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="#"> Editar una Instituci&oacute;n </a></li>
                    <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

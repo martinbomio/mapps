@@ -79,11 +79,13 @@ if (error.equals("null"))
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
-             	   <li style="height:35px;"><a href=""> Editar / Eliminar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
+                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
              	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
                    <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Editar / Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

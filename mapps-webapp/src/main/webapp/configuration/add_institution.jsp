@@ -57,7 +57,7 @@ if (error.equals("null"))
 	$(document).ready(function () {
 		
 		 var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
-         $("#country").jqxInput({ placeHolder: "País", height: 25, width: 250, 
+         $("#country").jqxInput({ placeHolder: "País", height: 35, width: 200, theme: 'metro', 
              source: function (query, response) {
                  var item = query.split(/,\s*/).pop();
                  // update the search query.
@@ -82,12 +82,9 @@ if (error.equals("null"))
         $("#jqxMenu").css('visibility', 'visible');
 		//name
 		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		//description
-		//$("#description").jqxInput({placeHolder: "Descripción", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		//country
-		//$("#country").jqxInput({placeHolder: "País", height: 25, width: 200, minLength: 1, theme: 'metro'});
+	
 		//register
-		$("#addInstitution_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		$("#addInstitution_button").jqxButton({ width: '150', height: '25', theme: 'metro'});
 		$("#addInstitution_button").on('click', function (){ 
 	        $('#addInstitution_form').jqxValidator('validate');
 	    });
@@ -97,9 +94,9 @@ if (error.equals("null"))
                         input: "#name", message: "El nombre de la institución es obligatorio!", action: 'keyup, blur', rule: 'required'
                     },
                     {
-                        input: "#description", message: "Complete la descripcion de la institución!", action: 'keyup, blur', rule: 'required'
+                        input: "#description", message: "Complete la descripción de la institución!", action: 'keyup, blur', rule: 'required'
                     },
-                    //{ input: "#country", message: "El país al que pertenece la institución es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#country", message: "El país al que pertenece la institución es obligatorio!", action: 'keyup, blur', rule: 'required'},
                    
             ],  theme: 'metro'
         });
@@ -137,7 +134,7 @@ if (error.equals("null"))
         <div id="main_div">
         
         	<div id="navigation" class="navigation">
-            	<a href="./configuration.jsp">CONFIGURACION</a> >> Agregar una Institución
+            	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Agregar una Institución
             </div>
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
@@ -149,14 +146,13 @@ if (error.equals("null"))
                         <div class="input"><input type="text" name="name" id="name" required="required" /></div>
                     </div>
                     <div id="Descripcion">
-                        <div class="tag_form"> Descripción: </div>
-                        <div class="input"><textarea type="text" name="description" id="description" required="required" ></textarea></div>
+                        <div class="tag_form" style="vertical-align:top;"> Descripción: </div>
+                        <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:400px; height:200px;" type="text" name="description" id="description" required="required" ></textarea></div>
                     </div>
                     <div>
                     	<div class="tag_form"> País: </div>
                         <div class="input"><input name="country"  id="country" type="text" required /></div>
                     </div>
-              
                    	<div style="margin-left:120px; margin-top:10px;">
                     	<input type="submit" value="Agregar Institución" id="addInstitution_button" />
                  	</div>
@@ -166,12 +162,14 @@ if (error.equals("null"))
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li style="height:35px;"><a href="#"> Agregar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="#"> Editar / Eliminar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="#"> Agregar un Deporte </a></li>
+             	   <li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
+                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
+             	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
                    <li style="height:35px;"><a href="#"> Agregar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Editar / Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

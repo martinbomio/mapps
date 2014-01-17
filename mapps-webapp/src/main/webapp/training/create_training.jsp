@@ -17,6 +17,10 @@
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxnumberinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/globalization/globalize.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -61,12 +65,34 @@ if (error.equals("null"))
 		$("#players_list").jqxListBox({ source: source, multiple: true, width: 220, height: 150});
 		
 		// Create jqxNumberInput
-        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', min: 50, max: 220, decimalDigits: 0, digits: 3, theme: 'metro'});
-		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', min: 50, max: 220, decimalDigits: 0, digits: 3, theme: 'metro'});
+        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro'});
+		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro'});
 		$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 		$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
+		$("#date").jqxDateTimeInput({width: '220px', height: '25px', theme: 'metro'});
 
-		$("#validate").jqxButton({ width: '150', theme: 'metro'});
+		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
+		
+		var sports = new Array("Ajedrez","Tiro al negro");
+		$("#sport").jqxInput({ placeHolder: "Ingrese un deporte", height: 25, width: 220, theme: 'metro',
+            source: function (query, response) {
+                var item = query.split(/,\s*/).pop();
+                // update the search query.
+                $("#sport").jqxInput({ query: item });
+                response(sports);
+            },
+            renderer: function (itemValue, inputValue) {
+                var terms = inputValue.split(/,\s*/);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push(itemValue);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                var value = terms.join(", ");
+                return value;
+            }
+        });
 	
 	});
 </script>
@@ -92,7 +118,7 @@ if (error.equals("null"))
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
   </div>
-    <div id="area_de_trabajo">
+    <div id="area_de_trabajo" style="height:580px;">
 		<div id="sidebar_left">
         
         </div>
@@ -105,9 +131,11 @@ if (error.equals("null"))
            			<label> Rellene el siguiente formulario </label>
                 </div>
                 <div id="campos" class="campos" style="margin-left:100px;">
-                	<div id="date">
-                    	<div class="tag_form"> Fecha:  </div>
-                    	<div class="input"><input type="date" name="date" id="date" required="required" style="width:220px; height:25px;" /></div>
+                	
+                    <div id="birth">
+                        <div class="tag_form">Nacimiento: </div>
+                        <div id="date" class="input">
+                        </div>
                     </div>
                     <div id="players">
                         <div class="tag_form" style="display:inline-block; vertical-align:top;"> Jugadores: </div>
@@ -134,7 +162,11 @@ if (error.equals("null"))
                         <div id="num_longitude" class="input" style="margin-top:10px;">
                         </div>
                     </div>
-                    <div style="margin-left:200px; margin-top:10px;">
+                    <div>
+                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
+                        <div class="input" style="margin-top:10px;"><input type="text" id="sport" /></div>
+                    </div>
+                    <div style="margin-left:200px; margin-top:20px;">
                     	<input type="button" id="validate" value="CREAR"/>
                     </div>
 				</div>
