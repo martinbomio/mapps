@@ -55,14 +55,14 @@ if ( session.getAttribute("role") == null){
             url: url,
             type: "GET",
             success: function (response){
-            	var names = response['name']
+            	var names = response['name'];
             	$("#institution").jqxDropDownList(
                 		{
                 			source: names,
                 			selectedIndex: 0,
                 			width: '200',
                 			height: '25',
-                			dropDownHeight: '100'
+                			dropDownHeight: '75'
                 			}
                 		);
             	}
@@ -72,14 +72,35 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
-		$("#pan_id_form").jqxInput({placeHolder: "PAN ID", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#panId").jqxInput({placeHolder: "PAN ID", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//lastname
-		$("#dir_low_form").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
 	
 		//register
 		$("#validate").jqxButton({ width: '150', theme: 'metro'});
-	
-	});
+		$("#register_button").on('click', function (){ 
+	        $('#device_form').jqxValidator('validate');
+	    });
+		$("#device_form").jqxValidator({
+            rules: [
+					{input: "#panId", message: "El PAN ID es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{input: "#panId", message: "El PAN ID debe ser un número!", action: 'keyup, blur', rule: function(){
+						var pan = $('#panId').jqxInput('val');
+						return $.isNumeric(pan);
+					}},
+					{input: "#dirLow", message: "La dirección es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{input: "#dirLow", message: "La Dirección debe ser de 8 caracteres!", action: 'keyup, blur', rule: 'length=8,8'},
+					{input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
+                            var index = $("#institution").jqxDropDownList('getSelectedIndex');
+                            return index != -1;
+                        }
+                    }
+                    ]
+			});
+		});
+	$('#device_form').on('validationSuccess', function (event) {
+        $('#validate').submit();
+    });
 </script>
 
 <div id="header">
@@ -110,31 +131,25 @@ if ( session.getAttribute("role") == null){
 			<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> -> Agregar
             </div>
-        	<form action="" method="post" name="agregar_deportista" id="agregar_deportista">
+        	<form action="/mapps/addDevice" method="post" name="device_form" id="device_form">
             	<div id="title" style="margin:15px;">
            			<label> Rellene el siguiente formulario </label>
                 </div>
                 <div id="campos" class="campos" style="margin-left:100px;">
                 	<div id="pan_id">
                     	<div class="tag_form"> PAN ID:  </div>
-                    	<div class="input"><input type="text" name="pan_id_form" id="pan_id_form" required="required" /></div>
+                    	<div class="input"><input type="text" name="panId" id="panId" required="required" /></div>
                     </div>
                     <div id="dir_low">
                         <div class="tag_form"> DIR LOW: </div>
-                        <div class="input"><input type="text" name="dir_low_form" id="dir_low_form" required="required" /></div>
+                        <div class="input"><input type="text" name="dirLow" id="dirLow" required="required" /></div>
                     </div>
-                    <div id="institucion">
+                    <div id="institucion" style="display: inline-block;">
                         <div class="tag_form"> Instituci&oacute;n </div>
-                        <div class="input">
-                            <select name="institution">
-                            <& 
-                            &>
-                                <option value="<% %>"><% %></option>
-                            </select>
-                        </div>
+                        <div id='institution' style="display: inline-block;"></div>
                     </div>
                     <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="button" id="validate" value="CONFIRMAR"/>
+                    	<input type="submit" id="validate" value="CONFIRMAR"/>
                     </div>
 				</div>
             </form>

@@ -31,13 +31,13 @@ public class LoginServlet extends HttpServlet implements Servlet {
             Role role = userService.userRoleOfToken(token);
             req.getSession().setAttribute("token", token);
             req.getSession().setAttribute("role", role);
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            resp.sendRedirect("index.jsp");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Nombre de Usuario o Contraseña no válido");
-            req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
+            //error 1: Nombre de Usuario o Contraseña no válido
+            resp.sendRedirect("index_login.jsp?error=1");
         } catch (InvalidUserException e) {
-            req.setAttribute("error", "Nombre de Usuario o Contraseña no válido");
-            req.getRequestDispatcher("/index_login.jsp").forward(req, resp);
+            //error 2: Nombre de Usuario o Contraseña no válido
+            resp.sendRedirect("index_login.jsp");
         }
     }
 

@@ -91,7 +91,7 @@ if (error.equals("null"))
             var name = "<div style='margin: 10px;'><b>Nombre:</b> " + datarecord.name + "</div>";
             var lastname = "<div style='margin: 10px;'><b>Apellido:</b> " + datarecord.lastname + "</div>";
             var birth = "<div style='margin: 10px;'><b>Fecha de Nacimiento:</b> " + datarecord.birth + "</div>";
-            var gender = "<div style='margin: 10px;'><b>Género:</b> " + datarecord.gender + "</div>";
+            var gender = "<div style='margin: 10px;'><b>Género:</b> " + get_gender(datarecord.gender) + "</div>";
             $(leftcolumn).append(name);
             $(leftcolumn).append(lastname);
             $(leftcolumn).append(birth);
@@ -121,6 +121,16 @@ if (error.equals("null"))
             }
         });
         updatePanel(0);
+	}
+	
+	function get_gender(gender){
+		var gender = "Desconocido";
+		if (gender.localeCompare("MALE")){
+			gender = "Hombre";
+		}else if (gender.localeCompare("FEMALE")){
+			gender = "Mujer";
+		}
+		return gender;
 	}
 </script>
 

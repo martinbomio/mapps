@@ -3,13 +3,13 @@ package com.mapps.services.user.impl;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.mapps.model.Institution;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.UserNotFoundException;
+import com.mapps.model.Institution;
 import com.mapps.model.Role;
 import com.mapps.model.User;
 import com.mapps.persistence.UserDAO;
@@ -21,9 +21,8 @@ import com.mapps.services.user.exceptions.InvalidUserException;
  * An implementation of the UserService.
  */
 @Stateless(name = "UserService")
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     Logger logger = Logger.getLogger(UserServiceImpl.class);
-
     @EJB(beanName = "AuthenticationHandler")
     protected AuthenticationHandler authenticationHandler;
     @EJB(beanName = "UserDAO")
@@ -31,11 +30,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String login(String username, String password) throws AuthenticationException {
-        if (username == null || password == null){
+        if (username == null || password == null) {
             logger.error("Username or password null");
             throw new AuthenticationException();
         }
-        User user = new User(null, null, null, null, username, username, password, null, null,null);
+        User user = new User(null, null, null, null, username, username, password, null, null, null);
         String token;
         try {
             token = authenticationHandler.authenticate(user);
@@ -53,31 +52,31 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void updateUser(User user, String token) throws InvalidUserException, AuthenticationException {
-        if (user == null){
+        if (user == null) {
             logger.error("Not valid user to update");
             throw new InvalidUserException();
         }
-        try{
+        try {
             User actualUser = authenticationHandler.getUserOfToken(token);
-            if (actualUser.getRole() == Role.USER){
-                if (actualUser.equals(user)){
+            if (actualUser.getRole() == Role.USER) {
+                if (actualUser.equals(user)) {
                     logger.error("The user that you want to update is the same");
                     throw new InvalidUserException();
                 }
-                if (actualUser.getUserName() != user.getUserName()){
+                if (actualUser.getUserName() != user.getUserName()) {
                     logger.error("Cannot change username");
                     throw new InvalidUserException();
                 }
                 userDAO.updateUser(user);
-            }else if(actualUser.getRole() == Role.ADMINISTRATOR){
+            } else if (actualUser.getRole() == Role.ADMINISTRATOR) {
                 userDAO.updateUser(user);
-            }else {
+            } else {
                 throw new AuthenticationException();
             }
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");
             throw new AuthenticationException();
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             logger.error("User not found");
             throw new InvalidUserException();
         } catch (NullParameterException e) {
@@ -88,36 +87,31 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean isAdministrator(String username) throws InvalidUserException {
-        if (username == null){
+        if (username == null) {
             logger.error("Not valid user to update");
             throw new InvalidUserException();
         }
-        boolean admin=false;
         try {
-            User aux=userDAO.getUserByUsername(username);
-            String role=aux.getRole().toString();
-            if(role=="Administrator"){
-                admin=true;
-            }
+            User aux = userDAO.getUserByUsername(username);
+            return aux.getRole().equals(Role.ADMINISTRATOR);
         } catch (UserNotFoundException e) {
             logger.error("user not found");
             throw new InvalidUserException();
         }
-
-
-        return admin;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
     @Override
     public String getInstitutionOfUser(String username) throws InvalidUserException {
         try {
-            User aux=userDAO.getUserByUsername(username);
-            Institution instAux= aux.getInstitution();
-            String instName=instAux.getName();
-            return  instName;
+            User aux = userDAO.getUserByUsername(username);
+            Institution instAux = aux.getInstitution();
+            String instName = instAux.getName();
+            return instName;
         } catch (UserNotFoundException e) {
             throw new InvalidUserException();
         }
     }
+
     @Override
     public String getUserOfToken(String token) throws AuthenticationException {
         try {
@@ -128,15 +122,16 @@ public class UserServiceImpl implements UserService{
             throw new AuthenticationException();
         }
     }
+
     @Override
     public Role userRoleOfToken(String token) throws AuthenticationException {
-        if(token==null){
+        if (token == null) {
             logger.error("Invalid token");
             throw new AuthenticationException();
         }
         try {
-            User aux=authenticationHandler.getUserOfToken(token);
-            Role role=aux.getRole();
+            User aux = authenticationHandler.getUserOfToken(token);
+            Role role = aux.getRole();
             return role;
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");

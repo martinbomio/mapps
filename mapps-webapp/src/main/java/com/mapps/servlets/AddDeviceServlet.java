@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
-import com.mapps.model.Role;
 import com.mapps.services.admin.AdminService;
 import com.mapps.services.admin.exceptions.DeviceAlreadyExistsException;
 import com.mapps.services.institution.InstitutionService;
@@ -47,6 +46,7 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         try {
             adminService.addDevice(device, token);
             req.setAttribute("info", "El device fue ingresado al sistema con exito");
+            resp.sendRedirect("configuration/configuration.jsp");
         } catch (com.mapps.services.admin.exceptions.InvalidDeviceException e) {
             req.setAttribute("error", "Device no valido");
         } catch (DeviceAlreadyExistsException e) {

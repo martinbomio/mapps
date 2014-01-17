@@ -114,7 +114,9 @@ public class AthleteDAOImpl implements AthleteDAO {
     @Override
     public List<Athlete> getAllAthletesByInstitution(String institutionName) {
 
-        Query query = entityManager.createQuery("select a from Athlete as a INNER JOIN a.institution as i WHERE i.name =:name");
+        Query query = entityManager.createQuery("select a from Athlete as a INNER JOIN a.institution as i WHERE (i.name =:name" +
+                                                        " and a.enabled= :enabled)");
+        query.setParameter("enabled", true);
         query.setParameter("name", institutionName);
         List<Athlete> results = query.getResultList();
         return results;
@@ -122,7 +124,8 @@ public class AthleteDAOImpl implements AthleteDAO {
 
     @Override
     public List<Athlete> getAllAthletes() {
-        Query query = entityManager.createQuery("from Athlete");
+        Query query = entityManager.createQuery("from Athlete a where a.enabled = :enabled");
+        query.setParameter("enabled", true);
         return query.getResultList();
     }
 

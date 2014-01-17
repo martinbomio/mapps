@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,46 +49,35 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         String password = req.getParameter("password");
         String idDocument = req.getParameter("document");
         Gender gender = Gender.UNKNOWN;
-        ;
         if (req.getParameter("gender").equalsIgnoreCase("hombre")) {
             gender = Gender.MALE;
         } else if (req.getParameter("gender").equalsIgnoreCase("mujer")) {
             gender = Gender.FEMALE;
         }
-        Role role = role = Role.USER;
-        ;
+        Role role = Role.USER;
         if (req.getParameter("role").equalsIgnoreCase("administrador")) {
             role = Role.ADMINISTRATOR;
         } else if (req.getParameter("role").equalsIgnoreCase("entrenador")) {
             role = Role.TRAINER;
         }
-        String instName = req.getParameter("institution");
-        Institution instAux = institutionService.getInstitutionByName(instName);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date birth = null;
         try {
-            birth = formatter.parse(req.getParameter("date"));
+            String instName = req.getParameter("institution");
+            Institution instAux = institutionService.getInstitutionByName(instName);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date birth = formatter.parse(req.getParameter("date"));
+            User user = new User(name, lastName, birth, gender, email, userName, password, instAux, role, idDocument);
+            user.setEnabled(true);
+            adminService.createUser(user, token);
+            resp.sendRedirect("configuration/configuration.jsp?info=El usuario se agrego al sistema con exito");
         } catch (ParseException e) {
             logger.error("Date fromat exception");
             throw new IllegalStateException();
-        }
-
-        User user = new User(name, lastName, birth, gender, email, userName, password, instAux, role, idDocument);
-        user.setEnabled(true);
-
-        try {
-            adminService.createUser(user, token);
-            resp.sendRedirect("/configuration/configuration.jsp?info=El usuario se agrego al sistema con exito");
-
         } catch (AuthenticationException e) {
-
-            resp.sendRedirect("/configuration/register_user.jsp?error=Error de autentificación");
-
+            resp.sendRedirect("configuration/register_user.jsp?error=Error de autentificación");
         } catch (InvalidUserException e) {
-            resp.sendRedirect("/configuration/register_user.jsp?error=Usuario no valido");
-
+            resp.sendRedirect("configuration/register_user.jsp?error=Usuario no valido");
         } catch (UserAlreadyExistsException e) {
-            resp.sendRedirect("/configuration/register_user.jsp?error=Usuario ya existe en el sistema");
+            resp.sendRedirect("configuration/register_user.jsp?error=Usuario ya existe en el sistema");
 
         }
 

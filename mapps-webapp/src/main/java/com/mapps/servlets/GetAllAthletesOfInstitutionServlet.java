@@ -35,27 +35,26 @@ public class GetAllAthletesOfInstitutionServlet extends HttpServlet implements S
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-         String token=String.valueOf(req.getSession().getAttribute("token"));
-        String username= "";
+        String token = String.valueOf(req.getSession().getAttribute("token"));
         try {
-            username = userService.getUserOfToken(token);
-        } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
-        }
-        String instName= null;
-        try {
-            instName = userService.getInstitutionOfUser(username);
+            String username = userService.getUserOfToken(token);
+            if (userService.isAdministrator(username)){
+                req.getRequestDispatcher("getAllAthletes").forward(req, resp);
+            }
+            String instName = userService.getInstitutionOfUser(username);
+            List<Athlete> athletes = trainerService.getAllAthletesOfInstitution(instName);
+            Writer writer = resp.getWriter();
+            resp.setContentType("application/json");
+            Map<String, List<Athlete>> map = Maps.newHashMap();
+            map.put("athletes", athletes);
+            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+            String json = gson.toJson(map);
+            writer.write(json);
+            writer.close();
         } catch (InvalidUserException e) {
             req.setAttribute("error", "Error de autentificación");
+        }catch (AuthenticationException e) {
+            req.setAttribute("error", "Error de autentificación");
         }
-        List<Athlete> athletes = trainerService.getAllAthletesOfInstitution(instName);
-        Writer writer = resp.getWriter();
-        resp.setContentType("application/json");
-        Map<String,List<Athlete>> map= Maps.newHashMap();
-        map.put("athletes",athletes);
-        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
-        String json = gson.toJson(map);
-        writer.write(json);
-        writer.close();
     }
 }
