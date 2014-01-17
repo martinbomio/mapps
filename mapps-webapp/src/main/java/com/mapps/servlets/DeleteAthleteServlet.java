@@ -37,11 +37,13 @@ public class DeleteAthleteServlet extends HttpServlet implements Servlet {
         try {
             Athlete delAthlete = trainerService.getAthleteByIdDocument(idDocument);
             trainerService.deleteAthlete(delAthlete, token);
-            req.setAttribute("info", "El atleta fue eliminado del sistema");
+            resp.sendRedirect("athletes/athletes.jsp?");
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error", "Atleta no valido");
+            //1:Error atleta no valido
+            resp.sendRedirect("athletes/delete_athletes.jsp?error=1");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "error de autentificación");
+            //1:Error atleta no valido
+            resp.sendRedirect("athletes/delete_athletes.jsp?error=2");
         }
     }
 }

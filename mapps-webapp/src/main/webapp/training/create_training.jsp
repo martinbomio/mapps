@@ -33,6 +33,12 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+String info = String.valueOf(request.getAttribute("info"));
+if (info.equals("null"))
+	info = "";
+String error = String.valueOf(request.getAttribute("error"));
+if (error.equals("null"))
+	error = "";
 %>
 <body>
 

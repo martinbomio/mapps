@@ -190,8 +190,8 @@ public class TrainerServiceImpl implements TrainerService {
             if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
-                Date date=new Date();
-                training.setDate(date);
+                //Date date=new Date();
+                //training.setDate(date);
                 training.setStarted(true);
                 trainingDAO.updateTraining(trainingAux);
 
