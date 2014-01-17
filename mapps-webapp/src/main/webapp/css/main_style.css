@@ -122,12 +122,14 @@ body{
 	width:200px;
 	margin:10px;
 	display:inline-block;
+	font-size:14px;
 }
 
 .tag_form_editar{
 	width:120px;
 	margin:10px;
 	display:inline-block;
+	font-size:14px;
 }
 
 .input{

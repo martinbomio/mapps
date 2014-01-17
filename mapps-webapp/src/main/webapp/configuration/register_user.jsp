@@ -67,18 +67,21 @@ if ( session.getAttribute("role") == null){
                 		);
             	}
             });
-	// Create a jqxMenu
+			
+		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
 		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//lastname
-		$("#lastname").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//username
 		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//password
-		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, minLength: 1, theme: 'metro'});
-		//email
+		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, showStrength: true, showStrengthPosition: "right" , theme: 'metro'});
+		//passowrdConfirm
+		$("#passwordConfirm").jqxPasswordInput({  width: '200px', height: '25px', theme: 'metro' });
+        //email
 		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3, theme: 'metro'});
 		//Drop list
 		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100', theme: 'metro'});
@@ -89,7 +92,7 @@ if ( session.getAttribute("role") == null){
 		//rol
 		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75', theme: 'metro'});
 		//register
-		$("#register_button").jqxButton({ width: '150', theme: 'metro'});
+		$("#register_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
 		$("#register_button").on('click', function (){ 
 	        $('#register_form').jqxValidator('validate');
 	    });
@@ -103,6 +106,7 @@ if ( session.getAttribute("role") == null){
                     },
                     { input: "#username", message: "El nombre de usuario es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: "#password", message: "La contraseña es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#passwordConfirm", message: "La contraseña es obligatoria!", action: 'keyup, blur', rule: 'required' },
                     { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
                     { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -111,9 +115,6 @@ if ( session.getAttribute("role") == null){
                             var index = $("#gender").jqxDropDownList('getSelectedIndex');
                             return index != -1;
                         }
-                    },
-                    {
-                    	input: "#date", message: "La Fecha de Nacimiento es obligatoria!", action: 'keyup, blur', rule: 'required' 
                     },
                     {
                         input: "#role", message: "El rol es obligatorio!", action: 'blur', rule: function (input, commit) {
@@ -127,7 +128,7 @@ if ( session.getAttribute("role") == null){
                             return index != -1;
                         }
                     }
-            ],  hintType: "label"
+            ],  theme: 'metro'
         });
 	});
 	
@@ -156,58 +157,71 @@ if ( session.getAttribute("role") == null){
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
   	</div>
-    <div id="area_de_trabajo">
+    <div id="area_de_trabajo" style="height:580px;">
 		<div id="sidebar_left">
 
         </div>	   
         <div id="main_div">
-        	<div id="start_training_div">
+        	<div id="navigation" class="navigation">
+            	<a href="./configuration.jsp">CONFIGURACION</a> >> Agregar un Usuario
+            </div>
+            <div id="title" style="margin:15px;">
+                <label> Complete el siguiente formulario </label>
+            </div>     	
+            <div style="margin-left:100px;">
             	<form action="/mapps/registerUser" method="post" id="register_form">
-                	<table width="200" border="0">
-                          <tr>
-                            <td>Nombre: </td>
-                            <td><input name="name" id="name" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Apellido: </td>
-                            <td><input name="lastName" id="lastname" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Nombre de Usuario: </td>
-                            <td><input name="username"  id="username" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Contraseña: </td>
-                            <td><input name="password" id="password" type="password" requiered/></td>
-                          </tr>
-                          <tr>
-                            <td>Mail: </td>
-                            <td><input name="email" id="email" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Género: </td>
-                            <td><div id='gender'></div></td>
-                          </tr>
-                          <tr>
-                            <td>Fecha de Nacimiento:</td>
-                            <td><div id='date'></div></td>
-                          </tr>
-                          <tr>
-                            <td>Documento: </td>
-                            <td><input name="document" id="document" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Rol: </td>
-                            <td><div id='role'></div></td>
-                          </tr>
-                          <tr>
-                            <td>Institución: </td>
-                            <td><div id='institution'></div></td>
-                          </tr>
-                          <tr>
-                            <td><center></center><input type="submit" value="Registrar" id="register_button" /></center></td>
-                          </tr>
-                        </table>
+                	<div id="nombre">
+                        <div class="tag_form"> Nombre:  </div>
+                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                    </div>
+                    <div id="apellido">
+                        <div class="tag_form"> Apellido: </div>
+                        <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                    </div>
+                    <div>
+                    	<div class="tag_form"> Nombre de usuario: </div>
+                        <div class="input"><input name="username"  id="username" type="text" required /></div>
+                    </div>
+                    <div>
+                    	<div class="tag_form"> Contrase&ntilde;a: </div>
+                        <div class="input"><input name="password" id="password" type="password" requiered/></div>
+                    </div>
+                    <div>
+                    	<div class="tag_form"> Repetir contrase&ntilde;a: </div>
+                        <div class="input"><input name="passwordConfirm" id="passwordConfirm" type="password" requiered/></div>
+                    </div>
+                    <div id="e_mail">
+                        <div class="tag_form"> Email: </div>
+                        <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                    </div>
+                    <div id='gender_field' style="display:inline-block">
+                      	<div class="tag_form"> Sexo: </div>
+                        <div id="gender" style="display:inline-block; margin-top:10px">
+                        </div>
+                    </div>
+                    <div id="birth">
+                        <div class="tag_form">Nacimiento: </div>
+                        <div id="date" class="input">
+                        </div>
+                    </div>
+                    <div id="ci">
+                        <div class="tag_form"> C.I.: </div>
+                        <div class="input"><input type="text" id="document" required="required" /></div>
+                    </div>
+                    <div>
+                        <div class="tag_form"> Rol: </div>
+                        <div id="role" class="input">
+                        </div>
+                    </div>
+                    <div id="institution_field">
+                        <div class="tag_form"> Instituci&oacute;n: </div>
+                        <div id="institution" class="input">
+                        
+                        </div>
+                    </div>
+                   	<div style="margin-left:120px; margin-top:10px;">
+                    	<input type="submit" value="Registrar" id="register_button" />
+                 	</div>
                 </form>
             </div>
         </div>

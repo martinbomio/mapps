@@ -66,9 +66,9 @@ if (error.equals("null"))
 		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
 		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
 		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#idDocument").jqxInput({placeHolder: "1234567-8", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#document").jqxInput({placeHolder: "1234567-8", height: 30, width: 220, minLength: 1, theme: 'metro'  });
 		
-		$("#validate").jqxButton({ width: '150', theme: 'metro'});
+		$("#addAthlete_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
 	
 	//getAllInstitutions
 	var url = "/mapps/getAllInstitutions";
@@ -83,7 +83,8 @@ if (error.equals("null"))
             			selectedIndex: 0,
             			width: '200',
             			height: '25',
-            			dropDownHeight: '100'
+            			dropDownHeight: '100',
+						theme: 'metro'
             			}
             		);
         	}
@@ -95,7 +96,7 @@ if (error.equals("null"))
 	//name
 	$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1});
 	//lastname
-	$("#lastname").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1});
+	$("#lastName").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1});
 	//weight
 	$("#weight").jqxMaskedInput({ width: 200, height: 25, mask: '###.##'});
 	//height
@@ -103,9 +104,9 @@ if (error.equals("null"))
 	//email
 	$("#email").jqxInput({placeHolder: "Mail", height: 25, width: 200, minLength: 3});
 	//Drop list
-	$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100'});
+	$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100', theme: 'metro'});
 	//Date
-	$("#date").jqxDateTimeInput({width: '200px', height: '25px'});
+	$("#date").jqxDateTimeInput({width: '200px', height: '25px', theme: 'metro'});
 	//document
 	$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#'});
 	//rol
@@ -123,7 +124,7 @@ if (error.equals("null"))
                     input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
                 },
                 {
-                    input: "#lastname", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
+                    input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
                 },
                 { input: "#weight", message: "El peso del atleta es obligatorio!", action: 'keyup, blur', rule: 'required'},
                 { input: "#height", message: "La altura del atleta es obligatoria!", action: 'keyup, blur', rule: 'required'},
@@ -137,15 +138,12 @@ if (error.equals("null"))
                     }
                 },
                 {
-                	input: "#date", message: "La Fecha de Nacimiento es obligatoria!", action: 'keyup, blur', rule: 'required' 
-                },
-                {
                     input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
                         var index = $("#institution").jqxDropDownList('getSelectedIndex');
                         return index != -1;
                     }
                 }
-        ],  hintType: "label"
+        ], theme: 'metro'
     });
 });
 
@@ -181,53 +179,57 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
         </div>
         <div id="main_div">
         	<div id="navigation" class="navigation">
-            	<a href="./athletes.jsp">JUGADORES</a> -> Agregar
+            	<a href="./athletes.jsp">JUGADORES</a> >> Agregar
             </div>
-        	
-        	<form action="/mapps/addAthlete" method="post" id="addAthlete_form">
-                	<table width="200" border="0">
-                          <tr>
-                            <td>Nombre: </td>
-                            <td><input name="name" id="name" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Apellido: </td>
-                            <td><input name="lastName" id="lastname" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Fecha de Nacimiento:</td>
-                            <td><div id='date'></div></td>
-                          </tr>
-                          <tr>
-                            <td>Género: </td>
-                            <td><div id='gender'></div></td>
-                          </tr>
-                          <tr>
-                            <td>Mail: </td>
-                            <td><input name="email" id="email" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Peso: </td>
-                            <td><input name="weight"  id="weight" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Altura: </td>
-                            <td><input name="height" id="height" type="text" requiered/></td>
-                          </tr>
-                          <tr>
-                            <td>Documento: </td>
-                            <td><input name="document" id="document" type="text" required /></td>
-                          </tr>
-                          <tr>
-                            <td>Institución: </td>
-                            <td><div id='institution'></div></td>
-                          </tr>
-                          
-                            <td><center></center><input type="submit" value="Agregar Atleta" id="addAthlete_button" /></center></td>
-                          </tr>
-                        </table>
-                </form>
-                
+            <div id="title" style="margin:15px;">
+                <label> Complete el siguiente formulario </label>
+            </div>     	
+            <div style="margin-left:100px;">
+        		<form action="/mapps/addAthlete" method="post" id="addAthlete_form">
+                	<div id="nombre">
+                        <div class="tag_form"> Nombre:  </div>
+                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                    </div>
+                    <div id="apellido">
+                        <div class="tag_form"> Apellido: </div>
+                        <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                    </div>
+                    <div id="birth">
+                        <div class="tag_form">Nacimiento: </div>
+                        <div id="date" class="input">
+                        </div>
+                    </div>
+                    <div id='gender_field' style="display:inline-block">
+                      	<div class="tag_form"> Sexo: </div>
+                        <div id="gender" style="display:inline-block; margin-top:10px"></div>
+                    </div>
+                    <div id="e_mail">
+                        <div class="tag_form"> Email: </div>
+                        <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                    </div>
+                    <div id="peso">
+                        <div class="tag_form"> Peso: </div>
+                        <div class="input"><input type="text" name="weight" id="weight" required="required" /></div>
+                    </div>
+                    <div id="altura">
+                        <div class="tag_form"> Altura: </div>
+                        <div class="input"><input type="text" name="height" id="height" required="required" /></div>
+                    </div>
+                    <div id="ci">
+                        <div class="tag_form"> C.I.: </div>
+                        <div class="input"><input type="text" id="document" required="required" /></div>
+                    </div>
+                    <div id="institution_field">
+                        <div class="tag_form"> Instituci&oacute;n: </div>
+                        <div id="institution" class="input">
+                        
+                        </div>
+                    </div>
+                   	<div style="margin-left:80px; margin-top:10px;">
+                    	<input type="submit" id="addAthlete_button" value="CONFIRMAR"/>
+                 	</div>
+                </form>  
+        	</div>        
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
