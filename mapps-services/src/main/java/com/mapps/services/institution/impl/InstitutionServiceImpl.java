@@ -1,5 +1,7 @@
 package com.mapps.services.institution.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -10,15 +12,16 @@ import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.InstitutionNotFoundException;
 import com.mapps.exceptions.NullParameterException;
+import com.mapps.exceptions.UserNotFoundException;
 import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.model.User;
 import com.mapps.persistence.InstitutionDAO;
+import com.mapps.persistence.UserDAO;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mapps.services.user.exceptions.InvalidUserException;
 
 /**
  *
@@ -31,6 +34,8 @@ public class InstitutionServiceImpl implements InstitutionService {
     protected InstitutionDAO institutionDAO;
     @EJB(beanName = "AuthenticationHandler")
     protected AuthenticationHandler authenticationHandler;
+    @EJB(beanName = "UserDAO")
+    protected UserDAO userDAO;
 
 
     @Override
@@ -133,5 +138,16 @@ public class InstitutionServiceImpl implements InstitutionService {
             }
         }
     return aux;
+    }
+
+    @Override
+    public Institution getInstitutionOfUser(String username) throws InvalidUserException {
+        try {
+            User aux = userDAO.getUserByUsername(username);
+            Institution instAux = aux.getInstitution();
+            return instAux;
+        } catch (UserNotFoundException e) {
+            throw new InvalidUserException();
+        }
     }
 }

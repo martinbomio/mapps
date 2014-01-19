@@ -1,5 +1,6 @@
 package com.mapps.services.user.impl;
 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -9,9 +10,10 @@ import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.UserNotFoundException;
-import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.model.Sport;
 import com.mapps.model.User;
+import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.UserDAO;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
     protected AuthenticationHandler authenticationHandler;
     @EJB(beanName = "UserDAO")
     protected UserDAO userDAO;
+    @EJB(beanName = "SportDAO")
+    protected SportDAO sportDAO;
 
     @Override
     public String login(String username, String password) throws AuthenticationException {
@@ -100,24 +104,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public String getInstitutionOfUser(String username) throws InvalidUserException {
-        try {
-            User aux = userDAO.getUserByUsername(username);
-            Institution instAux = aux.getInstitution();
-            String instName = instAux.getName();
-            return instName;
-        } catch (UserNotFoundException e) {
-            throw new InvalidUserException();
-        }
-    }
 
     @Override
-    public String getUserOfToken(String token) throws AuthenticationException {
+    public User getUserOfToken(String token) throws AuthenticationException {
         try {
-            User aux = authenticationHandler.getUserOfToken(token);
-            String username = aux.getUserName();
-            return username;
+            return authenticationHandler.getUserOfToken(token);
         } catch (InvalidTokenException e) {
             throw new AuthenticationException();
         }
@@ -137,5 +128,10 @@ public class UserServiceImpl implements UserService {
             logger.error("Invalid token");
             throw new AuthenticationException();
         }
+    }
+
+    @Override
+    public List<Sport> getAllSports() {
+        return sportDAO.getAllSports();
     }
 }

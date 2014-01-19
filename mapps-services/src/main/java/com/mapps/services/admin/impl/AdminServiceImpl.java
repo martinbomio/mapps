@@ -1,5 +1,6 @@
 package com.mapps.services.admin.impl;
 
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -239,4 +240,8 @@ public class AdminServiceImpl implements AdminService{
         }
     }
 
+    @Override
+    public List<Device> getAllDevices() {
+        return deviceDAO.getAllDevices();
+    }
 }

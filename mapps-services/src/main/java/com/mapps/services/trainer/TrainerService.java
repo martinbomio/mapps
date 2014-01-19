@@ -44,10 +44,6 @@ public interface TrainerService {
 
     public Training getTrainingByName(String name) throws InvalidTrainingException;
 
-    public List<String> getAllSportsNames();
-
-    public List<String> getAllDevicesDirs();
-
     public List<Athlete> getAllAthletes();
 
     public List<Athlete> getAllAthletesOfInstitution(String instName);

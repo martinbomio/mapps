@@ -1,6 +1,5 @@
 package com.mapps.services.trainer.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,16 +106,6 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public List<String> getAllSportsNames() {
-        List<String> aux = new ArrayList<String>();
-        List<Sport> sports = sportDAO.getAllSports();
-        for (Sport sport : sports) {
-            aux.add(sport.getName());
-        }
-        return aux;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public List<Athlete> getAllAthletes() {
         List<Athlete> aux = athleteDAO.getAllAthletes();
         return aux;
@@ -125,16 +114,6 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public List<Athlete> getAllAthletesOfInstitution(String instName) {
         List<Athlete> aux = athleteDAO.getAllAthletesByInstitution(instName);
-        return aux;
-    }
-
-    @Override
-    public List<String> getAllDevicesDirs() {
-        List<String> aux = new ArrayList<String>();
-        List<Device> devices = deviceDAO.getAllDevices();
-        for (Device device : devices) {
-            aux.add(device.getDirLow());
-        }
         return aux;
     }
 

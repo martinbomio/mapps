@@ -1,9 +1,11 @@
 package com.mapps.services.user;
 
 
+import java.util.List;
 import javax.ejb.Local;
 
 import com.mapps.model.Role;
+import com.mapps.model.Sport;
 import com.mapps.model.User;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -44,7 +46,7 @@ public interface UserService {
 
     public Role userRoleOfToken(String token) throws InvalidUserException, AuthenticationException;
 
-    public String getUserOfToken(String token) throws AuthenticationException;
+    public User getUserOfToken(String token) throws AuthenticationException;
 
-    public String getInstitutionOfUser(String username) throws InvalidUserException;
+    List<Sport> getAllSports();
 }

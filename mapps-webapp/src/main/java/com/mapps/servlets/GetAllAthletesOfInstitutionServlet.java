@@ -16,6 +16,9 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mapps.model.Athlete;
+import com.mapps.model.Institution;
+import com.mapps.model.User;
+import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
@@ -26,23 +29,24 @@ import com.mapps.services.user.exceptions.InvalidUserException;
  */
 @WebServlet(name = "getAllAthletesOfInstitution", urlPatterns = "/getAllAthletesOfInstitution/*")
 public class GetAllAthletesOfInstitutionServlet extends HttpServlet implements Servlet {
-
     @EJB(beanName = "TrainerService")
     protected TrainerService trainerService;
     @EJB(beanName = "UserService")
     protected UserService userService;
+    @EJB(beanName = "InstitutionService")
+    protected InstitutionService institutionService;
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         try {
-            String username = userService.getUserOfToken(token);
-            if (userService.isAdministrator(username)){
+            User user = userService.getUserOfToken(token);
+            if (userService.isAdministrator(user.getUserName())){
                 req.getRequestDispatcher("getAllAthletes").forward(req, resp);
             }
-            String instName = userService.getInstitutionOfUser(username);
-            List<Athlete> athletes = trainerService.getAllAthletesOfInstitution(instName);
+            Institution institution = institutionService.getInstitutionOfUser(user.getUserName());
+            List<Athlete> athletes = trainerService.getAllAthletesOfInstitution(institution.getName());
             Writer writer = resp.getWriter();
             resp.setContentType("application/json");
             Map<String, List<Athlete>> map = Maps.newHashMap();

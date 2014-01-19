@@ -1,5 +1,6 @@
 package com.mapps.services.admin;
 
+import java.util.List;
 import javax.ejb.Local;
 
 import com.mapps.model.Device;
@@ -79,7 +80,9 @@ public interface AdminService {
      */
     void disableDevice(Device device, String token) throws AuthenticationException;
 
-    public User getUserByUsername(String name) throws InvalidUserException;
+    User getUserByUsername(String name) throws InvalidUserException;
 
-    public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
+    void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
+
+    List<Device> getAllDevices();
 }
