@@ -218,4 +218,25 @@ public class AdminServiceImpl implements AdminService{
             throw new InvalidDeviceRuntimeException();
         }
     }
+    @Override
+    public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException {
+        if (device == null || device.getDirLow() == null) {
+            throw new InvalidDeviceException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                deviceDAO.updateDevice(device);
+            } else {
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (DeviceNotFoundException e) {
+            throw new InvalidDeviceException();
+        } catch (NullParameterException e) {
+            throw new InvalidDeviceException();
+        }
+    }
+
 }
