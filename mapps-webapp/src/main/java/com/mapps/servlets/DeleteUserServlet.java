@@ -39,7 +39,7 @@ public class DeleteUserServlet extends HttpServlet implements Servlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String json = req.getParameter("json");
-        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
         List<User> users = gson.fromJson(json, new TypeToken<List<User>>(){}.getType());
         try {
             for (User user : users){

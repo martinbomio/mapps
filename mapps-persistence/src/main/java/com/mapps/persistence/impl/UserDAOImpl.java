@@ -69,7 +69,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updateUser(User user) throws UserNotFoundException, NullParameterException {
         if (user != null) {
-            User userAux = getUserByUsername(user.getName());
+            User userAux = getUserByUsername(user.getUserName());
             if (userAux != null) {
                 entityManager.merge(user);
                 logger.info("A user was updated in the database");

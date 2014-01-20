@@ -1,6 +1,8 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -24,7 +26,7 @@ import com.mapps.services.user.exceptions.InvalidUserException;
 /**
  *
  */
-@WebServlet(name = "modifyUserServlet", urlPatterns = "/modifyUserServlet/*")
+@WebServlet(name = "modifyUser", urlPatterns = "/modifyUser/*")
 public class ModifyUserServlet extends HttpServlet implements Servlet {
     Logger logger = Logger.getLogger(ModifyUserServlet.class);
     @EJB(beanName = "AdminService")
@@ -42,39 +44,43 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
         String name = req.getParameter("name");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
-        String userName = req.getParameter("username");
-        String password = req.getParameter("password");
+        String userName = req.getParameter("username-hidden");
         String idDocument = req.getParameter("document");
+        String birth = req.getParameter("date");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Gender gender = Gender.UNKNOWN;
-        if (req.getParameter("gender").equalsIgnoreCase("hombre")) {
+        if (req.getParameter("gender_list").equalsIgnoreCase("hombre")) {
             gender = Gender.MALE;
-        } else if (req.getParameter("gender").equalsIgnoreCase("mujer")) {
+        } else if (req.getParameter("gender_list").equalsIgnoreCase("mujer")) {
             gender = Gender.FEMALE;
         }
         Role role = Role.USER;
-        if (req.getParameter("role").equalsIgnoreCase("administrador")) {
+        if (req.getParameter("role_list").equalsIgnoreCase("administrador")) {
             role = Role.ADMINISTRATOR;
-        } else if (req.getParameter("role").equalsIgnoreCase("entrenador")) {
+        } else if (req.getParameter("role_list").equalsIgnoreCase("entrenador")) {
             role = Role.TRAINER;
         }
-
         try {
             User newUser = adminService.getUserByUsername(userName);
             newUser.setName(name);
             newUser.setLastName(lastName);
             newUser.setEmail(email);
-            newUser.setPassword(password);
             newUser.setIdDocument(idDocument);
             newUser.setGender(gender);
             newUser.setRole(role);
+            newUser.setBirth(formatter.parse(birth));
             userService.updateUser(newUser, token);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (InvalidUserException e) {
             resp.sendRedirect("configuration/edit_user.jsp?error=1");
         } catch (AuthenticationException e) {
+            //Authentification error
             resp.sendRedirect("configuration/edit_user.jsp?error=2");
         } catch (com.mapps.services.admin.exceptions.InvalidUserException e) {
             resp.sendRedirect("configuration/edit_user.jsp?error=1");
+        } catch (ParseException e) {
+            logger.error("Date format exception");
+            throw new IllegalStateException();
         }
     }
 }

@@ -30,7 +30,7 @@ public class GetAllUsersServlet extends HttpServlet{
         String token = String.valueOf(req.getSession().getAttribute("token"));
         try {
             List<User> users = adminService.getAllUsers(token);
-            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
             String json = gson.toJson(users);
             Writer writer = resp.getWriter();
             resp.setContentType("application/json");

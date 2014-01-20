@@ -18,7 +18,7 @@ public class User extends Person{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userName;
     @Column(nullable = false)
     private String password;

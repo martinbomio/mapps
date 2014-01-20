@@ -102,11 +102,18 @@ if ( session.getAttribute("role") == null){
                         input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
                     },
                     {
-                        input: "#lastname", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
+                        input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
                     },
                     { input: "#username", message: "El nombre de usuario es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: "#password", message: "La contraseña es obligatoria!", action: 'keyup, blur', rule: 'required'},
 					{ input: "#passwordConfirm", message: "La contraseña es obligatoria!", action: 'keyup, blur', rule: 'required' },
+					{
+                        input: "#passwordConfirm", message: "Las contraseñas deben coincidir!", action: 'keyup, blur', rule: function (input, commit) {
+                            var firstPassword = $("#password").jqxPasswordInput('val');
+                            var secondPassword = $("#passwordConfirm").jqxPasswordInput('val');
+                            return firstPassword == secondPassword;
+                        }
+                    },
                     { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
                     { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -179,15 +186,15 @@ if ( session.getAttribute("role") == null){
                     </div>
                     <div>
                     	<div class="tag_form"> Nombre de usuario: </div>
-                        <div class="input"><input name="username"  id="username" type="text" required /></div>
+                        <div class="input"><input name="username"  id="username" type="text" /></div>
                     </div>
                     <div>
                     	<div class="tag_form"> Contrase&ntilde;a: </div>
-                        <div class="input"><input name="password" id="password" type="password" requiered/></div>
+                        <div class="input"><input name="password" id="password" type="password"/></div>
                     </div>
                     <div>
                     	<div class="tag_form"> Repetir contrase&ntilde;a: </div>
-                        <div class="input"><input name="passwordConfirm" id="passwordConfirm" type="password" requiered/></div>
+                        <div class="input"><input name="passwordConfirm" id="passwordConfirm" type="password"/></div>
                     </div>
                     <div id="e_mail">
                         <div class="tag_form"> Email: </div>

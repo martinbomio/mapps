@@ -4,11 +4,11 @@ import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mapps.model.Role;
 import com.mapps.services.admin.AdminService;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
@@ -17,6 +17,7 @@ import com.mapps.services.user.UserService;
 /**
  *
  */
+@WebServlet(name = "logout", urlPatterns = "/logout/*")
 public class LogoutServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "UserService")
     UserService userService;

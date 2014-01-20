@@ -51,7 +51,7 @@ public class GetAllAthletesOfInstitutionServlet extends HttpServlet implements S
             resp.setContentType("application/json");
             Map<String, List<Athlete>> map = Maps.newHashMap();
             map.put("athletes", athletes);
-            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
             String json = gson.toJson(map);
             writer.write(json);
             writer.close();

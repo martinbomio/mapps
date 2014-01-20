@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                     logger.error("The user that you want to update is the same");
                     throw new InvalidUserException();
                 }
-                if (actualUser.getUserName() != user.getUserName()) {
+                if (!actualUser.getUserName().equals(user.getUserName())) {
                     logger.error("Cannot change username");
                     throw new InvalidUserException();
                 }
