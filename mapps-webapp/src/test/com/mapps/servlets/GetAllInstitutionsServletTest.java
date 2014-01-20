@@ -40,7 +40,7 @@ public class GetAllInstitutionsServletTest {
         List<Institution> institutions = Lists.newArrayList();
         institutions.add(new Institution("CPC","", ""));
         institutions.add(new Institution("SPC","", ""));
-        when(iService.allInstitutions()).thenReturn(institutions);
+        when(iService.getAllInstitutions()).thenReturn(institutions);
         UserService userService = Mockito.mock(UserService.class);
         User user = Mockito.mock(User.class);
         when(userService.getUserOfToken("token")).thenReturn(user);

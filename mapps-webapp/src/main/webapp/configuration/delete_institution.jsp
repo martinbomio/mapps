@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatatable.js"></script> 
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -61,7 +62,7 @@ if ( session.getAttribute("role") == null){
             var array = $("#dataTable").jqxDataTable('getSelection');
             var json = JSON.stringify(array);
             $.ajax({
-                url: "/mapps/...",
+                url: "/mapps/deleteInstitution",
                 type: "POST",
                 data: {json: json},
                 success: function (response){
@@ -84,10 +85,9 @@ if ( session.getAttribute("role") == null){
 	});
 	
 	function fill_table(response){
-		var athletes = response['institutions'];
 		var source =
         {
-            localData: institutions,
+            localData: response,
             dataType: "array",
             dataFields:
             [

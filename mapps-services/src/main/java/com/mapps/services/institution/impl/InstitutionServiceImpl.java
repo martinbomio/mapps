@@ -118,7 +118,7 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public List<Institution> allInstitutions() {
+    public List<Institution> getAllInstitutions() {
         return institutionDAO.getAllInstitutions();
     }
     @Override

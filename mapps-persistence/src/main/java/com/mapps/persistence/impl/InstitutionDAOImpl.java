@@ -6,11 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import com.mapps.exceptions.InstitutionAlreadyExistException;
-import com.mapps.exceptions.NullParameterException;
 import org.apache.log4j.Logger;
 
+import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.InstitutionNotFoundException;
+import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Institution;
 import com.mapps.persistence.InstitutionDAO;
 
@@ -104,7 +104,8 @@ public class InstitutionDAOImpl implements InstitutionDAO {
 
     @Override
     public List<Institution> getAllInstitutions() {
-        Query query = entityManager.createQuery("from Institution");
+        Query query = entityManager.createQuery("from Institution i where i.enabled= :enabled");
+        query.setParameter("enabled", true);
         return query.getResultList();
     }
 }

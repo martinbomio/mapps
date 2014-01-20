@@ -46,7 +46,7 @@ public class GetAllInstitutionsServlet extends HttpServlet implements Servlet {
                 institutions = Lists.newArrayList();
                 institutions.add(user.getInstitution());
             } else {
-                institutions = institutionService.allInstitutions();
+                institutions = institutionService.getAllInstitutions();
                 resp.setContentType("application/json");
             }
             String json = new Gson().toJson(institutions);

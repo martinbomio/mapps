@@ -1,6 +1,7 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -9,8 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mapps.model.Institution;
-import com.mapps.model.Role;
 import com.mapps.services.admin.AdminService;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
@@ -35,16 +37,20 @@ public class DeleteInstitutionServlet extends HttpServlet implements Servlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
-
-        String institutionName = req.getParameter("instName");
-        Institution inst = institutionService.getInstitutionByName(institutionName);
+        String json = req.getParameter("json");
+        List<Institution> institutions = new Gson().fromJson(json, new TypeToken<List<Institution>>() {
+        }.getType());
         try {
-            institutionService.deleteInstitution(inst, token);
-            req.setAttribute("info", "La institución fue borrada del sistema con éxito");
+            for (Institution institution : institutions) {
+                Institution inst = institutionService.getInstitutionByName(institution.getName());
+                institutionService.deleteInstitution(inst, token);
+            }
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            //Error de autentificación
+            resp.sendError(1, "configuration/delete_institution.jsp?error=1");
         } catch (InvalidInstitutionException e) {
-            req.setAttribute("error", "Institución no válida");
+            //Institución no válida
+            resp.sendError(2, "delete_institution.jsp?error=2");
         }
 
     }
