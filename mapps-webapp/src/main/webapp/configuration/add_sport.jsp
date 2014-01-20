@@ -98,7 +98,7 @@ if (error.equals("null"))
 	});
 	
 	$('#addSport_form').on('validationSuccess', function (event) {
-        $('#addSport_button').submit();
+        $('#addSport_form').submit();
     });
 </script>
 
@@ -140,7 +140,7 @@ if (error.equals("null"))
                         <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
                     <div style="margin-left:120px; margin-top:25px;">
-                    	<input type="submit" value="Agregar deporte" id="addSport_button" />
+                    	<input type="button" value="Agregar deporte" id="addSport_button" />
                  	</div>
                 </form>
         	</div>

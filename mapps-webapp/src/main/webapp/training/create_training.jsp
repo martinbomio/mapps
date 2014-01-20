@@ -70,31 +70,27 @@ if (error.equals("null"))
 		$("#date").jqxDateTimeInput({width: '220px', height: '25px', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
-		$("#validate").on('click', function (){ 
-	        $('#create_training').jqxValidator('validate');
-	    });
 		$("#create_training").jqxValidator({
             rules: [
-                    {input: "#num_min_bpm", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-                			var val = $("#num_min_bpm").jqxNumberInput('val');
-                			return $.isNumeric(val);
-               				}
-            		},
-            		{input: "#num_max_bpm", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_max_bpm").jqxNumberInput('val');
-            			return $.isNumeric(val);
+					{input: "#players_list", message: "Debe seleccionar por lo menos un atleta!", action: 'blur', rule: function (input, commit) {
+						var items = $("#players_list").jqxListBox('getSelectedItems');
+						return items.length > 0;
+							}
+					},
+        			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
+            			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
+            			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
+            			return val_max > val_min;
            				}
         			},
-        			{input: "#num_latitude", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_latitude").jqxNumberInput('val');
-            			return $.isNumeric(val);
-           				}
-        			},
-        			{input: "#num_longitude", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_longitude").jqxNumberInput('val');
-            			return $.isNumeric(val);
-           				}
-        			},
+        			{input: "#num_latitude", message: "La latitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
+        				var val = $("#num_latitude").jqxNumberInput('val');
+        				return val.toString().length == 8;
+        			}},
+        			{input: "#num_longitude", message: "La longitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
+        				var val = $("#num_longitude").jqxNumberInput('val');
+        				return val.toString().length == 8;
+        			}},
                     {input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
                         var index = $("#sport").jqxDropDownList('getSelectedIndex');
                         return index != -1;
@@ -102,8 +98,11 @@ if (error.equals("null"))
                     },
             ],  theme: 'metro'
 	        });
+		$("#validate").click(function (){ 
+	        $('#create_training').jqxValidator('validate');
+	    });
 		$('#create_training').on('validationSuccess', function (event) {
-	        $('#validate').submit();
+	        $('#create_training').submit();
 	    });
 		var source =
         {
@@ -191,7 +190,7 @@ if (error.equals("null"))
                         </div>
                     </div>
                     <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="submit" id="validate" value="CREAR"/>
+                    	<input type="button" id="validate" value="CREAR"/>
                     </div>
 				</div>
             </form>            

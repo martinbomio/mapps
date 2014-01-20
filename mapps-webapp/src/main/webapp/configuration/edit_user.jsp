@@ -86,7 +86,7 @@ if ( session.getAttribute("role") == null){
             ],  theme: 'metro'
 	        });
 		$('#edit_athlete').on('validationSuccess', function (event) {
-	        $('#validate').submit();
+	        $('#edit_athlete').submit();
 	    });
 		//Get athletes
 		var url = "/mapps/getAllAthletesOfInstitution";		
@@ -208,7 +208,7 @@ if ( session.getAttribute("role") == null){
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
                     	<div style="margin-left:70px; margin-top:20px;">
-                    		<input type="submit" id="validate" value="CONFIRMAR"/>
+                    		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
                     <input type="hidden" id="document-hidden" name="document"></input>

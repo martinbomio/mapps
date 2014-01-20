@@ -93,9 +93,6 @@ if (error.equals("null"))
                     {
                         input: "#name", message: "El nombre de la institución es obligatorio!", action: 'keyup, blur', rule: 'required'
                     },
-                    {
-                        input: "#description", message: "Complete la descripción de la institución!", action: 'keyup, blur', rule: 'required'
-                    },
                     { input: "#country", message: "El país al que pertenece la institución es obligatorio!", action: 'keyup, blur', rule: 'required'},
                    
             ],  theme: 'metro'
@@ -103,7 +100,7 @@ if (error.equals("null"))
 	});
 	
 	$('#addInstitution_form').on('validationSuccess', function (event) {
-        $('#addInstitution_button').submit();
+        $('#addInstitution_form').submit();
     });
 </script>
 
@@ -154,7 +151,7 @@ if (error.equals("null"))
                         <div class="input"><input name="country"  id="country" type="text" required /></div>
                     </div>
                    	<div style="margin-left:120px; margin-top:10px;">
-                    	<input type="submit" value="Agregar Institución" id="addInstitution_button" />
+                    	<input type="button" value="Agregar Institución" id="addInstitution_button" />
                  	</div>
                 </form>
             </div>

@@ -188,7 +188,7 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
         		<form action="/mapps/addAthlete" method="post" id="addAthlete_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" /></div>
+                        <div class="input"><input type="text" name="name" id="name"  /></div>
                     </div>
                     <div id="apellido">
                         <div class="tag_form"> Apellido: </div>
@@ -205,15 +205,15 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
                     </div>
                     <div id="e_mail">
                         <div class="tag_form"> Email: </div>
-                        <div class="input"><input type="text" name="email" id="email" /></div>
+                        <div class="input"><input type="text" name="email" id="email"  /></div>
                     </div>
                     <div id="peso">
                         <div class="tag_form"> Peso: </div>
-                        <div class="input"><input type="text" name="weight" id="weight" /></div>
+                        <div class="input"><input type="text" name="weight" id="weight"  /></div>
                     </div>
                     <div id="altura">
                         <div class="tag_form"> Altura: </div>
-                        <div class="input"><input type="text" name="height" id="height" /></div>
+                        <div class="input"><input type="text" name="height" id="height"  /></div>
                     </div>
                     <div id="ci">
                         <div class="tag_form"> C.I.: </div>

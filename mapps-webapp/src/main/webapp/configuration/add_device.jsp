@@ -99,7 +99,7 @@ if ( session.getAttribute("role") == null){
 			});
 		});
 	$('#device_form').on('validationSuccess', function (event) {
-        $('#validate').submit();
+        $('#device_form').submit();
     });
 </script>
 
@@ -149,7 +149,7 @@ if ( session.getAttribute("role") == null){
                         <div id='institution' style="display: inline-block;"></div>
                     </div>
                     <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="submit" id="validate" value="CONFIRMAR"/>
+                    	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>
 				</div>
             </form>
