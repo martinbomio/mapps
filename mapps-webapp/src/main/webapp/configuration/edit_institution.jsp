@@ -70,7 +70,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 	
@@ -111,11 +111,11 @@ if ( session.getAttribute("role") == null){
                     <div id="campos" style="margin-left:40px;">
                         <div id="nombre">
                         <div class="tag_form_editar"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                        <div class="input"><input type="text" name="name" id="name" /></div>
                         </div>
                         <div id="Descripcion">
                             <div class="tag_form_editar" style="vertical-align:top;"> Descripción: </div>
-                            <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:200px; height:200px;" type="text" name="description" id="description" required="required" ></textarea></div>
+                            <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:200px; height:200px;" type="text" name="description" id="description" ></textarea></div>
                         </div>
                         <div>
                             <div class="tag_form_editar"> País: </div>

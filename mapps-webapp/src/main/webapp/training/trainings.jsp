@@ -13,6 +13,8 @@
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -39,6 +41,14 @@ if ( session.getAttribute("role") == null){
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 	
+		$("#start_training").on('click', function () {
+			// IR A start_training.jsp
+		});
+		
+		// Create jqxListBox
+        $('#listbox').jqxListBox({ selectedIndex: 0,  source: '', displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '250', width: '400', theme: 'metro',
+            
+        });
 	
 	});
 </script>
@@ -46,7 +56,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 
@@ -72,7 +82,9 @@ if ( session.getAttribute("role") == null){
 			<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>
-            
+            <div id="listbox" style="border: none;">
+                    
+            </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">

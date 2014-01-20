@@ -136,7 +136,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 	
@@ -177,27 +177,27 @@ if ( session.getAttribute("role") == null){
                     <div id="campos" style="margin-left:40px;">
                         <div id="nombre">
                             <div class="tag_form_editar"> Nombre:  </div>
-                            <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                            <div class="input"><input type="text" name="name" id="name" /></div>
                         </div>
                         <div id="apellido">
                             <div class="tag_form_editar"> Apellido: </div>
-                            <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                            <div class="input"><input type="text" name="lastName" id="lastName" /></div>
                         </div>
                         <div id="ci">
                             <div class="tag_form_editar"> C.I.: </div>
-                            <div class="input"><input type="text" id="document" required="required" /></div>
+                            <div class="input"><input type="text" id="document" /></div>
                         </div>
                         <div id="birth">
                             <div class="tag_form_editar">Nacimiento: </div>
-                            <div class="input"><input type="text" id="date" required="required" /></div>
+                            <div class="input"><input type="text" id="date" /></div>
                         </div>
                         <div id="peso">
                             <div class="tag_form_editar"> Peso: </div>
-                            <div class="input"><input type="text" name="weight" id="weight" required="required" /></div>
+                            <div class="input"><input type="text" name="weight" id="weight" /></div>
                         </div>
                         <div id="altura">
                             <div class="tag_form_editar"> Altura: </div>
-                            <div class="input"><input type="text" name="height" id="height" required="required" /></div>
+                            <div class="input"><input type="text" name="height" id="height" /></div>
                         </div>
                         <div id='gender' style="display:inline-block">
                         	<div class="tag_form_editar"> Sexo: </div>
@@ -205,7 +205,7 @@ if ( session.getAttribute("role") == null){
                         </div>
                         <div id="e_mail">
                             <div class="tag_form_editar"> Email: </div>
-                            <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                            <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
                     	<div style="margin-left:70px; margin-top:20px;">
                     		<input type="submit" id="validate" value="CONFIRMAR"/>

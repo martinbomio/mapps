@@ -38,7 +38,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 	

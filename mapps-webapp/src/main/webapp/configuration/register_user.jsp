@@ -139,7 +139,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 	
@@ -171,11 +171,11 @@ if ( session.getAttribute("role") == null){
             	<form action="/mapps/registerUser" method="post" id="register_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                        <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
                     <div id="apellido">
                         <div class="tag_form"> Apellido: </div>
-                        <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                        <div class="input"><input type="text" name="lastName" id="lastName" /></div>
                     </div>
                     <div>
                     	<div class="tag_form"> Nombre de usuario: </div>
@@ -191,7 +191,7 @@ if ( session.getAttribute("role") == null){
                     </div>
                     <div id="e_mail">
                         <div class="tag_form"> Email: </div>
-                        <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                        <div class="input"><input type="text" name="email" id="email" /></div>
                     </div>
                     <div id='gender_field' style="display:inline-block">
                       	<div class="tag_form"> Sexo: </div>
@@ -205,7 +205,7 @@ if ( session.getAttribute("role") == null){
                     </div>
                     <div id="ci">
                         <div class="tag_form"> C.I.: </div>
-                        <div class="input"><input type="text" id="document" required="required" /></div>
+                        <div class="input"><input type="text" id="document" /></div>
                     </div>
                     <div>
                         <div class="tag_form"> Rol: </div>

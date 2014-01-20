@@ -137,7 +137,7 @@ if (error.equals("null"))
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 
@@ -180,7 +180,7 @@ if (error.equals("null"))
         		<ul>
              	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
              	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
-             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="delete_athletes.jsp"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>

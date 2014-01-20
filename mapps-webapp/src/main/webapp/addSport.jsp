@@ -59,7 +59,7 @@
             <center><span class="error"><%= error %></span></center>
             <center><span class="error"><%= info %></span></center>
             <div id="sportNameField" class="loginForm" > Nombre del Deporte: </div>
-            <input type="text" class="loginField" name="name" id="name" style="margin-left:20%;" required="required" />
+            <input type="text" class="loginField" name="name" id="name" style="margin-left:20%;" />
             <input type="hidden" name="token" value=<%=token%>/>
             <input type="hidden" name="role" value= ""/>
             <div id="submit" align="center" >

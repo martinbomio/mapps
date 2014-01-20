@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
 <%@ page import="com.mapps.model.Role" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/jugadores_template.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- InstanceBeginEditable name="EditRegion5" --><title>Untitled Document</title>
+	<title>Untitled Document</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -24,7 +24,7 @@
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css" /> 
-    <!-- InstanceEndEditable -->
+    
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
@@ -39,7 +39,7 @@ if ( session.getAttribute("role") == null){
 }
 %>
 <body>
-<!-- InstanceBeginEditable name="EditRegion4" -->
+
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -145,23 +145,21 @@ if ( session.getAttribute("role") == null){
     </style>
     
     
-<!-- InstanceEndEditable -->
+
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
-	<!-- InstanceBeginEditable name="EditRegion1" -->
 	
-	<!-- InstanceEndEditable -->
     </div>
     <div id="header_der">
 	
     </div>
 </div>
 <div id="contenedor">
-<!-- InstanceBeginEditable name="EditRegion2" -->
+
     <div id="tabs">
 	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
@@ -171,7 +169,7 @@ if ( session.getAttribute("role") == null){
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
-        
+        	
         </div>
         <div id="main_div">
         	<div id="navigation" class="navigation">
@@ -192,27 +190,27 @@ if ( session.getAttribute("role") == null){
                     <div id="campos" style="margin-left:40px;">
                         <div id="nombre">
                             <div class="tag_form_editar"> Nombre:  </div>
-                            <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                            <div class="input"><input type="text" name="name" id="name" /></div>
                         </div>
                         <div id="apellido">
                             <div class="tag_form_editar"> Apellido: </div>
-                            <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                            <div class="input"><input type="text" name="lastName" id="lastName" /></div>
                         </div>
                         <div id="ci">
                             <div class="tag_form_editar"> C.I.: </div>
-                            <div class="input"><input type="text" id="document" required="required" /></div>
+                            <div class="input"><input type="text" id="document" /></div>
                         </div>
                         <div id="birth">
                             <div class="tag_form_editar">Nacimiento: </div>
-                            <div class="input"><input type="text" id="date" required="required" /></div>
+                            <div class="input"><input type="text" id="date" /></div>
                         </div>
                         <div id="peso">
                             <div class="tag_form_editar"> Peso: </div>
-                            <div class="input"><input type="text" name="weight" id="weight" required="required" /></div>
+                            <div class="input"><input type="text" name="weight" id="weight" /></div>
                         </div>
                         <div id="altura">
                             <div class="tag_form_editar"> Altura: </div>
-                            <div class="input"><input type="text" name="height" id="height" required="required" /></div>
+                            <div class="input"><input type="text" name="height" id="height" /></div>
                         </div>
                         <div id='gender' style="display:inline-block">
                         	<div class="tag_form_editar"> Sexo: </div>
@@ -220,7 +218,7 @@ if ( session.getAttribute("role") == null){
                         </div>
                         <div id="e_mail">
                             <div class="tag_form_editar"> Email: </div>
-                            <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                            <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
                     	<div style="margin-left:100px; margin-top:50px;">
                     		<input type="submit" id="validate" value="CONFIRMAR"/>
@@ -235,15 +233,15 @@ if ( session.getAttribute("role") == null){
         		<ul>
              	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
              	   <li style="height:35px;"><a href="#"> Editar </a></li>
-             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="delete_athletes.jsp"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>
     </div>
-<!-- InstanceEndEditable -->    
+
 </div>
 <div id="pie">
 
 </div>
 </body>
-<!-- InstanceEnd --></html>
+</html>

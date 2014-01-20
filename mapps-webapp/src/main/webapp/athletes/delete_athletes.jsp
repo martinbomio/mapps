@@ -48,7 +48,8 @@ if (error.equals("null"))
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-        $("#delete").jqxButton({ width: '150', theme: 'Metro'});
+        $("#delete").jqxButton({ width: '150', theme: 'metro'});
+		
         $("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
             var json = JSON.stringify(array);
@@ -64,6 +65,7 @@ if (error.equals("null"))
                 		} 
             });
         });
+		
         var url = "/mapps/getAllAthletesOfInstitution";
         $.ajax({
             url: url,
@@ -72,6 +74,7 @@ if (error.equals("null"))
             	fill_table(response);
             }});
    	});
+	
 	function fill_table(response){
 		var athletes = response['athletes'];
 		var source =
@@ -88,7 +91,7 @@ if (error.equals("null"))
 		var dataAdapter = new $.jqx.dataAdapter(source);
 		$("#dataTable").jqxDataTable(
 	            {	
-	            	theme: 'Metro',
+	            	theme: 'metro',
 	            	altrows: true,
 	                sortable: true,
 	                exportSettings: { fileName: null },
@@ -106,7 +109,7 @@ if (error.equals("null"))
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 
@@ -129,10 +132,18 @@ if (error.equals("null"))
         
         </div>
         <div id="main_div">
-        <%=info %>
-        	<div id="dataTable" style="margin-top:15px"></div>
-        	<div style="margin-top: 15px">
-                <input type="button" value="Button" id='delete' />
+        	<div id="navigation" class="navigation">
+            	<a href="./athletes.jsp">JUGADORES</a> >> Eliminar
+            </div>
+        	<%=info %>
+            <div id="title" style="margin:15px;">
+                <label> Seleccione uno o varios jugadores </label>
+            </div>
+        	<div id="dataTable" style="margin-top:25px; margin-left:50px;">
+            
+            </div>
+        	<div style="margin-top:25px; margin-left:250px;">
+             	<input type="button" value="Eliminar" id='delete' />
             </div>
         </div>
         <div id="sidebar_right">

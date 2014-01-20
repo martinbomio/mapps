@@ -21,7 +21,7 @@ if (error.equals("null"))
 <script type="text/javascript">
 	$(document).ready(function () {
     	$("#username").jqxInput({placeHolder: "Usuario", height: 35, width: 220, minLength: 1  });
-		$("#password").jqxPasswordInput({placeHolder: "Contraseña", height: 35, width: 220, minLength: 1 });
+		$("#password").jqxPasswordInput({placeHolder: "Contraseï¿½a", height: 35, width: 220, minLength: 1 });
 		$("#loginButton").jqxButton({ width: '100', height: '30'});
     });
 </script>
@@ -44,9 +44,9 @@ if (error.equals("null"))
         <form action="login" method="post">
         	<center><span class="error"><%= error %></span></center>
             <div id="usernameField" class="loginForm" > Nombre de usuario: </div>
-            	<input type="text" class="loginField" name="username" id="username" style="margin-left:20%;" required="required" />
+            	<input type="text" class="loginField" name="username" id="username" style="margin-left:20%;" />
             <div id="passwordField" class="loginForm" > Contrase&ntilde;a: </div>
-            	<input type="password" class="loginField" name="password" id="password" style="margin-left:20%; margin-bottom:30px;" required="required" />
+            	<input type="password" class="loginField" name="password" id="password" style="margin-left:20%; margin-bottom:30px;" />
             <div id="submit" align="center" >
                 <input id="loginButton" type="submit" name="ingresar" value="INGRESAR" />
             </div>

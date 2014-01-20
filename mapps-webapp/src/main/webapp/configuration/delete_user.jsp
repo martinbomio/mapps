@@ -49,58 +49,72 @@ if ( session.getAttribute("role") == null){
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		//Get Institutions
-		var url = "/mapps/getAllInstitutions";
-		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	var names = response['name'];
-            	$("#institution").jqxDropDownList(
-                		{
-                			source: names,
-                			selectedIndex: 0,
-                			width: '200',
-                			height: '25',
-                			dropDownHeight: '75'
-                			}
-                		);
-            	}
-            });
+	
 			
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-		//name
-		$("#panId").jqxInput({placeHolder: "PAN ID", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		//lastname
-		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		
+		$("#delete").jqxButton({ width: '150', theme: 'metro'});
+		
+		$("#delete").click(function () {
+            var array = $("#dataTable").jqxDataTable('getSelection');
+            var json = JSON.stringify(array);
+            $.ajax({
+                url: "/mapps/...",
+                type: "POST",
+                data: {json: json},
+                success: function (response){
+                	window.location.replace("delete_institution.jsp");
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                	  console.log(textStatus, errorThrown);
+                } 
+            });
+        });
+		
+		var url = "/mapps/getAllUsers";
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+            	fill_table(response);
+        }});
 	
-		//register
-		$("#validate").jqxButton({ width: '150', theme: 'metro'});
-		$("#register_button").on('click', function (){ 
-	        $('#device_form').jqxValidator('validate');
-	    });
-		$("#device_form").jqxValidator({
-            rules: [
-					{input: "#panId", message: "El PAN ID es obligatoria!", action: 'keyup, blur', rule: 'required'},
-					{input: "#panId", message: "El PAN ID debe ser un número!", action: 'keyup, blur', rule: function(){
-						var pan = $('#panId').jqxInput('val');
-						return $.isNumeric(pan);
-					}},
-					{input: "#dirLow", message: "La dirección es obligatoria!", action: 'keyup, blur', rule: 'required'},
-					{input: "#dirLow", message: "La Dirección debe ser de 8 caracteres!", action: 'keyup, blur', rule: 'length=8,8'},
-					{input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
-                            var index = $("#institution").jqxDropDownList('getSelectedIndex');
-                            return index != -1;
-                        }
-                    }
-                    ]
-			});
-		});
-	$('#device_form').on('validationSuccess', function (event) {
-        $('#validate').submit();
-    });
+	});
+	
+	function fill_table(response){
+		var athletes = response['users'];
+		var source =
+        {
+            localData: institutions,
+            dataType: "array",
+            dataFields:
+            [
+                { name: 'name', type: 'string' },
+                { name: 'lastName', type: 'string' },
+				{ name: 'username', type: 'string' },
+				{ name: 'ci', type: 'string' },
+            ]
+        };
+		var dataAdapter = new $.jqx.dataAdapter(source);
+		$("#dataTable").jqxDataTable(
+	            {	
+	            	theme: 'metro',
+	            	altrows: true,
+	                sortable: true,
+	                exportSettings: { fileName: null },
+	                source: dataAdapter,
+	                columnsResize: true,
+	                columns: [
+	                    { text: 'Nombre', dataField: 'name', width: 200 },
+	                    { text: 'Apellido', dataField: 'lastName', width: 200 },
+						{ text: 'Usuario', dataField: 'username', width: 200 },
+						{ text: 'Documento', dataField: 'ci', width: 200 },
+	                ]
+	            }
+		);
+	}
 </script>
 
 <div id="header">
@@ -128,31 +142,18 @@ if ( session.getAttribute("role") == null){
 
         </div>	   
         <div id="main_div">
-			<div id="navigation" class="navigation">
-            	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un dispositivo
+        	<div id="navigation" class="navigation">
+            	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Eliminar Usuarios
             </div>
-        	<form action="/mapps/addDevice" method="post" name="device_form" id="device_form">
-            	<div id="title" style="margin:15px;">
-           			<label> Rellene el siguiente formulario </label>
-                </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
-                	<div id="pan_id">
-                    	<div class="tag_form"> PAN ID:  </div>
-                    	<div class="input"><input type="text" name="panId" id="panId" /></div>
-                    </div>
-                    <div id="dir_low">
-                        <div class="tag_form"> DIR LOW: </div>
-                        <div class="input"><input type="text" name="dirLow" id="dirLow" /></div>
-                    </div>
-                    <div id="institucion" style="display: inline-block;">
-                        <div class="tag_form"> Instituci&oacute;n </div>
-                        <div id='institution' style="display: inline-block;"></div>
-                    </div>
-                    <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="submit" id="validate" value="CONFIRMAR"/>
-                    </div>
-				</div>
-            </form>
+            <div id="title" style="margin:15px;">
+                <label> Seleccione uno o varios usuarios </label>
+            </div>
+        	<div id="dataTable" style="margin-top:25px; margin-left:50px;">
+            
+            </div>
+        	<div style="margin-top:25px; margin-left:250px;">
+             	<input type="button" value="Eliminar" id='delete' />
+            </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
@@ -163,8 +164,8 @@ if ( session.getAttribute("role") == null){
              	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
                    <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
                    <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="#"> Agregar un Dispositivo </a></li>
+                   <li style="height:35px;"><a href="#"> Eliminar una Instituci&oacute;n </a></li>
+                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

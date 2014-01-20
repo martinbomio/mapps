@@ -109,7 +109,7 @@ if (error.equals("null"))
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 	
@@ -143,11 +143,11 @@ if (error.equals("null"))
             	<form action="/mapps/addInstitution" method="post" id="addInstitution_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                        <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
                     <div id="Descripcion">
                         <div class="tag_form" style="vertical-align:top;"> Descripción: </div>
-                        <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:400px; height:200px;" type="text" name="description" id="description" required="required" ></textarea></div>
+                        <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:400px; height:200px;" type="text" name="description" id="description" ></textarea></div>
                     </div>
                     <div>
                     	<div class="tag_form"> País: </div>

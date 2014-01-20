@@ -148,14 +148,14 @@ if (error.equals("null"))
 });
 
 $('#addAthlete_form').on('validationSuccess', function (event) {
-    $('#addAthlete_button').submit();
+    $('#addAthlete_form').submit();
 });
 </script>
 
 
 <div id="header">
 	<div id="header_izq">
-    
+    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
 
@@ -188,11 +188,11 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
         		<form action="/mapps/addAthlete" method="post" id="addAthlete_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" required="required" /></div>
+                        <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
                     <div id="apellido">
                         <div class="tag_form"> Apellido: </div>
-                        <div class="input"><input type="text" name="lastName" id="lastName" required="required" /></div>
+                        <div class="input"><input type="text" name="lastName" id="lastName" /></div>
                     </div>
                     <div id="birth">
                         <div class="tag_form">Nacimiento: </div>
@@ -205,19 +205,19 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
                     </div>
                     <div id="e_mail">
                         <div class="tag_form"> Email: </div>
-                        <div class="input"><input type="text" name="email" id="email" required="required" /></div>
+                        <div class="input"><input type="text" name="email" id="email" /></div>
                     </div>
                     <div id="peso">
                         <div class="tag_form"> Peso: </div>
-                        <div class="input"><input type="text" name="weight" id="weight" required="required" /></div>
+                        <div class="input"><input type="text" name="weight" id="weight" /></div>
                     </div>
                     <div id="altura">
                         <div class="tag_form"> Altura: </div>
-                        <div class="input"><input type="text" name="height" id="height" required="required" /></div>
+                        <div class="input"><input type="text" name="height" id="height" /></div>
                     </div>
                     <div id="ci">
                         <div class="tag_form"> C.I.: </div>
-                        <div class="input"><input type="text" id="document" required="required" /></div>
+                        <div class="input"><input type="text" id="document" /></div>
                     </div>
                     <div id="institution_field">
                         <div class="tag_form"> Instituci&oacute;n: </div>
@@ -226,7 +226,7 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
                         </div>
                     </div>
                    	<div style="margin-left:80px; margin-top:10px;">
-                    	<input type="submit" id="addAthlete_button" value="CONFIRMAR"/>
+                    	<input type="button" id="addAthlete_button" value="CONFIRMAR"/>
                  	</div>
                 </form>  
         	</div>        
@@ -236,7 +236,7 @@ $('#addAthlete_form').on('validationSuccess', function (event) {
         		<ul>
              	   <li style="height:35px;"><a href="#"> Agregar </a></li>
              	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
-             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
+             	   <li style="height:35px;"><a href="delete_athletes.jsp"> Eliminar </a></li>
         		</ul>
   			</div>
         </div>

@@ -62,12 +62,25 @@ if (error.equals("null"))
             }});
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-		// Create jqxNumberInput
-        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
-		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
-		$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-		$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-		$("#date").jqxDateTimeInput({width: '220px', height: '25px', theme: 'metro'});
+		
+	
+		
+		// Create a jqxInput
+		$("#devices_list").jqxDropDownList({ source: devices, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
+
+		
+		//obtener array de devices de la institucion 
+		var devices =
+        {
+            datatype: "json",
+            datafields: [
+                { name: '...' },
+            ],
+            url: "/mapps/....."
+        };
+		
+		// Create a jqxInput
+		$("#devices_list").jqxDropDownList({ source: devices, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
@@ -75,47 +88,14 @@ if (error.equals("null"))
 	    });
 		$("#create_training").jqxValidator({
             rules: [
-                    {input: "#num_min_bpm", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-                			var val = $("#num_min_bpm").jqxNumberInput('val');
-                			return $.isNumeric(val);
-               				}
-            		},
-            		{input: "#num_max_bpm", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_max_bpm").jqxNumberInput('val');
-            			return $.isNumeric(val);
-           				}
-        			},
-        			{input: "#num_latitude", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_latitude").jqxNumberInput('val');
-            			return $.isNumeric(val);
-           				}
-        			},
-        			{input: "#num_longitude", message: "El mínimo de latidos por minuto debe ser un número!", action: 'blur', rule: function (input, commit) {
-            			var val = $("#num_longitude").jqxNumberInput('val');
-            			return $.isNumeric(val);
-           				}
-        			},
-                    {input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
-                        var index = $("#sport").jqxDropDownList('getSelectedIndex');
-                        return index != -1;
-                       }
-                    },
+
             ],  theme: 'metro'
 	        });
-		$('#create_training').on('validationSuccess', function (event) {
-	        $('#validate').submit();
+		$('#start_training').on('validationSuccess', function (event) {
+	        $('#start_training').submit();
 	    });
-		var source =
-        {
-            datatype: "json",
-            datafields: [
-                { name: 'name' },
-            ],
-            url: "/mapps/getAllSports"
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        // Create a jqxInput
-        $("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
+		
+        
 	});
 </script>
 
@@ -146,52 +126,31 @@ if (error.equals("null"))
         </div>
         <div id="main_div">
 			<div id="navigation" class="navigation">
-            	<a href="./trainings.jsp">ENTRENAMIENTOS</a> >> Programar entrenamiento
+            	<a href="./trainings.jsp">ENTRENAMIENTOS</a> >> Iniciar entrenamiento
             </div>
-        	<form action="/mapps/addTraining" method="post" name="create_training" id="create_training">
+        	<form action="/mapps/..." method="post" name="start_training" id="start_training">
             	<div id="title" style="margin:15px;">
            			<label> Rellene el siguiente formulario </label>
                 </div>
                 <div id="campos" class="campos" style="margin-left:100px;">
-                	
-                    <div id="fecha">
-                        <div class="tag_form">Fecha: </div>
-                        <div id="date" class="input">
-                        </div>
-                    </div>
-                    <div id="players">
-                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Jugadores: </div>
-                        <div id='players_list' style="display:inline-block; margin-top:15px;">
+                    <div>
+                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Entrenamiento: </div>
+                        <div id='training' style="display:inline-block; margin-top:15px;">
+                        	<!-- Aca va el nombre del training que se selecciono en la pag anterior.
+                            	 Habria que agrerle algo q lo describa (e.g. dia y hora) -->
 				        </div>
                     </div>
-                    <div id="min_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
-                        <div id="num_min_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="max_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Max BPM: </div>
-                        <div id="num_max_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="latitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
-                        <div id="num_latitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="longitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
-                        <div id="num_longitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id='sport_div' style="display:inline-block">
-                       	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
-                        <div class="input" style="margin-top:10px;">
-                        	<div id="sport" style="display:inline-block; margin-top:10px"></div>
+                    <div id="player_device_list" style="height:150px; overflow:scroll;">
+                    	<!--ESTA DIV TIENE QUE APARECER TANTAS VECES COMO PLAYERS HAYA EN EL TRAINING, por eso hay una div padre que es scrollable 
+                        	hay que ponerla en el javascript y hacerle un append al padre por cada player-->
+                        <div id="player_device">
+                            <div class="tag_form" style="vertical-align:top; margin-top:15px;"> NOMBRE JUGADOR: </div>
+                            <div id="devices_list" class="input" style="margin-top:10px;">
+                            </div>
                         </div>
                     </div>
                     <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="submit" id="validate" value="CREAR"/>
+                    	<input type="button" id="validate" value="INICIAR"/>
                     </div>
 				</div>
             </form>            
