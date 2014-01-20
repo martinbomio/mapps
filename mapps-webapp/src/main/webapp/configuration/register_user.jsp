@@ -55,11 +55,11 @@ if ( session.getAttribute("role") == null){
             url: url,
             type: "GET",
             success: function (response){
-            	var names = response['name']
             	$("#institution").jqxDropDownList(
                 		{
-                			source: names,
+                			source: response,
                 			selectedIndex: 0,
+                			displayMember: "name",
                 			width: '200',
                 			height: '25',
                 			dropDownHeight: '100'
@@ -133,7 +133,7 @@ if ( session.getAttribute("role") == null){
 	});
 	
 	$('#register_form').on('validationSuccess', function (event) {
-        $('#register_button').submit();
+        $('#register_form').submit();
     });
 </script>
 
@@ -219,7 +219,7 @@ if ( session.getAttribute("role") == null){
                         </div>
                     </div>
                    	<div style="margin-left:120px; margin-top:10px;">
-                    	<input type="submit" value="Registrar" id="register_button" />
+                    	<input type="button" value="Registrar" id="register_button" />
                  	</div>
                 </form>
             </div>

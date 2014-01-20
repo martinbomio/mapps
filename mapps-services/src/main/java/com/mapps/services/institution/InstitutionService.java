@@ -38,10 +38,11 @@ public interface InstitutionService {
      */
     void updateInstitution(Institution institution, String token) throws AuthenticationException, InvalidInstitutionException;
 
-    public List<String> allInstitutionsNames();
+    public List<Institution> allInstitutions();
 
     public Institution getInstitutionByName(String name);
 
     public Institution getInstitutionOfUser(String username) throws InvalidUserException;
 
+    Institution getInstitutionByID(String token, long id) throws InvalidInstitutionException, AuthenticationException;
 }

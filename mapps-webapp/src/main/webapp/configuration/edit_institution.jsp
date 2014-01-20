@@ -56,16 +56,78 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").css('visibility', 'visible');
 		
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro', disabled: true });
+		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//country
-		$("#country").jqxInput({height: 25, width: 200, minLength: 1, theme: 'metro' });
-	
+		var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
+		$("#country").jqxInput({ placeHolder: "País", height: 25, width: 200, minLength: 1 ,theme: 'metro', 
+            source: function (query, response) {
+                var item = query.split(/,\s*/).pop();
+                // update the search query.
+                $("#country").jqxInput({ query: item });
+                response(countries);
+            },
+            renderer: function (itemValue, inputValue) {
+                var terms = inputValue.split(/,\s*/);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push(itemValue);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                var value = terms.join("");
+                return value;
+            }
+        });
 		//register
 		$("#validate").jqxButton({ width: '150', height: '35', theme: 'metro'});
-	
-	
-	
+		$("#validate").on('click', function (){ 
+	        $('#edit_institution').jqxValidator('validate');
+	    });
+		$("#edit_institution").jqxValidator({
+            rules: [
+                    {
+                        input: "#name", message: "El nombre de la institución es obligatorio!", action: 'keyup, blur', rule: 'required'
+                    },
+                    { input: "#country", message: "El país al que pertenece la institución es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                   
+            ],  theme: 'metro'
+        });
+		$('#edit_institution').on('validationSuccess', function (event) {
+	        $('#edit_institution').submit();
+	    });
+		//Get institutions
+		var url = "/mapps/getAllInstitutions";		
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+				create_list(response);	            	
+            },
+        	data: {edit : 1}    
+		});
 	});
+	function create_list(response){
+		var institutions = response;
+		$('#list_institutions').on('select', function (event) {
+            updatePanel(institutions[event.args.index]);
+        });
+		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+            renderer: function (index, label, value) {
+                var datarecord = institutions[index];
+                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
+                var img = '<img height="50" width="40" src="../images/logo.png"/>';
+                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + '</td></table>';
+                return table;
+            }
+        });
+		updatePanel(institutions[0]);
+	}
+	function updatePanel(institutions){
+		$('#name').jqxInput('val', institutions['name']);
+		$('#country').jqxInput('val', institutions['country']);
+		$('#description').jqxInput('val', institutions['description']);
+		$('#id-hidden').val(institutions.id)
+	}
 </script>
 
 <div id="header">
@@ -104,14 +166,14 @@ if ( session.getAttribute("role") == null){
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                <form action="/mapps/..." method="post" name="edit_institution" id="edit_institution">
+                <form action="/mapps/modifyInstitution" method="post" name="edit_institution" id="edit_institution">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>
                     <div id="campos" style="margin-left:40px;">
                         <div id="nombre">
                         <div class="tag_form_editar"> Nombre:  </div>
-                        <div class="input"><input type="text" name="name" id="name" /></div>
+                        <div class="input"><input type="text" name="name" id="name"  /></div>
                         </div>
                         <div id="Descripcion">
                             <div class="tag_form_editar" style="vertical-align:top;"> Descripción: </div>
@@ -119,13 +181,13 @@ if ( session.getAttribute("role") == null){
                         </div>
                         <div>
                             <div class="tag_form_editar"> País: </div>
-                            <div class="input"><input name="country"  id="country" type="text" required /></div>
+                            <div class="input"><input name="country"  id="country"  /></div>
                         </div>
                     	<div style="margin-left:70px; margin-top:20px;">
-                    		<input type="submit" id="validate" value="CONFIRMAR"/>
+                    		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
-                    <input type="hidden" id="document-hidden" name="document"></input>
+                    <input type="hidden" id="id-hidden" name="id-hidden"></input>
                 </form>
             </div>
         </div>

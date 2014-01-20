@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Maps;
+import com.google.common.hash.Hashing;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
@@ -57,7 +58,7 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
             String players = req.getParameter("players_list");
             Map<Athlete, Device> athleteDeviceMap = createAthleteDeviceMap(players);
             int part = athleteDeviceMap.keySet().size();
-            String name = createTrainingName(institution, date, sportAux);
+            String name = createTrainingName(institution, sportAux);
             Map<User, Permission> permissionMap = Maps.newHashMap();
             permissionMap.put(userTraining, Permission.CREATE);
             Training training = new Training(name, date, part, longitude, latitude, minBPM, maxBPM,
@@ -80,10 +81,11 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
         }
     }
 
-    private String createTrainingName(Institution institution, Date date, Sport sport) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        String dateString = formatter.format(date);
-        return institution.getName() + "-" + sport.getName() + "-" + dateString;
+    private String createTrainingName(Institution institution, Sport sport) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss-SSSS");
+        String dateString = formatter.format(new Date());
+        String hash = Hashing.murmur3_32().hashString(institution.getName() + "-" + sport.getName() + "-" + dateString).toString();
+        return "0T" + hash;
     }
 
     private Map<Athlete, Device> createAthleteDeviceMap(String players) throws InvalidAthleteException {

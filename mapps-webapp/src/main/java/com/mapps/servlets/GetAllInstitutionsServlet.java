@@ -3,7 +3,6 @@ package com.mapps.servlets;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -14,9 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.mapps.model.Institution;
+import com.mapps.model.Role;
+import com.mapps.model.User;
 import com.mapps.services.institution.InstitutionService;
+import com.mapps.services.user.UserService;
+import com.mapps.services.user.exceptions.AuthenticationException;
 
 
 /**
@@ -27,16 +31,30 @@ public class GetAllInstitutionsServlet extends HttpServlet implements Servlet {
     Logger logger = Logger.getLogger(GetAllInstitutionsServlet.class);
     @EJB(beanName = "InstitutionService")
     protected InstitutionService institutionService;
+    @EJB(beanName = "UserService")
+    protected UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> instNames = institutionService.allInstitutionsNames();
         Writer writer = resp.getWriter();
-        resp.setContentType("application/json");
-        Map<String, String[]> map = Maps.newHashMap();
-        map.put("name", instNames.toArray(new String[instNames.size()]));
-        String json = new Gson().toJson(map);
-        writer.write(json);
-        writer.close();
+        try {
+            List<Institution> institutions;
+            String token = String.valueOf(req.getSession().getAttribute("token"));
+            User user = userService.getUserOfToken(token);
+            if ( req.getParameter("edit") != null && req.getParameter("edit").equals("1") && user.getRole() != Role.ADMINISTRATOR) {
+                resp.setContentType("application/json");
+                institutions = Lists.newArrayList();
+                institutions.add(user.getInstitution());
+            } else {
+                institutions = institutionService.allInstitutions();
+                resp.setContentType("application/json");
+            }
+            String json = new Gson().toJson(institutions);
+            writer.write(json);
+        } catch (AuthenticationException e) {
+
+        } finally {
+            writer.close();
+        }
     }
 }

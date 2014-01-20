@@ -1,6 +1,5 @@
 package com.mapps.services.institution.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -119,13 +118,8 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public List<String> allInstitutionsNames() {
-        List<String> aux=new ArrayList<String>();
-        List<Institution> institutions=institutionDAO.getAllInstitutions();
-        for(int i=0;i<institutions.size();i++){
-            aux.add((institutions.get(i)).getName());
-        }
-        return aux;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Institution> allInstitutions() {
+        return institutionDAO.getAllInstitutions();
     }
     @Override
     public Institution getInstitutionByName(String name){
@@ -148,6 +142,22 @@ public class InstitutionServiceImpl implements InstitutionService {
             return instAux;
         } catch (UserNotFoundException e) {
             throw new InvalidUserException();
+        }
+    }
+
+    @Override
+    public Institution getInstitutionByID(String token, long id) throws InvalidInstitutionException, AuthenticationException {
+        if (token == null){
+            throw new AuthenticationException();
+        }
+        if (!authenticationHandler.validateToken(token)){
+            throw new AuthenticationException();
+        }
+        try {
+            return institutionDAO.getInstitutionById(id);
+        } catch (InstitutionNotFoundException e) {
+            logger.error("Institution nos found for id :"+ id);
+            throw new InvalidInstitutionException();
         }
     }
 }
