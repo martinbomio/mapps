@@ -32,6 +32,7 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
 
     /**
      * sets the default token duration in seconds
+     *
      * @param duration of the tokens in seconds
      */
     public void setDuration(int duration) {
@@ -40,7 +41,7 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
 
     @Override
     public boolean validateToken(String token) {
-        if(token==null){
+        if (token == null) {
             logger.error("validate token ran with token null");
             throw new IllegalArgumentException("Token is null");
         }
@@ -49,18 +50,18 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
             Date date = new Date();
             long now = date.getTime();
             long createdAt = aToken.getCreatedAt();
-            long difference = now-createdAt;
-            long maxDifference = duration*1000;
-            if(difference>maxDifference){
+            long difference = now - createdAt;
+            long maxDifference = duration * 1000;
+            if (difference > maxDifference) {
                 logger.trace("validate token: token expired");
                 return false;
             }
             String username = aToken.getUsername();
             User user = userDao.getUserByUsername(username);
-            if(user.getPassword().equals(aToken.getPassword())){
-                    logger.trace("validate token: token valid");
-                    return true;
-            }else{
+            if (user.getPassword().equals(aToken.getPassword())) {
+                logger.trace("validate token: token valid");
+                return true;
+            } else {
                 logger.trace("validate token: password of token not correct");
                 return false;
             }
@@ -75,20 +76,19 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
     }
 
     @Override
-    public String authenticate(User user) throws InvalidUserException{
-        if(user==null){
+    public String authenticate(User user) throws InvalidUserException {
+        if (user == null) {
             logger.error("authenticate ran with user null");
             throw new InvalidUserException();
         }
         try {
-            logger.trace("authenticate ran with user "+user.getUserName());
+            logger.trace("authenticate ran with user " + user.getUserName());
             User storedUser = userDao.getUserByUsername(user.getUserName());
-            String name = user.getUserName();
-            if(storedUser!=null && storedUser.getUserName().equals(user.getUserName())
-                    && storedUser.getPassword().equals(user.getPassword())){
-                return (new Token(storedUser.getUserName(),storedUser.getPassword())).toString();
-            }else{
-                logger.trace("authenticate user "+user.getUserName()+" not the same with stored");
+            if (storedUser != null && storedUser.getUserName().equals(user.getUserName())
+                    && storedUser.getPassword().equals(user.getPassword()) && storedUser.isEnabled()) {
+                return (new Token(storedUser.getUserName(), storedUser.getPassword())).toString();
+            } else {
+                logger.trace("authenticate user " + user.getUserName() + " not the same with stored");
                 throw new InvalidUserException();
             }
         } catch (UserNotFoundException e) {
@@ -99,14 +99,14 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
 
     @Override
     public User getUserOfToken(String token) throws InvalidTokenException {
-       if(token==null){
-           logger.error("getUserOftoken token is null");
-           throw new InvalidTokenException();
-       }
-       if(!this.validateToken(token)){
-           throw new InvalidTokenException();
-       }
-       Token aToken = Token.getToken(token);
+        if (token == null) {
+            logger.error("getUserOftoken token is null");
+            throw new InvalidTokenException();
+        }
+        if (!this.validateToken(token)) {
+            throw new InvalidTokenException();
+        }
+        Token aToken = Token.getToken(token);
         try {
             return userDao.getUserByUsername(aToken.getUsername());
         } catch (UserNotFoundException e) {
@@ -116,28 +116,27 @@ public class AuthenticationHandlerImpl implements AuthenticationHandler {
     }
 
 
-
     @Override
     public boolean isUserInRole(String token, Role role) throws InvalidTokenException {
-        if(token==null){
+        if (token == null) {
             logger.error("isUserInRole token is null");
             throw new InvalidTokenException();
         }
-        if(role==null){
+        if (role == null) {
             logger.error("isUserInRole role is null");
             throw new IllegalArgumentException("Role is null");
         }
-        if(!this.validateToken(token)){
+        if (!this.validateToken(token)) {
             throw new InvalidTokenException();
         }
         Token aToken = Token.getToken(token);
         try {
             User user = userDao.getUserByUsername(aToken.getUsername());
             Role storedRole = user.getRole();
-            if(role.toInt() == storedRole.toInt()){
+            if (role.toInt() == storedRole.toInt()) {
                 logger.trace("isUserInRole is true");
                 return true;
-            }else{
+            } else {
                 logger.trace("isUserInRole is false");
                 return false;
             }

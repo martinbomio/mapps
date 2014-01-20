@@ -1,6 +1,7 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mapps.model.Role;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.mapps.model.User;
 import com.mapps.services.admin.AdminService;
 import com.mapps.services.admin.exceptions.AuthenticationException;
@@ -35,16 +38,20 @@ public class DeleteUserServlet extends HttpServlet implements Servlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
-
-        String username = req.getParameter("username");
+        String json = req.getParameter("json");
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+        List<User> users = gson.fromJson(json, new TypeToken<List<User>>(){}.getType());
         try {
-            User user = adminService.getUserByUsername(username);
-            adminService.deleteUser(user, token);
-            req.setAttribute("info", "El usuario fue borrado del sistema con éxito");
+            for (User user : users){
+                User dbUser = adminService.getUserByUsername(user.getUserName());
+                adminService.deleteUser(dbUser, token);
+            }
         } catch (InvalidUserException e) {
-            req.setAttribute("error", "Usuario no valido");
+            //Usuario no valido
+            resp.sendError(1, "El usurio que desea eliminar no existe");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            //Error de autenticacion
+            resp.sendError(2, "Error de autentificación");
         }
     }
 

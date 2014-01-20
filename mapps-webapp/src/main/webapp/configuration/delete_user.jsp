@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatatable.js"></script> 
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -61,11 +62,11 @@ if ( session.getAttribute("role") == null){
             var array = $("#dataTable").jqxDataTable('getSelection');
             var json = JSON.stringify(array);
             $.ajax({
-                url: "/mapps/...",
+                url: "/mapps/deleteUser",
                 type: "POST",
                 data: {json: json},
                 success: function (response){
-                	window.location.replace("delete_institution.jsp");
+                	window.location.replace("delete_user.jsp");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                 	  console.log(textStatus, errorThrown);
@@ -74,28 +75,10 @@ if ( session.getAttribute("role") == null){
         });
 		
 		var url = "/mapps/getAllUsers";
-        $.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	fill_table(response);
-        }});
-	
-	});
-	
-	function fill_table(response){
-		var athletes = response['users'];
 		var source =
         {
-            localData: institutions,
-            dataType: "array",
-            dataFields:
-            [
-                { name: 'name', type: 'string' },
-                { name: 'lastName', type: 'string' },
-				{ name: 'username', type: 'string' },
-				{ name: 'ci', type: 'string' },
-            ]
+            datatype: "json",
+            url: url,
         };
 		var dataAdapter = new $.jqx.dataAdapter(source);
 		$("#dataTable").jqxDataTable(
@@ -109,12 +92,12 @@ if ( session.getAttribute("role") == null){
 	                columns: [
 	                    { text: 'Nombre', dataField: 'name', width: 200 },
 	                    { text: 'Apellido', dataField: 'lastName', width: 200 },
-						{ text: 'Usuario', dataField: 'username', width: 200 },
-						{ text: 'Documento', dataField: 'ci', width: 200 },
+						{ text: 'Usuario', dataField: 'userName', width: 200 },
+						{ text: 'Documento', dataField: 'idDocument', width: 200 },
 	                ]
 	            }
 		);
-	}
+	});
 </script>
 
 <div id="header">

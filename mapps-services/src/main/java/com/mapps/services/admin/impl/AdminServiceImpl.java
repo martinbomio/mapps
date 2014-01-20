@@ -37,7 +37,7 @@ import com.mapps.services.admin.exceptions.UserAlreadyExistsException;
  * Implementation of AdminService
  */
 @Stateless(name = "AdminService")
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
     Logger logger = Logger.getLogger(AdminServiceImpl.class);
 
@@ -52,12 +52,12 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void createUser(User newUser, String token) throws AuthenticationException, InvalidUserException, UserAlreadyExistsException {
-        if (newUser == null || newUser.getUserName() == null || newUser.getPassword() == null){
+        if (newUser == null || newUser.getUserName() == null || newUser.getPassword() == null) {
             logger.error("Invalid User");
             throw new InvalidUserException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
@@ -77,13 +77,12 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public User getUserByUsername(String name) throws InvalidUserException {
-        User aux=null;
-        if(name!=null){
+        User aux = null;
+        if (name != null) {
             try {
-                aux=userDAO.getUserByUsername(name);
-            }
-            catch (UserNotFoundException e) {
-              throw new InvalidUserException();
+                aux = userDAO.getUserByUsername(name);
+            } catch (UserNotFoundException e) {
+                throw new InvalidUserException();
             }
         }
         return aux;
@@ -91,13 +90,13 @@ public class AdminServiceImpl implements AdminService{
 
 
     @Override
-    public void deleteUser(User user, String token) throws AuthenticationException{
-        if (user == null || user.getUserName() == null){
+    public void deleteUser(User user, String token) throws AuthenticationException {
+        if (user == null || user.getUserName() == null) {
             logger.error("Invalid User");
             throw new InvalidUserRuntimeException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
@@ -118,19 +117,19 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void changePermissions(Training training, User user, Permission permission, String token) throws AuthenticationException {
-        if( user == null || training == null || permission == null || user.getUserName() == null){
+        if (user == null || training == null || permission == null || user.getUserName() == null) {
             logger.info("Some of the parameters are not valid");
             throw new IllegalArgumentException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
             Training dbTraining = trainingDAO.getTrainingByName(training.getName());
             User dbUser = userDAO.getUserByUsername(user.getUserName());
-            Map<User,Permission> permissionsForUsers = dbTraining.getMapUserPermission();
-            permissionsForUsers.put(dbUser,permission);
+            Map<User, Permission> permissionsForUsers = dbTraining.getMapUserPermission();
+            permissionsForUsers.put(dbUser, permission);
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");
             throw new AuthenticationException();
@@ -145,12 +144,12 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void changeRole(User user, Role role, String token) throws AuthenticationException {
-        if (user == null || user.getUserName() == null){
+        if (user == null || user.getUserName() == null) {
             logger.error("Invalid User");
             throw new InvalidUserRuntimeException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
@@ -162,7 +161,7 @@ public class AdminServiceImpl implements AdminService{
             throw new InvalidUserRuntimeException();
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");
-            throw  new AuthenticationException();
+            throw new AuthenticationException();
         } catch (NullParameterException e) {
             logger.error("Invalid User");
             throw new InvalidUserRuntimeException();
@@ -171,13 +170,13 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void addDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException,
-                                                                DeviceAlreadyExistsException {
-        if( device == null ){
+            DeviceAlreadyExistsException {
+        if (device == null) {
             logger.error("Invalid device");
             throw new InvalidDeviceException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
@@ -195,13 +194,13 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public void disableDevice(Device device, String token) throws AuthenticationException{
-        if ( device == null){
+    public void disableDevice(Device device, String token) throws AuthenticationException {
+        if (device == null) {
             logger.info("Invalid device");
             throw new InvalidDeviceRuntimeException();
         }
-        try{
-            if (!authenticationHandler.isUserInRole(token,Role.ADMINISTRATOR)){
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }
@@ -219,6 +218,7 @@ public class AdminServiceImpl implements AdminService{
             throw new InvalidDeviceRuntimeException();
         }
     }
+
     @Override
     public void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException {
         if (device == null || device.getDirLow() == null) {
@@ -243,5 +243,23 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public List<Device> getAllDevices() {
         return deviceDAO.getAllDevices();
+    }
+
+    @Override
+    public List<User> getAllUsers(String token) throws AuthenticationException {
+        if (token == null) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
+        try {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
+                logger.error("User is not Administrator");
+                throw new AuthenticationException();
+            }
+            return userDAO.getAllUsers();
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
     }
 }

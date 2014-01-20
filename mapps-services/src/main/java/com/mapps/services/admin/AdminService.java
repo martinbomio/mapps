@@ -85,4 +85,6 @@ public interface AdminService {
     void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
 
     List<Device> getAllDevices();
+
+    List<User> getAllUsers(String token) throws AuthenticationException;
 }

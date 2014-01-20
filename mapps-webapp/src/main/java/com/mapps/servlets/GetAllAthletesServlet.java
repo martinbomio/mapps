@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mapps.model.Athlete;
 import com.mapps.services.trainer.TrainerService;
 
@@ -32,7 +33,8 @@ public class GetAllAthletesServlet extends HttpServlet implements Servlet {
         resp.setContentType("application/json");
         Map<String,List<Athlete>> map= Maps.newHashMap();
         map.put("athletes",athletes);
-        String json = new Gson().toJson(map);
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyy").create();
+        String json = gson.toJson(map);
         writer.write(json);
         writer.close();
     }
