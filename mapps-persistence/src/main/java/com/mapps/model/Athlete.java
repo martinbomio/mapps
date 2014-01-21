@@ -14,9 +14,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Athletes")
-public class Athlete extends Person{
+public class Athlete extends Person {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(nullable = false)
     private double weight;
@@ -36,7 +36,7 @@ public class Athlete extends Person{
     }
 
     public Athlete(String name, String lastName, Date birth, Gender gender,
-                   String email,double weight, double height,String idDocument, Institution institution) {
+                   String email, double weight, double height, String idDocument, Institution institution) {
         this.name = name;
         this.lastName = lastName;
         this.birth = birth;
@@ -45,24 +45,25 @@ public class Athlete extends Person{
         this.weight = weight;
         this.height = height;
         this.idDocument = idDocument;
-        this.enabled=true;
+        this.enabled = true;
         this.institution = institution;
     }
+
     @Override
-    public boolean equals(Object obj){
-        boolean aux=false;
-        if(obj==this){
-            aux=true;
+    public boolean equals(Object obj) {
+        boolean aux = false;
+        if (obj == this) {
+            aux = true;
             return aux;
         }
-        if(obj==null || obj.getClass()!=this.getClass()){
+        if (obj == null || obj.getClass() != this.getClass()) {
             return aux;
         }
-        Athlete other=  (Athlete)obj;
-        if(name.equals(other.name)&&lastName.equals(other.lastName)&&gender.equals(other.gender)&&
-                email.equals(other.email)&&birth.equals(other.birth)&&(weight==other.weight)&&
-                (height==other.height)&&idDocument.equals(idDocument)&&institution.equals(other.institution)){
-            aux=true;
+        Athlete other = (Athlete) obj;
+        if (name.equals(other.name) && lastName.equals(other.lastName) && gender.equals(other.gender) &&
+                email.equals(other.email) && birth.equals(other.birth) && (weight == other.weight) &&
+                (height == other.height) && idDocument.equals(idDocument) && institution.equals(other.institution)) {
+            aux = true;
             return aux;
         }
         return aux;
@@ -90,5 +91,11 @@ public class Athlete extends Person{
 
     public void setHeight(double height) {
         this.height = height;
+    }
+
+    @Override
+    public String toString() {
+        String toString = "name:" + name + ",lastName:" + lastName + ",idDocument:" + idDocument;
+        return toString;
     }
 }

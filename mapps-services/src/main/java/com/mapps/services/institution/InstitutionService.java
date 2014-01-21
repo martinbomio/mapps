@@ -3,7 +3,9 @@ package com.mapps.services.institution;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.mapps.model.Device;
 import com.mapps.model.Institution;
+import com.mapps.model.Training;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -45,4 +47,8 @@ public interface InstitutionService {
     public Institution getInstitutionOfUser(String username) throws InvalidUserException;
 
     Institution getInstitutionByID(String token, long id) throws InvalidInstitutionException, AuthenticationException;
+
+    List<Device> getDeviceOfInstitution(String token) throws AuthenticationException;
+
+    List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException;
 }

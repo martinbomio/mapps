@@ -8,6 +8,7 @@ import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Institution;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 
@@ -113,5 +114,12 @@ public interface TrainingDAO {
      * @return list containing the editable trainings.
      */
     public List<Training> getAllEditableTrainings(User user) throws NullParameterException;
+
+    /**
+     * gets all trainings to start for an Institution
+     * @param institution the institution
+     * @return a list containing all the trainings to start
+     */
+    public List<Training> getAllToStartOfInstitution(Institution institution);
 
 }

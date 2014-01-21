@@ -40,9 +40,13 @@ public class GetAllAthletesOfInstitutionServlet extends HttpServlet implements S
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
+        boolean isInTraining = false;
+        if (req.getParameter("t") != null){
+            isInTraining=  Boolean.parseBoolean(req.getParameter("t"));
+        }
         try {
             User user = userService.getUserOfToken(token);
-            if (userService.isAdministrator(user.getUserName())){
+            if (userService.isAdministrator(user.getUserName()) && !isInTraining){
                 req.getRequestDispatcher("getAllAthletes").forward(req, resp);
             }
             Institution institution = institutionService.getInstitutionOfUser(user.getUserName());

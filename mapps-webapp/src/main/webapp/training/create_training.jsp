@@ -56,6 +56,7 @@ if (error.equals("null"))
 		$.ajax({
             url: url,
             type: "GET",
+            data: {t: true},
             success: function (response){
             	var athletes = response.athletes;
             	$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});

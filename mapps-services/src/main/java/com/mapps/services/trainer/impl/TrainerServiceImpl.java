@@ -132,16 +132,18 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Training getTrainingByName(String name) throws InvalidTrainingException {
-        Training aux = null;
-        if (name != null) {
-            try {
-                aux = trainingDAO.getTrainingByName(name);
-            } catch (TrainingNotFoundException e) {
-                throw new InvalidTrainingException();
-            }
+    public Training getTrainingByName(String token, String name) throws InvalidTrainingException, AuthenticationException, NullParameterException {
+        if (!authenticationHandler.validateToken(token)) {
+            throw new AuthenticationException();
         }
-        return aux;
+        if (name == null){
+            throw new NullParameterException();
+        }
+        try {
+            return trainingDAO.getTrainingByName(name);
+        } catch (TrainingNotFoundException e) {
+            throw new InvalidTrainingException();
+        }
     }
 
 
@@ -179,12 +181,12 @@ public class TrainerServiceImpl implements TrainerService {
             throw new AuthenticationException();
         }
         try {
-            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)){
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 return trainingDAO.getAllTrainings();
-            }else if (authenticationHandler.isUserInRole(token, Role.TRAINER)){
+            } else if (authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 User user = authenticationHandler.getUserOfToken(token);
                 return trainingDAO.getAllEditableTrainings(user);
-            }else {
+            } else {
                 logger.error("Authentication error, user has no privilages");
                 throw new AuthenticationException();
             }

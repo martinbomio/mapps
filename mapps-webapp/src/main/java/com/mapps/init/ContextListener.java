@@ -43,7 +43,7 @@ import com.mapps.utils.Constants;
  *
  *
  */
-public class ContextListener implements ServletContextListener{
+public class ContextListener implements ServletContextListener {
     Logger logger = Logger.getLogger(ContextListener.class);
     @EJB(beanName = "UserDAO")
     UserDAO userDAO;
@@ -71,29 +71,29 @@ public class ContextListener implements ServletContextListener{
 
     }
 
-    private void createDefault(){
-        Date date=new Date();
+    private void createDefault() {
+        Date date = new Date();
 
         Institution inst = new Institution("CPC", "Carrasco Polo Club", "Uruguay");
         Institution inst2 = new Institution("CAP", "Club Atletico Peñarol", "Uruguay");
-        User user = new User("admin","", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR,"58585");
-        User user2 = new User("train","", new Date(), Gender.MALE, "user@mapps.com", "train", "train", inst, Role.TRAINER,"5858544444");
+        User user = new User("admin", "", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR, "5.858.567-0");
+        User user2 = new User("train", "", new Date(), Gender.MALE, "user@mapps.com", "train", "train", inst, Role.TRAINER, "5.858.544.4");
         user.setEnabled(true);
-        Sport sport=new Sport("Futbol");
-        Athlete athlete=new Athlete("pepe","apellido",new Date(),Gender.MALE,"pepe@gmail.com",78,1.8,"44475993",inst);
-        Athlete mario = new Athlete("Mario","Gomez", new Date(),Gender.MALE,"mario@gmail.com",78,1.80,"4.447.599-3",inst);
-        Device device =new Device("0013A200","40aad87e",55,inst);
-        Report report=new Report("url",date,"report one",ReportType.TRAINNING);
+        Sport sport = new Sport("Futbol");
+        Athlete athlete = new Athlete("pepe", "apellido", new Date(), Gender.MALE, "pepe@gmail.com", 78, 1.8, "1.111.111-0", inst);
+        Athlete mario = new Athlete("Mario", "Gomez", new Date(), Gender.MALE, "mario@gmail.com", 78, 1.80, "4.447.599-3", inst);
+        Device device = new Device("0013A200", "40aad87e", 55, inst);
+        Report report = new Report("url", date, "report one", ReportType.TRAINNING);
 
-        Map<Athlete,Device> mapAthleteDevice=new HashMap<Athlete,Device>();
-        Map<User,Permission> mapUserPermission=new HashMap<User,Permission>();
-        mapAthleteDevice.put(athlete,device);
-        mapUserPermission.put(user,Permission.CREATE);
-        mapUserPermission.put(user,Permission.READ);
+        Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
+        Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
+        mapAthleteDevice.put(athlete, device);
+        mapUserPermission.put(user, Permission.CREATE);
+        mapUserPermission.put(user, Permission.READ);
 
-        Training training = new Training("nombreTraining",new Date(),3,34523361,56025285,55,190,
-                                         mapAthleteDevice,null,sport,mapUserPermission,inst);
-        training.setStarted(true);
+        Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
+                                         mapAthleteDevice, null, sport, mapUserPermission, inst);
+        training.setStarted(false);
         try {
             inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             inst2.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));

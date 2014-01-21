@@ -3,6 +3,7 @@ package com.mapps.services.trainer;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Sport;
@@ -42,7 +43,7 @@ public interface TrainerService {
 
     public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException;
 
-    public Training getTrainingByName(String name) throws InvalidTrainingException;
+    public Training getTrainingByName(String token, String name) throws InvalidTrainingException, AuthenticationException, NullParameterException;
 
     public List<Athlete> getAllAthletes();
 

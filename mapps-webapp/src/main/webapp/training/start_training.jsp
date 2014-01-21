@@ -46,47 +46,52 @@ if (info.equals("null"))
 String error = String.valueOf(request.getAttribute("error"));
 if (error.equals("null"))
 	error = "";
+String trainingUID = request.getParameter("uid");
 %>
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		$.ajax({
+            url: "/mapps/getTraining",
+            dataType: "json",
+            type: "POST",
+            data: {training:'<%=trainingUID%>'},
+            success: function (response){
+            	var date = response.date.split(" ");
+            	$('#training').text(date[0] + ' a las: '+ date[1])
+            }});
 		//Get athletes
 		var url = "/mapps/getAllAthletesOfInstitution";		
 		$.ajax({
             url: url,
             type: "GET",
+            data: {t:true},
             success: function (response){
-            	var athletes = response.athletes;
-            	$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
+            	var date = response.date.split(" ");
+            	$('#training').text(date[0] + ' a las: '+ date[1])
+            	//$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
             }});
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-		
-	
-		
-		// Create a jqxInput
-		$("#devices_list").jqxDropDownList({ source: devices, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
-
-		
 		//obtener array de devices de la institucion 
-		var devices =
+		var source =
         {
             datatype: "json",
             datafields: [
-                { name: '...' },
+                { name: 'dirLow' },
             ],
-            url: "/mapps/....."
+            url: "/mapps/getAllDevicesOfInstitution"
         };
-		
+		var dataAdapter = new $.jqx.dataAdapter(source);
 		// Create a jqxInput
-		$("#devices_list").jqxDropDownList({ source: devices, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
+		$("#devices_list").jqxDropDownList({ source: dataAdapter, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
-	        $('#create_training').jqxValidator('validate');
+	        $('#start_training').jqxValidator('validate');
 	    });
-		$("#create_training").jqxValidator({
+		$("#start_training").jqxValidator({
             rules: [
 
             ],  theme: 'metro'
@@ -134,7 +139,7 @@ if (error.equals("null"))
                 </div>
                 <div id="campos" class="campos" style="margin-left:100px;">
                     <div>
-                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Entrenamiento: </div>
+                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Entrenamiento programado para: </div>
                         <div id='training' style="display:inline-block; margin-top:15px;">
                         	<!-- Aca va el nombre del training que se selecciono en la pag anterior.
                             	 Habria que agrerle algo q lo describa (e.g. dia y hora) -->

@@ -14,6 +14,7 @@ import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Institution;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 import com.mapps.persistence.TrainingDAO;
@@ -182,4 +183,12 @@ public class TrainingDAOImpl implements TrainingDAO {
         return results;
     }
 
+    @Override
+    public List<Training> getAllToStartOfInstitution(Institution institution) {
+        Query query = entityManager.createQuery("select t from Training t join t.institution i where (i=:inst and t.started=:started)");
+        query.setParameter("inst", institution);
+        query.setParameter("started", false);
+        List<Training> results = query.getResultList();
+        return results;
+    }
 }

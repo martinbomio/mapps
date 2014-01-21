@@ -15,6 +15,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
     <link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -42,14 +43,27 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").css('visibility', 'visible');
 	
 		$("#start_training").on('click', function () {
-			// IR A start_training.jsp
+			var selected = $('#trainings').jqxListBox('getSelectedItem');
+			var uid = selected.value;
+			window.location.replace("start_training.jsp?uid="+uid);
 		});
-		
-		// Create jqxListBox
-        $('#listbox').jqxListBox({ selectedIndex: 0,  source: '', displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '250', width: '400', theme: 'metro',
-            
-        });
-	
+		var source =
+        {
+            datatype: "json",
+            url: "/mapps/getTrainingsToStart"
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        $('#trainings').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '400',autoHeight:true, theme: 'metro',
+        	renderer: function (index, label, value) {
+                var datarecord = dataAdapter.records[index];
+                if (dataAdapter.records.length == 0){
+                	//PONER UN DIV: NO HAY ENTRENAMIENTOS PROGRAMADOS
+                }
+                var split = datarecord.date.split(" ");
+                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento rogramado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
+                return table;
+            }	
+        }); 
 	});
 </script>
 
@@ -79,11 +93,10 @@ if ( session.getAttribute("role") == null){
         
         </div>
         <div id="main_div">
+        	<div id="trainings" style="border: none;">
+            </div>
 			<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
-            </div>
-            <div id="listbox" style="border: none;">
-                    
             </div>
         </div>
         <div id="sidebar_right">

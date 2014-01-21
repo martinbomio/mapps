@@ -12,10 +12,14 @@ import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.InstitutionNotFoundException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.UserNotFoundException;
+import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Role;
+import com.mapps.model.Training;
 import com.mapps.model.User;
+import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.InstitutionDAO;
+import com.mapps.persistence.TrainingDAO;
 import com.mapps.persistence.UserDAO;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
@@ -35,6 +39,10 @@ public class InstitutionServiceImpl implements InstitutionService {
     protected AuthenticationHandler authenticationHandler;
     @EJB(beanName = "UserDAO")
     protected UserDAO userDAO;
+    @EJB(beanName = "DeviceDAO")
+    protected DeviceDAO deviceDAO;
+    @EJB(beanName = "TrainingDAO")
+    protected TrainingDAO trainingDAO;
 
 
     @Override
@@ -158,6 +166,40 @@ public class InstitutionServiceImpl implements InstitutionService {
         } catch (InstitutionNotFoundException e) {
             logger.error("Institution nos found for id :"+ id);
             throw new InvalidInstitutionException();
+        }
+    }
+
+    @Override
+    public List<Device> getDeviceOfInstitution(String token) throws AuthenticationException {
+        if (token == null){
+            throw new AuthenticationException();
+        }
+        if(!authenticationHandler.validateToken(token)){
+           throw new AuthenticationException();
+        }
+        try {
+            User user = authenticationHandler.getUserOfToken(token);
+            return deviceDAO.getAllDevicesByInstitution(user.getInstitution().getName());
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
+    }
+
+    @Override
+    public List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException {
+        if (token == null){
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.USER)){
+                throw new AuthenticationException();
+            }
+            User user = authenticationHandler.getUserOfToken(token);
+            return trainingDAO.getAllToStartOfInstitution(user.getInstitution());
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
         }
     }
 }
