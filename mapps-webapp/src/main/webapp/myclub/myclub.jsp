@@ -38,7 +38,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
 	
@@ -50,7 +50,7 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 
 <div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab active" onclick="location.href='./myclub.jsp">MI CLUB</div>

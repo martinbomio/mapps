@@ -78,12 +78,13 @@ if (error.equals("null"))
          });
 			
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: '50%', minLength: 1, theme: 'metro'});
+	
 		//register
-		$("#addInstitution_button").jqxButton({ width: '150', height: '25', theme: 'metro'});
+		$("#addInstitution_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
 		$("#addInstitution_button").on('click', function (){ 
 	        $('#addInstitution_form').jqxValidator('validate');
 	    });
@@ -118,7 +119,7 @@ if (error.equals("null"))
 <div id="contenedor">
 
 	<div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -144,13 +145,13 @@ if (error.equals("null"))
                     </div>
                     <div id="Descripcion">
                         <div class="tag_form" style="vertical-align:top;"> Descripción: </div>
-                        <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:400px; height:200px;" type="text" name="description" id="description" ></textarea></div>
+                        <div class="input" style="margin-top:15px; margin-bottom:15px; width:50%;"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:100%; height:200px;" type="text" name="description" id="description" ></textarea></div>
                     </div>
                     <div>
                     	<div class="tag_form"> País: </div>
                         <div class="input"><input name="country"  id="country" type="text" /></div>
                     </div>
-                   	<div style="margin-left:120px; margin-top:10px;">
+                   	<div style="margin-left:40%; margin-top:20px;">
                     	<input type="button" value="Agregar Institución" id="addInstitution_button" />
                  	</div>
                 </form>
@@ -179,4 +180,4 @@ if (error.equals("null"))
 
 </div>
 </body>
-</html>>
+</html>

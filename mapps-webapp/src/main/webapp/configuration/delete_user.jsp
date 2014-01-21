@@ -53,10 +53,10 @@ if ( session.getAttribute("role") == null){
 	
 			
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#delete").jqxButton({ width: '150', theme: 'metro'});
+		$("#delete").jqxButton({ width: '150', height: '35', theme: 'metro'});
 		
 		$("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
@@ -84,16 +84,17 @@ if ( session.getAttribute("role") == null){
 		$("#dataTable").jqxDataTable(
 	            {	
 	            	theme: 'metro',
+					width: '80%',
 	            	altrows: true,
 	                sortable: true,
 	                exportSettings: { fileName: null },
 	                source: dataAdapter,
-	                columnsResize: true,
+	                columnsResize: false,
 	                columns: [
-	                    { text: 'Nombre', dataField: 'name', width: 200 },
-	                    { text: 'Apellido', dataField: 'lastName', width: 200 },
-						{ text: 'Usuario', dataField: 'userName', width: 200 },
-						{ text: 'Documento', dataField: 'idDocument', width: 200 },
+	                    { text: 'Nombre', dataField: 'name', width: '25%' },
+	                    { text: 'Apellido', dataField: 'lastName', width: '25%' },
+						{ text: 'Usuario', dataField: 'userName', width: '25%' },
+						{ text: 'Documento', dataField: 'idDocument', width: '25%' },
 	                ]
 	            }
 		);
@@ -114,7 +115,7 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 
 	<div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -131,10 +132,10 @@ if ( session.getAttribute("role") == null){
             <div id="title" style="margin:15px;">
                 <label> Seleccione uno o varios usuarios </label>
             </div>
-        	<div id="dataTable" style="margin-top:25px; margin-left:50px;">
+        	<div id="dataTable" style="margin-top:25px; margin-left:10%; margin-right:10%;">
             
             </div>
-        	<div style="margin-top:25px; margin-left:250px;">
+        	<div style="margin-top:25px; margin-left:42%;">
              	<input type="button" value="Eliminar" id='delete' />
             </div>
         </div>

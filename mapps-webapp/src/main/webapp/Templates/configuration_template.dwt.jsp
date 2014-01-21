@@ -62,7 +62,7 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 <!-- InstanceBeginEditable name="EditRegion2" -->
 <div id="tabs">
-	  <div id="tab_1" class="tab active" style="margin-left:180px;">INICIO</div>
+	  <div id="tab_1" class="tab active" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab">JUGADORES</div>
         <div id="tab_3" class="tab">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab">MI CLUB</div>

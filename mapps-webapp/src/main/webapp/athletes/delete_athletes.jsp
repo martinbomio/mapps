@@ -46,9 +46,9 @@ if (error.equals("null"))
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-        $("#delete").jqxButton({ width: '150', theme: 'metro'});
+        $("#delete").jqxButton({ width: '150', height: '35', theme: 'metro'});
 		
         $("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
@@ -121,7 +121,7 @@ if (error.equals("null"))
 <div id="contenedor">
 
     <div id="tabs">
-	    <div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	    <div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>

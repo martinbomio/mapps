@@ -55,15 +55,15 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1, theme: 'metro' });
-		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#document").jqxMaskedInput({ width: 200, height: 30, mask: '#.###.###-#', theme: 'metro'});
-		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 30, width: 200, minLength: 1, theme: 'metro'  });
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#document").jqxMaskedInput({ width: '100%', height: 30, mask: '#.###.###-#', theme: 'metro'});
+		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$('#username').jqxInput({disabled: true });
-		$("#date").jqxDateTimeInput({width: '200px', height: '30px', theme: 'metro'});
-		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '30', dropDownHeight: '100', theme: 'metro'});
-		$("#role_list").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '30', dropDownHeight: '75', theme: 'metro'});
+		$("#date").jqxDateTimeInput({width: '50%', height: '30px', theme: 'metro'});
+		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '100', theme: 'metro'});
+		$("#role_list").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '75', theme: 'metro'});
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#edit_user').jqxValidator('validate');
@@ -106,7 +106,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_users').on('select', function (event) {
             updatePanel(users[event.args.index]);
         });
-		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -172,7 +172,7 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 
 	<div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -216,29 +216,29 @@ if ( session.getAttribute("role") == null){
                             <div class="input"><input type="text" id="document" /></div>
                         </div>
                         <div id="birth">
-                            <div class="tag_form_editar">Nacimiento: </div>
-                            <div class="input"><div id="date" class="input"></div>
+                            <div class="tag_form_editar_list">Nacimiento: </div>
+                            <div id="date" class="input list_box">
+                            </div>
                         </div>
-                        <div id='gender' style="display:inline-block">
-                        	<div class="tag_form_editar"> Sexo: </div>
-                            <div id="gender_list" style="display:inline-block; margin-top:10px"></div>
+                        <div id='gender'>
+                        	<div class="tag_form_editar_list"> Sexo: </div>
+                            <div id="gender_list" class="list_box"></div>
                         </div>
                         <div id="e_mail">
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
-                        <div id='rol' style="display:inline-block">
-                        	<div class="tag_form_editar"> Rol: </div>
-                            <div id="role_list" style="display:inline-block; margin-top:10px"></div>
+                        <div id='rol'>
+                        	<div class="tag_form_editar_list"> Rol: </div>
+                            <div id="role_list" class="list_box"></div>
                         </div>
-                    	<div style="margin-left:70px; margin-top:20px;">
+                    	<div style="margin-left:25%; margin-top:15px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
                     <input type="hidden" id="username-hidden" name="username-hidden"></input>
                 </form>
             </div>
-        </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">

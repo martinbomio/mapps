@@ -59,38 +59,50 @@ if (error.equals("null"))
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: 220, minLength: 1, theme: 'metro'  });
-		$("#document").jqxInput({placeHolder: "1234567-8", height: 30, width: 220, minLength: 1, theme: 'metro'  });
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#document").jqxMaskedInput({height: 30, width: '80%', mask: '#.###.###-#', theme: 'metro'  });
 		
 		$("#addAthlete_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
 	
-	//getAllInstitutions
-	var url = "/mapps/getAllInstitutions";
-	$.ajax({
-        url: url,
-        type: "GET",
-        success: function (response){
-        	var names = response;
-        	$("#institution").jqxDropDownList(
-            		{
-            			source: names,
-            			displayMember: "name",
-            			selectedIndex: 0,
-            			width: '200',
-            			height: '25',
-            			dropDownHeight: '100',
-						theme: 'metro'
-            			}
-            		);
-        	}
-        });
+		//getAllInstitutions
+		var url = "/mapps/getAllInstitutions";
+		$.ajax({
+			url: url,
+			type: "GET",
+			success: function (response){
+				var names = response;
+				$("#institution").jqxDropDownList(
+						{
+							source: names,
+							displayMember: "name",
+							selectedIndex: 0,
+							width: '40%',
+							height: '30',
+							dropDownHeight: '100',
+							theme: 'metro'
+							}
+						);
+				}
+			});
+
+		//Drop list
+		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 2, width: '40%', height: '25', dropDownHeight: '100', theme: 'metro'});
+		//Date
+		$("#date").jqxDateTimeInput({width: '40%', height: '30px', theme: 'metro'});
+	
+		
+		//addAthlete
+		$("#addAthlete_button").jqxButton({ width: '150'});
+		$("#addAthlete_button").on('click', function (){ 
+			$('#addAthlete_form').jqxValidator('validate');
+		});
 	
 		$("#addAthlete_form").jqxValidator({
 			rules: [
@@ -176,7 +188,7 @@ if (error.equals("null"))
 <div id="contenedor">
 
     <div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -193,7 +205,7 @@ if (error.equals("null"))
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>     	
-            <div style="margin-left:100px;">
+            <div style="margin-left:15%; margin-right:15%;">
         		<form action="/mapps/addAthletes" method="post" id="addAthlete_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
@@ -204,13 +216,13 @@ if (error.equals("null"))
                         <div class="input"><input type="text" name="lastName" id="lastName" /></div>
                     </div>
                     <div id="birth">
-                        <div class="tag_form">Nacimiento: </div>
-                        <div id="date" class="input">
+                        <div class="tag_form_list">Nacimiento: </div>
+                        <div id="date" class="input list_box">
                         </div>
                     </div>
-                    <div id='gender_field' style="display:inline-block">
-                      	<div class="tag_form"> Sexo: </div>
-                        <div id="gender" style="display:inline-block; margin-top:10px"></div>
+                    <div id='gender_field'>
+                      	<div class="tag_form_list"> Sexo: </div>
+                        <div id="gender" class="input list_box"></div>
                     </div>
                     <div id="e_mail">
                         <div class="tag_form"> Email: </div>
@@ -231,9 +243,10 @@ if (error.equals("null"))
                     <div id="institution_field">
                         <div class="tag_form"> Instituci&oacute;n: </div>
                         <div id="institution" class="input">
+                        
                         </div>
                     </div>
-                   	<div style="margin-left:80px; margin-top:10px;">
+                   	<div style="margin-left:25%; margin-top:10px;">
                     	<input type="button" id="addAthlete_button" value="CONFIRMAR"/>
                  	</div>
                 </form>  

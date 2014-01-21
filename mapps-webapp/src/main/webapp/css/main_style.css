@@ -132,10 +132,18 @@ body{
 }
 
 .tag_form{
-	width:200px;
+	width:40%;
 	margin:10px;
 	display:inline-block;
 	font-size:14px;
+}
+
+.tag_form_list{
+	width:40%;
+	margin:10px;
+	display:inline-block;
+	font-size:14px;
+	vertical-align:top;
 }
 
 .tag_form_editar{
@@ -143,6 +151,14 @@ body{
 	margin:3%;
 	display:inline-block;
 	font-size:14px;
+}
+
+.tag_form_editar_list{
+	width:33%;
+	margin:3%;
+	display:inline-block;
+	font-size:14px;
+	vertical-align:top;
 }
 
 .input{
@@ -168,5 +184,8 @@ a.navigation:link{
 	font-size:14px;	
 }
 
-
+.list_box{
+	display:inline-block;
+	margin-top:5px;
+}
 	

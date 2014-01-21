@@ -17,6 +17,9 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxpanel.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
@@ -71,8 +74,7 @@ if(error.equals("1")){
 		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#document").jqxInput({placeHolder: "C.I", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$('#document').jqxInput({disabled: true });
-		$("#date").jqxInput({placeHolder: "Fecha de Nacimiento", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
-		$('#date').jqxInput({disabled: true });
+		$("#date").jqxDateTimeInput({width: '50%', height: '30px', theme: 'metro'});
 		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
@@ -257,8 +259,9 @@ if(error.equals("1")){
                             <div class="input"><input type="text" id="document" /></div>
                         </div>
                         <div id="birth">
-                            <div class="tag_form_editar">Nacimiento: </div>
-                            <div class="input"><input type="text" id="date" /></div>
+                            <div class="tag_form_editar_list">Nacimiento: </div>
+                            <div id="date" class="input list_box">
+                            </div>
                         </div>
                         <div id="peso">
                             <div class="tag_form_editar"> Peso: </div>
@@ -269,18 +272,14 @@ if(error.equals("1")){
                             <div class="input"><input type="text" name="height" id="height" /></div>
                         </div>
                         <div id='gender'>
-                        	<div class="tag_form_editar"> Sexo: </div>
-                            <div id="gender_list" style="display:inline-block; margin-top:10px"></div>
+                        	<div class="tag_form_editar_list"> Sexo: </div>
+                            <div id="gender_list" class="list_box"></div>
                         </div>
                         <div id="e_mail">
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
-                        <div style="display:inline-block">
-                    		<div class="tag_form"> Cambiar Imagen: </div>
-                        	<div class="input style="display:inline-block""><input name="file"  id="file" type="file" /></div>
-                    	</div>
-                    	<div style="margin-left:100px; margin-top:50px;">
+                    	<div style="margin-left:25%; margin-top:20px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
