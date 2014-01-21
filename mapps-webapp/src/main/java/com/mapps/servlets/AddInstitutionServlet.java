@@ -1,6 +1,8 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -10,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.model.Institution;
-import com.mapps.model.Role;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
@@ -39,12 +40,15 @@ public class AddInstitutionServlet extends HttpServlet implements Servlet {
 
         Institution institution = new Institution(name, description, country);
         try {
+            institution.setImageURI(new URI("/mapps/images/institutions/default.png"));
             institutionService.createInstitution(institution, token);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (AuthenticationException e) {
             resp.sendRedirect("configuration/add_institution.jsp?error=Error de autentificaciÃ³n");
         } catch (InvalidInstitutionException e) {
-        	resp.sendRedirect("configuration/add_institution.jsp?error=Institución no válida");
+        	resp.sendRedirect("configuration/add_institution.jsp?error=Instituciï¿½n no vï¿½lida");
+        } catch (URISyntaxException e) {
+            new IllegalStateException();
         }
     }
 }

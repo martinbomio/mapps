@@ -71,54 +71,26 @@ if (error.equals("null"))
 		
 		$("#addAthlete_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
 	
-		//getAllInstitutions
-		var url = "/mapps/getAllInstitutions";
-		$.ajax({
-			url: url,
-			type: "GET",
-			success: function (response){
-				var names = response;
-				$("#institution").jqxDropDownList(
-						{
-							source: names,
-							displayMember: "name",
-							selectedIndex: 0,
-							width: '200',
-							height: '25',
-							dropDownHeight: '100',
-							theme: 'metro'
-							}
-						);
-				}
-			});
-		
-		//Create a jqxMenu
-		$("#jqxMenu").jqxMenu({ width: '150', mode: 'vertical'});
-		$("#jqxMenu").css('visibility', 'visible');
-		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1});
-		//lastname
-		$("#lastName").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1});
-		//weight
-		$("#weight").jqxMaskedInput({ width: 200, height: 25, mask: '###.##'});
-		//height
-		$("#height").jqxMaskedInput({ width: 200, height: 25, mask: '#.##'});
-		//email
-		$("#email").jqxInput({placeHolder: "Mail", height: 25, width: 200, minLength: 3});
-		//Drop list
-		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100', theme: 'metro'});
-		//Date
-		$("#date").jqxDateTimeInput({width: '200px', height: '25px', theme: 'metro'});
-		//document
-		$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#'});
-		//rol
-		
-		
-		//addAthlete
-		$("#addAthlete_button").jqxButton({ width: '150'});
-		$("#addAthlete_button").on('click', function (){ 
-			$('#addAthlete_form').jqxValidator('validate');
-		});
+	//getAllInstitutions
+	var url = "/mapps/getAllInstitutions";
+	$.ajax({
+        url: url,
+        type: "GET",
+        success: function (response){
+        	var names = response;
+        	$("#institution").jqxDropDownList(
+            		{
+            			source: names,
+            			displayMember: "name",
+            			selectedIndex: 0,
+            			width: '200',
+            			height: '25',
+            			dropDownHeight: '100',
+						theme: 'metro'
+            			}
+            		);
+        	}
+        });
 	
 		$("#addAthlete_form").jqxValidator({
 			rules: [
@@ -155,7 +127,38 @@ if (error.equals("null"))
 		
 	
 	
+	$("#addAthlete_form").jqxValidator({
+        rules: [
+                {
+                    input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
+                },
+                {
+                    input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
+                },
+                { input: "#weight", message: "El peso del atleta es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                { input: "#height", message: "La altura del atleta es obligatoria!", action: 'keyup, blur', rule: 'required'},
+                { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
+                { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                {
+                    input: "#gender", message: "El Género es obligatorio!", action: 'blur', rule: function (input, commit) {
+                        var index = $("#gender").jqxDropDownList('getSelectedIndex');
+                        return index != -1;
+                    }
+                },
+                {
+                    input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
+                        var index = $("#institution").jqxDropDownList('getSelectedIndex');
+                        return index != -1;
+                    }
+                }
+        ], theme: 'metro'
+    });
+
+	$('#addAthlete_form').on('validationSuccess', function (event) {
+    	$('#addAthlete_form').submit();
 	});
+});
 </script>
 
 
@@ -228,7 +231,6 @@ if (error.equals("null"))
                     <div id="institution_field">
                         <div class="tag_form"> Instituci&oacute;n: </div>
                         <div id="institution" class="input">
-                        
                         </div>
                     </div>
                    	<div style="margin-left:80px; margin-top:10px;">

@@ -47,7 +47,7 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
         try {
             User userTraining = userService.getUserOfToken(token);
             Institution institution = userTraining.getInstitution();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date date = formatter.parse(req.getParameter("date"));
             long longitude = Long.parseLong(req.getParameter("num_longitude"));
             long latitude = Long.parseLong(req.getParameter("num_latitude"));

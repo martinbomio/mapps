@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
@@ -37,10 +36,10 @@ public class AddSportServlet extends HttpServlet implements Servlet {
             resp.sendRedirect("./configuration/configuration.jsp");
         } catch (InvalidSportException e) {
             //1:Deporte no valido o existente
-            resp.sendRedirect("athletes/add_athletes.jsp?error=1");
+            resp.sendRedirect("configuration/add_sport.jsp?error=1");
         } catch (AuthenticationException e) {
             //2:Error de autentificacion
-            resp.sendRedirect("athletes/add_athletes.jsp?error=2");
+            resp.sendRedirect("configuration/add_sport.jsp.jsp?error=2");
         }
     }
 }

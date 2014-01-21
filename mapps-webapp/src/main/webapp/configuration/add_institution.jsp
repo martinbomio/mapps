@@ -82,7 +82,6 @@ if (error.equals("null"))
         $("#jqxMenu").css('visibility', 'visible');
 		//name
 		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
-	
 		//register
 		$("#addInstitution_button").jqxButton({ width: '150', height: '25', theme: 'metro'});
 		$("#addInstitution_button").on('click', function (){ 
@@ -137,7 +136,7 @@ if (error.equals("null"))
                 <label> Complete el siguiente formulario </label>
             </div>     	
             <div style="margin-left:100px;">
-            	<form action="/mapps/addInstitution" method="post" id="addInstitution_form">
+            	<form action="/mapps/addInstitution" method="post" id="addInstitution_form" enctype="multipart/form-data">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name" /></div>
@@ -148,7 +147,7 @@ if (error.equals("null"))
                     </div>
                     <div>
                     	<div class="tag_form"> País: </div>
-                        <div class="input"><input name="country"  id="country" type="text" required /></div>
+                        <div class="input"><input name="country"  id="country" type="text" /></div>
                     </div>
                    	<div style="margin-left:120px; margin-top:10px;">
                     	<input type="button" value="Agregar Institución" id="addInstitution_button" />

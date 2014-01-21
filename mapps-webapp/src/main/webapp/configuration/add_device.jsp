@@ -63,7 +63,7 @@ if ( session.getAttribute("role") == null){
 							selectedIndex: 0,
 							width: '200',
 							height: '25',
-							dropDownHeight: '100',
+							dropDownHeight: '75',
 							theme: 'metro'
 							}
 						);
@@ -99,10 +99,10 @@ if ( session.getAttribute("role") == null){
                     }
                     ]
 			});
-		});
 	$('#device_form').on('validationSuccess', function (event) {
         $('#device_form').submit();
     });
+});
 </script>
 
 <div id="header">

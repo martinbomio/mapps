@@ -1,5 +1,7 @@
 package com.mapps.init;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,6 +94,8 @@ public class ContextListener implements ServletContextListener{
                                          mapAthleteDevice,null,sport,mapUserPermission,inst);
         training.setStarted(true);
         try {
+            inst.setImageURI(new URI("/mapps/images/institutions/default.png"));
+            inst2.setImageURI(new URI("/mapps/images/institutions/default.png"));
             institutionDAO.addInstitution(inst);
             institutionDAO.addInstitution(inst2);
             reportDAO.addReport(report);
@@ -119,6 +123,8 @@ public class ContextListener implements ServletContextListener{
             logger.error("Report already exists");
         } catch (TrainingAlreadyExistException e) {
             logger.error("Training already exists");
+        } catch (URISyntaxException e) {
+            logger.error("Image error");
         }
     }
 }

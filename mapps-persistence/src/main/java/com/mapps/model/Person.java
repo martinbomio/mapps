@@ -1,5 +1,6 @@
 package com.mapps.model;
 
+import java.net.URI;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public abstract class Person{
     protected String idDocument;
     @ManyToOne
     protected Institution institution;
+    protected URI imageURI;
 
     public String getIdDocument() {
         return idDocument;
@@ -81,5 +83,13 @@ public abstract class Person{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public URI getImageURI() {
+        return imageURI;
+    }
+
+    public void setImageURI(URI imageURI) {
+        this.imageURI = imageURI;
     }
 }

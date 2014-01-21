@@ -56,7 +56,6 @@ if (error.equals("null"))
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
@@ -64,23 +63,18 @@ if (error.equals("null"))
 		
 		//Get Institutions
 		var url = "/mapps/getAllSports";
-		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	var names = response['sportNames'];
-            	$("#institution").jqxDropDownList(
-                		{
-                			source: names,
-                			selectedIndex: 0,
-                			width: '200',
-                			height: '25',
-                			dropDownHeight: '100'
-                			}
-                		);
-            	}
-            });
-			
+        // prepare the data
+        var source =
+        {
+            datatype: "json",
+            datafields: [
+                { name: 'name' },
+            ],
+            url: url
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        // Create a jqxListBox
+        $("#sports").jqxListBox({ source: dataAdapter, displayMember: "name", valueMember: "name", width: 200, height: 150});
 		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//register
 		$("#addSport_button").jqxButton({ width: '200', height: '35', theme: 'metro'});
@@ -95,11 +89,11 @@ if (error.equals("null"))
            
             ],  theme: 'metro'
         });
-	});
 	
-	$('#addSport_form').on('validationSuccess', function (event) {
-        $('#addSport_form').submit();
-    });
+		$('#addSport_form').on('validationSuccess', function (event) {
+        	$('#addSport_form').submit();
+   		 });
+	});
 </script>
 
 
@@ -144,6 +138,13 @@ if (error.equals("null"))
                  	</div>
                 </form>
         	</div>
+        	<div id="title" style="margin:15px;">
+                <label> Deportes ya Ingresados </label>
+            </div> 
+            	<div id="nombre">
+            			<div class="tag_form"></div>
+                        <div class="input"><div id='sports'> </div></div>
+                </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">

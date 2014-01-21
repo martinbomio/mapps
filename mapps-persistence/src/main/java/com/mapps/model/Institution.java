@@ -1,5 +1,6 @@
 package com.mapps.model;
 
+import java.net.URI;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ public class Institution {
     @Column(nullable=false)
     private String country;
     private boolean enabled;
+    private URI imageURI;
 
     public Institution(){
 
@@ -50,7 +52,6 @@ public class Institution {
         }
         return aux;
     }
-
 
     public Long getId() {
         return id;
@@ -87,5 +88,13 @@ public class Institution {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public URI getImageURI() {
+        return imageURI;
+    }
+
+    public void setImageURI(URI imageURI) {
+        this.imageURI = imageURI;
     }
 }
