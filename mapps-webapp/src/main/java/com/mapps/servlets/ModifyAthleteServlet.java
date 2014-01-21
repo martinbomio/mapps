@@ -76,6 +76,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
             athlete.setHeight(height);
             athlete.setImageURI(Utils.getFileURI(idDocument, UPLOAD_DIR, extension));
             trainerService.modifyAthlete(athlete, token);
+            part.write(uploadFilePath + File.separator + idDocument + "." + extension);
             resp.sendRedirect("athletes/athletes.jsp?info=2");
         } catch (InvalidAthleteException e) {
             //error 1: Atleta no valido

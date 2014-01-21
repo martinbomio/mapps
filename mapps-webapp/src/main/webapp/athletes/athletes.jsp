@@ -123,7 +123,7 @@ if(info.equals("1")){
             var email = "<div style='margin: 10px;'><b>Email:</b> " + datarecord.email + "</div>";
             var weight = "<div style='margin: 10px;'><b>Peso:</b> " + datarecord.weight + "</div>";
             var height = "<div style='margin: 10px;'><b>Altura:</b> " + datarecord.height + "</div>";
-            var document = "<div style='margin: 10px;'><b>C.I.:</b> " + datarecord.iDocument + "</div>";
+            var document = "<div style='margin: 10px;'><b>C.I.:</b> " + datarecord.idDocument + "</div>";
             $(rightcolumn).append(email);
             $(rightcolumn).append(weight);
             $(rightcolumn).append(height);
