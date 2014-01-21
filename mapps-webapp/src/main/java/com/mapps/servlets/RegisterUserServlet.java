@@ -1,6 +1,8 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +26,7 @@ import com.mapps.services.admin.exceptions.InvalidUserException;
 import com.mapps.services.admin.exceptions.UserAlreadyExistsException;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.user.UserService;
+import com.mapps.utils.Constants;
 
 /**
  *
@@ -67,6 +70,7 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
             Date birth = formatter.parse(req.getParameter("date"));
             User user = new User(name, lastName, birth, gender, email, userName, password, instAux, role, idDocument);
             user.setEnabled(true);
+            user.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             adminService.createUser(user, token);
             resp.sendRedirect("configuration/configuration.jsp?info=El usuario se agrego al sistema con exito");
         } catch (ParseException e) {
@@ -79,6 +83,8 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
         } catch (UserAlreadyExistsException e) {
             resp.sendRedirect("configuration/register_user.jsp?error=Usuario ya existe en el sistema");
 
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException();
         }
 
     }

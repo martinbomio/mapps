@@ -99,25 +99,9 @@ if(info.equals("1")){
 	function fill_splitter(response){
 		$("#splitter").jqxSplitter({  width: '95%', height: 390, panels: [{ size: '40%'}] });
 		var athletes = response["athletes"];
-        // prepare the data
-        var k = 0;
-		var data = [];
-        for (var i = 0; i < athletes.length; i++) {
-            var row = {};
-            row["name"] = athletes[i]['name'];
-            row["lastname"] = athletes[i]['lastName'];
-            row["birth"] = athletes[i]['birth'];
-            row["gender"] = athletes[i]['gender'];
-            row["email"] = athletes[i]['email'];
-            row["weight"] = athletes[i]['weight'];
-            row["height"] = athletes[i]['height'];
-            row["document"] = athletes[i]['idDocument'];
-            data[i] = row;
-            k++;
-        }
         var source =
         {
-            localdata: data,
+            localdata: athletes,
             datatype: "json"
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -127,7 +111,7 @@ if(info.equals("1")){
             var rightcolumn = $('<div style="float: left; width: 40%;"></div>');
             container.append(leftcolumn);
             container.append(rightcolumn);
-            var datarecord = data[index];
+            var datarecord = athletes[index];
             var name = "<div style='margin: 10px;'><b>Nombre:</b> " + datarecord.name + "</div>";
             var lastname = "<div style='margin: 10px;'><b>Apellido:</b> " + datarecord.lastname + "</div>";
             var birth = "<div style='margin: 10px;'><b>Fecha de Nacimiento:</b> " + datarecord.birth + "</div>";
@@ -139,7 +123,7 @@ if(info.equals("1")){
             var email = "<div style='margin: 10px;'><b>Email:</b> " + datarecord.email + "</div>";
             var weight = "<div style='margin: 10px;'><b>Peso:</b> " + datarecord.weight + "</div>";
             var height = "<div style='margin: 10px;'><b>Altura:</b> " + datarecord.height + "</div>";
-            var document = "<div style='margin: 10px;'><b>C.I.:</b> " + datarecord.document + "</div>";
+            var document = "<div style='margin: 10px;'><b>C.I.:</b> " + datarecord.iDocument + "</div>";
             $(rightcolumn).append(email);
             $(rightcolumn).append(weight);
             $(rightcolumn).append(height);
@@ -153,9 +137,9 @@ if(info.equals("1")){
         // Create jqxListBox
         $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
-                var datarecord = data[index];
+                var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="40" src="../images/logo.png"/>';
+                var img = '<img height="50" width="40" src="' + datarecord.imageURI + '"/>';
                 var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastname + '</td></table>';
                 return table;
             }

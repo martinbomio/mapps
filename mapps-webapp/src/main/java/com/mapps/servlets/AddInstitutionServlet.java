@@ -17,6 +17,7 @@ import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
+import com.mapps.utils.Constants;
 
 /**
  *
@@ -40,7 +41,7 @@ public class AddInstitutionServlet extends HttpServlet implements Servlet {
 
         Institution institution = new Institution(name, description, country);
         try {
-            institution.setImageURI(new URI("/mapps/images/institutions/default.png"));
+            institution.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             institutionService.createInstitution(institution, token);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (AuthenticationException e) {

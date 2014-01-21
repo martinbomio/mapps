@@ -2,8 +2,6 @@ package com.mapps.servlets;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -22,6 +20,7 @@ import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
+import com.mapps.utils.Utils;
 
 /**
  *
@@ -57,13 +56,13 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
         String id = req.getParameter("id-hidden");
         try {
             Part part = req.getPart("file");
-            String fileName = getFileName(part);
+            String fileName = Utils.getFileName(part);
             String extension = fileName.split("\\.")[1];
             Institution newInst = institutionService.getInstitutionByID(token, Long.valueOf(id));
             newInst.setDescription(description);
             newInst.setCountry(country);
             newInst.setName(name);
-            newInst.setImageURI(new URI("/mapps" + File.separator + UPLOAD_DIR + File.separator + name + "." + extension));
+            newInst.setImageURI(Utils.getFileURI(name, UPLOAD_DIR, extension));
             institutionService.updateInstitution(newInst, token);
             part.write(uploadFilePath + File.separator + name + "." + extension);
             resp.sendRedirect("configuration/configuration.jsp");
@@ -72,24 +71,6 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
             resp.sendRedirect("configuration/edit_institution.jsp?error=2");
         } catch (InvalidInstitutionException e) {
             resp.sendRedirect("configuration/edit_institution.jsp?error=1");
-        } catch (URISyntaxException e) {
-            logger.error("File URI error");
-            throw new IllegalStateException();
         }
-    }
-
-    /**
-     * Utility method to get file name from HTTP header content-disposition
-     */
-    private String getFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        System.out.println("content-disposition header= "+contentDisp);
-        String[] tokens = contentDisp.split(";");
-        for (String token : tokens) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length()-1);
-            }
-        }
-        return "";
     }
 }

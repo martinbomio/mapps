@@ -37,6 +37,7 @@ import com.mapps.persistence.ReportDAO;
 import com.mapps.persistence.SportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.persistence.UserDAO;
+import com.mapps.utils.Constants;
 
 /**
  *
@@ -94,14 +95,18 @@ public class ContextListener implements ServletContextListener{
                                          mapAthleteDevice,null,sport,mapUserPermission,inst);
         training.setStarted(true);
         try {
-            inst.setImageURI(new URI("/mapps/images/institutions/default.png"));
-            inst2.setImageURI(new URI("/mapps/images/institutions/default.png"));
+            inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
+            inst2.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             institutionDAO.addInstitution(inst);
             institutionDAO.addInstitution(inst2);
             reportDAO.addReport(report);
+            user.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
+            user2.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             userDAO.addUser(user);
             userDAO.addUser(user2);
             sportDAO.addSport(sport);
+            athlete.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
+            mario.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
             athleteDAO.addAthlete(athlete);
             athleteDAO.addAthlete(mario);
             deviceDAO.addDevice(device);

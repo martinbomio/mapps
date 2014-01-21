@@ -1,6 +1,8 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +24,7 @@ import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.user.UserService;
+import com.mapps.utils.Constants;
 
 /**
  *
@@ -60,6 +63,7 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
 
             Athlete athlete = new Athlete(name, lastName, birth, gender, email, weight, height, idDocument, instAux);
             athlete.setEnabled(true);
+            athlete.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
             trainerService.addAthlete(athlete, token);
             resp.sendRedirect("athletes/athletes.jsp?info=1");
         } catch (InvalidAthleteException e) {
@@ -68,6 +72,8 @@ public class AddAthleteServlet extends HttpServlet implements Servlet {
             resp.sendRedirect("athletes/add_athletes.jsp?error=Error de autentificación");
         } catch (ParseException e) {
             logger.error("Date fromat exception");
+            throw new IllegalStateException();
+        } catch (URISyntaxException e) {
             throw new IllegalStateException();
         }
     }

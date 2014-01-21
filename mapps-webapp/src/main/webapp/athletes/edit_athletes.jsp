@@ -77,6 +77,7 @@ if(error.equals("1")){
 		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '100', theme: 'metro'});
+		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#edit_athlete').jqxValidator('validate');
@@ -142,8 +143,8 @@ if(error.equals("1")){
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="40" src="../images/logo.png"/>';
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
                 return table;
             }
         });
@@ -238,7 +239,7 @@ if(error.equals("1")){
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                <form action="/mapps/modifyAthlete" method="post" name="agregar_deportista" id="edit_athlete">
+                <form action="/mapps/modifyAthlete" method="post" name="agregar_deportista" id="edit_athlete" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>
@@ -275,7 +276,11 @@ if(error.equals("1")){
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
-                    	<div style="margin-left:100px; margin-top:20px;">
+                        <div style="display:inline-block">
+                    		<div class="tag_form"> Cambiar Imagen: </div>
+                        	<div class="input style="display:inline-block""><input name="file"  id="file" type="file" /></div>
+                    	</div>
+                    	<div style="margin-left:100px; margin-top:50px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
