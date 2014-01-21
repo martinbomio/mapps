@@ -169,7 +169,7 @@ if(info.equals("1")){
 
 <div id="header">
 	<div id="header_izq">
-    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
 		<div id="pop_up">

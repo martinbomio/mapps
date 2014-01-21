@@ -55,9 +55,9 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#id").jqxInput({placeHolder: "Device ID", height: 30, width: 200, minLength: 1, disabled: 'true', theme: 'metro' });
-		$("#dir_high").jqxInput({placeHolder: "DIR_HIGH", height: 30, width: 200, minLength: 1, disabled: 'true', theme: 'metro'  });
-		$("#dir_low").jqxInput({placeHolder: "DIR_LOW", height: 30, width: 200, minLength: 1, theme: 'metro'  });
+		$("#panId").jqxInput({placeHolder: "Device ID", height: 30, width: 200, minLength: 1, theme: 'metro' });
+		$("#dirHigh").jqxInput({placeHolder: "DIR_HIGH", height: 30, width: 200, minLength: 1, disabled: 'true', theme: 'metro'  });
+		$("#dirLow").jqxInput({placeHolder: "DIR_LOW", height: 30, width: 200, minLength: 1, theme: 'metro'  });
 		
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
@@ -65,51 +65,50 @@ if ( session.getAttribute("role") == null){
 	    });
 		$("#edit_device").jqxValidator({
             rules: [
-                    {input: "#id", message: "El ID del dispositivo es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    {input: "#dir_high", message: "DIR_HIGH es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    {input: "#dir_low", message: "DIR_LOW es obligatoria!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#panId", message: "El ID del dispositivo es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#dirHigh", message: "DIR_HIGH es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#dirLow", message: "DIR_LOW es obligatoria!", action: 'keyup, blur', rule: 'required'},
             ],  theme: 'metro'
 	        });
 		$('#edit_device').on('validationSuccess', function (event) {
 	        $('#validate').submit();
 	    });
-		//Get athletes
-		var url = "/mapps/getAllDevicesOfInstitution";		
+		var url = "/mapps/getAllDevices";		
 		$.ajax({
             url: url,
             type: "GET",
             success: function (response){
 				create_list(response);	            	
-            }});
+            },
+        	   
 		});
-	
+	});
 	function create_list(response){
-		var athletes = response['athletes'];
-		$('#list_players').on('select', function (event) {
+		var devices = response;
+		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: ''/*devices*/, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '390', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
-                var datarecord = athletes[index];
-                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="40" src="../images/logo.png"/>';
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                var datarecord = devices[index];
+               
+                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + '</td><td>' + datarecord.dirLow + '</td></table>';
                 return table;
             }
         });
-		updatePanel(device[0]);
+		updatePanel(devices[0]);
 	}
-	
-	function updatePanel(athlete){
-		$('#id').jqxInput('val', device['id']);
-		$('#dir_high').jqxInput('val', device['dir_high']);
-		$('#dir_low').jqxInput('val', device['dir_low']);
+	function updatePanel(devices){
+		$('#panId').jqxInput('val', devices['panId']);
+		$('#dirHigh').jqxInput('val', devices['dirHigh']);
+		$('#dirLow').jqxInput('val', devices['dirLow']);
+		$('#id-hidden').val(devices.id);
 	}
 </script>
 
 <div id="header">
 	<div id="header_izq">
-    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
 	
@@ -143,28 +142,28 @@ if ( session.getAttribute("role") == null){
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                <form action="/mapps/..." method="post" name="edit_device" id="edit_device">
+                <form action="/mapps/modifyDevice" method="post" name="edit_device" id="edit_device">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>
                     <div id="campos" style="margin-left:40px;">
                         <div>
-                            <div class="tag_form_editar"> Nombre:  </div>
-                            <div class="input"><input type="text" name="name" id="name" /></div>
+                            <div class="tag_form_editar"> PAN ID:  </div>
+                            <div class="input"><input type="text" name="panId" id="panId" /></div>
                         </div>
                         <div>
-                            <div class="tag_form_editar"> Apellido: </div>
-                            <div class="input"><input type="text" name="dir_high" id="dir_high" /></div>
+                            <div class="tag_form_editar"> DIR HIGH: </div>
+                            <div class="input"><input type="text" name="dirHigh" id="dirHigh" /></div>
                         </div>
                         <div>
-                            <div class="tag_form_editar"> C.I.: </div>
-                            <div class="input"><input type="text" id="dir_low" name="dir_low" /></div>
+                            <div class="tag_form_editar"> DIR LOW: </div>
+                            <div class="input"><input type="text" id="dirLow" name="dirLow" /></div>
                         </div>
                     	<div style="margin-left:70px; margin-top:20px;">
                     		<input type="submit" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
-                    <input type="hidden" id="document-hidden" name="document"></input>
+                    <input type="hidden" id="id-hidden" name="id-hidden"></input>
                 </form>
             </div>
         </div>

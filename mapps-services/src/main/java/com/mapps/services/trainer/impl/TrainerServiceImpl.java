@@ -156,6 +156,19 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
+    @Override
+    public Device getDeviceById(long id) throws InvalidDeviceException {
+        Device aux = null;
+
+            try {
+                aux = deviceDAO.getDeviceById(id);
+            } catch (DeviceNotFoundException e) {
+                logger.error("device not found");
+                throw new InvalidDeviceException();
+            }
+
+        return aux;
+    }
 
     @Override
     public Athlete getAthleteByIdDocument(String idDocument) throws InvalidAthleteException {

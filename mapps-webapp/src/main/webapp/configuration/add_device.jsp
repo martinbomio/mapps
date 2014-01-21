@@ -52,21 +52,23 @@ if ( session.getAttribute("role") == null){
 		//Get Institutions
 		var url = "/mapps/getAllInstitutions";
 		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	var names = response['name'];
-            	$("#institution").jqxDropDownList(
-                		{
-                			source: names,
-                			selectedIndex: 0,
-                			width: '200',
-                			height: '25',
-                			dropDownHeight: '75'
-                			}
-                		);
-            	}
-            });
+			url: url,
+			type: "GET",
+			success: function (response){
+				var names = response;
+				$("#institution").jqxDropDownList(
+						{
+							source: names,
+							displayMember: "name",
+							selectedIndex: 0,
+							width: '200',
+							height: '25',
+							dropDownHeight: '100',
+							theme: 'metro'
+							}
+						);
+				}
+			});
 			
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
@@ -78,7 +80,7 @@ if ( session.getAttribute("role") == null){
 	
 		//register
 		$("#validate").jqxButton({ width: '150', theme: 'metro'});
-		$("#register_button").on('click', function (){ 
+		$("#validate").on('click', function (){ 
 	        $('#device_form').jqxValidator('validate');
 	    });
 		$("#device_form").jqxValidator({
@@ -105,7 +107,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq">
-    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
 	
