@@ -143,6 +143,11 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
+    @Override
+    public List<Training> getAllTrainingsOfAnInstitution(String instName){
+          List<Training> trainings=trainingDAO.getTrainingOfInstitution(instName);
+          return trainings;
+    }
 
     @Override
     public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException {

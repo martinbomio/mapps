@@ -181,4 +181,5 @@ public class TrainingDAOImpl implements TrainingDAO {
         List<Training> results = query.getResultList();
         return results;
     }
+
 }

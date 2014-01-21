@@ -96,11 +96,12 @@ if (error.equals("null"))
                    
             ],  theme: 'metro'
         });
-	});
+	
 	
 	$('#addInstitution_form').on('validationSuccess', function (event) {
         $('#addInstitution_form').submit();
     });
+	});
 </script>
 
 <div id="header">

@@ -88,11 +88,11 @@ if ( session.getAttribute("role") == null){
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + '</td><td>' + datarecord.dirLow + '</td></table>';
+                var table = '<table style="min-width: 130px;"><td>' + datarecord.dirLow + '</td></table>';
                 return table;
             }
         });

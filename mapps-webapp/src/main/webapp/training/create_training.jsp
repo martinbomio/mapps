@@ -121,7 +121,7 @@ if (error.equals("null"))
 
 <div id="header">
 	<div id="header_izq">
-    	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
 
@@ -200,6 +200,7 @@ if (error.equals("null"))
         		<ul>
              	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
