@@ -11,6 +11,7 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxpasswordinput.js"></script>
     <link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
 <%
@@ -20,9 +21,9 @@ if (error.equals("null"))
 %>
 <script type="text/javascript">
 	$(document).ready(function () {
-    	$("#username").jqxInput({placeHolder: "Usuario", height: 35, width: 220, minLength: 1  });
-		$("#password").jqxPasswordInput({placeHolder: "Contrase�a", height: 35, width: 220, minLength: 1 });
-		$("#loginButton").jqxButton({ width: '100', height: '30'});
+    	$("#username").jqxInput({placeHolder: "Usuario", height: 35, width: 220, minLength: 1, theme: 'metro'  });
+		$("#password").jqxPasswordInput({placeHolder: "Contrasena", height: 35, width: 220, minLength: 1, theme: 'metro' });
+		$("#loginButton").jqxButton({ width: '100', height: '30', theme: 'metro'});
     });
 </script>
 
@@ -32,7 +33,7 @@ if (error.equals("null"))
     
     </div>
     <div id="header_central">
-    
+    	<img src="./images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:575px;" />    
     </div>
     <div id="header_der">
     

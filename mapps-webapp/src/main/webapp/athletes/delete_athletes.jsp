@@ -58,7 +58,7 @@ if (error.equals("null"))
                 type: "POST",
                 data: {json: json},
                 success: function (response){
-                	window.location.replace("delete_athletes.jsp");
+                	window.location.replace("delete_athletes.jsp?info=3");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                 	  console.log(textStatus, errorThrown);

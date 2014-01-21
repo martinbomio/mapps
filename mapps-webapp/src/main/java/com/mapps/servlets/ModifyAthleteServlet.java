@@ -57,7 +57,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
             athlete.setHeight(height);
 
             trainerService.modifyAthlete(athlete, token);
-            resp.sendRedirect("athletes/athletes.jsp");
+            resp.sendRedirect("athletes/athletes.jsp?info=2");
         } catch (InvalidAthleteException e) {
             //error 1: Atleta no valido
             resp.sendRedirect("athletes/edit_athletes.jsp?error=1");

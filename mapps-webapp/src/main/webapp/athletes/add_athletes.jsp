@@ -191,7 +191,7 @@ if (error.equals("null"))
                 <label> Complete el siguiente formulario </label>
             </div>     	
             <div style="margin-left:100px;">
-        		<form action="/mapps/addAthlete" method="post" id="addAthlete_form">
+        		<form action="/mapps/addAthletes" method="post" id="addAthlete_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name"  /></div>

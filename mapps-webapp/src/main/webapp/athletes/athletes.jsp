@@ -44,7 +44,15 @@ if (error.equals("null"))
 
 if(info.equals("1")){
 	// El atleta ha sido ingresado con exito
-	pop_up_message = "El atleta fue ingresado al sistema con exito.";
+	pop_up_message = "El atleta fue ingresado al sistema con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("2")){
+	// El atleta fue modificado con exito
+	pop_up_message = "Los datos del atleta fueron modificados con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("3")){
+	// El atleta fue modificado con exito
+	pop_up_message = "El atleta fue eliminado con éxito.";
 	show_pop_up = true;	
 }
 %>
@@ -55,7 +63,7 @@ if(info.equals("1")){
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
         var url = "/mapps/getAllAthletesOfInstitution";
         $.ajax({
@@ -67,7 +75,7 @@ if(info.equals("1")){
 			
 			
 		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
-            resizable: false, 
+            resizable: false, draggable: false, 
             okButton: $('#ok'), 
             initContent: function () {
                 $('#ok').jqxButton({  width: '65px' });
@@ -89,7 +97,7 @@ if(info.equals("1")){
 
    	});
 	function fill_splitter(response){
-		$("#splitter").jqxSplitter({  width: 820, height: 390, panels: [{ size: '40%'}] });
+		$("#splitter").jqxSplitter({  width: '95%', height: 390, panels: [{ size: '40%'}] });
 		var athletes = response["athletes"];
         // prepare the data
         var k = 0;
@@ -174,16 +182,16 @@ if(info.equals("1")){
     <div id="header_central">
 		<div id="pop_up">
             <div>
-                <img width="14" height="14" src="" alt="" />
-                Modal Window
+                <img width="14" height="14" src="../images/ok.png" alt="" />
+                Informaci&oacute;n
             </div>
             <div>
-            	<div>
+            	<div style="height:60px;">
                 	<%=pop_up_message
 					%>
                 </div>
                 <div>
-            		<div style="float: right; margin-top: 15px;">
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
            		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
         	        </div>
                 </div>

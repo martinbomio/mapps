@@ -26,7 +26,7 @@ import com.mapps.services.user.UserService;
 /**
  *
  */
-@WebServlet(name = "addAthlete", urlPatterns = "/addAthlete/*")
+@WebServlet(name = "addAthletes", urlPatterns = "/addAthletes/*")
 public class AddAthleteServlet extends HttpServlet implements Servlet {
     Logger logger = Logger.getLogger(AddAthleteServlet.class);
     @EJB(beanName = "UserService")

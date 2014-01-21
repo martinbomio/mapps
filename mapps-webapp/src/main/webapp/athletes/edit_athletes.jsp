@@ -19,6 +19,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -37,6 +38,25 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+
+boolean show_pop_up = false;
+String pop_up_message = "";
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+String error = String.valueOf(request.getParameter("error"));
+if (error.equals("null"))
+	error = "";
+
+if(error.equals("1")){
+	// El atleta ha sido ingresado con exito
+	pop_up_message = "Error al modificar los datos del atleta. Contacte al administrador.";
+	show_pop_up = true;	
+}else if(error.equals("2")){
+	// El atleta fue modificado con exito
+	pop_up_message = "Error al modificar los datos del atleta. Usted no tiene los permisos necesarios. Contacte al administrador.";
+	show_pop_up = true;	
+}
 %>
 <body>
 
@@ -44,19 +64,19 @@ if ( session.getAttribute("role") == null){
 
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1, theme: 'metro' });
-		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#document").jqxInput({placeHolder: "C.I", height: 30, width: 200, minLength: 1, theme: 'metro'  });
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#document").jqxInput({placeHolder: "C.I", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$('#document').jqxInput({disabled: true });
-		$("#date").jqxInput({placeHolder: "Fecha de Nacimiento", height: 30, width: 200, minLength: 1, theme: 'metro'  });
+		$("#date").jqxInput({placeHolder: "Fecha de Nacimiento", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$('#date').jqxInput({disabled: true });
-		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: 200, minLength: 1, theme: 'metro'  });
-		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '30', dropDownHeight: '100', theme: 'metro'});
+		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '100', theme: 'metro'});
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#edit_athlete').jqxValidator('validate');
@@ -88,14 +108,37 @@ if ( session.getAttribute("role") == null){
             success: function (response){
 				create_list(response);	            	
             }});
-		});
+		
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false,
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });	
+			
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+			
+	});
 	
 	function create_list(response){
 		var athletes = response['athletes'];
 		$('#list_players').on('select', function (event) {
             updatePanel(athletes[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '390', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '9%0', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -126,33 +169,45 @@ if ( session.getAttribute("role") == null){
 	}
 </script>
 
-    <style type="text/css">
-        #list img
-        {
-            width: 50px;
-            height: 55px;
-        }
-        #list div
-        {
-            margin-top: -35px;
-            margin-left: 80px;
-        }
-        .jqx-listmenu-item
-        {
-            padding: 0px;
-            min-height: 57px;
-        }
-    </style>
-    
-    
+<style type="text/css">
+#list img{
+	width: 50px;
+    height: 55px;
+}
 
+#list div{
+	margin-top: -35px;
+    margin-left: 80px;
+}
+
+.jqx-listmenu-item{
+	padding: 0px;
+    min-height: 57px;
+}
+</style>
 
 <div id="header">
 	<div id="header_izq">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
     </div>
     <div id="header_central">
-	
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="../images/delete.png" alt="" />
+                Error
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der">
 	
@@ -161,7 +216,7 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 
     <div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
@@ -212,7 +267,7 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> Altura: </div>
                             <div class="input"><input type="text" name="height" id="height" /></div>
                         </div>
-                        <div id='gender' style="display:inline-block">
+                        <div id='gender'>
                         	<div class="tag_form_editar"> Sexo: </div>
                             <div id="gender_list" style="display:inline-block; margin-top:10px"></div>
                         </div>
@@ -220,7 +275,7 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
-                    	<div style="margin-left:100px; margin-top:50px;">
+                    	<div style="margin-left:100px; margin-top:20px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
