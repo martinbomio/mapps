@@ -67,7 +67,7 @@ if(info.equals("1")){
 			
 			
 		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
-            resizable: false, isModal: true, modalOpacity: 0.3,
+            resizable: false, 
             okButton: $('#ok'), 
             initContent: function () {
                 $('#ok').jqxButton({  width: '65px' });
