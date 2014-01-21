@@ -17,6 +17,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/globalization/globalize.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxnumberinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxpasswordinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
@@ -65,10 +66,11 @@ $(document).ready(function () {
 	$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
 	$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 	$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-	$("#date").jqxDateTimeInput({width: '220px', height: '25px', theme: 'metro'});
+	$("#date").jqxDateTimeInput({width: '220px', height: '25px',disabled: 'true', theme: 'metro'});
 
 	$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
-	$("#create_training").jqxValidator({
+	
+	$("#edit_training").jqxValidator({
         rules: [
 				{input: "#players_list", message: "Debe seleccionar por lo menos un atleta!", action: 'blur', rule: function (input, commit) {
 					var items = $("#players_list").jqxListBox('getSelectedItems');
@@ -89,11 +91,7 @@ $(document).ready(function () {
     				var val = $("#num_longitude").jqxNumberInput('val');
     				return val.toString().length == 8;
     			}},
-                {input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
-                    var index = $("#sport").jqxDropDownList('getSelectedIndex');
-                    return index != -1;
-                   }
-                },
+               
         ],  theme: 'metro'
         });
 	$("#validate").click(function (){ 
@@ -112,10 +110,10 @@ $(document).ready(function () {
     };
     var dataAdapter = new $.jqx.dataAdapter(source);
     // Create a jqxInput
-    $("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
-});
+    //$("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
+
 		//Get institutions
-		var url = "/mapps/getAllTrainings";		
+		var url = "/mapps/getAllEditableTrainings";		
 		$.ajax({
             url: url,
             type: "GET",
@@ -124,16 +122,16 @@ $(document).ready(function () {
             },
         	   
 		});
+});
 
 	function create_list(response){
 		var trainings = response;
 		$('#list_trainings').on('select', function (event) {
             updatePanel(trainings[event.args.index]);
         });
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
-                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
                 
                 var table = '<table style="min-width: 130px;"><tr><td>' + datarecord.name + '</td></table>';
                 return table;
@@ -141,11 +139,17 @@ $(document).ready(function () {
         });
 		updatePanel(trainings[0]);
 	}
-	function updatePanel(institutions){
-		$('#name').jqxInput('val', trainings['name']);
-		$('#country').jqxInput('val', trainings['country']);
-		$('#description').jqxInput('val', trainings['description']);
-		$('#id-hidden').val(trainings.id)
+	function updatePanel(trainings){
+		
+		$('#date').jqxDateTimeInput('val', trainings['date']);
+		$('#players_list').jqxListBox('val', trainings['players_list']);
+		$('#num_min_bpm').jqxNumberInput('val', trainings['minBPM']);
+		$('#num_max_bpm').jqxNumberInput('val', trainings['maxBPM']);
+		$('#num_latitude').jqxNumberInput('val', trainings['latOrigin']);
+		$('#num_longitude').jqxNumberInput('val', trainings['longOrigin']);
+		$('#name-hidden').val(trainings.name);
+		
+		
 	}
 </script>
 
@@ -185,7 +189,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                <form action="/mapps/modifiyTraining" method="post" name="edit_training" id="edit_training">
+                <form action="/mapps/modifyTraining" method="post" name="edit_training" id="edit_training">
             	<div id="title" style="margin:15px;">
            			<label> 2) Modifique los datos que desee </label>
                 </div>
@@ -221,12 +225,8 @@ $(document).ready(function () {
                         <div id="num_longitude" class="input" style="margin-top:10px;">
                         </div>
                     </div>
-                    <div id='sport_div' style="display:inline-block">
-                       	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
-                        <div class="input" style="margin-top:10px;">
-                        	<div id="sport" style="display:inline-block; margin-top:10px"></div>
-                        </div>
-                    </div>
+                    <input type="hidden" id="name-hidden" name="name-hidden"></input>
+
                     <div style="margin-left:200px; margin-top:20px;">
                     	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>

@@ -143,11 +143,7 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
-    @Override
-    public List<Training> getAllTrainingsOfAnInstitution(String instName){
-          List<Training> trainings=trainingDAO.getTrainingOfInstitution(instName);
-          return trainings;
-    }
+
 
     @Override
     public Device getDeviceByDir(String dirDevice) throws InvalidDeviceException {
@@ -343,6 +339,25 @@ public class TrainerServiceImpl implements TrainerService {
             throw new InvalidParException();
         } catch (DeviceNotFoundException e) {
             throw new InvalidParException();
+        }
+    }
+
+    @Override
+    public void modifyTraining(Training training,String token) throws InvalidTrainingException, AuthenticationException {
+          if(invalidTraining(training)){
+              throw new InvalidTrainingException();
+          }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+               trainingDAO.updateTraining(training);
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (NullParameterException e) {
+            throw new InvalidTrainingException();
+        } catch (TrainingNotFoundException e) {
+            throw new InvalidTrainingException();
         }
     }
 

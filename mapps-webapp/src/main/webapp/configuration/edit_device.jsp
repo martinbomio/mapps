@@ -55,7 +55,7 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#panId").jqxInput({placeHolder: "Device ID", height: 30, width: 200, minLength: 1, theme: 'metro' });
+		$("#panId").jqxInput({placeHolder: "PAN ID", height: 30, width: 200, minLength: 1, theme: 'metro' });
 		$("#dirHigh").jqxInput({placeHolder: "DIR_HIGH", height: 30, width: 200, minLength: 1, disabled: 'true', theme: 'metro'  });
 		$("#dirLow").jqxInput({placeHolder: "DIR_LOW", height: 30, width: 200, minLength: 1, theme: 'metro'  });
 		

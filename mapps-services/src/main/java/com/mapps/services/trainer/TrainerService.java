@@ -51,4 +51,6 @@ public interface TrainerService {
     public Device getDeviceById(long id) throws InvalidDeviceException;
 
     List<Training> getAllEditableTrainings(String token) throws AuthenticationException;
+
+    public void modifyTraining(Training training,String token) throws InvalidTrainingException, AuthenticationException;
 }
