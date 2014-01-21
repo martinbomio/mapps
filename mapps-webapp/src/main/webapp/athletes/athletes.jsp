@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxsplitter.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
@@ -32,6 +33,8 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+boolean show_pop_up = false;
+String pop_up_message = "";
 String info = String.valueOf(request.getParameter("info"));
 if (info.equals("null"))
 	info = "";
@@ -39,8 +42,14 @@ String error = String.valueOf(request.getParameter("error"));
 if (error.equals("null"))
 	error = "";
 
+if(info.equals("1")){
+	// El atleta ha sido ingresado con exito
+	pop_up_message = "El atleta fue ingresado al sistema con exito.";
+	show_pop_up = true;	
+}
 %>
 <body>
+
 
 <script type="text/javascript">
 
@@ -55,6 +64,29 @@ if (error.equals("null"))
             success: function (response){
             	fill_splitter(response);
             }});
+			
+			
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, isModal: true, modalOpacity: 0.3,
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+
    	});
 	function fill_splitter(response){
 		$("#splitter").jqxSplitter({  width: 820, height: 390, panels: [{ size: '40%'}] });
@@ -140,7 +172,23 @@ if (error.equals("null"))
     	<img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" />
     </div>
     <div id="header_central">
-
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="" alt="" />
+                Modal Window
+            </div>
+            <div>
+            	<div>
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der">
 	
@@ -153,14 +201,14 @@ if (error.equals("null"))
         <div id="tab_2" class="tab active" onclick="window.location.reload()">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'">CONFIGURACI&Oacute;N</div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
         
         </div>
         <div id="main_div">
-        <%=info %>
+       
         	<div id="title" style="margin:15px;">
            			<label> Todos mis jugadores </label>
             </div>

@@ -67,6 +67,10 @@ body{
 	margin:50px;
 }
 
+#logout{
+	display:inline-block;
+}
+
 .loginForm {
 	width:100%;
 	margin-left:20%;

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
 	<script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../scripts/demos.js"></script>
@@ -118,7 +118,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -149,6 +149,7 @@ if ( session.getAttribute("role") == null){
                    <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
                    <li style="height:35px;"><a href="#"> Eliminar una Instituci&oacute;n </a></li>
                    <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
+                   <li style="height:35px;"><a href="./edit_device.jsp"> Editar un Dispositivo </a></li>
         		</ul>
   			</div>
         </div>

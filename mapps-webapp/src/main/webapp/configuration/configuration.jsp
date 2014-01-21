@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
 	
@@ -66,7 +66,7 @@ if (error.equals("null"))
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -78,14 +78,30 @@ if (error.equals("null"))
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
-                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
-             	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
-                   <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
-                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
+                	<%
+					if(role.equals(Role.ADMINISTRATOR)){
+					%>
+	             	   <li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
+	             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
+	                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
+	             	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
+	                   <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
+	                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+	                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
+	                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
+	                   <li style="height:35px;"><a href="./edit_device.jsp"> Editar un Dispositivo </a></li>
+                   <%
+					}else if(role.equals(Role.TRAINER)){
+                   %>
+                   		<li style="height:35px;"><a href="./my_account.jsp"> Mi cuenta </a></li>
+                   		<li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
+                   <%
+					}else if(role.equals(Role.USER)){
+                   %>
+                   		<li style="height:35px;"><a href="./my_account.jsp"> Mi cuenta </a></li>
+                   <%
+					}
+                   %>
         		</ul>
   			</div>
         </div>

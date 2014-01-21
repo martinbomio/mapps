@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type='text/javascript' src="./scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
 
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
 <%
@@ -31,8 +32,12 @@ if ( session.getAttribute("role") == null){
 <script type="text/javascript">
 	$(document).ready(function () {
 		
-		$("#start_training").jqxButton({ width: '300', height: '50'});
-	
+		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
+		$("#logout_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		
+		$("#logout_button").on('click', function () {
+            window.location.replace("/mapps/logout");
+        });
 	
 	});
 </script>
@@ -51,11 +56,12 @@ if ( session.getAttribute("role") == null){
 <div id="contenedor">
 
     <div id="tabs">
-	  	<div id="tab_1" class="tab active" onclick="location.href='index.jsp'" style="margin-left:180px;">INICIO</div>
+	  	<div id="tab_1" class="tab active" onclick="location.href='index.jsp'" style="margin-left:240px;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='training/trainings.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab" onclick="location.href='myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='configuration/configuration.jsp'" style="margin-right:180px;">CONFIGURACI&Oacute;N</div>
+        <!--<div id="tab_4" class="tab" onclick="location.href='myclub/myclub.jsp'">MI CLUB</div>-->
+        <div id="tab_5" class="tab" onclick="location.href='configuration/configuration.jsp'">CONFIGURACI&Oacute;N</div>
+        <div id="logout"><input type="button" value="CERRAR SESIÓN" id='logout_button' style="margin-left:120px;"/></div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
