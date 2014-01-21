@@ -1,16 +1,15 @@
 package com.mapps.persistence;
 
+import java.util.Date;
+import java.util.List;
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
-import com.mapps.model.Device;
-import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.Training;
-
-import javax.ejb.Local;
-import java.util.Date;
-import java.util.List;
+import com.mapps.model.User;
 
 /**
  * TrainingDAO interface
@@ -102,5 +101,17 @@ public interface TrainingDAO {
 
     public List<Training> getTrainingOfInstitution(String name);
 
+    /**
+     * Gets all the trainings from the database
+     * @return a list containing all the trainings
+     */
+    public List<Training> getAllTrainings();
+
+    /**
+     * Returns all the trainigs that the user can edit
+     * @param user The user with create permissions on the trainings.
+     * @return list containing the editable trainings.
+     */
+    public List<Training> getAllEditableTrainings(User user) throws NullParameterException;
 
 }

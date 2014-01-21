@@ -49,4 +49,6 @@ public interface TrainerService {
     public List<Athlete> getAllAthletesOfInstitution(String instName);
 
     public Device getDeviceById(long id) throws InvalidDeviceException;
+
+    List<Training> getAllEditableTrainings(String token) throws AuthenticationException;
 }

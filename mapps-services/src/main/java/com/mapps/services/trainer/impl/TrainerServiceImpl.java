@@ -24,6 +24,7 @@ import com.mapps.model.Device;
 import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
+import com.mapps.model.User;
 import com.mapps.persistence.AthleteDAO;
 import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.SportDAO;
@@ -156,18 +157,43 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
+
     @Override
     public Device getDeviceById(long id) throws InvalidDeviceException {
         Device aux = null;
 
-            try {
-                aux = deviceDAO.getDeviceById(id);
-            } catch (DeviceNotFoundException e) {
-                logger.error("device not found");
-                throw new InvalidDeviceException();
-            }
+        try {
+            aux = deviceDAO.getDeviceById(id);
+        } catch (DeviceNotFoundException e) {
+            logger.error("device not found");
+            throw new InvalidDeviceException();
+        }
 
         return aux;
+    }
+
+    @Override
+    public List<Training> getAllEditableTrainings(String token) throws AuthenticationException {
+        if (token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)){
+                return trainingDAO.getAllTrainings();
+            }else if (authenticationHandler.isUserInRole(token, Role.TRAINER)){
+                User user = authenticationHandler.getUserOfToken(token);
+                return trainingDAO.getAllEditableTrainings(user);
+            }else {
+                logger.error("Authentication error, user has no privilages");
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        } catch (NullParameterException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
     }
 
     @Override
@@ -193,7 +219,7 @@ public class TrainerServiceImpl implements TrainerService {
             if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
-                Date date=new Date();
+                Date date = new Date();
                 training.setDate(date);
                 training.setStarted(true);
                 trainingDAO.updateTraining(trainingAux);
