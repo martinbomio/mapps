@@ -15,6 +15,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdatatable.js"></script> 
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.export.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
@@ -39,6 +40,15 @@ String error = String.valueOf(request.getParameter("error"));
 if (error.equals("null"))
 	error = "";
 
+String pop_up_message = "";
+boolean show_pop_up = false;;
+
+if(info.equals("1")){
+	// El atleta ha sido ingresado con exito
+	pop_up_message = "El atleta fue eliminado del sistema con éxito.";
+	show_pop_up = true;	
+}
+
 %>
 <body>
 
@@ -58,7 +68,7 @@ if (error.equals("null"))
                 type: "POST",
                 data: {json: json},
                 success: function (response){
-                	window.location.replace("delete_athletes.jsp?info=3");
+                	window.location.replace("delete_athletes.jsp?info=1");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                 	  console.log(textStatus, errorThrown);
@@ -73,6 +83,28 @@ if (error.equals("null"))
             success: function (response){
             	fill_table(response);
             }});
+			
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+		
    	});
 	
 	function fill_table(response){
@@ -109,10 +141,26 @@ if (error.equals("null"))
 
 <div id="header">
 	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
-    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-		
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="../images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
@@ -136,7 +184,6 @@ if (error.equals("null"))
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> >> Eliminar
             </div>
-        	<%=info %>
             <div id="title" style="margin:15px;">
                 <label> Seleccione uno o varios jugadores </label>
             </div>

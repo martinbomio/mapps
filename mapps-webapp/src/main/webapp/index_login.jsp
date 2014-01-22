@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
 </head>
 <%
-String error = String.valueOf(request.getAttribute("error"));
+String error = String.valueOf(request.getParameter("error"));
 if (error.equals("null"))
 	error = "";
 %>
@@ -43,7 +43,6 @@ if (error.equals("null"))
 <div id="container" style="border-top:solid 1px; border-bottom:solid 1px;">
     <div id="login_container" >
         <form action="login" method="post">
-        	<center><span class="error"><%= error %></span></center>
             <div id="usernameField" class="loginForm" > Nombre de usuario: </div>
             	<input type="text" class="loginField" name="username" id="username" style="margin-left:20%;" />
             <div id="passwordField" class="loginForm" > Contrase&ntilde;a: </div>
@@ -52,6 +51,11 @@ if (error.equals("null"))
                 <input id="loginButton" type="submit" name="ingresar" value="INGRESAR" />
             </div>
         </form>
+        <div id="error_message" style="color:#E00; margin-left:18%; margin-top:10px;">
+        	<% if(error.equals("1")){ %>
+            Usuario y/o contrase&ntilde;a inv&aacute;lidos
+            <% } %>
+        </div>
     </div>
     <div class="footer">
 

@@ -134,7 +134,7 @@ if ( session.getAttribute("role") == null){
 
 <div id="header">
 	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
-    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
 		
