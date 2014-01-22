@@ -1,15 +1,18 @@
 package com.mapps.servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.log4j.Logger;
 
@@ -22,11 +25,13 @@ import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
+import com.mapps.utils.Utils;
 
 /**
  *
  */
 @WebServlet(name = "modifyUser", urlPatterns = "/modifyUser/*")
+@MultipartConfig
 public class ModifyUserServlet extends HttpServlet implements Servlet {
     Logger logger = Logger.getLogger(ModifyUserServlet.class);
     @EJB(beanName = "AdminService")
@@ -38,8 +43,19 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "InstitutionService")
     InstitutionService institutionService;
 
+    private static final String UPLOAD_DIR = "images/users";
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // gets absolute path of the web application
+        String applicationPath = req.getServletContext().getRealPath("");
+        // constructs path of the directory to save uploaded file
+        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+        // creates the save directory if it does not exists
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdirs();
+        }
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String name = req.getParameter("name");
         String lastName = req.getParameter("lastName");
@@ -61,6 +77,9 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
             role = Role.TRAINER;
         }
         try {
+            Part part = req.getPart("file");
+            String fileName = Utils.getFileName(part);
+            String extension = fileName.split("\\.")[1];
             User newUser = adminService.getUserByUsername(userName);
             newUser.setName(name);
             newUser.setLastName(lastName);
@@ -69,7 +88,9 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
             newUser.setGender(gender);
             newUser.setRole(role);
             newUser.setBirth(formatter.parse(birth));
+            newUser.setImageURI(Utils.getFileURI(userName, UPLOAD_DIR, extension));
             userService.updateUser(newUser, token);
+            part.write(uploadFilePath + File.separator + userName + "." + extension);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (InvalidUserException e) {
             resp.sendRedirect("configuration/edit_user.jsp?error=1");

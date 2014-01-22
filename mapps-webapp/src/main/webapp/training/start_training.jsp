@@ -140,7 +140,7 @@ String trainingUID = request.getParameter("uid");
                 <div id="campos" class="campos" style="margin-left:100px;">
                     <div>
                         <div class="tag_form" style="display:inline-block; vertical-align:top;"> Entrenamiento programado para: </div>
-                        <div id='training' style="display:inline-block; margin-top:15px;">
+                        <div id='training' style="display:inline-block; margin-top:10px;">
                         	<!-- Aca va el nombre del training que se selecciono en la pag anterior.
                             	 Habria que agrerle algo q lo describa (e.g. dia y hora) -->
 				        </div>

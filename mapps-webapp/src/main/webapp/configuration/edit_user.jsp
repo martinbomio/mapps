@@ -68,6 +68,7 @@ if ( session.getAttribute("role") == null){
 		$("#validate").on('click', function (){ 
 	        $('#edit_user').jqxValidator('validate');
 	    });
+		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		$("#edit_user").jqxValidator({
             rules: [
                     {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -109,9 +110,8 @@ if ( session.getAttribute("role") == null){
 		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
-                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="40" src="../images/logo.png"/>';
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
                 return table;
             }
         });
@@ -194,7 +194,7 @@ if ( session.getAttribute("role") == null){
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
-                <form action="/mapps/modifyUser" method="post" name="edit_institution" id="edit_user">
+                <form action="/mapps/modifyUser" method="post" name="edit_institution" id="edit_user" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>
@@ -232,6 +232,10 @@ if ( session.getAttribute("role") == null){
                         	<div class="tag_form_editar_list"> Rol: </div>
                             <div id="role_list" class="list_box"></div>
                         </div>
+                        <div>
+                    		<div class="tag_form"> Imagen: </div>
+                        	<div class="input"><input name="file"  id="file" type="file" /></div>
+                    	</div>
                     	<div style="margin-left:25%; margin-top:15px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>

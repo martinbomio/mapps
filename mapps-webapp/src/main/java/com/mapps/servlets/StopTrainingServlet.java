@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mapps.model.Role;
+import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Training;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
@@ -22,26 +22,27 @@ import com.mapps.services.user.UserService;
  */
 @WebServlet(name = "stopTraining", urlPatterns = "/stopTraining/*")
 public class StopTrainingServlet extends HttpServlet implements Servlet {
-    @EJB(beanName="UserService")
+    @EJB(beanName = "UserService")
     UserService userService;
-    @EJB(beanName="TrainerService")
+    @EJB(beanName = "TrainerService")
     TrainerService trainerService;
-    @EJB(beanName="InstitutionService")
+    @EJB(beanName = "InstitutionService")
     InstitutionService institutionService;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
-
-        String name=req.getParameter("name");
-        try{
-            Training training=trainerService.getTrainingByName(name);
+        String name = req.getParameter("name");
+        try {
+            Training training = trainerService.getTrainingByName(token, name);
             trainerService.stopTraining(training, token);
-            req.setAttribute("info","El entrenamiento terminó");
+            req.setAttribute("info", "El entrenamiento terminó");
         } catch (AuthenticationException e) {
-            req.setAttribute("error","Error de autentificación");
+            req.setAttribute("error", "Error de autentificación");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error","Entrenamiento no valido");
+            req.setAttribute("error", "Entrenamiento no valido");
+        } catch (NullParameterException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }
