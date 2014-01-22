@@ -81,7 +81,7 @@
 
 }
 .jqx-fill-state-focus-metro { border-color: #cdcdcd; }
-.jqx-fill-state-pressed-metro{border-color:#009344; color: #fff; background-color:#009344;/*background-color:#1faeff;*/
+.jqx-fill-state-pressed-metro{border-color:#009344; color: #515153; background-color:#EBFDE5;/*background-color:#1faeff;*/
 
 
 }
@@ -102,8 +102,8 @@
 .jqx-grid-column-menubutton-metro {
     background-image: url('images/metro-icon-down.png');
  }
-.jqx-widget-metro .jqx-grid-cell-selected-metro, .jqx-grid-cell-selected-metro{ background-color:#009344;/*background-color:#1faeff;*/
- !important; background-color:#009344;/*background-color:#1faeff;*/
+.jqx-widget-metro .jqx-grid-cell-selected-metro, .jqx-grid-cell-selected-metro{ background-color:#EBFDE5;/*background-color:#1faeff;*/
+ !important; background-color:#EBFDE5;/*background-color:#1faeff;*/
  !important; font-size: 12px;  color:#fff !important}
 .jqx-grid-cell-hover-metro{ background-color:#dedede;}
  /*applied to the column's sort button when the sort order is ascending.*/
@@ -229,9 +229,9 @@
     border: 1px solid #000;
 }
 .jqx-switchbutton-label-on-metro {
-    background-color:#009344;/*background-color:#1faeff;*/
+    background-color:#EBFDE5;/*background-color:#1faeff;*/
 
-    color:#009344;/*color:#1faeff;*/
+    color:#EBFDE5;/*color:#1faeff;*/
 }
 .jqx-switchbutton-label-off-metro {
     background: #a6a6a6;

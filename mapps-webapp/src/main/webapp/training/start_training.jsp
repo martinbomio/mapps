@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxnumberinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatatable.js"></script> 
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
@@ -70,34 +71,72 @@ String trainingUID = request.getParameter("uid");
             success: function (response){
             	//$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
             }});
-		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//obtener array de devices de la institucion 
 		var source =
         {
             datatype: "json",
             datafields: [
-                { name: 'dirLow' },
+                { name: '....' },
             ],
             url: "/mapps/getAllDevicesOfInstitution"
         };
 		var dataAdapter = new $.jqx.dataAdapter(source);
-		// Create a jqxInput
-		$("#devices_list").jqxDropDownList({ source: dataAdapter, selectedIndex: 1, width: '220', height: '25', theme: 'metro'});
-
-		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
-		$("#validate").on('click', function (){ 
-	        $('#start_training').jqxValidator('validate');
-	    });
-		$("#start_training").jqxValidator({
-            rules: [
-
-            ],  theme: 'metro'
-	        });
-		$('#start_training').on('validationSuccess', function (event) {
-	        $('#start_training').submit();
-	    });
 		
+		var devices = [
+                    "Affogato",
+                    "Americano",
+                    "Bicerin",
+                    "Breve",
+                    "Café Bombón",
+                    "Café au lait",
+                    "Caffé Corretto",
+                    "Café Crema",
+                    "Caffé Latte",
+                    "Caffé macchiato",
+                    "Café mélange",
+                    "Coffee milk",
+                    "Cafe mocha",
+                    "Cappuccino",
+                    "Carajillo",
+                    "Cortado",
+                    "Cuban espresso",
+                    "Espresso",
+                    "Eiskaffee",
+                    "The Flat White",
+                    "Frappuccino",
+                    "Galao",
+                    "Greek frappé coffee",
+                    "Iced Coffee﻿",
+                    "Indian filter coffee",
+                    "Instant coffee",
+                    "Irish coffee",
+                    "Liqueur coffee"
+		        ];
+		var players;	//arrays para llenar las listas
+		
+		$("#devices_list").jqxListBox({ selectedIndex: 0, source: devices, width: '85%', height: 250});
+		
+		$("#players_list").jqxListBox({ selectedIndex: 0, source: devices, width: '85%', height: 250});
+
+		$("#relate").jqxButton({ width: '200', height: '35', theme: 'metro'});
+		$("#start_training").jqxButton({ width: '200', height: '35', theme: 'metro'});
+		
+		$("#dataTable").jqxDataTable(
+	        {	
+	          	theme: 'metro',
+	           	altrows: true,
+	            sortable: true,
+	            exportSettings: { fileName: null },
+	            source: dataAdapter,
+	            columnsResize: true,
+	            columns: [
+	                { text: 'Atleta', dataField: 'name', width: '60%' },
+	                { text: 'Dispositivo', dataField: 'lastName', width: '40%' }
+	           ]
+	    });
+	
         
 	});
 </script>
@@ -131,32 +170,33 @@ String trainingUID = request.getParameter("uid");
 			<div id="navigation" class="navigation">
             	<a href="./trainings.jsp">ENTRENAMIENTOS</a> >> Iniciar entrenamiento
             </div>
-        	<form action="/mapps/..." method="post" name="start_training" id="start_training">
-            	<div id="title" style="margin:15px;">
-           			<label> Rellene el siguiente formulario </label>
+            <div id="title" style="margin:15px;">
+                <label> Relacione los atletas con su dispositivo correspondiente </label> 
+            </div>
+            <div>
+            	<label> Entrenamiento: XXXX-XX-XX-XX </label>
+            </div>
+            <div>
+                <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+                    <div id="players_list">
+                    
+                    </div>
                 </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
-                    <div>
-                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Entrenamiento programado para: </div>
-                        <div id='training' style="display:inline-block; margin-top:10px;">
-                        	<!-- Aca va el nombre del training que se selecciono en la pag anterior.
-                            	 Habria que agrerle algo q lo describa (e.g. dia y hora) -->
-				        </div>
+                <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+                    <div id="devices_list">
+                    
                     </div>
-                    <div id="player_device_list" style="height:150px; overflow:scroll;">
-                    	<!--ESTA DIV TIENE QUE APARECER TANTAS VECES COMO PLAYERS HAYA EN EL TRAINING, por eso hay una div padre que es scrollable 
-                        	hay que ponerla en el javascript y hacerle un append al padre por cada player-->
-                        <div id="player_device">
-                            <div class="tag_form" style="vertical-align:top; margin-top:15px;"> NOMBRE JUGADOR: </div>
-                            <div id="devices_list" class="input" style="margin-top:10px;">
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin-left:200px; margin-top:20px;">
-                    	<input type="button" id="validate" value="INICIAR"/>
-                    </div>
-				</div>
-            </form>            
+                </div>
+            </div>
+            <div style="margin-left:45%; margin-top:20px;">
+            	<input type="button" id="relate" value="RELACIONAR"/>
+            </div>
+            <div id="dataTable" style="margin-top:25px; margin-left:50px;">
+            
+            </div>
+            <div style="margin-left:45%; margin-top:20px;">
+            	<input type="button" id="start_training" value="COMENZAR"/>
+            </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
