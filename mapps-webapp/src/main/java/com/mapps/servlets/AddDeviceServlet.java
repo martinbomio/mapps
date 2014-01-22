@@ -46,7 +46,7 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         try {
             adminService.addDevice(device, token);
             req.setAttribute("info", "El device fue ingresado al sistema con exito");
-            resp.sendRedirect("configuration/configuration.jsp");
+            resp.sendRedirect("configuration/configuration-main.jsp");
         } catch (com.mapps.services.admin.exceptions.InvalidDeviceException e) {
             req.setAttribute("error", "Device no valido");
         } catch (DeviceAlreadyExistsException e) {

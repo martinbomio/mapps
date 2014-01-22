@@ -49,7 +49,7 @@ public class ModifyDeviceServlet extends HttpServlet implements Servlet {
             device.setDirLow(dirLow);
             device.setPanId(Integer.valueOf(panId));
             adminService.modifyDevice(device,token);
-            resp.sendRedirect("configuration/configuration.jsp");
+            resp.sendRedirect("configuration/configuration-main.jsp");
         } catch (InvalidDeviceException e) {
             resp.sendRedirect("configuration/edit_device.jsp");
         } catch (com.mapps.services.admin.exceptions.InvalidDeviceException e) {
