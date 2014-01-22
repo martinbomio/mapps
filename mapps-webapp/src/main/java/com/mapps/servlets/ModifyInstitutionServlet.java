@@ -57,14 +57,16 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
         try {
             Part part = req.getPart("file");
             String fileName = Utils.getFileName(part);
-            String extension = fileName.split("\\.")[1];
             Institution newInst = institutionService.getInstitutionByID(token, Long.valueOf(id));
             newInst.setDescription(description);
             newInst.setCountry(country);
             newInst.setName(name);
-            newInst.setImageURI(Utils.getFileURI(name, UPLOAD_DIR, extension));
+            if (!fileName.equals("")){
+                String extension = fileName.split("\\.")[1];
+                newInst.setImageURI(Utils.getFileURI(name, UPLOAD_DIR, extension));
+                part.write(uploadFilePath + File.separator + name + "." + extension);
+            }
             institutionService.updateInstitution(newInst, token);
-            part.write(uploadFilePath + File.separator + name + "." + extension);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (AuthenticationException e) {
             //2:error de autentificacion

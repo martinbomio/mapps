@@ -52,7 +52,6 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
         }
         Part part = req.getPart("file");
         String fileName = Utils.getFileName(part);
-        String extension = fileName.split("\\.")[1];
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String name = req.getParameter("name");
         String lastName = req.getParameter("lastName");
@@ -74,9 +73,12 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
             athlete.setEmail(email);
             athlete.setWeight(weight);
             athlete.setHeight(height);
-            athlete.setImageURI(Utils.getFileURI(idDocument, UPLOAD_DIR, extension));
+            if(fileName.equals("")){
+                String extension = fileName.split("\\.")[1];
+                athlete.setImageURI(Utils.getFileURI(idDocument, UPLOAD_DIR, extension));
+                part.write(uploadFilePath + File.separator + idDocument + "." + extension);
+            }
             trainerService.modifyAthlete(athlete, token);
-            part.write(uploadFilePath + File.separator + idDocument + "." + extension);
             resp.sendRedirect("athletes/athletes.jsp?info=2");
         } catch (InvalidAthleteException e) {
             //error 1: Atleta no valido

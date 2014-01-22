@@ -79,7 +79,6 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
         try {
             Part part = req.getPart("file");
             String fileName = Utils.getFileName(part);
-            String extension = fileName.split("\\.")[1];
             User newUser = adminService.getUserByUsername(userName);
             newUser.setName(name);
             newUser.setLastName(lastName);
@@ -88,9 +87,12 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
             newUser.setGender(gender);
             newUser.setRole(role);
             newUser.setBirth(formatter.parse(birth));
-            newUser.setImageURI(Utils.getFileURI(userName, UPLOAD_DIR, extension));
+            if (fileName.equals("")){
+                String extension = fileName.split("\\.")[1];
+                newUser.setImageURI(Utils.getFileURI(userName, UPLOAD_DIR, extension));
+                part.write(uploadFilePath + File.separator + userName + "." + extension);
+            }
             userService.updateUser(newUser, token);
-            part.write(uploadFilePath + File.separator + userName + "." + extension);
             resp.sendRedirect("configuration/configuration.jsp");
         } catch (InvalidUserException e) {
             resp.sendRedirect("configuration/edit_user.jsp?error=1");

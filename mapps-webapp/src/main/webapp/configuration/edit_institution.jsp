@@ -127,7 +127,7 @@ if ( session.getAttribute("role") == null){
 	function updatePanel(institutions){
 		$('#name').jqxInput('val', institutions['name']);
 		$('#country').jqxInput('val', institutions['country']);
-		$('#description').jqxInput('val', institutions['description']);
+		$('#description').val(institutions['description']);
 		$('#id-hidden').val(institutions.id)
 	}
 </script>

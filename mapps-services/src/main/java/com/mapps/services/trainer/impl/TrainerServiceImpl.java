@@ -223,14 +223,13 @@ public class TrainerServiceImpl implements TrainerService {
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
                 Date date = new Date();
-                training.setDate(date);
-                training.setStarted(true);
+                trainingAux.setDate(date);
+                trainingAux.setStarted(true);
                 trainingDAO.updateTraining(trainingAux);
             } else {
                 logger.error("authentication error");
                 throw new AuthenticationException();
             }
-
         } catch (InvalidTokenException e) {
             logger.error("Invalid Token");
             throw new AuthenticationException();

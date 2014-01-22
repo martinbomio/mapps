@@ -53,92 +53,137 @@ String trainingUID = request.getParameter("uid");
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").css('visibility', 'visible');
+        $("#hidden-name").val('<%=trainingUID%>');
 		$.ajax({
             url: "/mapps/getTraining",
             dataType: "json",
             type: "POST",
             data: {training:'<%=trainingUID%>'},
             success: function (response){
+            	window.training = response;
             	var date = response.date.split(" ");
-            	$('#training').text(date[0] + ' a las: '+ date[1])
+            	$('#training').text("Entrenamiento programado para: " + date[0] + ' a las: '+ date[1])
             }});
 		//Get athletes
-		var url = "/mapps/getAllAthletesOfInstitution";		
-		$.ajax({
-            url: url,
-            type: "GET",
+		var source =
+        {
+            datatype: "json",
             data: {t:true},
-            success: function (response){
-            	//$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
-            }});
-		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
-        $("#jqxMenu").css('visibility', 'visible');
+            url: "/mapps/getAllAthletesOfInstitution"
+        };
+		var athletesAdapter = new $.jqx.dataAdapter(source);
+		$("#players_list").jqxListBox({ selectedIndex: 0, source: athletesAdapter, width: '85%', height: 250, displayMember: "name", valueMember: "idDocument",
+			renderer: function (index, label, value) {
+                var datarecord = athletesAdapter.records[index];
+                if (dataAdapter.records.length == 0){
+                	//PONER UN DIV: NO HAY Atletas
+                }
+                var table = '<div> '+ datarecord.name +' ' + datarecord.lastName+ '</div>';
+                return table;	
+			}
+		});
 		//obtener array de devices de la institucion 
 		var source =
         {
             datatype: "json",
-            datafields: [
-                { name: '....' },
-            ],
             url: "/mapps/getAllDevicesOfInstitution"
         };
 		var dataAdapter = new $.jqx.dataAdapter(source);
-		
-		var devices = [
-                    "Affogato",
-                    "Americano",
-                    "Bicerin",
-                    "Breve",
-                    "Café Bombón",
-                    "Café au lait",
-                    "Caffé Corretto",
-                    "Café Crema",
-                    "Caffé Latte",
-                    "Caffé macchiato",
-                    "Café mélange",
-                    "Coffee milk",
-                    "Cafe mocha",
-                    "Cappuccino",
-                    "Carajillo",
-                    "Cortado",
-                    "Cuban espresso",
-                    "Espresso",
-                    "Eiskaffee",
-                    "The Flat White",
-                    "Frappuccino",
-                    "Galao",
-                    "Greek frappé coffee",
-                    "Iced Coffee﻿",
-                    "Indian filter coffee",
-                    "Instant coffee",
-                    "Irish coffee",
-                    "Liqueur coffee"
-		        ];
-		var players;	//arrays para llenar las listas
-		
-		$("#devices_list").jqxListBox({ selectedIndex: 0, source: devices, width: '85%', height: 250});
-		
-		$("#players_list").jqxListBox({ selectedIndex: 0, source: devices, width: '85%', height: 250});
-
+		$("#devices_list").jqxListBox({ selectedIndex: 0, source: dataAdapter, width: '85%', height: 250, displayMember: "dirLow", valueMember: "dirLow"});
 		$("#relate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#start_training").jqxButton({ width: '200', height: '35', theme: 'metro'});
-		
+		$("#delete").jqxButton({ width: '100', height: '35', theme: 'metro'});
 		$("#dataTable").jqxDataTable(
 	        {	
 	          	theme: 'metro',
 	           	altrows: true,
 	            sortable: true,
+	            autoRowHeight: true,
 	            exportSettings: { fileName: null },
-	            source: dataAdapter,
 	            columnsResize: true,
+	            width: '50%',
 	            columns: [
-	                { text: 'Atleta', dataField: 'name', width: '60%' },
-	                { text: 'Dispositivo', dataField: 'lastName', width: '40%' }
+	                { text: 'Atleta', dataField: 'athlete', width: '60%' },
+	                { text: 'Dispositivo', dataField: 'device', width: '40%' }
 	           ]
 	    });
-	
-        
+		$("#relate").on('click', function (){ 
+	        $('#startTraining').jqxValidator('validate');
+	    });
+		$("#start_training").on('click', function (){ 
+	        $('#submit').jqxValidator('validate');
+	    });
+		$("#delete").on('click', function (){ 
+			var selection = $("#dataTable").jqxDataTable('getSelection');
+			for (var i = 0; i < selection.length; i++) {
+			    // get a selected row.
+				var rowData = selection[i];
+				var athlete = $("#players_list").jqxListBox('getItemByValue', rowData.uid);
+				var device = $("#devices_list").jqxListBox('getItemByValue', rowData.device);
+				$("#players_list").jqxListBox('enableItem', athlete ); 
+				$("#devices_list").jqxListBox('enableItem', device ); 
+				var index = getIndexInTable(rowData.uid);
+				$("#dataTable").jqxDataTable('deleteRow', index);
+			}
+			$("#dataTable").jqxDataTable('refresh');
+	    });
+		$("#startTraining").jqxValidator({
+            rules: [
+					{input: "#players_list", message: "Debe seleccionar por lo menos un atleta!", action: 'blur', rule: function (input, commit) {
+						var items = $("#players_list").jqxListBox('getSelectedItems');
+						return items.length == 1;
+							}
+					},
+					{input: "#devices_list", message: "Debe seleccionar por lo menos un dispositivo!", action: 'blur', rule: function (input, commit) {
+						var items = $("#devices_list").jqxListBox('getSelectedItems');
+						return items.length == 1;
+							}
+					}
+            ],  theme: 'metro'
+    	});
+		$("#submit").jqxValidator({
+            rules: [
+					{input: "#dataTable", message: "Debe vincular por lo menos un atleta con un dispositivo!", action: 'blur', rule: function (input, commit) {
+							var rows = $("#dataTable").jqxDataTable('getRows');
+							return rows.length > 0;
+						}
+					}
+            ],  theme: 'metro'
+    	});
+		$('#startTraining').on('validationSuccess', function (event) {
+			var athlete = $("#players_list").jqxListBox('getSelectedItem');
+			var device = $("#devices_list").jqxListBox('getSelectedItem');
+			if(!athlete.disabled && !device.disabled){
+				$("#players_list").jqxListBox('disableItem', athlete ); 
+				$("#devices_list").jqxListBox('disableItem', device ); 
+				$("#dataTable").jqxDataTable('addRow', athlete.value,{
+					athlete: athlete.label,
+					device: device.label
+				});
+			}
+	    });
+		$('#submit').on('validationSuccess', function (event) {
+			var array = $("#dataTable").jqxDataTable('getRows');
+            var json = JSON.stringify(array);
+            $("#athlete-device").val(json);
+			$("#submit").submit();
+	    });
 	});
+	
+	function getIndexInTable(uid){
+		var rows = $("#dataTable").jqxDataTable('getRows');
+		var index = -1;
+		for (var i = 0; i < rows.length; i++) {
+		    // get a row.
+			var rowData = rows[i];
+		    if (rowData.uid == uid){
+		    	index = i;
+		    }
+		}
+		return index;
+	}
 </script>
 
 
@@ -175,30 +220,36 @@ String trainingUID = request.getParameter("uid");
                 <label> Relacione los atletas con su dispositivo correspondiente </label> 
             </div>
             <div>
-            	<label> Entrenamiento: XXXX-XX-XX-XX </label>
+            	<label id="training"> Entrenamiento: XXXX-XX-XX-XX </label>
             </div>
-            <div>
-                <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
-                    <div id="players_list">
-                    
-                    </div>
-                </div>
-                <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
-                    <div id="devices_list">
-                    
-                    </div>
-                </div>
-            </div>
-            <div style="margin-left:45%; margin-top:20px;">
-            	<input type="button" id="relate" value="RELACIONAR"/>
-            </div>
-            <div id="dataTable" style="margin-top:25px; margin-left:50px;">
-            
-            </div>
-            <div style="margin-left:45%; margin-top:20px;">
-            	<input type="button" id="start_training" value="COMENZAR"/>
-            </div>
-        </div>
+            <form action="/mapps/startTraining" method="post" name="startTraining" id="startTraining">
+	            <div id="selector">
+	                <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+	                    <div id="players_list">
+	                    
+	                    </div>
+	                </div>
+	                <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+	                    <div id="devices_list">
+	                    
+	                    </div>
+	                </div>
+	            </div>
+	            <div style="margin-left:45%; margin-top:20px;">
+	            	<input type="button" id="relate" value="RELACIONAR"/>
+	            </div>
+	        </form>
+	        <form id="submit" action="/mapps/startTraining" name="submit" method="post">
+	            <div id="dataTable" style="margin-top:25px; margin-left:50px;">
+	            </div>
+	            <input type="button" id="delete" name="delete" value="ELIMINAR"></input>
+	            <div style="margin-left:45%; margin-top:20px;">
+	            	<input type="button" id="start_training" value="COMENZAR"/>
+	            </div>
+	            <input type="hidden" id="hidden-name" name="hidden-name"/>
+	            <input type="hidden" id="athlete-device" name="athlete-device"/>
+	        </form>
+	    </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
