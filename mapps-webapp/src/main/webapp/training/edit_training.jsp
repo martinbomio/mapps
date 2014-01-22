@@ -51,14 +51,7 @@ if ( session.getAttribute("role") == null){
 <script type="text/javascript">
 $(document).ready(function () {
 	//Get athletes
-	var url = "/mapps/getAllAthletesOfInstitution";		
-	$.ajax({
-        url: url,
-        type: "GET",
-        success: function (response){
-        	var athletes = response.athletes;
-        	$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
-        }});
+
 	$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
     $("#jqxMenu").css('visibility', 'visible');
 	// Create jqxNumberInput
@@ -66,17 +59,13 @@ $(document).ready(function () {
 	$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
 	$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 	$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-	$("#date").jqxDateTimeInput({width: '220px', height: '25px',disabled: 'true', theme: 'metro'});
+	$("#date").jqxDateTimeInput({width: '220px', height: '25px', formatString: 'dd/MM/yyyy HH:mm',theme: 'metro'});
 
 	$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 	
 	$("#edit_training").jqxValidator({
         rules: [
-				{input: "#players_list", message: "Debe seleccionar por lo menos un atleta!", action: 'blur', rule: function (input, commit) {
-					var items = $("#players_list").jqxListBox('getSelectedItems');
-					return items.length > 0;
-						}
-				},
+				
     			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
         			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
         			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
@@ -91,6 +80,11 @@ $(document).ready(function () {
     				var val = $("#num_longitude").jqxNumberInput('val');
     				return val.toString().length == 8;
     			}},
+    			{input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
+                    var index = $("#sport").jqxDropDownList('getSelectedIndex');
+                    return index != -1;
+                   }
+                },
                
         ],  theme: 'metro'
         });
@@ -110,7 +104,7 @@ $(document).ready(function () {
     };
     var dataAdapter = new $.jqx.dataAdapter(source);
     // Create a jqxInput
-    //$("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
+    $("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
 
 		//Get institutions
 		var url = "/mapps/getAllEditableTrainings";		
@@ -129,11 +123,11 @@ $(document).ready(function () {
 		$('#list_trainings').on('select', function (event) {
             updatePanel(trainings[event.args.index]);
         });
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
                 
-                var table = '<table style="min-width: 130px;"><tr><td>' + datarecord.name + '</td></table>';
+                var table = '<table style="min-width: 130px;"><td>' + datarecord.name + '</td></table>';
                 return table;
             }
         });
@@ -142,11 +136,11 @@ $(document).ready(function () {
 	function updatePanel(trainings){
 		
 		$('#date').jqxDateTimeInput('val', trainings['date']);
-		$('#players_list').jqxListBox('val', trainings['players_list']);
 		$('#num_min_bpm').jqxNumberInput('val', trainings['minBPM']);
 		$('#num_max_bpm').jqxNumberInput('val', trainings['maxBPM']);
 		$('#num_latitude').jqxNumberInput('val', trainings['latOrigin']);
 		$('#num_longitude').jqxNumberInput('val', trainings['longOrigin']);
+		$('#sport').jqxDropDownList('val', trainings['sport'].name);
 		$('#name-hidden').val(trainings.name);
 		
 		
@@ -174,7 +168,7 @@ $(document).ready(function () {
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
-    <div id="area_de_trabajo">
+    <div id="area_de_trabajo" style="height:550px;">
 		<div id="sidebar_left">
 
         </div>	   
@@ -197,38 +191,39 @@ $(document).ready(function () {
                 <div id="campos" class="campos" style="margin-left:100px;">
                 	
                     <div id="fecha">
-                        <div class="tag_form">Fecha: </div>
+                        <div class="tag_form_editar">Fecha: </div>
                         <div id="date" class="input">
                         </div>
                     </div>
-                    <div id="players">
-                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Jugadores: </div>
-                        <div id='players_list' style="display:inline-block; margin-top:15px;">
-				        </div>
-                    </div>
                     <div id="min_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
+                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
                         <div id="num_min_bpm" class="input" style="margin-top:10px;">
                         </div>
                     </div>
                     <div id="max_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Max BPM: </div>
+                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Max BPM: </div>
                         <div id="num_max_bpm" class="input" style="margin-top:10px;">
                         </div>
                     </div>
                     <div id="latitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
+                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
                         <div id="num_latitude" class="input" style="margin-top:10px;">
                         </div>
                     </div>
                     <div id="longitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
+                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
                         <div id="num_longitude" class="input" style="margin-top:10px;">
+                        </div>
+                    </div>
+                    <div id='sport_div' style="display:inline-block">
+                       	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
+                        <div class="input" style="margin-top:10px;">
+                        	<div id="sport" style="display:inline-block; margin-top:10px"></div>
                         </div>
                     </div>
                     <input type="hidden" id="name-hidden" name="name-hidden"></input>
 
-                    <div style="margin-left:200px; margin-top:20px;">
+                    <div style="margin-left:25%; margin-top:20px;">
                     	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>
 				</div>
@@ -241,6 +236,7 @@ $(document).ready(function () {
              	    <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>

@@ -89,7 +89,7 @@ public class ContextListener implements ServletContextListener {
         Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
         mapAthleteDevice.put(athlete, device);
         mapUserPermission.put(user, Permission.CREATE);
-        mapUserPermission.put(user, Permission.READ);
+        mapUserPermission.put(user2, Permission.READ);
 
         Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
                                          mapAthleteDevice, null, sport, mapUserPermission, inst);
@@ -128,7 +128,8 @@ public class ContextListener implements ServletContextListener {
             logger.error("Report already exists");
         } catch (TrainingAlreadyExistException e) {
             logger.error("Training already exists");
-        } catch (URISyntaxException e) {
+        }
+    catch (URISyntaxException e) {
             logger.error("Image error");
         }
     }

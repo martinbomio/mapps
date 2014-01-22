@@ -1,6 +1,9 @@
 package com.mapps.servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
@@ -14,6 +17,7 @@ import com.google.common.collect.Maps;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
+import com.mapps.model.Sport;
 import com.mapps.model.Training;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
@@ -40,13 +44,21 @@ public class ModifyTrainingServlet extends HttpServlet implements Servlet {
         int minBPM = Integer.parseInt(req.getParameter("num_min_bpm"));
         int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
         String name = req.getParameter("name-hidden");
-        String players = req.getParameter("players_list");
+        
         try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date = formatter.parse(req.getParameter("date"));
+            String sportName=req.getParameter("sport");
+            Sport newSport=trainerService.getSportByName(sportName);
+            
+
             Training training = trainerService.getTrainingByName(token, name);
             training.setLongOrigin(longitude);
             training.setLatOrigin(latitude);
             training.setMinBPM(minBPM);
             training.setMaxBPM(maxBPM);
+            training.setDate(date);
+            training.setSport(newSport);
             trainerService.modifyTraining(training, token);
             resp.sendRedirect("training/trainings.jsp");
         } catch (InvalidTrainingException e) {
@@ -54,6 +66,8 @@ public class ModifyTrainingServlet extends HttpServlet implements Servlet {
         } catch (AuthenticationException e) {
             resp.sendRedirect("training/edit_training.jsp");
         } catch (NullParameterException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }catch (ParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

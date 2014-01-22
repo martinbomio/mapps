@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Permission;
 import com.mapps.model.Role;
 import com.mapps.model.Training;
@@ -38,25 +39,36 @@ public class ChangePermissionServlet extends HttpServlet implements Servlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
+        int numberOfUsers=Integer.parseInt(req.getParameter("numberOfUsers"));
+        String trainingName = req.getParameter("name-hidden");
+        String username="";
+        Permission perm=Permission.READ;
 
-        String trainingName = req.getParameter("trainingName");
-        String username = req.getParameter("username");
-        Permission perm = null;
-        if (req.getParameter("permission").equals("2")) {
-            perm = Permission.CREATE;
-        } else {
-            perm = Permission.READ;
-        }
         try {
-            Training training = trainerService.getTrainingByName(trainingName);
+            Training training = trainerService.getTrainingByName(token,trainingName);
+        for (int i=0;i<numberOfUsers;i++){
+            username=req.getParameter("username-hidden"+i);
+            if (req.getParameter("permission_list"+i).equals("Crear")) {
+                perm = Permission.CREATE;
+            } else {
+                perm = Permission.READ;
+            }
             User user = adminService.getUserByUsername(username);
             adminService.changePermissions(training, user, perm, token);
+
+        }
+
+            resp.sendRedirect("training/trainings.jsp");
         } catch (InvalidUserException e) {
-            req.setAttribute("error", "Usuario no válido");
+            resp.sendRedirect("training/change_permissions_training.jsp?error");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            resp.sendRedirect("training/change_permissions_training.jsp?error");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error", "Entrenamiento no válido");
+            resp.sendRedirect("training/change_permissions_training.jsp?error");
+        } catch (com.mapps.services.trainer.exceptions.AuthenticationException e) {
+            resp.sendRedirect("training/change_permissions_training.jsp?error");
+        } catch (NullParameterException e) {
+            resp.sendRedirect("training/change_permissions_training.jsp?error");
         }
 
     }

@@ -256,6 +256,7 @@ String trainingUID = request.getParameter("uid");
              	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>

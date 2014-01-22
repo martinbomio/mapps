@@ -4,12 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.mapps.model.Athlete;
-import com.mapps.model.Device;
-import com.mapps.model.Permission;
-import com.mapps.model.Report;
-import com.mapps.model.Training;
-import com.mapps.model.User;
+import com.mapps.model.*;
 
 /**
  *
@@ -29,6 +24,7 @@ public class TrainingWrapper {
     private List<Report> reports;
     private List<User> users;
     private List<Permission> permissions;
+    private Sport sport;
 
     public TrainingWrapper(Training training){
         this.name = training.getName();
@@ -41,6 +37,7 @@ public class TrainingWrapper {
         this.started = training.isStarted();
         this.athletes = Lists.newArrayList();
         this.devices = Lists.newArrayList();
+        this.sport=training.getSport();
         for (Athlete athlete : training.getMapAthleteDevice().keySet()){
             this.athletes.add(athlete);
             this.devices.add(training.getMapAthleteDevice().get(athlete));
