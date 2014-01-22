@@ -18,7 +18,6 @@
       <module>mapps-receiver</module>
       <module>mapps-filter</module>
     </modules>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.openejb</groupId>

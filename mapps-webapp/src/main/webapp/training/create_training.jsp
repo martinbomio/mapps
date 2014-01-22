@@ -51,16 +51,6 @@ if (error.equals("null"))
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		//Get athletes
-		var url = "/mapps/getAllAthletesOfInstitution";		
-		$.ajax({
-            url: url,
-            type: "GET",
-            data: {t: true},
-            success: function (response){
-            	var athletes = response.athletes;
-            	$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
-            }});
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		// Create jqxNumberInput
@@ -73,11 +63,6 @@ if (error.equals("null"))
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#create_training").jqxValidator({
             rules: [
-					{input: "#players_list", message: "Debe seleccionar por lo menos un atleta!", action: 'blur', rule: function (input, commit) {
-						var items = $("#players_list").jqxListBox('getSelectedItems');
-						return items.length > 0;
-							}
-					},
         			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
             			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
             			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
@@ -158,11 +143,6 @@ if (error.equals("null"))
                         <div class="tag_form">Fecha: </div>
                         <div id="date" class="input">
                         </div>
-                    </div>
-                    <div id="players">
-                        <div class="tag_form" style="display:inline-block; vertical-align:top;"> Jugadores: </div>
-                        <div id='players_list' style="display:inline-block; margin-top:15px;">
-				        </div>
                     </div>
                     <div id="min_bpm">
                         <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>

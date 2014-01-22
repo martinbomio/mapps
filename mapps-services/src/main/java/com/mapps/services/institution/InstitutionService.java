@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Training;
+import com.mapps.model.User;
 import com.mapps.services.institution.exceptions.AuthenticationException;
 import com.mapps.services.institution.exceptions.InvalidInstitutionException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -51,4 +52,6 @@ public interface InstitutionService {
     List<Device> getDeviceOfInstitution(String token) throws AuthenticationException;
 
     List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException;
+
+    List<User> getUsersOfInstitution(String token) throws AuthenticationException;
 }

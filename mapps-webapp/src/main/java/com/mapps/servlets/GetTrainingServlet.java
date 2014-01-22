@@ -16,6 +16,7 @@ import com.mapps.model.Training;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
+import com.mapps.wrappers.TrainingWrapper;
 
 /**
  *
@@ -32,8 +33,9 @@ public class GetTrainingServlet extends HttpServlet{
         String trainingName = req.getParameter("training");
         try {
             Training training = trainerService.getTrainingByName(token, trainingName);
+            TrainingWrapper wrapper = new TrainingWrapper(training);
             Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create();
-            String json = gson.toJson(training);
+            String json = gson.toJson(wrapper);
             Writer writer = resp.getWriter();
             writer.write(json);
             writer.close();

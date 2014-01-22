@@ -51,7 +51,6 @@ public class Training {
     private Sport sport;
     @ManyToOne
     private Institution institution;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "Permissions_Users_Training")
     @Enumerated(value = EnumType.ORDINAL)

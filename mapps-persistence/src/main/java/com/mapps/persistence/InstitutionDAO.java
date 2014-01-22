@@ -1,13 +1,12 @@
 package com.mapps.persistence;
 
 import java.util.List;
+import javax.ejb.Local;
 
 import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.InstitutionNotFoundException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Institution;
-
-import javax.ejb.Local;
 
 /**
  * InstitutionDAO interface

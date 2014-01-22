@@ -202,4 +202,21 @@ public class InstitutionServiceImpl implements InstitutionService {
             throw new AuthenticationException();
         }
     }
+
+    @Override
+    public List<User> getUsersOfInstitution(String token) throws AuthenticationException {
+        if (token == null){
+            throw new AuthenticationException();
+        }
+        try {
+            if (!authenticationHandler.validateToken(token)){
+                throw new AuthenticationException();
+            }
+            User user = authenticationHandler.getUserOfToken(token);
+            return userDAO.getAllUsersByInstitution(user.getInstitution());
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        }
+    }
 }

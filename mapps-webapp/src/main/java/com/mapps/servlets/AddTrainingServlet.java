@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
@@ -24,6 +25,7 @@ import com.mapps.model.Permission;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
 import com.mapps.model.User;
+import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
@@ -40,6 +42,8 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
     UserService userService;
     @EJB(beanName = "TrainerService")
     TrainerService trainerService;
+    @EJB(beanName = "InstitutionService")
+    InstitutionService institutionService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,30 +59,40 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
             int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
             String sportName = req.getParameter("sport");
             Sport sportAux = trainerService.getSportByName(sportName);
-            String players = req.getParameter("players_list");
-            Map<Athlete, Device> athleteDeviceMap = createAthleteDeviceMap(players);
-            int part = athleteDeviceMap.keySet().size();
             String name = createTrainingName(institution, sportAux);
-            Map<User, Permission> permissionMap = Maps.newHashMap();
-            permissionMap.put(userTraining, Permission.CREATE);
-            Training training = new Training(name, date, part, longitude, latitude, minBPM, maxBPM,
-                                             athleteDeviceMap, null, sportAux, permissionMap, institution);
+            Map<User, Permission> permissionMap = createPermissionMap(token, userTraining);
+            Training training = new Training(name, date, 0, longitude, latitude, minBPM, maxBPM,
+                                             null, null, sportAux, permissionMap, institution);
             trainerService.addTraining(training, token);
             resp.sendRedirect("training/trainings.jsp");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            //2:Error de autentificacion
+            resp.sendRedirect("training/create_training.jsp?error=2");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error", "Entrenamiento invalido");
+            //1: Entrenamineto invalido
+            resp.sendRedirect("training/create_training.jsp?error=1");
         } catch (com.mapps.services.user.exceptions.AuthenticationException e) {
             //2:Error de autentificacion
             resp.sendRedirect("training/create_training.jsp?error=2");
         } catch (ParseException e) {
             logger.error("Date fromat exception");
             throw new IllegalStateException();
-        } catch (InvalidAthleteException e) {
-            logger.error("Invalid Athlete");
-            throw new IllegalStateException();
+        } catch (com.mapps.services.institution.exceptions.AuthenticationException e) {
+            //2:Error de autentificacion
+            resp.sendRedirect("training/create_training.jsp?error=2");
         }
+    }
+
+    private Map<User, Permission> createPermissionMap(String token, User owner) throws com.mapps.services.institution.exceptions.AuthenticationException {
+        Map<User, Permission> permissionMap = Maps.newHashMap();
+        List<User> usersOfInstitution = institutionService.getUsersOfInstitution(token);
+        for (User user : usersOfInstitution){
+        	if (user.equals(owner)){
+                permissionMap.put(user, Permission.CREATE);
+        	}
+            permissionMap.put(user, Permission.READ);
+        }
+        return permissionMap;
     }
 
     private String createTrainingName(Institution institution, Sport sport) {

@@ -1,12 +1,13 @@
 package com.mapps.persistence;
 
+import java.util.List;
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.UserAlreadyExistException;
 import com.mapps.exceptions.UserNotFoundException;
+import com.mapps.model.Institution;
 import com.mapps.model.User;
-
-import javax.ejb.Local;
-import java.util.List;
 
 /**
  * UserDAO interface
@@ -59,7 +60,7 @@ public interface UserDAO {
      * Method that gets all the users by institution
      * @return all the users of one institution
      */
-    public List<User> getAllUsersByInstitution(String institutionName);
+    public List<User> getAllUsersByInstitution(Institution institution);
 
 
 }

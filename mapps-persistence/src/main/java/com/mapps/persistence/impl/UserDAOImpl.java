@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.UserAlreadyExistException;
 import com.mapps.exceptions.UserNotFoundException;
+import com.mapps.model.Institution;
 import com.mapps.model.User;
 import com.mapps.persistence.UserDAO;
 
@@ -109,10 +110,10 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllUsersByInstitution(String institutionName) {
+    public List<User> getAllUsersByInstitution(Institution institution) {
 
-        Query query = entityManager.createQuery("select u from User as u INNER JOIN u.institution as i WHERE i.name =:name");
-        query.setParameter("name", institutionName);
+        Query query = entityManager.createQuery("select u from User as u INNER JOIN u.institution as i WHERE i =:inst");
+        query.setParameter("inst", institution);
         List<User> results = query.getResultList();
         return results;
     }
