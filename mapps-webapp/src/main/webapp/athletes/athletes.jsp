@@ -139,7 +139,7 @@ if(info.equals("1")){
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 var img = '<img height="60" style="margin-right:20px;" src="' + datarecord.imageURI + '"/>';
-                var table = '<table style="min-width: 130px; font-size:14px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastname + '</td></table>';
+                var table = '<table style="min-width: 130px; font-size:14px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
                 return table;
             }
         });

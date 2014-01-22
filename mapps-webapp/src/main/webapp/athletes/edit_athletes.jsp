@@ -25,6 +25,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css" /> 
@@ -76,7 +77,7 @@ if(error.equals("1")){
 		$('#document').jqxInput({disabled: true });
 		$("#date").jqxDateTimeInput({width: '50%', height: '30px', theme: 'metro'});
 		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
-		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
+		$("#height").jqxMaskedInput({ height: 30, width: '100%', mask: '#.##', theme: 'metro'  });
 		$("#email").jqxInput({placeHolder: "e.g: mapps@mapps.com", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		$("#gender_list").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '100', theme: 'metro'});
 		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
@@ -87,8 +88,16 @@ if(error.equals("1")){
 		$("#edit_athlete").jqxValidator({
             rules: [
                     {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    {input: "#weight", message: "El peso es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    {input: "#height", message: "La altura es obligatoria!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#weight", message: "El peso del atleta es obligatorio!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#weight", message: "El debe ser un numero del 0-999!", action: 'keyup, blur', rule: function(){
+						var value = $("#weight").val();
+						return ($.isNumeric(value) && value>=0 && value<=999);
+					}},
+					{ input: "#height", message: "La altura del atleta es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#height", message: "La altura debe ser un numero!", action: 'keyup, blur', rule: function(){
+						var value = $("#height").val();
+						return $.isNumeric(value);
+					}},
                     {input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
@@ -158,7 +167,8 @@ if(error.equals("1")){
 		$('#lastName').jqxInput('val', athlete['lastName']);
 		$('#document').jqxInput('val', athlete['idDocument']);
 		$('#weight').jqxInput('val', athlete['weight']);
-		$('#height').jqxInput('val', athlete['height']);
+		var height = new String(parseFloat(athlete['height']).toFixed(2))
+		$('#height').jqxMaskedInput('val', ''+height+'');
 		$('#email').jqxInput('val', athlete['email']);
 		var index = 2;
 		if (athlete['gender'] == "FEMALE"){

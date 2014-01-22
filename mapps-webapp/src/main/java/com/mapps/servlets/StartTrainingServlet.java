@@ -51,7 +51,7 @@ public class StartTrainingServlet extends HttpServlet implements Servlet {
             training.setMapAthleteDevice(athleteDeviceMap);
             trainerService.modifyTraining(training, token);
             trainerService.startTraining(training, token);
-            resp.sendRedirect("training/trainings.jsp");
+            resp.sendRedirect("index.jsp");
         } catch (AuthenticationException e) {
             resp.sendRedirect("training/start_training.jsp?error=4");
         } catch (InvalidTrainingException e) {

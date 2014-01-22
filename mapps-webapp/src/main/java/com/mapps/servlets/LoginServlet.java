@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet implements Servlet {
             resp.sendRedirect("index_login.jsp?error=1");
         } catch (InvalidUserException e) {
             //error 2: Nombre de Usuario o Contraseña no válido
-            resp.sendRedirect("index_login.jsp");
+            resp.sendRedirect("index_login.jsp?error=1");
         }
     }
 

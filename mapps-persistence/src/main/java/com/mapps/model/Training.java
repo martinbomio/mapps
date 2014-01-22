@@ -43,6 +43,7 @@ public class Training {
     private int minBPM;
     private int maxBPM;
     private boolean started;
+    private boolean finished;
     @ManyToMany(fetch = FetchType.EAGER)
     private Map<Athlete,Device> mapAthleteDevice;
     @OneToMany(fetch = FetchType.EAGER)
@@ -80,6 +81,7 @@ public class Training {
         this.mapUserPermission = mapUserPermission;
         this.institution=institution;
         this.started = false;
+        this.finished = false;
     }
 
     public Long getId() {
@@ -192,5 +194,13 @@ public class Training {
 
     public void setInstitution(Institution institution) {
         this.institution = institution;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }

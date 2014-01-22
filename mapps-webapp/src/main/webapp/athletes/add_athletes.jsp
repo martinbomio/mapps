@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxnumberinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
@@ -65,7 +66,7 @@ if (error.equals("null"))
 		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
 		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
 		$("#weight").jqxInput({placeHolder: "Peso (kg)", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
-		$("#height").jqxInput({placeHolder: "Altura (cm)", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
+		$("#height").jqxMaskedInput({ height: 30, width: '80%', mask: '#.##', theme: 'metro'  });
 		$("#email").jqxInput({placeHolder: "jose@gmail.com", height: 30, width: '80%', minLength: 1, theme: 'metro'  });
 		$("#document").jqxMaskedInput({height: 30, width: '80%', mask: '#.###.###-#', theme: 'metro'  });
 		
@@ -113,7 +114,15 @@ if (error.equals("null"))
 						input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
 					},
 					{ input: "#weight", message: "El peso del atleta es obligatorio!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#weight", message: "El debe ser un numero del 0-999!", action: 'keyup, blur', rule: function(){
+						var value = $("#weight").val();
+						return ($.isNumeric(value) && value>=0 && value<=999);
+					}},
 					{ input: "#height", message: "La altura del atleta es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#height", message: "La altura debe ser un numero!", action: 'keyup, blur', rule: function(){
+						var value = $("#height").val();
+						return $.isNumeric(value);
+					}},
 					{ input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
 					{ input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
 					{ input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -131,42 +140,6 @@ if (error.equals("null"))
 					}
 			], theme: 'metro'
     	});
-	
-
-		$('#addAthlete_form').on('validationSuccess', function (event) {
-    		$('#addAthlete_form').submit();
-		});
-		
-	
-	
-	$("#addAthlete_form").jqxValidator({
-        rules: [
-                {
-                    input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
-                },
-                {
-                    input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
-                },
-                { input: "#weight", message: "El peso del atleta es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                { input: "#height", message: "La altura del atleta es obligatoria!", action: 'keyup, blur', rule: 'required'},
-                { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
-                { input: "#document", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                {
-                    input: "#gender", message: "El Género es obligatorio!", action: 'blur', rule: function (input, commit) {
-                        var index = $("#gender").jqxDropDownList('getSelectedIndex');
-                        return index != -1;
-                    }
-                },
-                {
-                    input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
-                        var index = $("#institution").jqxDropDownList('getSelectedIndex');
-                        return index != -1;
-                    }
-                }
-        ], theme: 'metro'
-    });
-
 	$('#addAthlete_form').on('validationSuccess', function (event) {
     	$('#addAthlete_form').submit();
 	});

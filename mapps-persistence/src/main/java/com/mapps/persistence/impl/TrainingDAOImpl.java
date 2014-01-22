@@ -101,7 +101,6 @@ public class TrainingDAOImpl implements TrainingDAO {
             started = true;
         }
         return started;
-
     }
 
     @Override
@@ -113,8 +112,6 @@ public class TrainingDAOImpl implements TrainingDAO {
             throw new TrainingNotFoundException();
         }
         return results.get(0);
-
-
     }
 
     @Override
@@ -174,7 +171,7 @@ public class TrainingDAOImpl implements TrainingDAO {
 
     @Override
     public List<Training> getAllEditableTrainings(User user) throws NullParameterException {
-        if (user == null){
+        if (user == null) {
             throw new NullParameterException();
         }
         Query query = entityManager.createQuery("select t from Training t join t.mapUserPermission m where index(m)=:key");
@@ -185,9 +182,11 @@ public class TrainingDAOImpl implements TrainingDAO {
 
     @Override
     public List<Training> getAllToStartOfInstitution(Institution institution) {
-        Query query = entityManager.createQuery("select t from Training t join t.institution i where (i=:inst and t.started=:started)");
+        Query query = entityManager.createQuery("select t from Training t join t.institution i where" +
+                                                        " (i=:inst and t.started=:started and t.finished=:finished)");
         query.setParameter("inst", institution);
         query.setParameter("started", false);
+        query.setParameter("finished", false);
         List<Training> results = query.getResultList();
         return results;
     }

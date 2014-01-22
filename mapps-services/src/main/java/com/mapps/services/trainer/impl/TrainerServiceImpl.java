@@ -245,7 +245,6 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public void stopTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
-
         if (invalidTraining(training)) {
             logger.error("invalid training");
             throw new InvalidTrainingException();
@@ -255,6 +254,7 @@ public class TrainerServiceImpl implements TrainerService {
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
                 training.setStarted(false);
+                training.setFinished(true);
                 trainingDAO.updateTraining(trainingAux);
             } else {
                 logger.error("authentication error");
