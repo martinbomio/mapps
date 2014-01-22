@@ -60,18 +60,24 @@ if ( session.getAttribute("role") == null){
 		$("#dirLow").jqxInput({placeHolder: "DIR_LOW", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
-		$("#validate").on('click', function (){ 
-	        $('#edit_device').jqxValidator('validate');
-	    });
+		
 		$("#edit_device").jqxValidator({
             rules: [
                     {input: "#panId", message: "El ID del dispositivo es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#panId", message: "El PAN ID debe ser un número!", action: 'keyup, blur', rule: function(){
+						var pan = $('#panId').jqxInput('val');
+						return $.isNumeric(pan);
+					}},
                     {input: "#dirHigh", message: "DIR_HIGH es obligatorio!", action: 'keyup, blur', rule: 'required'},
                     {input: "#dirLow", message: "DIR_LOW es obligatoria!", action: 'keyup, blur', rule: 'required'},
             ],  theme: 'metro'
 	        });
+		$("#validate").on('click', function (){ 
+	        $('#edit_device').jqxValidator('validate');
+	    });
+		
 		$('#edit_device').on('validationSuccess', function (event) {
-	        $('#validate').submit();
+	        $('#edit_device').submit();
 	    });
 		var url = "/mapps/getAllDevices";		
 		$.ajax({
@@ -161,7 +167,7 @@ if ( session.getAttribute("role") == null){
                             <div class="input"><input type="text" id="dirLow" name="dirLow" /></div>
                         </div>
                     	<div style="margin-left:25%; margin-top:20px;">
-                    		<input type="submit" id="validate" value="CONFIRMAR"/>
+                    		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
                     <input type="hidden" id="id-hidden" name="id-hidden"></input>
