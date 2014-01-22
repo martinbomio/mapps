@@ -43,7 +43,7 @@ public class AddInstitutionServlet extends HttpServlet implements Servlet {
         try {
             institution.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             institutionService.createInstitution(institution, token);
-            resp.sendRedirect("configuration/configuration-main.jsp");
+            resp.sendRedirect("configuration/configuration_main.jsp");
         } catch (AuthenticationException e) {
             resp.sendRedirect("configuration/add_institution.jsp?error=Error de autentificación");
         } catch (InvalidInstitutionException e) {

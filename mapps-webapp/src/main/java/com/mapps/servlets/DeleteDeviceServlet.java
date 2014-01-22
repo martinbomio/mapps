@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.model.Device;
-import com.mapps.model.Role;
 import com.mapps.services.admin.AdminService;
 import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
@@ -41,13 +40,10 @@ public class DeleteDeviceServlet extends HttpServlet implements Servlet {
             Device device = trainerService.getDeviceByDir(dirLow);
             adminService.disableDevice(device, token);
             req.setAttribute("error", "El device fue borrado del sistema con éxito");
-
         } catch (InvalidDeviceException e) {
             req.setAttribute("error", "Device no valido");
-
         } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
             req.setAttribute("error", "Error de autentificación");
-
         }
     }
 

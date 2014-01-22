@@ -61,13 +61,13 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
             newInst.setDescription(description);
             newInst.setCountry(country);
             newInst.setName(name);
-            if (!fileName.equals("")){
+            if (!fileName.equals("")) {
                 String extension = fileName.split("\\.")[1];
                 newInst.setImageURI(Utils.getFileURI(name, UPLOAD_DIR, extension));
                 part.write(uploadFilePath + File.separator + name + "." + extension);
             }
             institutionService.updateInstitution(newInst, token);
-            resp.sendRedirect("configuration/configuration-main.jsp");
+            resp.sendRedirect("configuration/configuration_main.jsp");
         } catch (AuthenticationException e) {
             //2:error de autentificacion
             resp.sendRedirect("configuration/edit_institution.jsp?error=2");
