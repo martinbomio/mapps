@@ -138,9 +138,8 @@ if(info.equals("1")){
         $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '100%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
-                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="60" style="margin-right:20px;" src="../images/logo.png"/>';
-                var table = '<table style="min-width: 130px; font-size:14px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + " " + datarecord.lastname + '</td></table>';
+                var img = '<img height="60" style="margin-right:20px;" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px; font-size:14px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastname + '</td></table>';
                 return table;
             }
         });

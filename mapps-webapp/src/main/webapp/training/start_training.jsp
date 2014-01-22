@@ -68,8 +68,6 @@ String trainingUID = request.getParameter("uid");
             type: "GET",
             data: {t:true},
             success: function (response){
-            	var date = response.date.split(" ");
-            	$('#training').text(date[0] + ' a las: '+ date[1])
             	//$("#players_list").jqxListBox({ source: athletes, multiple: true, displayMember: "name", valueMember: "idDocument", width: 220, height: 150});
             }});
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});

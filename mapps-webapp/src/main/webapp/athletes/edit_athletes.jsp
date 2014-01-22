@@ -141,7 +141,7 @@ if(error.equals("1")){
 		$('#list_players').on('select', function (event) {
             updatePanel(athletes[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '9%0', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -279,6 +279,10 @@ if(error.equals("1")){
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
+                        <div style="display:inline-block">
+                    		<div class="tag_form"> Cambiar Imagen: </div>
+                        	<div class="input" style="display:inline-block" ><input name="file"  id="file" type="file" /></div>
+                    	</div>
                     	<div style="margin-left:25%; margin-top:20px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
