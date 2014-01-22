@@ -125,7 +125,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp'">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -133,7 +133,7 @@ if ( session.getAttribute("role") == null){
         </div>	   
         <div id="main_div">
         	<div id="navigation" class="navigation">
-            	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
+            	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
             </div>
 	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
             	<div id="title" style="margin:15px;">

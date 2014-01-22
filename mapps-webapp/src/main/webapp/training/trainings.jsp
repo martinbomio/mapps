@@ -77,7 +77,7 @@ if ( session.getAttribute("role") == null){
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
-		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
+		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
 <div id="contenedor">
@@ -87,7 +87,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab active" onclick="location.href='./trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">

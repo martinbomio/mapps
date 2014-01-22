@@ -224,7 +224,7 @@ if(error.equals("1")){
         <div id="tab_2" class="tab active" onclick="location.href='./athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration.jsp'">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">

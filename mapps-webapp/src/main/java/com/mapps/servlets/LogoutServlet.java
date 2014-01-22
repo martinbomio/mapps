@@ -29,12 +29,13 @@ public class LogoutServlet extends HttpServlet implements Servlet {
     AdminService adminService;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String logout = userService.logout(token);
         req.getSession().setAttribute("token",logout);
         req.getSession().setAttribute("role",null);
+        resp.sendRedirect("index_login.jsp");
     }
 
 }
