@@ -73,7 +73,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
             athlete.setEmail(email);
             athlete.setWeight(weight);
             athlete.setHeight(height);
-            if(fileName.equals("")){
+            if(!fileName.equals("")){
                 String extension = fileName.split("\\.")[1];
                 athlete.setImageURI(Utils.getFileURI(idDocument, UPLOAD_DIR, extension));
                 part.write(uploadFilePath + File.separator + idDocument + "." + extension);

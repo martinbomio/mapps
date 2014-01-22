@@ -9,7 +9,7 @@
     <jta-data-source>mapps-persistence</jta-data-source>
     <non-jta-data-source>mapps-persistence</non-jta-data-source>
     <properties>
-      <property name="hibernate.hbm2ddl.auto" value="validate"/><!-- update/validate/create-drop -->
+      <property name="hibernate.hbm2ddl.auto" value="create-drop"/><!-- update/validate/create-drop -->
       <property name="hibernate.transaction.manager_lookup_class"
                 value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>

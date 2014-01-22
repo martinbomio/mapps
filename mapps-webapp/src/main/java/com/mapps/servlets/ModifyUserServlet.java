@@ -87,7 +87,7 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
             newUser.setGender(gender);
             newUser.setRole(role);
             newUser.setBirth(formatter.parse(birth));
-            if (fileName.equals("")){
+            if (!fileName.equals("")){
                 String extension = fileName.split("\\.")[1];
                 newUser.setImageURI(Utils.getFileURI(userName, UPLOAD_DIR, extension));
                 part.write(uploadFilePath + File.separator + userName + "." + extension);
