@@ -32,8 +32,8 @@ if (error.equals("null"))
 	<div id="header_izq">
     
     </div>
-    <div id="header_central">
-    	<img src="./images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:575px;" />    
+    <div id="header_central" style="margin-left:15%;">
+    	<img src="./images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:30%;" />    
     </div>
     <div id="header_der">
     

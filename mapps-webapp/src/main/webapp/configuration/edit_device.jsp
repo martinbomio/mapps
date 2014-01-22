@@ -52,12 +52,12 @@ if ( session.getAttribute("role") == null){
 	
 			
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#panId").jqxInput({placeHolder: "PAN ID", height: 30, width: 200, minLength: 1, theme: 'metro' });
-		$("#dirHigh").jqxInput({placeHolder: "DIR_HIGH", height: 30, width: 200, minLength: 1, disabled: 'true', theme: 'metro'  });
-		$("#dirLow").jqxInput({placeHolder: "DIR_LOW", height: 30, width: 200, minLength: 1, theme: 'metro'  });
+		$("#panId").jqxInput({placeHolder: "PAN ID", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		$("#dirHigh").jqxInput({placeHolder: "DIR_HIGH", height: 30, width: '100%', minLength: 1, disabled: 'true', theme: 'metro'  });
+		$("#dirLow").jqxInput({placeHolder: "DIR_LOW", height: 30, width: '100%', minLength: 1, theme: 'metro'  });
 		
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
@@ -88,7 +88,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '100%', width: '300', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '100%', width: '85%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
@@ -107,14 +107,15 @@ if ( session.getAttribute("role") == null){
 </script>
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
-	</div>
-    <div id="header_der">
-	
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
+    </div>
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">
@@ -124,7 +125,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -134,14 +135,14 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
             </div>
-	        <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un dispositivo </label>
                 </div>
         		<div id="list_devices">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+            <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
                 <form action="/mapps/modifyDevice" method="post" name="edit_device" id="edit_device">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
@@ -159,7 +160,7 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> DIR LOW: </div>
                             <div class="input"><input type="text" id="dirLow" name="dirLow" /></div>
                         </div>
-                    	<div style="margin-left:70px; margin-top:20px;">
+                    	<div style="margin-left:25%; margin-top:20px;">
                     		<input type="submit" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>

@@ -79,7 +79,7 @@ if ( session.getAttribute("role") == null){
 		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
 	
 		//register
-		$("#validate").jqxButton({ width: '150', theme: 'metro'});
+		$("#validate").jqxButton({ width: '150', height: '35',theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#device_form').jqxValidator('validate');
 	    });
@@ -106,14 +106,15 @@ if ( session.getAttribute("role") == null){
 </script>
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
-	</div>
-    <div id="header_der">
-	
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
+    </div>
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">
@@ -123,7 +124,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -146,11 +147,11 @@ if ( session.getAttribute("role") == null){
                         <div class="tag_form"> DIR LOW: </div>
                         <div class="input"><input type="text" name="dirLow" id="dirLow" /></div>
                     </div>
-                    <div id="institucion" style="display: inline-block;">
-                        <div class="tag_form"> Instituci&oacute;n </div>
+                    <div id="institucion">
+                        <div class="tag_form_list"> Instituci&oacute;n </div>
                         <div id='institution' style="display: inline-block;"></div>
                     </div>
-                    <div style="margin-left:200px; margin-top:20px;">
+                    <div style="margin-left:25%; margin-top:20px;">
                     	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>
 				</div>

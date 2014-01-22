@@ -52,15 +52,15 @@ if ( session.getAttribute("role") == null){
 	
 			
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: '100%', minLength: 1, theme: 'metro'});
+		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: '100%', minLength: 1, theme: 'metro'});
 		//country
 		var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
-		$("#country").jqxInput({ placeHolder: "País", height: 25, width: 200, minLength: 1 ,theme: 'metro', 
+		$("#country").jqxInput({ placeHolder: "País", height: 25, width: '100%', minLength: 1 ,theme: 'metro', 
             source: function (query, response) {
                 var item = query.split(/,\s*/).pop();
                 // update the search query.
@@ -112,7 +112,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_institutions').on('select', function (event) {
             updatePanel(institutions[event.args.index]);
         });
-		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 70, height: '100%', width: '300', theme: 'metro',
+		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '100%', width: '85%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = institutions[index];
                 var imageurl = datarecord.imageURI;
@@ -133,14 +133,15 @@ if ( session.getAttribute("role") == null){
 </script>
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
-	</div>
-    <div id="header_der">
-	
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
+    </div>
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">
@@ -150,7 +151,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -160,14 +161,14 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="./configuration.jsp">CONFIGURACI&Oacute;N</a> >> Editar una Institución
             </div>
-	        <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione una instituci&oacute;n </label>
                 </div>
         		<div id="list_institutions">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+            <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
                 <form action="/mapps/modifyInstitution" method="post" name="edit_institution" id="edit_institution" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
@@ -179,17 +180,17 @@ if ( session.getAttribute("role") == null){
                         </div>
                         <div id="Descripcion">
                             <div class="tag_form_editar" style="vertical-align:top;"> Descripción: </div>
-                            <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:200px; height:200px;" type="text" name="description" id="description" ></textarea></div>
+                            <div class="input"><textarea class="jqx-input jqx-rc-all jqx-input-metro jqx-widget-content-metro jqx-rc-all-metro" style="width:100%; height:200px;" type="text" name="description" id="description" ></textarea></div>
                         </div>
                         <div>
                             <div class="tag_form_editar"> País: </div>
                             <div class="input"><input name="country"  id="country"  /></div>
                         </div>
                         <div>
-                    		<div class="tag_form"> Imagen: </div>
-                        	<div class="input"><input name="file"  id="file" type="file" /></div>
+                    		<div class="tag_form_editar"> Imagen: </div>
+                        	<div class="input"><input name="file"  id="file" type="file" class="jqx-rc-all jqx-rc-all-metro jqx-button jqx-button-metro jqx-widget jqx-widget-metro jqx-fill-state-normal jqx-fill-state-normal-metro" /></div>
                     	</div>
-                    	<div style="margin-left:70px; margin-top:20px;">
+                    	<div style="margin-left:25%; margin-top:20px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>

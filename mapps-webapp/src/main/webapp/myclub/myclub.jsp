@@ -37,14 +37,15 @@ if ( session.getAttribute("role") == null){
 
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
     </div>
-    <div id="header_der">
-	
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">

@@ -53,7 +53,7 @@ if ( session.getAttribute("role") == null){
 	
 			
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
 		$("#delete").jqxButton({ width: '150', theme: 'metro'});
@@ -114,14 +114,15 @@ if ( session.getAttribute("role") == null){
 </script>
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
-	</div>
-    <div id="header_der">
-	
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
+    </div>
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">
@@ -131,7 +132,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
-        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp">CONFIGURACI&Oacute;N</div>
+        <div id="tab_5" class="tab active" onclick="location.href='./configuration.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
@@ -144,10 +145,10 @@ if ( session.getAttribute("role") == null){
             <div id="title" style="margin:15px;">
                 <label> Seleccione una o varias Instituciones </label>
             </div>
-        	<div id="dataTable" style="margin-top:25px; margin-left:50px;">
+        	<div id="dataTable" style="margin-top:35px; margin-left:20%;">
             
             </div>
-        	<div style="margin-top:25px; margin-left:250px;">
+        	<div style="margin-top:25px; margin-left:35%;">
              	<input type="button" value="Eliminar" id='delete' />
             </div>
         </div>

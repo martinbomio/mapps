@@ -38,8 +38,8 @@ if ( session.getAttribute("role") == null){
 <script type="text/javascript">
 	$(document).ready(function () {
 		
-		$("#start_training").jqxButton({ width: '300', height: '50'});
-		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
+		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 	
 		$("#start_training").on('click', function () {
@@ -53,14 +53,14 @@ if ( session.getAttribute("role") == null){
             url: "/mapps/getTrainingsToStart"
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
-        $('#trainings').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '400',autoHeight:true, theme: 'metro',
+        $('#trainings').jqxListBox({ source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '60%',autoHeight:true, theme: 'metro',
         	renderer: function (index, label, value) {
                 var datarecord = dataAdapter.records[index];
                 if (dataAdapter.records.length == 0){
                 	//PONER UN DIV: NO HAY ENTRENAMIENTOS PROGRAMADOS
                 }
                 var split = datarecord.date.split(" ");
-                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento rogramado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
+                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento programado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
                 return table;
             }	
         }); 
@@ -69,14 +69,15 @@ if ( session.getAttribute("role") == null){
 
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
     </div>
-    <div id="header_der">
-	
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab">MI CUENTA</div>
+		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
     </div>
 </div>
 <div id="contenedor">
@@ -93,7 +94,11 @@ if ( session.getAttribute("role") == null){
         
         </div>
         <div id="main_div">
-        	<div id="trainings" style="border: none;">
+        	<div id="title" style="margin:15px;">
+           		<label> Seleccione el entrenamiento que desee comenzar </label>
+            </div>
+        	<div id="trainings" style="margin-left:20%;">
+            
             </div>
 			<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
