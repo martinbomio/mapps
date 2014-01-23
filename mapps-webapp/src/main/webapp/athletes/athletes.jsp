@@ -113,7 +113,7 @@ if(info.equals("1")){
             container.append(rightcolumn);
             var datarecord = athletes[index];
             var name = "<div style='margin: 10px;'><b>Nombre:</b> " + datarecord.name + "</div>";
-            var lastname = "<div style='margin: 10px;'><b>Apellido:</b> " + datarecord.lastname + "</div>";
+            var lastname = "<div style='margin: 10px;'><b>Apellido:</b> " + datarecord.lastName + "</div>";
             var birth = "<div style='margin: 10px;'><b>Fecha de Nacimiento:</b> " + datarecord.birth + "</div>";
             var gender = "<div style='margin: 10px;'><b>Género:</b> " + get_gender(datarecord.gender) + "</div>";
             $(leftcolumn).append(name);
