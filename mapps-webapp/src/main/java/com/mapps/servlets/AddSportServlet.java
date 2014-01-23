@@ -33,7 +33,7 @@ public class AddSportServlet extends HttpServlet implements Servlet {
         Sport newSport = new Sport(sportName);
         try {
             trainerService.addSport(newSport, token);
-            resp.sendRedirect("./configuration/configuration_main.jsp");
+            resp.sendRedirect("./configuration/configuration_main.jsp?info=4");
         } catch (InvalidSportException e) {
             //1:Deporte no valido o existente
             resp.sendRedirect("configuration/add_sport.jsp?error=1");

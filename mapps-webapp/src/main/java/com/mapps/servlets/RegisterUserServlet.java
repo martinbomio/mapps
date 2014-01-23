@@ -72,7 +72,7 @@ public class RegisterUserServlet extends HttpServlet implements Servlet {
             user.setEnabled(true);
             user.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             adminService.createUser(user, token);
-            resp.sendRedirect("configuration/configuration_main.jsp?info=El usuario se agrego al sistema con exito");
+            resp.sendRedirect("configuration/configuration_main.jsp?info=3");
         } catch (ParseException e) {
             logger.error("Date fromat exception");
             throw new IllegalStateException();

@@ -139,7 +139,7 @@ if (error.equals("null"))
                 <label> Complete el siguiente formulario </label>
             </div>     	
             <div style="margin-left:100px;">
-            	<form action="/mapps/addInstitution" method="post" id="addInstitution_form" enctype="multipart/form-data">
+            	<form action="/mapps/addInstitution" method="post" id="addInstitution_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name" /></div>

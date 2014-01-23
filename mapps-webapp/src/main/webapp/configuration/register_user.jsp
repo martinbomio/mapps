@@ -94,9 +94,15 @@ if ( session.getAttribute("role") == null){
 		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75', theme: 'metro'});
 		//register
 		$("#register_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		
 		$("#register_button").on('click', function (){ 
 	        $('#register_form').jqxValidator('validate');
 	    });
+		
+		$('#register_form').on('validationSuccess', function (event) {
+	        $('#register_form').submit();
+	    });
+		
 		$("#register_form").jqxValidator({
             rules: [
                     {
@@ -140,9 +146,7 @@ if ( session.getAttribute("role") == null){
         });
 	});
 	
-	$('#register_form').on('validationSuccess', function (event) {
-        $('#register_form').submit();
-    });
+	
 </script>
 
 <div id="header">

@@ -60,7 +60,7 @@ public class ModifyTrainingServlet extends HttpServlet implements Servlet {
             training.setDate(date);
             training.setSport(newSport);
             trainerService.modifyTraining(training, token);
-            resp.sendRedirect("training/trainings.jsp");
+            resp.sendRedirect("training/trainings.jsp?info=2");
         } catch (InvalidTrainingException e) {
             resp.sendRedirect("training/edit_training.jsp");
         } catch (AuthenticationException e) {

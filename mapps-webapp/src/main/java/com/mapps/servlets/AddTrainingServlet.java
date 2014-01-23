@@ -64,7 +64,7 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
             Training training = new Training(name, date, 0, longitude, latitude, minBPM, maxBPM,
                                              null, null, sportAux, permissionMap, institution);
             trainerService.addTraining(training, token);
-            resp.sendRedirect("training/trainings.jsp");
+            resp.sendRedirect("training/trainings.jsp?info=1");
         } catch (AuthenticationException e) {
             //2:Error de autentificacion
             resp.sendRedirect("training/create_training.jsp?error=2");

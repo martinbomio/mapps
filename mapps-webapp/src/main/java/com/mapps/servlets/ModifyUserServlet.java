@@ -93,7 +93,7 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
                 part.write(uploadFilePath + File.separator + userName + "." + extension);
             }
             userService.updateUser(newUser, token);
-            resp.sendRedirect("configuration/configuration_main.jsp");
+            resp.sendRedirect("configuration/configuration_main.jsp?info=5");
         } catch (InvalidUserException e) {
             resp.sendRedirect("configuration/edit_user.jsp?error=1");
         } catch (AuthenticationException e) {

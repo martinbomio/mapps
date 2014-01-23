@@ -58,7 +58,7 @@ public class ChangePermissionServlet extends HttpServlet implements Servlet {
 
         }
 
-            resp.sendRedirect("training/trainings.jsp");
+            resp.sendRedirect("training/trainings.jsp?info=3");
         } catch (InvalidUserException e) {
             resp.sendRedirect("training/change_permissions_training.jsp?error");
         } catch (AuthenticationException e) {

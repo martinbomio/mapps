@@ -21,6 +21,8 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script> 
     <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcheckbox.js"></script>
@@ -45,6 +47,19 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+
+String pop_up_message = "";
+boolean show_pop_up = false;;
+
+if(info.equals("1")){
+	pop_up_message = "La institución fue eliminada del sistema con éxito.";
+	show_pop_up = true;	
+}
+
 %>
 <body>
 
@@ -66,13 +81,34 @@ if ( session.getAttribute("role") == null){
                 type: "POST",
                 data: {json: json},
                 success: function (response){
-                	window.location.replace("delete_institution.jsp");
+                	window.location.replace("delete_institution.jsp?info=1");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                 	  console.log(textStatus, errorThrown);
                 } 
             });
         });
+		
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
 		
 		var url = "/mapps/getAllInstitutions";
         $.ajax({
@@ -118,7 +154,23 @@ if ( session.getAttribute("role") == null){
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-		
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="../images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>

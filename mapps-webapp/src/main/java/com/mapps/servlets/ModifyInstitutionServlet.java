@@ -67,7 +67,7 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
                 part.write(uploadFilePath + File.separator + name + "." + extension);
             }
             institutionService.updateInstitution(newInst, token);
-            resp.sendRedirect("configuration/configuration_main.jsp");
+            resp.sendRedirect("configuration/configuration_main.jsp?info=6");
         } catch (AuthenticationException e) {
             //2:error de autentificacion
             resp.sendRedirect("configuration/edit_institution.jsp?error=2");

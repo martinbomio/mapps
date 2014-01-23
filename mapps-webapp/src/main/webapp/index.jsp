@@ -11,6 +11,8 @@
     <script type='text/javascript' src="./scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
 
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
@@ -27,17 +29,46 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+boolean show_pop_up = false;
+String pop_up_message = "";
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+
+if(info.equals("1")){
+	pop_up_message = "El entrenamiento ha comenzado.";
+	show_pop_up = true;	
+}
 %>
 <body>
 <script type="text/javascript">
 	$(document).ready(function () {
 		
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
-		$("#logout_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+	
 		
-		$("#logout_button").on('click', function () {
-            window.location.replace("/mapps/logout");
-        });
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+        
+		
 	
 	});
 </script>
@@ -47,6 +78,24 @@ if ( session.getAttribute("role") == null){
     	<a href="index.jsp"></href><img src="./images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+    
+    <div id="pop_up">
+            <div>
+                <img width="14" height="14" src="./images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
 		
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
