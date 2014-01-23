@@ -57,7 +57,7 @@ public class KalmanFilterServiceStub extends KalmanFilterService{
             for (ProcessedDataUnit processed : processedDataUnits){
                 String line = processed.getAccelerationX() + "\t" + processed.getAccelerationY() + "\t" +
                         processed.getVelocityX() + "\t" + processed.getVelocityY() + "\t" + processed.getPositionX()
-                        + "\t" + processed.getPositionY();
+                        + "\t" + processed.getPositionY() + "\t" + processed.getDate().getTime();
                 out.println(line);
             }
             out.close();

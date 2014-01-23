@@ -1,7 +1,5 @@
 package com.mapps.receiver;
 
-import java.io.BufferedWriter;
-
 import org.apache.log4j.Logger;
 
 import com.mapps.receiver.exceptions.CouldNotInvokeServiceException;
@@ -21,7 +19,7 @@ public class PacketBuilder {
         serviceInvoker = new ResfulServiceInvoker();
     }
 
-    public void addPacket(String packet,BufferedWriter bf)  {
+    public void addPacket(String packet)  {
         if (packet.substring(0,1).equals("G")){
             if(builder.length() != 9){
                 String finalPacket = getPacket();

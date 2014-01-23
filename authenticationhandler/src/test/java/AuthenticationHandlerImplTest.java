@@ -43,6 +43,7 @@ public class AuthenticationHandlerImplTest {
         when(user.getName()).thenReturn("huguito");
         when(user.getPassword()).thenReturn("hugopassword123");
         when(user.getRole()).thenReturn(Role.USER);
+        when(user.isEnabled()).thenReturn(true);
 
         //mock exception
         UserNotFoundException userNotFoundException = mock(UserNotFoundException.class);
@@ -56,8 +57,10 @@ public class AuthenticationHandlerImplTest {
         registeredUser = mock(User.class);
         when(registeredUser.getUserName()).thenReturn("hugogmail.com");
         when(registeredUser.getPassword()).thenReturn("hugopassword123");
+        when(registeredUser.isEnabled()).thenReturn(true);
         unregisteredUser = mock(User.class);
         when(unregisteredUser.getUserName()).thenReturn("unregisteredUsergmail.com");
+        when(unregisteredUser.isEnabled()).thenReturn(true);
 
 
         AuthenticationHandlerToTest authenticationHandlerToTest = new AuthenticationHandlerToTest();
