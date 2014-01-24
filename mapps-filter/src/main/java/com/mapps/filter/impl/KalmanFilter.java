@@ -42,6 +42,7 @@ public class KalmanFilter implements Filter {
 
     private SimpleMatrix lastXpos;
     private KalmanState newState;
+    private double initialYaw;
 
     private static double[] latitude0 = new double[3];        // DD-mm-ssss
     private static double[] longitude0 = new double[3];        // DD-mm-ssss
@@ -98,16 +99,16 @@ public class KalmanFilter implements Filter {
 
             // Define Y vector
             SimpleMatrix y_aux;
-            if(gpsCorrect){
+            if (gpsCorrect) {
                 double[] vectorY = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
-                                                         parseCoordinates(gpsData.getLongitude()));
+                                                             parseCoordinates(gpsData.getLongitude()));
                 y_aux = new SimpleMatrix(2, 1, false, vectorY);
-                if( checkCoordenates(vectorY)){
+                if (checkCoordenates(vectorY)) {
                     this.C = new SimpleMatrix(createMatrixC(false));
                 }
-            }else{
-                double[] vector = new double[]{0,0};
-                y_aux = new SimpleMatrix(2,1,false,vector);
+            } else {
+                double[] vector = new double[]{0, 0};
+                y_aux = new SimpleMatrix(2, 1, false, vector);
             }
             SimpleMatrix matrixY = y_aux.minus(this.C.mult(xPre));
 
@@ -134,9 +135,9 @@ public class KalmanFilter implements Filter {
         String pPost = MatrixToStringParser.parseMatrixToString(this.pPost);
         String qMatrix = MatrixToStringParser.parseMatrixToString(this.Q);
         String rgiMatrix = MatrixToStringParser.parseMatrixToString(this.Rgi);
-        double axBias = lastXpos.get(4,0);
-        double ayBias = lastXpos.get(5,0);
-        this.newState = new KalmanState(pPost,qMatrix,rgiMatrix,this.gpsError,axBias,ayBias,new Date(),training,device);
+        double axBias = lastXpos.get(4, 0);
+        double ayBias = lastXpos.get(5, 0);
+        this.newState = new KalmanState(pPost, qMatrix, rgiMatrix, this.gpsError, axBias, ayBias, this.initialYaw, new Date(), training, device);
     }
 
     private ProcessedDataUnit createProcessedDataFromXPost(SimpleMatrix xPost, IMUData imuData) {
@@ -165,9 +166,10 @@ public class KalmanFilter implements Filter {
         this.Q = MatrixToStringParser.parseStringToMatrix(state.getqMatrix());
         this.Rgi = MatrixToStringParser.parseStringToMatrix(state.getRgi());
         this.lastXpos = MatrixToStringParser.parseProcessedDataToMatrix(lastXpos);
-        this.lastXpos.set(4,0,state.getaXBias());
-        this.lastXpos.set(5,0,state.getAyBias());
+        this.lastXpos.set(4, 0, state.getaXBias());
+        this.lastXpos.set(5, 0, state.getAyBias());
         this.gpsError = state.getGpsError();
+        this.initialYaw = state.getInitialYaw();
     }
 
     public void setUpInitialConditions(List<RawDataUnit> rawDataUnits) {
@@ -184,7 +186,7 @@ public class KalmanFilter implements Filter {
             for (IMUData imuData : rawData.getImuData()) {
                 aXList.add(((double) imuData.getAccelX()) / ACCEL_RANGE);
                 aYList.add(((double) imuData.getAccelY()) / ACCEL_RANGE);
-                yaw = ((double) imuData.getYaw()) / YPR_RANGE;
+                this.initialYaw = ((double) imuData.getYaw()) / YPR_RANGE;
             }
             GPSData gpsData = rawData.getGpsData().get(0);
             cartesianCoordinates = transformCoordinateSystem(parseCoordinates(gpsData.getLatitude()),
@@ -229,7 +231,7 @@ public class KalmanFilter implements Filter {
             this.C = new SimpleMatrix(createMatrixC(false));
         }
 
-        this.R = new SimpleMatrix(matrizR(hdop, yaw));
+        this.R = new SimpleMatrix(matrizR(hdop));
 
     }
 
@@ -332,15 +334,15 @@ public class KalmanFilter implements Filter {
         return matrizR;
     }
 
-    private double [][] matrizR(double hdop, double yaw){
+    private double[][] matrizR(double hdop) {
         double[][] matrizR = new double[2][2];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 matrizR[i][j] = 0;
             }
         }
-        matrizR[0][0] = this.gpsError * (hdop/YPR_RANGE) * Math.cos(Math.toRadians(yaw/YPR_RANGE));
-        matrizR[1][1] = this.gpsError * (hdop/YPR_RANGE) * Math.sin(Math.toRadians(yaw/YPR_RANGE));
+        matrizR[0][0] = Math.pow(this.gpsError * (hdop / YPR_RANGE) * Math.cos(Math.toRadians(this.initialYaw)), 2);
+        matrizR[1][1] = Math.pow(this.gpsError * (hdop / YPR_RANGE) * Math.sin(Math.toRadians(this.initialYaw)), 2) ;
         return matrizR;
     }
 
@@ -369,7 +371,7 @@ public class KalmanFilter implements Filter {
         this.lastXpos = lastXpos;
     }
 
-    public KalmanState getNewState(){
+    public KalmanState getNewState() {
         return this.newState;
     }
 

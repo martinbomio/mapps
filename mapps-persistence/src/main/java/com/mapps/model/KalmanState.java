@@ -25,6 +25,7 @@ public class KalmanState {
     private double gpsError;
     private double aXBias;
     private double ayBias;
+    private double initialYaw;
     private Date date;
     @ManyToOne
     private Training training;
@@ -35,7 +36,7 @@ public class KalmanState {
     }
 
     public KalmanState(String previousState, String qMatrix, String rgi, double gpsError, double aXBias,
-                       double ayBias, Date date, Training training, Device device) {
+                       double ayBias, double initialYaw, Date date, Training training, Device device) {
         this.previousState = previousState;
         this.qMatrix = qMatrix;
         this.rgi = rgi;
@@ -45,6 +46,7 @@ public class KalmanState {
         this.date = date;
         this.training = training;
         this.device = device;
+        this.initialYaw = initialYaw;
     }
 
     public String getRgi() {
@@ -125,5 +127,13 @@ public class KalmanState {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public double getInitialYaw() {
+        return initialYaw;
+    }
+
+    public void setInitialYaw(double initialYaw) {
+        this.initialYaw = initialYaw;
     }
 }

@@ -41,11 +41,14 @@ public class KalmanFilterService implements FilterService{
             return;
         }
         checkGPSCorrect(rawDataUnit);
-        List<RawDataUnit> initalConditions = rawDataUnitDAO.getInitialConditions(training, device);
         Filter kalmanFilter = null;
         try {
             KalmanState lastState = kalmanStateDAO.getLastState(training, device);
             boolean isFirstIteration = lastState == null;
+            List<RawDataUnit> initalConditions = null;
+            if (isFirstIteration){
+                initalConditions = rawDataUnitDAO.getInitialConditions(training, device);
+            }
             ProcessedDataUnit lastXpost = processedDataUnitDAO.getLastProcessedDataUnit(training,device);
             kalmanFilter = new KalmanFilter.Builder(training, device, rawDataUnit)
                                            .initialConditions(initalConditions)
