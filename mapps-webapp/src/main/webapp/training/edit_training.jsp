@@ -123,6 +123,7 @@ $(document).ready(function () {
 		$('#list_trainings').on('select', function (event) {
             updatePanel(trainings[event.args.index]);
         });
+		
 		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];

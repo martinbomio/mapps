@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.mapps.exceptions.InvalidStartedTrainingException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
@@ -121,5 +122,7 @@ public interface TrainingDAO {
      * @return a list containing all the trainings to start
      */
     public List<Training> getAllToStartOfInstitution(Institution institution);
+
+    public Training getStartedTraining(Institution institution) throws InvalidStartedTrainingException;
 
 }

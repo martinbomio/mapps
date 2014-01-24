@@ -13,7 +13,8 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
-
+	<script type="text/javascript" src="./jqwidgets/jqxlistbox.js"></script>
+	<script type="text/javascript" src="./jqwidgets/jqxscrollbar.js"></script>
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
@@ -30,15 +31,12 @@ if ( session.getAttribute("role") == null){
 	role = (Role) session.getAttribute("role");	
 }
 boolean show_pop_up = false;
+boolean training_started=false;
 String pop_up_message = "";
 String info = String.valueOf(request.getParameter("info"));
 if (info.equals("null"))
 	info = "";
 
-if(info.equals("1")){
-	pop_up_message = "El entrenamiento ha comenzado.";
-	show_pop_up = true;	
-}
 %>
 <body>
 <script type="text/javascript">
@@ -47,27 +45,29 @@ if(info.equals("1")){
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 	
 		
-		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
-            resizable: false, draggable: false, 
-            okButton: $('#ok'), 
-            initContent: function () {
-                $('#ok').jqxButton({  width: '65px' });
-                $('#ok').focus();
-            }
-        });		
-		<%
-		if(show_pop_up){	
-		%>
-			$("#pop_up").css('visibility', 'visible');
-		<%
-		}else{
-		%>
-			$("#pop_up").css('visibility', 'hidden');
-			$("#pop_up").css('display', 'none');
-		<%
-		}
-		%>
-        
+	
+		var url = "/mapps/getStartedTraining";		
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+            	var training = response;
+            	
+            	if(training=="not started"){
+            		<%
+            		training_started=false;
+            		%>
+            	}else{
+            		<%
+            		training_started=true;
+            		%>
+            		var train=JSON.parse(training);
+            		$('#training').text( train.name);
+            	}
+            	
+            },
+        	   
+		});
 		
 	
 	});
@@ -79,23 +79,7 @@ if(info.equals("1")){
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
     
-    <div id="pop_up">
-            <div>
-                <img width="14" height="14" src="./images/ok.png" alt="" />
-                Informaci&oacute;n
-            </div>
-            <div>
-            	<div style="height:60px;">
-                	<%=pop_up_message
-					%>
-                </div>
-                <div>
-            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
-           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
-        	        </div>
-                </div>
-            </div>
-        </div>
+<%=token %>
 		
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
@@ -117,6 +101,7 @@ if(info.equals("1")){
         
         </div>
         <div id="main_div">
+        <label id="training"> </label>
         	<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>

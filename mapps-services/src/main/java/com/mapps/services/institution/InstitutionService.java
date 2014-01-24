@@ -54,4 +54,6 @@ public interface InstitutionService {
     List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException;
 
     List<User> getUsersOfInstitution(String token) throws AuthenticationException;
+
+    public Training getStartedTrainingOfInstitution(String token) throws AuthenticationException;
 }

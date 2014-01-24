@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.mapps.exceptions.InvalidStartedTrainingException;
 import org.apache.log4j.Logger;
 
 import com.mapps.exceptions.NullParameterException;
@@ -189,5 +190,22 @@ public class TrainingDAOImpl implements TrainingDAO {
         query.setParameter("finished", false);
         List<Training> results = query.getResultList();
         return results;
+    }
+    @Override
+    public Training getStartedTraining(Institution institution) throws InvalidStartedTrainingException {
+        Query query = entityManager.createQuery("select t from Training t join t.institution i where " +
+                "i=:institution and t.started=:started and t.finished=:finished");
+        query.setParameter("institution",institution);
+        query.setParameter("started",true);
+        query.setParameter("finished",false);
+        List<Training> results = query.getResultList();
+
+        if(results.size()==0){
+        return null;
+        }else if (results.size() != 1) {
+            throw new InvalidStartedTrainingException();
+        }
+        return results.get(0);
+
     }
 }

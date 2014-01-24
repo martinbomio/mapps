@@ -4,14 +4,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.mapps.exceptions.*;
 import org.apache.log4j.Logger;
 
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
-import com.mapps.exceptions.InstitutionAlreadyExistException;
-import com.mapps.exceptions.InstitutionNotFoundException;
-import com.mapps.exceptions.NullParameterException;
-import com.mapps.exceptions.UserNotFoundException;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Role;
@@ -187,6 +184,23 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
+    public Training getStartedTrainingOfInstitution(String token) throws AuthenticationException {
+        if(token==null){
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.USER)){
+                throw new AuthenticationException();
+            }
+            User user =authenticationHandler.getUserOfToken(token);
+            return trainingDAO.getStartedTraining(user.getInstitution());
+            } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (InvalidStartedTrainingException e) {
+            throw new AuthenticationException();
+        }
+    }
+        @Override
     public List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException {
         if (token == null){
             throw new AuthenticationException();
