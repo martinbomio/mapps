@@ -15,19 +15,19 @@ public class Utils {
      */
     public static String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        System.out.println("content-disposition header= "+contentDisp);
+        System.out.println("content-disposition header= " + contentDisp);
         String[] tokens = contentDisp.split(";");
         for (String token : tokens) {
             if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length()-1);
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
             }
         }
         return "";
     }
 
-    public static URI getFileURI(String identifier, String dir, String extension){
+    public static URI getFileURI(String identifier, String dir, String extension) {
         try {
-            return new URI("/mapps" + File.separator + dir + File.separator + identifier + "." + extension);
+            return new URI(File.separator + "mapps" + File.separator + dir + File.separator + identifier + "." + extension);
         } catch (URISyntaxException e) {
             throw new IllegalStateException();
         }

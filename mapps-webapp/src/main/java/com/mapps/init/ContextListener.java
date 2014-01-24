@@ -83,17 +83,18 @@ public class ContextListener implements ServletContextListener {
         Athlete athlete = new Athlete("pepe", "apellido", new Date(), Gender.MALE, "pepe@gmail.com", 78, 1.8, "1.111.111-0", inst);
         Athlete mario = new Athlete("Mario", "Gomez", new Date(), Gender.MALE, "mario@gmail.com", 78, 1.80, "4.447.599-3", inst);
         Device device = new Device("0013A200", "40aad87e", 55, inst);
+        Device device1 = new Device("0013A200", "40a9c8d2", 55, inst);
         Report report = new Report("url", date, "report one", ReportType.TRAINNING);
 
         Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
         Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
-        mapAthleteDevice.put(athlete, device);
+        mapAthleteDevice.put(athlete, device1);
         mapUserPermission.put(user, Permission.CREATE);
         mapUserPermission.put(user2, Permission.READ);
 
-        Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
+        Training training = new Training("nombreTraining", new Date(), 3, 34523268, 56025302, 55, 190,
                                          mapAthleteDevice, null, sport, mapUserPermission, inst);
-        training.setStarted(false);
+        training.setStarted(true);
         try {
             inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             inst2.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
@@ -110,6 +111,7 @@ public class ContextListener implements ServletContextListener {
             athleteDAO.addAthlete(athlete);
             athleteDAO.addAthlete(mario);
             deviceDAO.addDevice(device);
+            deviceDAO.addDevice(device1);
             trainingDAO.addTraining(training);
 
         } catch (InstitutionAlreadyExistException e) {

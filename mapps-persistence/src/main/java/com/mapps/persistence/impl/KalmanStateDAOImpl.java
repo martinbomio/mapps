@@ -30,14 +30,16 @@ public class KalmanStateDAOImpl implements KalmanStateDAO{
             throw new NullParameterException();
         }
         Query query = entityManager.createQuery("from KalmanState k where (k.training=:training and k.device =:device) " +
-                                                        "order by k.date desc");
+                                                        "order by k.id desc");
         query.setParameter("training", training);
         query.setParameter("device", device);
         List<KalmanState> list = query.getResultList();
         if(list.size() == 0)
             return null;
-        else
+        else{
+        	System.out.println("KALMANSTATE: id:"+ list.get(0).getId());
             return list.get(0);
+        }
     }
 
     @Override

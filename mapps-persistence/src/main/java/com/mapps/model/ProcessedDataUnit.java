@@ -4,11 +4,14 @@ package com.mapps.model;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Representation of a processed data unit in the system
@@ -33,8 +36,9 @@ public class ProcessedDataUnit {
     double accelerationX;
     @Column(nullable = false)
     double accelerationY;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     RawDataUnit rawDataUnit;
+    @Temporal(TemporalType.TIMESTAMP)
     Date date;
 
 

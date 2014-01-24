@@ -118,4 +118,12 @@ public class KalmanState {
     public void setAyBias(double ayBias) {
         this.ayBias = ayBias;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
