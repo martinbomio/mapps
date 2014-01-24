@@ -52,7 +52,7 @@ if ( session.getAttribute("role") == null){
 $(document).ready(function () {
 	//Get athletes
 
-	$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+	$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
     $("#jqxMenu").css('visibility', 'visible');
     $("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 
@@ -85,8 +85,8 @@ function updatePanel(trainings){
 	var users = trainings.users;
 	for (var i=0; i<users.length; i++){
 		var container = $("<div></div>");
-		var div = $('<div> '+ users[i].userName +'</div>');
-		var input = $('<div id="permission_list'+i+'" class="list_box"></div>');
+		var div = $('<div class="tag_form"> '+ users[i].userName +'</div>');
+		var input = $('<div id="permission_list'+i+'" class="input list_box"></div>');
 		var hiddenUsername = $('<input type="hidden" id="username-hidden'+i+'" name="username-hidden'+i+'" value="'+users[i].userName +'"></input>');
 		
 		$(container).append(div);
@@ -142,12 +142,14 @@ function updatePanel(trainings){
 	         <div id='trainings_div' style="display:inline-block">
                        	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Entrenamientos: </div>
                         <div class="input" style="margin-top:10px;">
-                        	<div id="trainings" style="display:inline-block; margin-top:10px"></div>
+                        	<div id="trainings" style="display:inline-block; margin-top:10px">
+                            </div>
                         </div>
              </div>
              <form action="/mapps/changePermission" method="post" name="change_permission" id="change_permission">
-	             <div id="users_div" >
-	             </div>
+	             <div id="users_div" style="width:50%; margin-left:15%; margin-top:20px;">
+	             
+                 </div>
 	             <input type="hidden" id="numberOfUsers" name="numberOfUsers"></input>
 	             <input type="hidden" id="name-hidden" name="name-hidden"></input>
 	             <div style="margin-left:25%; margin-top:20px;">
