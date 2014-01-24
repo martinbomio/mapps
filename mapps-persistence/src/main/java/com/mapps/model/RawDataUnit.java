@@ -42,21 +42,18 @@ public class RawDataUnit implements DataParser{
     private Device device;
     @Column(nullable = false)
     private Long timestamp;
-    @Column(nullable = false)
-    private boolean readed;
     private Date date;
     private boolean correct;
     @ManyToOne
     private Training training;
 
     public RawDataUnit(List<IMUData> imuData, List<GPSData> gpsData, List<PulseData> pulseData,
-                       Device device, Long timestamp, boolean readed, Date date, Training training) {
+                       Device device, Long timestamp, Date date, Training training) {
         this.imuData = imuData;
         this.gpsData = gpsData;
         this.pulseData = pulseData;
         this.device = device;
         this.timestamp = timestamp;
-        this.readed = readed;
         this.date = date;
         this.correct = true;
         this.training = training;
@@ -125,14 +122,6 @@ public class RawDataUnit implements DataParser{
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public boolean isReaded() {
-        return readed;
-    }
-
-    public void setReaded(boolean readed) {
-        this.readed = readed;
     }
 
     public Date getDate() {
