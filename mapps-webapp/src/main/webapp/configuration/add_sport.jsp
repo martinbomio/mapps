@@ -57,7 +57,7 @@ if (error.equals("null"))
 <script type="text/javascript">
 	$(document).ready(function () {
 		// Create a jqxMenu
-        $("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
+        $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
 		
@@ -74,7 +74,7 @@ if (error.equals("null"))
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
         // Create a jqxListBox
-        $("#sports").jqxListBox({ source: dataAdapter, displayMember: "name", valueMember: "name", width: 200, height: 150});
+        $("#sports").jqxListBox({ source: dataAdapter, displayMember: "name", valueMember: "name", width: 200, height: 150, theme: 'metro'});
 		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
 		//register
 		$("#addSport_button").jqxButton({ width: '200', height: '35', theme: 'metro'});
@@ -106,7 +106,7 @@ if (error.equals("null"))
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
-		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
+		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
 <div id="contenedor">
@@ -134,18 +134,19 @@ if (error.equals("null"))
                         <div class="tag_form"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
-                    <div style="margin-left:120px; margin-top:25px;">
+                    <div style="margin-left:25%; margin-top:25px;">
                     	<input type="button" value="Agregar deporte" id="addSport_button" />
                  	</div>
+                    <div style="margin-top:50px;">
+                        <div id="title" class="tag_form" style="margin:15px; vertical-align:top;">
+                            Deportes ya Ingresados
+                        </div>
+                        <div id="sports" class="input" style="margin-top:50px;">
+                         
+                        </div>
+                    </div>
                 </form>
         	</div>
-        	<div id="title" style="margin:15px;">
-                <label> Deportes ya Ingresados </label>
-            </div> 
-            	<div id="nombre">
-            			<div class="tag_form"></div>
-                        <div class="input"><div id='sports'> </div></div>
-                </div>
         </div>
         <div id="sidebar_right">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">

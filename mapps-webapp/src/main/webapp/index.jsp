@@ -13,8 +13,9 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
-	<script type="text/javascript" src="./jqwidgets/jqxlistbox.js"></script>
-	<script type="text/javascript" src="./jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxdata.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxchart.js"></script>
+
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
@@ -39,6 +40,12 @@ if (info.equals("null"))
 
 %>
 <body>
+<style type="text/css">
+	.jqx-chart-axis-text, .jqx-chart-label-text, .jqx-chart-legend-text, .jqx-chart-axis-description, .jqx-chart-title-text, .jqx-chart-title-description{
+        fill: #ffffff;
+        color: #ffffff;
+    }
+</style>
 <script type="text/javascript">
 	$(document).ready(function () {
 		
@@ -69,7 +76,87 @@ if (info.equals("null"))
         	   
 		});
 		
-	
+		// prepare the data for chart
+        var source = {
+            datatype: "csv",
+            datafields: [
+                    { name: 'Date' },
+                    { name: 'S&P 500' },
+                    { name: 'NASDAQ' }
+            ],
+            url: './sampledata/nasdaq_vs_sp500.txt'
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('Error loading "' + source.url + '" : ' + error); } });
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+		// prepare jqxChart settings
+        var settings = {
+            title: "U.S. Stock Market Index Performance (2011)",
+            description: "NASDAQ Composite compared to S&P 500",
+            enableAnimations: true,
+            showLegend: true,
+            padding: { left: 10, top: 5, right: 10, bottom: 5 },
+            titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+            source: dataAdapter,
+            backgroundImage: './images/chart_background.jpg',
+            categoryAxis:{
+                dataField: 'Date',
+                formatFunction: function (value) {
+                    return months[value.getMonth()];
+                },
+                toolTipFormatFunction: function (value) {
+                    return value.getDate() + '-' + months[value.getMonth()];
+                },
+                type: 'date',
+                baseUnit: 'month',
+                showTickMarks: true,
+                tickMarksInterval: 1,
+                tickMarksColor: '#ffffff',
+                toolTipBackground: '666',
+                unitInterval: 1,
+                showGridLines: true,
+                gridLinesInterval: 3,
+                gridLinesColor: '#ffffff',
+                valuesOnTicks: false
+            },
+            seriesGroups:
+                [
+                    {
+                        type: 'line',
+                        valueAxis:
+                        {
+                            unitInterval: 500,
+                            minValue: 0,
+                            maxValue: 3000,
+                            displayValueAxis: true,
+                            description: 'Daily Closing Price',
+                            axisSize: 'auto',
+                            tickMarksColor: '#ffffff'
+                        },
+                        series: [
+                                { dataField: 'S&P 500', displayText: 'S&P 500', color: '#ffffff' },
+                                { dataField: 'NASDAQ', displayText: 'NASDAQ', color: '#0ff0ff' }
+                            ]
+                    }
+                ]
+            };
+            
+			// setup the chart
+            $('#jqxChart').jqxChart(settings);
+			
+			<%
+			if(show_pop_up){	
+			%>
+				$("#pop_up").css('visibility', 'visible');
+			<%
+			}else{
+			%>
+				$("#pop_up").css('visibility', 'hidden');
+				$("#pop_up").css('display', 'none');
+			<%
+			}
+			%>
+			
 	});
 </script>
 
@@ -78,13 +165,27 @@ if (info.equals("null"))
     	<a href="index.jsp"></href><img src="./images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-    
-<%=token %>
-		
+    	<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="./images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
-		<div id="logout" class="up_tab">CERRAR SESI&Oacute;N</div>
+		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
 <div id="contenedor">
@@ -102,6 +203,9 @@ if (info.equals("null"))
         </div>
         <div id="main_div">
         <label id="training"> </label>
+        	<div id='jqxChart' style="width: 500px; height: 375px">
+    		
+            </div>
         	<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>

@@ -98,6 +98,7 @@ if(info.equals("3")){
             datatype: "json",
             url: "/mapps/getTrainingsToStart"
         };
+		
         var dataAdapter = new $.jqx.dataAdapter(source);
         $('#trainings').jqxListBox({ source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '60%',autoHeight:true, theme: 'metro',
         	renderer: function (index, label, value) {

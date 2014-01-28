@@ -18,6 +18,7 @@
 String error = String.valueOf(request.getParameter("error"));
 if (error.equals("null"))
 	error = "";
+	
 %>
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -58,7 +59,7 @@ if (error.equals("null"))
         </div>
     </div>
     <div class="footer">
-
+	
 	</div>
 </div>
 <div id="pie">

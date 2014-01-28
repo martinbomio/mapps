@@ -79,6 +79,7 @@ body{
 	display:inline-block;
 }
 
+
 .loginForm {
 	width:100%;
 	margin-left:20%;
@@ -198,9 +199,16 @@ body{
 	margin-top:10px;
 }
 
-a.navigation:link{
+.navigation a{
 	text-decoration:none;
 	color:#000;
+	font-style:normal;
+}
+
+.up_tab a{
+	text-decoration:none;
+	color:#FFF;
+	font-style:normal;
 }
 
 .campos{
