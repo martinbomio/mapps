@@ -81,6 +81,8 @@ public class KalmanFilterServiceStub extends KalmanFilterService{
         sb.append(state.getRgi());
         sb.append("\t");
         sb.append(state.getDate().getTime());
+        sb.append("\t");
+        sb.append(state.getInitialYaw());
         return sb.toString();
     }
 }

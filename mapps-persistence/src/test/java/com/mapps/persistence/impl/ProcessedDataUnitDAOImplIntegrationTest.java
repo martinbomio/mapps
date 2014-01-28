@@ -30,7 +30,7 @@ import com.mapps.persistence.TrainingDAO;
 import static org.junit.Assert.assertTrue;
 
 /**
- *Integration Test for ProcessedData unit DAO
+ * Integration Test for ProcessedData unit DAO
  */
 public class ProcessedDataUnitDAOImplIntegrationTest {
     private static EJBContainer ejbContainer;
@@ -45,13 +45,14 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
     private Device device;
 
     @BeforeClass
-    public static void startTheContainer(){
+    public static void startTheContainer() {
 
 
     }
+
     @Before
     public void lookupABean() throws Exception {
-        ejbContainer= EJBContainer.createEJBContainer();
+        ejbContainer = EJBContainer.createEJBContainer();
 
         Object processed = ejbContainer.getContext().lookup("java:global/mapps-persistence/ProcessedDataUnitDAO");
         Object training = ejbContainer.getContext().lookup("java:global/mapps-persistence/TrainingDAO");
@@ -76,7 +77,7 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         initData();
     }
 
-    private void initData() throws Exception{
+    private void initData() throws Exception {
         Institution institution = new Institution("CPC", "", "Uruguay");
         institutionDAO.addInstitution(institution);
         this.device = new Device("dirHigh", "dirLow", 1, institution);
@@ -87,7 +88,7 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         map.put(athlete, device);
         this.training = new Training("training", new Date(), 1, 0L, 0L, 1, 1, map, null, null, null, institution);
         trainingDAO.addTraining(training);
-        RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, false, new Date(), training);
+        RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, new Date(), training);
         rawDataUnitDAO.addRawDataUnit(rawData);
 
         ProcessedDataUnit pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, new Date());
@@ -97,14 +98,14 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
     }
 
     @After
-    public void stopTheContainer(){
-        if(ejbContainer!=null){
+    public void stopTheContainer() {
+        if (ejbContainer != null) {
             ejbContainer.close();
         }
     }
 
     @Test
-    public void testGetLastProcessedDataUnit() throws Exception{
+    public void testGetLastProcessedDataUnit() throws Exception {
         ProcessedDataUnit last = processedDAO.getLastProcessedDataUnit(training, device);
         Assert.assertEquals(last.getAccelerationX(), 1D);
         Assert.assertEquals(last.getAccelerationY(), 1D);
@@ -115,7 +116,7 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
     }
 
     @Test
-    public void testGetProcessedDataUnitsFromAthleteInTraining() throws Exception{
+    public void testGetProcessedDataUnitsFromAthleteInTraining() throws Exception {
         List<ProcessedDataUnit> dataUnits = processedDAO.getProcessedDataUnitsFromAthleteInTraining(training, athlete);
         Assert.assertEquals(dataUnits.size(), 2);
         Date first = dataUnits.get(0).getDate();

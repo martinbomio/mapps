@@ -136,7 +136,7 @@ public class KalmanFilterServiceIntegrationTest {
             latest++;
         }
         try {
-            Assert.assertEquals(latest, 159);
+            Assert.assertEquals(latest, 28);
         } finally {
             aux.delete();
             stateAux.delete();
@@ -162,9 +162,10 @@ public class KalmanFilterServiceIntegrationTest {
         String prevState = values[3];
         String qMatrix = values[4];
         String rgi = values[5];
+        double initialYaw = Double.parseDouble(values[6]);
         Date date = new Date(Long.valueOf(values[6]));
         KalmanState state = new KalmanState(prevState, qMatrix, rgi, gpsError, aXBias,
-                                            aYBias, date, this.training, this.device);
+                                            aYBias, initialYaw, date, this.training, this.device);
         return state;
     }
 
@@ -204,7 +205,6 @@ public class KalmanFilterServiceIntegrationTest {
         String sCurrentLine;
         while ((sCurrentLine = br.readLine()) != null)
         {
-            System.out.println(sCurrentLine);
             lastLine = sCurrentLine;
         }
         String[] split = lastLine.split("\t");
