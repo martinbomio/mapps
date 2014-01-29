@@ -47,10 +47,9 @@ if (info.equals("null"))
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		
+		window.created = false;
+		call_ajax();
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
-	
-		
 			<%
 			if(show_pop_up){	
 			%>
@@ -63,7 +62,28 @@ if (info.equals("null"))
 			<%
 			}
 			%>
+			setInterval(function(){
+				call_ajax();
+			}, 5000);
 	});
+	
+	function call_ajax(){
+		var url = "/mapps/getStartedTraining";
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+            	var training = response;
+            	if(training=="not started"){
+
+            	}else{
+            		var training=JSON.parse(training);
+            		$('#training').text( training.name);
+            		draw_chart(training);
+            	}
+            },
+		});
+	}
 	
 </script>
 
@@ -117,102 +137,6 @@ if (info.equals("null"))
                 	<svg />
                 </div>
                 <div id="list_players">
-                    <div id="player_xx" class="display_player">
-                        <div id="up" style="width:100%; height:60%;">
-                            <div id="img" style="display:inline-block; width:35%; height:100%;">
-                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
-                            </div>
-                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
-                                Marcel Novick
-                            </div>
-                        </div>
-                        <div id="down" style="width:100%; height:40%;">
-                            <div id="info_distance" class="tab_player_login">
-                                <div class="tag_info_player_login"> Distancia</div>
-                                <div class="tag_data_player_login"> XXX mts </div>
-                            </div>
-                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Velocidad</div>
-                                <div class="tag_data_player_login"> XXX km/h </div>
-                            </div>
-                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Pulso</div>
-                                <div class="tag_data_player_login"> XXX bpm </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="player_xx" class="display_player">
-                        <div id="up" style="width:100%; height:60%;">
-                            <div id="img" style="display:inline-block; width:35%; height:100%;">
-                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
-                            </div>
-                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
-                                Emiliano "el mago" Albin
-                            </div>
-                        </div>
-                        <div id="down" style="width:100%; height:40%;">
-                            <div id="info_distance" class="tab_player_login">
-                                <div class="tag_info_player_login"> Distancia</div>
-                                <div class="tag_data_player_login"> XXX mts </div>
-                            </div>
-                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Velocidad </div>
-                                <div class="tag_data_player_login"> XXX km/h </div>
-                            </div>
-                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Pulso </div>
-                                <div class="tag_data_player_login"> XXX bpm </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="player_xx" class="display_player">
-                        <div id="up" style="width:100%; height:60%;">
-                            <div id="img" style="display:inline-block; width:35%; height:100%;">
-                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
-                            </div>
-                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
-                                Joe Emerson Bizera
-                            </div>
-                        </div>
-                        <div id="down" style="width:100%; height:40%;">
-                            <div id="info_distance" class="tab_player_login">
-                                <div class="tag_info_player_login"> Distancia</div>
-                                <div class="tag_data_player_login"> XXX mts </div>
-                            </div>
-                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Velocidad </div>
-                                <div class="tag_data_player_login"> XXX km/h </div>
-                            </div>
-                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Pulso </div>
-                                <div class="tag_data_player_login"> XXX bpm </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="player_xx" class="display_player">
-                        <div id="up" style="width:100%; height:60%;">
-                            <div id="img" style="display:inline-block; width:35%; height:100%;">
-                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
-                            </div>
-                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
-                                Carlos Valdez
-                            </div>
-                        </div>
-                        <div id="down" style="width:100%; height:40%;">
-                            <div id="info_distance" class="tab_player_login">
-                                <div class="tag_info_player_login"> Distancia</div>
-                                <div class="tag_data_player_login"> XXX mts </div>
-                            </div>
-                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Velocidad </div>
-                                <div class="tag_data_player_login"> XXX km/h </div>
-                            </div>
-                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
-                                <div class="tag_info_player_login"> Pulso </div>
-                                <div class="tag_data_player_login"> XXX bpm </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         	<div id="start_training_div">

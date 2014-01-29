@@ -1,21 +1,25 @@
 package com.mapps.services.util;
 
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.math.stat.descriptive.moment.Mean;
+
+import com.google.common.collect.Lists;
 import com.mapps.model.ProcessedDataUnit;
 
 /**
  * This class is the responsable of decoding the processed data units and transform them to readable outputs
  * like:
- *      - Distance traveled.
- *      - Average speed.
+ * - Distance traveled.
+ * - Average speed.
  */
 public class StatsDecoder {
+    private static final int SAMPLING_RATE = 5;
     private List<ProcessedDataUnit> dataUnits;
     private Double distanceTraveled;
 
-    public StatsDecoder(List<ProcessedDataUnit> dataUnits){
+    public StatsDecoder(List<ProcessedDataUnit> dataUnits) {
         this.dataUnits = dataUnits;
         this.distanceTraveled = null;
     }
@@ -28,23 +32,36 @@ public class StatsDecoder {
         this.dataUnits = dataUnits;
     }
 
-    public double getDistanceTraveled(){
+    public double getDistanceTraveled() {
+        int index = 0;
         double distance = 0;
-        for (ProcessedDataUnit data : dataUnits){
-            double module = getModule(data.getPositionX(), data.getPositionY());
-            distance += module;
+        ProcessedDataUnit last = null;
+        for (ProcessedDataUnit data : dataUnits) {
+            if (index == 0) {
+                index++;
+                last = data;
+                continue;
+            }
+            if (index % SAMPLING_RATE == 0) {
+                double module = getModule((data.getPositionX() - last.getPositionX()),
+                                          (data.getPositionY() - last.getPositionY()));
+                last = data;
+                distance += module;
+            }
+            index++;
         }
         this.distanceTraveled = distance;
         return distance;
     }
 
-    public double getAverageSpeed(){
-        if(distanceTraveled == null){
-            getDistanceTraveled();
+    public double getAverageSpeed() {
+        Mean mean = new Mean();
+        List<Double> velocities = Lists.newArrayList();
+        for (ProcessedDataUnit data : dataUnits){
+            velocities.add(getModule(data.getVelocityX(), data.getVelocityY()));
         }
-        long timeElapsed = getElapsedTime();
-        double timeInSec = timeElapsed / 1000;
-        return this.distanceTraveled / timeInSec;
+        double[] velModules = ArrayUtils.toPrimitive(velocities.toArray(new Double[velocities.size()]));
+        return 3.6 * mean.evaluate(velModules);
     }
 
     private double getModule(double valX, double valY) {
@@ -52,8 +69,8 @@ public class StatsDecoder {
     }
 
     public long getElapsedTime() {
-        Date first = dataUnits.get(0).getRawDataUnit().getDate();
-        Date last = dataUnits.get(dataUnits.size()-1).getRawDataUnit().getDate();
-        return ((last.getTime() + 1000) - first.getTime());
+        long first = dataUnits.get(0).getElapsedTime();
+        long last = dataUnits.get(dataUnits.size() - 1).getElapsedTime();
+        return ((last) - first);
     }
 }
