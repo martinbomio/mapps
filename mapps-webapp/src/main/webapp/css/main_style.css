@@ -231,8 +231,8 @@ body{
 
 .display_player{
 	width:100%;
-	height:60px;
-	margin-bottom:5px;
+	height:120px;
+	margin-bottom:20px;
 	font-size:12px;
 	text-align:center;
 }
@@ -240,4 +240,24 @@ body{
 .data{
 	font-size:14px;
 }
+
+.tab_player_login{
+	height:50px;
+	margin-bottom:10px;
+	display:inline-block;
+	width:30%;
+}
+
+.tag_info_player_login{
+	width:100%;
+	float:left; 
+	margin-left:5%;
+	margin-bottom:5px;
+}
 	
+.tag_data_player_login{
+	font-size:16px;
+	width:100%;
+	float:left; 
+	margin-left:5%;
+}

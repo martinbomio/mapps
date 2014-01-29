@@ -44,45 +44,13 @@ if (info.equals("null"))
 
 %>
 <body>
-<style type="text/css">
-	.jqx-chart-axis-text, .jqx-chart-label-text, .jqx-chart-legend-text, .jqx-chart-axis-description, .jqx-chart-title-text, .jqx-chart-title-description{
-        fill: #ffffff;
-        color: #ffffff;
-    }
-</style>
+
 <script type="text/javascript">
 	$(document).ready(function () {
 		
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 	
 		
-	
-		var url = "/mapps/getStartedTraining";		
-		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	var training = response;
-            	
-            	if(training=="not started"){
-            		
-            	}else{
-            		var training=JSON.parse(training);
-            		$('#training').text( training.name);
-            		var athletes = training.athletes;
-            		for(var i=0; i<athletes.length; i++){
-            			$.ajax({
-            	            url: "/mapps/getAthleteOnTrainingData",
-            	            type: "POST",
-            	            data: {t:training.name, a:athletes[i].idDocument},
-            	            success: function (response){
-            	            	create_chart(response)
-            	            },
-            			});
-            		}
-            	}
-            },
-		});
 			<%
 			if(show_pop_up){	
 			%>
@@ -97,60 +65,6 @@ if (info.equals("null"))
 			%>
 	});
 	
-	function create_chart(data){
-        var source =
-        {
-            localdata: data
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('Error loading "' + source.url + '" : ' + error); } });
-		// prepare jqxChart settings
-        var settings = {
-            title: "U.S. Stock Market Index Performance (2011)",
-            description: "NASDAQ Composite compared to S&P 500",
-            enableAnimations: true,
-            showLegend: true,
-            padding: { left: 10, top: 5, right: 10, bottom: 5 },
-            titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
-            source: dataAdapter,
-            categoryAxis:
-            {
-                dataField: 'posX',
-                flip: false,
-                showTickMarks: true,
-                tickMarksInterval: 1,
-                tickMarksColor: '#888888',
-                unitInterval: 2,
-                showGridLines: true,
-                gridLinesInterval: 3,
-                gridLinesColor: '#888888',
-                minValue: -15,
-                maxValue: 15,
-                unitInterval: 0.5
-            },                        
-            seriesGroups:
-                [
-                    {
-                        type: 'line',
-                        valueAxis:
-                        {
-                            unitInterval: 0.5,
-                            minValue: -15,
-                            maxValue: 15,
-                            displayValueAxis: true,
-                            description: 'Posicion X',
-                            axisSize: 'auto',
-                            tickMarksColor: '#ffffff'
-                        },
-                        series: [
-                                { dataField: 'posY', displayText: 'Posision Y', color: '#0ff0ff' }
-                            ]
-                    }
-                ]
-            };
-            
-			// setup the chart
-            $('#jqxChart').jqxChart(settings);
-	}
 </script>
 
 <div id="header">
@@ -195,45 +109,112 @@ if (info.equals("null"))
         
         </div>
         <div id="main_div">
-        <label id="training"> </label>
-        	<svg style='height:600px'/>
-
-        	<div id='jqxChart' style="width: 500px; height: 375px">
-    		
         	<div id="training" style="width:100%; height:40px;"> 
             
             </div>
             <div>
-                <div id="jqxChart" style="width:60%; height:300px; display:inline-block; vertical-align:top;">
-                
+            	<div id="graphic" style="height:400px; width:60%; display:inline-block;">
+                	<svg />
                 </div>
                 <div id="list_players">
-                	<div id="player_xx" class="display_player">
-                    	<div id="up" style="width:100%; height:50%;">
-                        	<div id="img" style="display:inline-block;">
-                            
+                    <div id="player_xx" class="display_player">
+                        <div id="up" style="width:100%; height:60%;">
+                            <div id="img" style="display:inline-block; width:35%; height:100%;">
+                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
                             </div>
-                            <div id="name" style="display:inline-block;">
-                            	Juan Pedro Damiani
+                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
+                                Marcel Novick
                             </div>
                         </div>
-                        <div id="down" style="width:100%; height:50%;">
-                        	<div id="info_distance">
-                            	<div style="display:inline-block;"> Distancia :</div>
-                                <div style="display:inline-block;"> XXX mts. </div>
+                        <div id="down" style="width:100%; height:40%;">
+                            <div id="info_distance" class="tab_player_login">
+                                <div class="tag_info_player_login"> Distancia</div>
+                                <div class="tag_data_player_login"> XXX mts </div>
                             </div>
-                            <div id="info_speed">
-                            	<div style="display:inline-block;"> Velocidad :</div>
-                                <div style="display:inline-block;"> XXX km/h </div>
+                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Velocidad</div>
+                                <div class="tag_data_player_login"> XXX km/h </div>
                             </div>
-                            <div id="info_heart">
-                            	<div style="display:inline-block;"> Pulso :</div>
-                                <div style="display:inline-block;"> XXX bpm </div>
+                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Pulso</div>
+                                <div class="tag_data_player_login"> XXX bpm </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="player_xx" class="display_player">
+                        <div id="up" style="width:100%; height:60%;">
+                            <div id="img" style="display:inline-block; width:35%; height:100%;">
+                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
+                            </div>
+                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
+                                Emiliano "el mago" Albin
+                            </div>
+                        </div>
+                        <div id="down" style="width:100%; height:40%;">
+                            <div id="info_distance" class="tab_player_login">
+                                <div class="tag_info_player_login"> Distancia</div>
+                                <div class="tag_data_player_login"> XXX mts </div>
+                            </div>
+                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Velocidad </div>
+                                <div class="tag_data_player_login"> XXX km/h </div>
+                            </div>
+                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Pulso </div>
+                                <div class="tag_data_player_login"> XXX bpm </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="player_xx" class="display_player">
+                        <div id="up" style="width:100%; height:60%;">
+                            <div id="img" style="display:inline-block; width:35%; height:100%;">
+                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
+                            </div>
+                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
+                                Joe Emerson Bizera
+                            </div>
+                        </div>
+                        <div id="down" style="width:100%; height:40%;">
+                            <div id="info_distance" class="tab_player_login">
+                                <div class="tag_info_player_login"> Distancia</div>
+                                <div class="tag_data_player_login"> XXX mts </div>
+                            </div>
+                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Velocidad </div>
+                                <div class="tag_data_player_login"> XXX km/h </div>
+                            </div>
+                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Pulso </div>
+                                <div class="tag_data_player_login"> XXX bpm </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="player_xx" class="display_player">
+                        <div id="up" style="width:100%; height:60%;">
+                            <div id="img" style="display:inline-block; width:35%; height:100%;">
+                                <img src="images/athletes/default.png" style="height:55px; margin-top:5px; vertical-align:middle"/>
+                            </div>
+                            <div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">
+                                Carlos Valdez
+                            </div>
+                        </div>
+                        <div id="down" style="width:100%; height:40%;">
+                            <div id="info_distance" class="tab_player_login">
+                                <div class="tag_info_player_login"> Distancia</div>
+                                <div class="tag_data_player_login"> XXX mts </div>
+                            </div>
+                            <div id="info_speed" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Velocidad </div>
+                                <div class="tag_data_player_login"> XXX km/h </div>
+                            </div>
+                            <div id="info_heart" class="tab_player_login" style="border-left:solid 1px;">
+                                <div class="tag_info_player_login"> Pulso </div>
+                                <div class="tag_data_player_login"> XXX bpm </div>
                             </div>
                         </div>
                     </div>
                 </div>
-			</div>
+            </div>
         	<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>
