@@ -1,7 +1,12 @@
 package com.mapps.servlets;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mapps.model.Training;
+import com.mapps.services.institution.InstitutionService;
+import com.mapps.services.institution.exceptions.AuthenticationException;
+import com.mapps.wrappers.TrainingWrapper;
+
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -9,13 +14,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.mapps.model.Training;
-import com.mapps.services.institution.InstitutionService;
-import com.mapps.services.institution.exceptions.AuthenticationException;
-import com.mapps.wrappers.TrainingWrapper;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  *

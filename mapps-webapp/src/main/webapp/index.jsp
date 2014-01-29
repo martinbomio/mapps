@@ -200,7 +200,40 @@ if (info.equals("null"))
 
         	<div id='jqxChart' style="width: 500px; height: 375px">
     		
+        	<div id="training" style="width:100%; height:40px;"> 
+            
             </div>
+            <div>
+                <div id="jqxChart" style="width:60%; height:300px; display:inline-block; vertical-align:top;">
+                
+                </div>
+                <div id="list_players">
+                	<div id="player_xx" class="display_player">
+                    	<div id="up" style="width:100%; height:50%;">
+                        	<div id="img" style="display:inline-block;">
+                            
+                            </div>
+                            <div id="name" style="display:inline-block;">
+                            	Juan Pedro Damiani
+                            </div>
+                        </div>
+                        <div id="down" style="width:100%; height:50%;">
+                        	<div id="info_distance">
+                            	<div style="display:inline-block;"> Distancia :</div>
+                                <div style="display:inline-block;"> XXX mts. </div>
+                            </div>
+                            <div id="info_speed">
+                            	<div style="display:inline-block;"> Velocidad :</div>
+                                <div style="display:inline-block;"> XXX km/h </div>
+                            </div>
+                            <div id="info_heart">
+                            	<div style="display:inline-block;"> Pulso :</div>
+                                <div style="display:inline-block;"> XXX bpm </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
         	<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>
