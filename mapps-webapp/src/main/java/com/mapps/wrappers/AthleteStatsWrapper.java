@@ -14,6 +14,7 @@ import com.mapps.services.util.StatsDecoder;
  *
  */
 public class AthleteStatsWrapper {
+    private String trainingName;
     private Athlete athlete;
     private List<Double> accelX;
     private List<Double> accelY;
@@ -26,7 +27,8 @@ public class AthleteStatsWrapper {
     private double distanceTraveled;
     private double averageSpeed;
 
-    public AthleteStatsWrapper(Athlete athlete, List<ProcessedDataUnit> pDataUnits) {
+    public AthleteStatsWrapper(String trainingName, Athlete athlete, List<ProcessedDataUnit> pDataUnits) {
+        this.trainingName = trainingName;
         this.athlete = athlete;
         StatsDecoder statsDecoder = new StatsDecoder(pDataUnits);
         this.distanceTraveled = statsDecoder.getDistanceTraveled();

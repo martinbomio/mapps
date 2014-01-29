@@ -42,6 +42,8 @@ String info = String.valueOf(request.getParameter("info"));
 if (info.equals("null"))
 	info = "";
 
+String trainingName = request.getParameter("t");
+String athleteID = request.getParameter("a");
 %>
 <body>
 
@@ -59,6 +61,25 @@ if (info.equals("null"))
 			<%
 			}
 			%>
+			
+			$.ajax({
+	            url: "/mapps/getAthleteOnTrainingData",
+	            type: "POST",
+	            data: {t:<%=trainingName%>, a:<%=athleteID%>},
+	            success: function (response){
+	            	if (window.created){
+	            		update_values(response);
+	            	}else{
+	            		create_label(response);
+	            		window.created = true;
+	            	}
+	                window.athleteData.push(response);
+	                window.athleteIndex+=1;
+	                if (window.athleteIndex == training.athletes.length){
+	                	success();
+	                }
+	        },
+	});
 	});
 	
 </script>

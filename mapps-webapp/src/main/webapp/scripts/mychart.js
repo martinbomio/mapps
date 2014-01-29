@@ -76,7 +76,7 @@ function create_label(data){
 	var speed = split[0] + '.' + split[1].substr(0,1);
 	var players_div = $("#list_players");
 	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-	var div_up = $('<div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:35%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></div>');
+	var div_up = $('<a href="athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:35%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></div></a>');
 	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia</div><div id="distance'+athlete.idDocument+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+data.pulse[data.pulse.length-1]+' bpm </div></div></div>');
 	first_div.append(div_up);
 	first_div.append(div_down);
@@ -93,5 +93,4 @@ function update_values(data){
 	$('#distance'+athlete.idDocument+'').text(distance);
 	$('#speed'+athlete.idDocument+'').text(speed);
 	$('#pulse'+athlete.idDocument+'').text(data.pulse[data.pulse.length-1]);
-	
 }

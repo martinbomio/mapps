@@ -39,7 +39,7 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
             Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
-            AthleteStatsWrapper wrapper = new AthleteStatsWrapper(athlete, stats);
+            AthleteStatsWrapper wrapper = new AthleteStatsWrapper(trainingID, athlete, stats);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             String json = wrapper.toJson();
