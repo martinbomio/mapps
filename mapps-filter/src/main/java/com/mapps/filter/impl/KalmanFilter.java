@@ -79,6 +79,7 @@ public class KalmanFilter implements Filter {
     public void process() throws InvalidCoordinatesException {
         GPSData gpsData = null;
         boolean isGPSData = false;
+        long time = rawData.getTimestamp();
         for (IMUData imuData : rawData.getImuData()) {
             if (gpsData == null) {
                 isGPSData = true;
@@ -119,7 +120,8 @@ public class KalmanFilter implements Filter {
             this.pPost = pPre.minus(matrizK.mult(this.C).mult(pPre));
             this.xPost.add(xPostMatrix);
             this.lastXpos = xPostMatrix;
-            ProcessedDataUnit processedDataUnit = createProcessedDataFromXPost(xPostMatrix, imuData);
+            ProcessedDataUnit processedDataUnit = createProcessedDataFromXPost(xPostMatrix, imuData, time);
+            time += 100;
             this.processedData.add(processedDataUnit);
             isGPSData = false;
         }
@@ -140,15 +142,14 @@ public class KalmanFilter implements Filter {
         this.newState = new KalmanState(pPost, qMatrix, rgiMatrix, this.gpsError, axBias, ayBias, this.initialYaw, new Date(), training, device);
     }
 
-    private ProcessedDataUnit createProcessedDataFromXPost(SimpleMatrix xPost, IMUData imuData) {
+    private ProcessedDataUnit createProcessedDataFromXPost(SimpleMatrix xPost, IMUData imuData, long time) {
         double posX = xPost.get(0, 0);
         double posY = xPost.get(1, 0);
         double velX = xPost.get(2, 0);
         double velY = xPost.get(3, 0);
         double accelX = ((double) imuData.getAccelX()) / ACCEL_RANGE;
         double accelY = ((double) imuData.getAccelY()) / ACCEL_RANGE;
-        Date newDate = new Date(this.rawData.getDate().getTime() + 100);
-        ProcessedDataUnit pData = new ProcessedDataUnit(posX, accelY, accelX, velY, velX, posY, this.device, this.rawData, newDate);
+        ProcessedDataUnit pData = new ProcessedDataUnit(posX, accelY, accelX, velY, velX, posY, this.device, this.rawData, time);
         return pData;
     }
 

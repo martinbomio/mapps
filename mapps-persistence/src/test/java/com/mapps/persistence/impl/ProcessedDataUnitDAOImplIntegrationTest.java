@@ -91,9 +91,9 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, new Date(), training);
         rawDataUnitDAO.addRawDataUnit(rawData);
 
-        ProcessedDataUnit pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, new Date());
+        ProcessedDataUnit pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, 1L);
         processedDAO.addProcessedDataUnit(pUnit);
-        pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, new Date());
+        pUnit = new ProcessedDataUnit(1D, 1D, 1D, 1D, 1D, 1D, device, rawData, 2L);
         processedDAO.addProcessedDataUnit(pUnit);
     }
 
@@ -119,8 +119,8 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
     public void testGetProcessedDataUnitsFromAthleteInTraining() throws Exception {
         List<ProcessedDataUnit> dataUnits = processedDAO.getProcessedDataUnitsFromAthleteInTraining(training, athlete);
         Assert.assertEquals(dataUnits.size(), 2);
-        Date first = dataUnits.get(0).getDate();
-        Date last = dataUnits.get(dataUnits.size() - 1).getDate();
-        Assert.assertTrue(first.getTime() < last.getTime());
+        long first = dataUnits.get(0).getElapsedTime();
+        long last = dataUnits.get(dataUnits.size() - 1).getElapsedTime();
+        Assert.assertTrue(first < last);
     }
 }

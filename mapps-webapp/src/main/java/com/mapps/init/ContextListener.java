@@ -242,7 +242,6 @@ public class ContextListener implements ServletContextListener {
     }
 
     public void loadAndSaveProcessedDataUnits(Device device, ServletContextEvent event) throws IOException, ParseException, RawDataUnitNotFoundException, NullParameterException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InputStream input = event.getServletContext().getResourceAsStream("WEB-INF/resources/initial-data/ProcessedDataUnits.csv");
         BufferedReader br = new BufferedReader(new InputStreamReader(input));
         String line;
@@ -254,9 +253,9 @@ public class ContextListener implements ServletContextListener {
             double pY = Double.parseDouble(data[5]);
             double vX = Double.parseDouble(data[6]);
             double vY = Double.parseDouble(data[7]);
-            Date date = formatter.parse(data[3]);
+            long elapsed = Long.parseLong(data[3]);
             RawDataUnit rawDataUnit = rawDataUnitDAO.getRawDataUnitById(Long.parseLong(data[9]));
-            ProcessedDataUnit processedDataUnit = new ProcessedDataUnit(pX, aY, aX, vY, vX, pY, device, rawDataUnit, date);
+            ProcessedDataUnit processedDataUnit = new ProcessedDataUnit(pX, aY, aX, vY, vX, pY, device, rawDataUnit, elapsed);
             processedDataUnitDAO.addProcessedDataUnit(processedDataUnit);
         }
         br.close();

@@ -14,9 +14,10 @@ import com.mapps.exceptions.AthleteNotFoundException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Permission;
 import com.mapps.model.ProcessedDataUnit;
-import com.mapps.model.Role;
 import com.mapps.model.Training;
+import com.mapps.model.User;
 import com.mapps.persistence.AthleteDAO;
 import com.mapps.persistence.ProcessedDataUnitDAO;
 import com.mapps.persistence.ReportDAO;
@@ -71,13 +72,14 @@ public class ReportServiceImpl implements ReportService {
             throw new IllegalArgumentException();
         }
         try {
-            if (!authenticationHandler.isUserInRole(token, Role.TRAINER)) {
-                logger.error("User not a trainer");
+            User user = authenticationHandler.getUserOfToken(token);
+            Training training = trainingDAO.getTrainingByName(trainingID);
+            Permission permission = training.getMapUserPermission().get(user);
+            if (permission != Permission.CREATE && permission != Permission.READ) {
+                logger.error("User has no permissions");
                 throw new AuthenticationException();
             }
-            Training training = trainingDAO.getTrainingByName(trainingID);
             Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteCI);
-
             return processedDataUnitDAO.getProcessedDataUnitsFromAthleteInTraining(training, athlete);
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");

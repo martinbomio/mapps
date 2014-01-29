@@ -15,6 +15,10 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxchart.js"></script>
+    <link href="./scripts/nv.d3.min.css" rel="stylesheet" type="text/css">
+    <script src="./scripts/d3.v3.js"></script>
+    <script src="./scripts/nv.d3.min.js"></script>
+    <script src="./scripts/mychart.js"></script>
 
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
@@ -61,89 +65,24 @@ if (info.equals("null"))
             	var training = response;
             	
             	if(training=="not started"){
-            		<%
-            		training_started=false;
-            		%>
+            		
             	}else{
-            		<%
-            		training_started=true;
-            		%>
-            		var train=JSON.parse(training);
-            		$('#training').text( train.name);
+            		var training=JSON.parse(training);
+            		$('#training').text( training.name);
+            		var athletes = training.athletes;
+            		for(var i=0; i<athletes.length; i++){
+            			$.ajax({
+            	            url: "/mapps/getAthleteOnTrainingData",
+            	            type: "POST",
+            	            data: {t:training.name, a:athletes[i].idDocument},
+            	            success: function (response){
+            	            	create_chart(response)
+            	            },
+            			});
+            		}
             	}
-            	
             },
-        	   
 		});
-		
-		// prepare the data for chart
-        var source = {
-            datatype: "csv",
-            datafields: [
-                    { name: 'Date' },
-                    { name: 'S&P 500' },
-                    { name: 'NASDAQ' }
-            ],
-            url: './sampledata/nasdaq_vs_sp500.txt'
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('Error loading "' + source.url + '" : ' + error); } });
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        
-		// prepare jqxChart settings
-        var settings = {
-            title: "U.S. Stock Market Index Performance (2011)",
-            description: "NASDAQ Composite compared to S&P 500",
-            enableAnimations: true,
-            showLegend: true,
-            padding: { left: 10, top: 5, right: 10, bottom: 5 },
-            titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
-            source: dataAdapter,
-            backgroundImage: './images/chart_background.jpg',
-            categoryAxis:{
-                dataField: 'Date',
-                formatFunction: function (value) {
-                    return months[value.getMonth()];
-                },
-                toolTipFormatFunction: function (value) {
-                    return value.getDate() + '-' + months[value.getMonth()];
-                },
-                type: 'date',
-                baseUnit: 'month',
-                showTickMarks: true,
-                tickMarksInterval: 1,
-                tickMarksColor: '#ffffff',
-                toolTipBackground: '666',
-                unitInterval: 1,
-                showGridLines: true,
-                gridLinesInterval: 3,
-                gridLinesColor: '#ffffff',
-                valuesOnTicks: false
-            },
-            seriesGroups:
-                [
-                    {
-                        type: 'line',
-                        valueAxis:
-                        {
-                            unitInterval: 500,
-                            minValue: 0,
-                            maxValue: 3000,
-                            displayValueAxis: true,
-                            description: 'Daily Closing Price',
-                            axisSize: 'auto',
-                            tickMarksColor: '#ffffff'
-                        },
-                        series: [
-                                { dataField: 'S&P 500', displayText: 'S&P 500', color: '#ffffff' },
-                                { dataField: 'NASDAQ', displayText: 'NASDAQ', color: '#0ff0ff' }
-                            ]
-                    }
-                ]
-            };
-            
-			// setup the chart
-            $('#jqxChart').jqxChart(settings);
-			
 			<%
 			if(show_pop_up){	
 			%>
@@ -156,8 +95,62 @@ if (info.equals("null"))
 			<%
 			}
 			%>
-			
 	});
+	
+	function create_chart(data){
+        var source =
+        {
+            localdata: data
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('Error loading "' + source.url + '" : ' + error); } });
+		// prepare jqxChart settings
+        var settings = {
+            title: "U.S. Stock Market Index Performance (2011)",
+            description: "NASDAQ Composite compared to S&P 500",
+            enableAnimations: true,
+            showLegend: true,
+            padding: { left: 10, top: 5, right: 10, bottom: 5 },
+            titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+            source: dataAdapter,
+            categoryAxis:
+            {
+                dataField: 'posX',
+                flip: false,
+                showTickMarks: true,
+                tickMarksInterval: 1,
+                tickMarksColor: '#888888',
+                unitInterval: 2,
+                showGridLines: true,
+                gridLinesInterval: 3,
+                gridLinesColor: '#888888',
+                minValue: -15,
+                maxValue: 15,
+                unitInterval: 0.5
+            },                        
+            seriesGroups:
+                [
+                    {
+                        type: 'line',
+                        valueAxis:
+                        {
+                            unitInterval: 0.5,
+                            minValue: -15,
+                            maxValue: 15,
+                            displayValueAxis: true,
+                            description: 'Posicion X',
+                            axisSize: 'auto',
+                            tickMarksColor: '#ffffff'
+                        },
+                        series: [
+                                { dataField: 'posY', displayText: 'Posision Y', color: '#0ff0ff' }
+                            ]
+                    }
+                ]
+            };
+            
+			// setup the chart
+            $('#jqxChart').jqxChart(settings);
+	}
 </script>
 
 <div id="header">
@@ -203,6 +196,8 @@ if (info.equals("null"))
         </div>
         <div id="main_div">
         <label id="training"> </label>
+        	<svg style='height:600px'/>
+
         	<div id='jqxChart' style="width: 500px; height: 375px">
     		
             </div>

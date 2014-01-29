@@ -22,6 +22,7 @@ public class AthleteStatsWrapper {
     private List<Double> posX;
     private List<Double> posY;
     private List<Integer> pulse;
+    private List<Long> time;
     private double distanceTraveled;
     private double averageSpeed;
 
@@ -42,6 +43,7 @@ public class AthleteStatsWrapper {
             velY.add(pData.getVelocityY());
             posX.add(pData.getPositionX());
             posY.add(pData.getPositionY());
+            time.add(pData.getElapsedTime());
             for (PulseData pulseData : pData.getRawDataUnit().getPulseData()){
                 pulse.add(pulseData.getBPM());
             }
@@ -56,6 +58,7 @@ public class AthleteStatsWrapper {
         this.posX = Lists.newArrayList();
         this.posY = Lists.newArrayList();
         this.pulse = Lists.newArrayList();
+        this.time = Lists.newArrayList();
     }
 
     public String toJson(){

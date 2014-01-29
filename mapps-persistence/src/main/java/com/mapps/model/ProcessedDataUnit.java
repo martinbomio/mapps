@@ -1,7 +1,6 @@
 package com.mapps.model;
 
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Representation of a processed data unit in the system
@@ -36,10 +33,9 @@ public class ProcessedDataUnit {
     double accelerationX;
     @Column(nullable = false)
     double accelerationY;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     RawDataUnit rawDataUnit;
-    @Temporal(TemporalType.TIMESTAMP)
-    Date date;
+    long elapsedTime;
 
 
     public RawDataUnit getRawDataUnit() {
@@ -66,7 +62,7 @@ public class ProcessedDataUnit {
     }
 
     public ProcessedDataUnit(double positionX, double accelerationY, double accelerationX, double velocityY,
-                             double velocityX, double positionY,Device device,RawDataUnit rawDataUnit, Date date) {
+                             double velocityX, double positionY,Device device,RawDataUnit rawDataUnit, long elapsedTime) {
         this.positionX = positionX;
         this.accelerationY = accelerationY;
         this.accelerationX = accelerationX;
@@ -75,7 +71,7 @@ public class ProcessedDataUnit {
         this.positionY = positionY;
         this.rawDataUnit=rawDataUnit;
         this.device=device;
-        this.date = date;
+        this.elapsedTime = elapsedTime;
     }
 
     public double getPositionX() {
@@ -126,12 +122,12 @@ public class ProcessedDataUnit {
         this.accelerationY = accelerationY;
     }
 
-    public Date getDate() {
-        return date;
+    public long getElapsedTime() {
+        return elapsedTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setElapsedTime(long elapsedTime) {
+        this.elapsedTime = elapsedTime;
     }
 
     public Long getId() {

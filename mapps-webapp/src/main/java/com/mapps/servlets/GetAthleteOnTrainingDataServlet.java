@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,36 +23,36 @@ import com.mapps.wrappers.AthleteStatsWrapper;
  *
  *
  */
-    public class GetAthleteOnTrainingDataServlet extends HttpServlet {
+@WebServlet(name = "getAthleteOnTrainingData", urlPatterns = "/getAthleteOnTrainingData/*")
+public class GetAthleteOnTrainingDataServlet extends HttpServlet {
     @EJB(name = "ReportService")
     protected ReportService reportService;
     @EJB(name = "TrainerService")
     protected TrainerService trainerService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String trainingID = req.getParameter("t");
-        String athleteData = req.getParameter("a");
-        String token = req.getParameter("id");
-        String athleteCI = athleteData.split("-")[1];
+        String athleteCI = req.getParameter("a");
+        String token = String.valueOf(req.getSession().getAttribute("token"));
+        Writer writer = resp.getWriter();
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
             Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
             AthleteStatsWrapper wrapper = new AthleteStatsWrapper(athlete, stats);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            Writer writer = resp.getWriter();
-            writer.write(wrapper.toJson());
+            String json = wrapper.toJson();
+            writer.write(json);
             writer.close();
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "El usuario no tiene permisos de entrenador para realizar esta operación.");
-            req.getRequestDispatcher("/athleteStats.jsp").forward(req, resp);
+        	writer.write("Error de autenticacion");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error", "El entrenamiento seleccionado no es válido");
-            req.getRequestDispatcher("/athleteStats.jsp").forward(req, resp);
+        	writer.write("El entrenamiento no es valido");
         } catch (InvalidAthleteException e) {
-            req.setAttribute("error", "El atleta seleccionado no es válido.");
-            req.getRequestDispatcher("/athleteStats.jsp").forward(req, resp);
+        	writer.write("El atleta no es valido");
+        }finally{
+        	writer.close();
         }
     }
 }
