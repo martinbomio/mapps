@@ -84,7 +84,8 @@ body{
 	height:400px; 
 	display:inline-block; 
 	overflow:scroll;
-	border:solid 1px #A2A2A2;
+	border-left:solid 1px #A2A2A2;
+	border-right:solid 1px #A2A2A2;
 	margin-left:5%
 }
 

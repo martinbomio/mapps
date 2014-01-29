@@ -3,12 +3,14 @@ package com.mapps.persistence.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.mapps.exceptions.InvalidStartedTrainingException;
+
 import org.apache.log4j.Logger;
 
 import com.mapps.exceptions.NullParameterException;
@@ -16,6 +18,7 @@ import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Institution;
+import com.mapps.model.Permission;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 import com.mapps.persistence.TrainingDAO;
@@ -175,8 +178,11 @@ public class TrainingDAOImpl implements TrainingDAO {
         if (user == null) {
             throw new NullParameterException();
         }
-        Query query = entityManager.createQuery("select t from Training t join t.mapUserPermission m where index(m)=:key");
+        Query query = entityManager.createQuery("select t from Training t join t.mapUserPermission m where (index(m)=:key"
+        		+ "and m=:permission and t.started=:started)");
         query.setParameter("key", user);
+        query.setParameter("permission", Permission.CREATE);
+        query.setParameter("started", false);
         List<Training> results = query.getResultList();
         return results;
     }
