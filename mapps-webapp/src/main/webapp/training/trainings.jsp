@@ -154,7 +154,15 @@ if(info.equals("3")){
   </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
-        
+        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+        		<ul>
+             	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
+             	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
+             	   <li style="height:35px;"><a href="#">  </a></li>
+        		</ul>
+  			</div>
         </div>
         <div id="main_div">
         	<div id="title" style="margin:15px;">
@@ -168,15 +176,7 @@ if(info.equals("3")){
             </div>
         </div>
         <div id="sidebar_right">
-        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
-        		<ul>
-             	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
-             	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
-             	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
-             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <li style="height:35px;"><a href="#">  </a></li>
-        		</ul>
-  			</div>
+        	
         </div>
     </div>
  

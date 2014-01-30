@@ -154,15 +154,31 @@ if(info.equals("7")){
                 	<%
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
-	             	   <li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
-	             	   <li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
-	                   <li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
-	             	   <li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
-	                   <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
-	                   <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
-	                   <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
-	                   <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
-	                   <li style="height:35px;"><a href="./edit_device.jsp"> Editar un Dispositivo </a></li>
+	             	    <li style="height:35px;"> Usuarios..
+                       		<ul>
+                            	<li style="height:35px;"><a href="./register_user.jsp"> Agregar un Usuario </a></li>
+	             	   			<li style="height:35px;"><a href="./edit_user.jsp"> Editar un Usuario </a></li>
+	                   			<li style="height:35px;"><a href="./delete_user.jsp"> Eliminar un Usuario </a></li>
+                            </ul>
+                        </li>
+                        <li style="height:35px;"> Instituciones..
+	             	   		<ul>
+                                <li style="height:35px;"><a href="./add_institution.jsp"> Agregar una Instituci&oacute;n </a></li>
+                                <li style="height:35px;"><a href="./edit_institution.jsp"> Editar una Instituci&oacute;n </a></li>
+                                <li style="height:35px;"><a href="./delete_institution.jsp"> Eliminar una Instituci&oacute;n </a></li>
+                            </ul>
+                        </li>
+                        <li style="height:35px;"> Deportes..
+                        	<ul>
+                       			<li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
+                            </ul>
+                        </li>
+                        <li style="height:35px;"> Dispositivos..
+                        	<ul>
+                                <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
+                                <li style="height:35px;"><a href="./edit_device.jsp"> Editar un Dispositivo </a></li>
+                            </ul>
+                        </li>
                    <%
 					}else if(role.equals(Role.TRAINER)){
                    %>

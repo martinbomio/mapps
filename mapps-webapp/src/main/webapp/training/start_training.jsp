@@ -210,7 +210,15 @@ String trainingUID = request.getParameter("uid");
   </div>
     <div id="area_de_trabajo" style="height:580px;">
 		<div id="sidebar_left">
-        
+        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+        		<ul>
+             	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
+             	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
+             	   <li style="height:35px;"><a href="#">  </a></li>
+        		</ul>
+  			</div>
         </div>
         <div id="main_div">
 			<div id="navigation" class="navigation">
@@ -251,15 +259,7 @@ String trainingUID = request.getParameter("uid");
 	        </form>
 	    </div>
         <div id="sidebar_right">
-        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
-        		<ul>
-             	   <li style="height:35px;"><a href="#"> Ver entrenamientos anteriores </a></li>
-             	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
-             	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
-             	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <li style="height:35px;"><a href="#">  </a></li>
-        		</ul>
-  			</div>
+        	
         </div>
     </div>
  

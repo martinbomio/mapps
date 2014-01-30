@@ -178,7 +178,13 @@ if(info.equals("1")){
     </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
-        
+        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+        		<ul>
+             	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
+             	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
+             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
+        		</ul>
+  			</div>
         </div>
         <div id="main_div">
         	<div id="navigation" class="navigation">
@@ -195,13 +201,7 @@ if(info.equals("1")){
             </div>
         </div>
         <div id="sidebar_right">
-        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
-        		<ul>
-             	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
-             	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
-             	   <li style="height:35px;"><a href="#"> Eliminar </a></li>
-        		</ul>
-  			</div>
+        	
         </div>
     </div>    
 </div>
