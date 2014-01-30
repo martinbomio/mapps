@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.net.URI;
 
 import org.apache.log4j.Logger;
 
@@ -36,7 +37,7 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "InstitutionService")
     InstitutionService institutionService;
 
-    private static final String UPLOAD_DIR = "images/institutions";
+    private static final String UPLOAD_DIR = "images"+File.separator+"institutions";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -63,7 +64,8 @@ public class ModifyInstitutionServlet extends HttpServlet implements Servlet {
             newInst.setName(name);
             if (!fileName.equals("")) {
                 String extension = fileName.split("\\.")[1];
-                newInst.setImageURI(Utils.getFileURI(name, UPLOAD_DIR, extension));
+                URI uri=Utils.getFileURI(name, UPLOAD_DIR, extension);
+                newInst.setImageURI(uri);
                 part.write(uploadFilePath + File.separator + name + "." + extension);
             }
             institutionService.updateInstitution(newInst, token);

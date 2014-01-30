@@ -8,6 +8,7 @@ import com.mapps.model.Athlete;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.PulseData;
 import com.mapps.services.util.StatsDecoder;
+import com.mapps.filter.utils.Maths;
 
 /**
  *
@@ -20,6 +21,7 @@ public class AthleteStatsWrapper {
     private List<Double> accelY;
     private List<Double> velX;
     private List<Double> velY;
+    private List<Double> modVel;
     private List<Double> posX;
     private List<Double> posY;
     private List<Integer> pulse;
@@ -43,6 +45,8 @@ public class AthleteStatsWrapper {
             accelY.add(pData.getAccelerationY());
             velX.add(pData.getVelocityX());
             velY.add(pData.getVelocityY());
+            Double modulo=Math.sqrt(Math.pow(pData.getVelocityX(),2)+Math.pow(pData.getVelocityY(),2));
+            modVel.add(modulo);
             posX.add(pData.getPositionX());
             posY.add(pData.getPositionY());
             time.add(pData.getElapsedTime());
@@ -61,6 +65,7 @@ public class AthleteStatsWrapper {
         this.posY = Lists.newArrayList();
         this.pulse = Lists.newArrayList();
         this.time = Lists.newArrayList();
+        this.modVel=Lists.newArrayList();
     }
 
     public String toJson(){

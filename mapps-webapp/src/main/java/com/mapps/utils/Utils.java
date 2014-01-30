@@ -27,7 +27,9 @@ public class Utils {
 
     public static URI getFileURI(String identifier, String dir, String extension) {
         try {
-            return new URI(File.separator+"mapps" + File.separator + dir + File.separator + identifier + "." + extension);
+        	String uriString=File.separator+"mapps" + File.separator + dir + File.separator + identifier + "." + extension;
+        	URI uri =new URI(uriString);
+            return uri;
         } catch (URISyntaxException e) {
             throw new IllegalStateException();
         }
