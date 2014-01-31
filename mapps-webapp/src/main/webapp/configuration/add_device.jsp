@@ -52,23 +52,22 @@ if ( session.getAttribute("role") == null){
 		//Get Institutions
 		var url = "/mapps/getAllInstitutions";
 		$.ajax({
-			url: url,
-			type: "GET",
-			success: function (response){
-				var names = response;
-				$("#institution").jqxDropDownList(
-						{
-							source: names,
-							displayMember: "name",
-							selectedIndex: 0,
-							width: '200',
-							height: '25',
-							dropDownHeight: '75',
-							theme: 'metro'
-							}
-						);
-				}
-			});
+            url: url,
+            type: "GET",
+            success: function (response){
+            	$("#institution").jqxDropDownList(
+                		{
+                			source: response,
+                			selectedIndex: 0,
+                			displayMember: "name",
+                			width: '200',
+                			height: '25',
+                			dropDownHeight: '100',
+							theme: 'metro',
+                			}
+                		);
+            	}
+            });
 			
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
@@ -190,10 +189,14 @@ if ( session.getAttribute("role") == null){
                         <div class="tag_form"> DIR LOW: </div>
                         <div class="input"><input type="text" name="dirLow" id="dirLow" /></div>
                     </div>
-                    <div id="institucion">
-                        <div class="tag_form_list"> Instituci&oacute;n </div>
-                        <div id='institution' style="display: inline-block;"></div>
+                    
+                    <div id="institution_field">
+                        <div class="tag_form"> Instituci&oacute;n: </div>
+                        <div id="institution" class="input">
+                        
+                        </div>
                     </div>
+                    
                     <div style="margin-left:25%; margin-top:20px;">
                     	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>

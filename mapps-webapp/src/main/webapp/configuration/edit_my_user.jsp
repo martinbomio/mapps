@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -48,13 +49,50 @@ if ( session.getAttribute("role") == null){
 		$("#name").jqxInput({placeHolder: "Pepe", height: 30, width: '100%', minLength: 1, theme: 'metro' });
 		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '100%', minLength: 1, theme: 'metro' });
 		$("#email").jqxInput({placeHolder: "pepe@gmail", height: 30, width: '100%', minLength: 1, theme: 'metro' });
-		$("#username").jqxInput({placeHolder: "train", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		
 		
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
+		$("#validate").on('click', function (){ 
+	        $('#edit_user').jqxValidator('validate');
+	    });
+		
+		$("#edit_user").jqxValidator({
+            rules: [
+                    {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    {input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
+                    { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
+                  
+            ],  theme: 'metro'
+	        });
+		$('#edit_user').on('validationSuccess', function (event) {
+	        $('#edit_user').submit();
+	    });
+		
+		var url = "/mapps/getUserOfToken";		
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+				get_user_data(response);	            	
+            }});
 		
 	});
 	
-	
+	function get_user_data(response){
+		var user = response;	
+		document.getElementById('institution').innerHTML=user.institution.name;
+		document.getElementById('username').innerHTML=user.userName;
+		document.getElementById('idDocument').innerHTML=user.idDocument;
+		document.getElementById('role').innerHTML=user.role;
+		document.getElementById('password').innerHTML=user.password;
+		$('#email').jqxInput('val', user.email);
+		$('#name').jqxInput('val', user['name']);
+		$('#lastName').jqxInput('val', user['lastName']);
+		
+		
+		
+	}
 </script>
 
 <div id="header">
@@ -100,14 +138,14 @@ if ( session.getAttribute("role") == null){
                 
             </div>     	
             <div style="width:100%; height:100%; font-size:12px;">
-            	<form  action="/mapps/modifyUser" method="post" name="edit_user" id="edit_user" enctype="multipart/form-data">
+            	<form  action="/mapps/modifyMyAccount" method="post" name="edit_user" id="edit_user" >
                     <div id="main_div_left" style="width:32%; height:100%; display:inline-block;">
                         <div id="document" class="my_account_field">
                             <div class="my_account_tag">
                                 Documento
                             </div>
-                            <div class="my_account_data">
-                                1.234.567-0
+                            <div class="my_account_data" id="idDocument" name="idDocument">
+                                
                             </div>
                         </div>
                         <div id="email_form" class="my_account_field">
@@ -118,12 +156,12 @@ if ( session.getAttribute("role") == null){
                                 <div class="input"><input type="text" name="email" id="email" /></div>
                             </div>
                         </div>
-                        <div id="role" class="my_account_field">
+                        <div id="otherRole" class="my_account_field">
                             <div class="my_account_tag">
                                 Rol
                             </div>
-                            <div class="my_account_data">
-                                Entrenador
+                            <div class="my_account_data" id="role" name="role">
+                                
                             </div>
                         </div>
                     </div>
@@ -131,39 +169,44 @@ if ( session.getAttribute("role") == null){
                         <div id="img" style="float:left; width:80%; margin-top:35px;">	
                             <img src="../images/users/default.png" style="width:150px;"/>
                         </div>
+                        
                         <div id="name_form" style="float:left; margin-top:15px; width:65%; text-align:center; font-size:14px; color:#000;">
                             <div style="margin-top:10px;"> Nombre:  </div>
                             <div style="margin-top:10px;"><input type="text" name="name" id="name" /></div>
                             <div style="margin-top:10px;"> Apellido:  </div>
                             <div style="margin-top:10px;"><input type="text" name="lastName" id="lastName" /></div>
                         </div>
+                        
                         <div style="margin-left:-10%; margin-top:35px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
                     <div id="main_div_right" style="width:32%; height:100%; display:inline-block; margin-left:8%;">
-                        <div id="institution" class="my_account_field">
+                        
+                        <div id="othherInstitution" class="my_account_field">
                             <div class="my_account_tag">
                                 Instituci&oacute;n
                             </div>
-                            <div class="my_account_data">
-                                Pe&ntilde;arol
+                            <div class="my_account_data" id="institution" name="institution">
+                                
                             </div>
                         </div>
-                        <div id="username_form" class="my_account_field">
-                            <div class="my_account_tag">
-                                Nombre de usuario
-                            </div>
-                            <div class="my_account_data">
-                                <div class="input"><input type="text" name="username" id="username" /></div>
-                            </div>
-                        </div>
-                        <div id="password" class="my_account_field">
+                        
+                        <div id="otherUsername" class="my_account_field">
+                    		<div class="my_account_tag" >
+                        		Nombre de usuario
+                        	</div>
+                        	<div class="my_account_data" name="username" id="username">
+                        	
+                        	</div>
+                    	</div>
+                    	
+                        <div id="otherPassword" class="my_account_field">
                             <div class="my_account_tag">
                                 Contrase&ntilde;a
                             </div>
-                            <div class="my_account_data">
-                                *****
+                            <div class="my_account_data" id="password" name="password">
+                                
                             </div>
                         </div>
                     </div>

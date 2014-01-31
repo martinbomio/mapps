@@ -33,6 +33,8 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+
+
 %>
 <body>
 
@@ -46,9 +48,29 @@ if ( session.getAttribute("role") == null){
 		// Create a jqxMenu
         $("#jqxMenu2").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu2").css('visibility', 'visible');
+        
+        var url = "/mapps/getUserOfToken";		
+		$.ajax({
+            url: url,
+            type: "GET",
+            success: function (response){
+				get_user_data(response);	            	
+            }});
 		
 	});
-	
+	function get_user_data(response){
+		var user = response;
+		var name=user.name+" "+user.lastName;
+		document.getElementById('username').innerHTML=user.userName;
+		document.getElementById('institution').innerHTML=user.institution.name;
+		document.getElementById('email').innerHTML=user.email;
+		document.getElementById('role').innerHTML=user.role;
+		document.getElementById('idDocument').innerHTML=user.idDocument;
+		document.getElementById('password').innerHTML=user.password;
+		document.getElementById('name').innerHTML=name;
+		
+		
+	}		
 	
 </script>
 
@@ -96,38 +118,44 @@ if ( session.getAttribute("role") == null){
             </div>     	
             <div style="width:100%; height:100%; font-size:12px;">
             	<div id="main_div_left" style="width:32%; height:100%; display:inline-block;">
+                	
                 	<div id="document" class="my_account_field">
                     	<div class="my_account_tag">
                         	Documento
                         </div>
-                        <div class="my_account_data">
-                        	1.234.567-0
+                        <div class="my_account_data" id="idDocument" name="idDocument">
+                        	
                         </div>
                     </div>
-                    <div id="email" class="my_account_field">
+                    
+                    <div id="otherEmail" class="my_account_field">
                     	<div class="my_account_tag">
                         	E-mail
                         </div>
-                        <div class="my_account_data">
-                        	pepe@gmail.com
+                        <div class="my_account_data" id="email" name="email">
+                        	
                         </div>
                     </div>
-                    <div id="role" class="my_account_field">
+                    
+                    <div id="otherRole" class="my_account_field">
                     	<div class="my_account_tag">
                         	Rol
                         </div>
-                        <div class="my_account_data">
-                        	Entrenador
+                        <div class="my_account_data" id="role" name="role">
+                        	
                         </div>
                     </div>
                 </div>
+                
                 <div id="main_div_center" style="width:25%; height:100%; display:inline-block;">
                 	<div id="img" style="float:left; width:80%; margin-top:65px;">	
                         <img src="../images/users/default.png" style="width:150px;"/>
                     </div>
+                    
                     <div id="name" style="float:left; margin-top:15px;; width:65%; height:25px; text-align:center; font-size:14px; color:#000;">
                     	Luis Aguiar
                     </div>
+                    
                     <div id="jqxMenu2" style="visibility:hidden; margin-top:100px; float:left;">
 						<ul>
                             <li style="height:45px; text-align:center;"><a href="./edit_my_user.jsp"> Editar mis datos </a></li>
@@ -136,30 +164,34 @@ if ( session.getAttribute("role") == null){
                     </div>
                 </div>
                 <div id="main_div_right" style="width:32%; height:100%; display:inline-block; margin-left:8%;">
-                	<div id="institution" class="my_account_field">
+                	
+                	<div id="otherInstitution" class="my_account_field">
                     	<div class="my_account_tag">
                         	Instituci&oacute;n
                         </div>
-                        <div class="my_account_data">
-                        	Pe&ntilde;arol
+                        <div class="my_account_data" id="institution" name="institution">
+                        	
                         </div>
                     </div>
-                    <div id="username" class="my_account_field">
-                    	<div class="my_account_tag">
+                    
+                    <div id="otherUsername" class="my_account_field">
+                    	<div class="my_account_tag" >
                         	Nombre de usuario
                         </div>
-                        <div class="my_account_data">
-                        	trainer
+                        <div class="my_account_data" name="username" id="username">
+                        	
                         </div>
                     </div>
-                    <div id="password" class="my_account_field">
+                    
+                    <div id="otherPassword" class="my_account_field">
                     	<div class="my_account_tag">
                         	Contrase&ntilde;a
                         </div>
-                        <div class="my_account_data">
-                        	*****
+                        <div class="my_account_data" id="password" name="password">
+                        	
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

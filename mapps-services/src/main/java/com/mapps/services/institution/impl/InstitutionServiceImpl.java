@@ -233,4 +233,5 @@ public class InstitutionServiceImpl implements InstitutionService {
             throw new AuthenticationException();
         }
     }
+
 }

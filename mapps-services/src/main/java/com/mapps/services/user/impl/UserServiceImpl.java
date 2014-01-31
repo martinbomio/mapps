@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
                     throw new InvalidUserException();
                 }
                 userDAO.updateUser(user);
-            } else if (actualUser.getRole() == Role.ADMINISTRATOR) {
+            } else if (actualUser.getRole() == Role.ADMINISTRATOR ||actualUser.getRole() == Role.TRAINER) {
                 userDAO.updateUser(user);
             } else {
                 throw new AuthenticationException();
