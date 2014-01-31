@@ -238,7 +238,7 @@ if ( session.getAttribute("role") == null){
                 </div>
             </div>
             <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
-                <form action="/mapps/modifyUser" method="post" name="edit_institution" id="edit_user" enctype="multipart/form-data">
+                <form action="/mapps/modifyUser" method="post" name="edit_user" id="edit_user" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
                     </div>

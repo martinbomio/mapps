@@ -1,27 +1,27 @@
-	function draw_chart(training){
-		window.athleteData = [];
-		window.athleteIndex = 0;
-		for (var i = 0; i< training.athletes.length; i++){
-			$.ajax({
-			            url: "/mapps/getAthleteOnTrainingData",
-			            type: "POST",
-			            data: {t:training.name, a:training.athletes[i].idDocument},
-			            success: function (response){
-			            	if (window.created){
-			            		update_values(response);
-			            	}else{
-			            		create_label(response);
-			            		window.created = true;
-			            	}
-			                window.athleteData.push(response);
-			                window.athleteIndex+=1;
-			                if (window.athleteIndex == training.athletes.length){
-			                	success();
-			                }
-			        },
-			});
-		}
+function draw_chart(training){
+	window.athleteData = [];
+	window.athleteIndex = 0;
+	for (var i = 0; i< training.athletes.length; i++){
+		$.ajax({
+		            url: "/mapps/getAthleteOnTrainingData",
+		            type: "POST",
+		            data: {t:training.name, a:training.athletes[i].idDocument},
+		            success: function (response){
+		            	if (window.created){
+		            		update_values(response);
+		            	}else{
+		            		create_label(response);
+		            		window.created = true;
+		            	}
+		                window.athleteData.push(response);
+		                window.athleteIndex+=1;
+		                if (window.athleteIndex == training.athletes.length){
+		                	success();
+		                }
+		        },
+		});
 	}
+}
 function myData(data) {
 	var data = window.athleteData;
 	var series = [];
@@ -41,6 +41,8 @@ function myData(data) {
 	}
     return series;
 }
+
+
 function success(){
     nv.addGraph(function() {
         var chart = nv.models.lineChart();
@@ -49,9 +51,9 @@ function success(){
             .axisLabel("Posicion X");
 
         chart.yAxis
-            .axisLabel("Posicion Y");
-       chart.yAxis    
-            .tickFormat(d3.format("d"));
+            .axisLabel("Posicion Y")
+            .tickFormat(d3.format("d"))
+            ;
 
         d3.select("svg")
             .datum(myData())
