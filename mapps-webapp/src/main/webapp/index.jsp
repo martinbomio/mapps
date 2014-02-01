@@ -39,9 +39,18 @@ boolean show_pop_up = false;
 boolean training_started=false;
 String pop_up_message = "";
 String info = String.valueOf(request.getParameter("info"));
-if (info.equals("null"))
+if (info.equals("null")){
 	info = "";
-
+}else if (info.equals("10")){
+	pop_up_message = "El entrenamiento se a finalizado con éxito";
+}
+String error = String.valueOf(request.getParameter("error"));
+if (error.equals(10)){
+	pop_up_message = "Error de auteticación o no se tiene los permisos necesarios para realizar esta operación";
+}
+else if(error.equals(11)){
+	pop_up_message = "El entrenamiento que desae parar no es válido";
+}
 %>
 <body>
 
@@ -49,7 +58,6 @@ if (info.equals("null"))
 	$(document).ready(function () {
 		window.created = false;
 		call_ajax();
-		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 			<%
 			if(show_pop_up){	
 			%>
@@ -75,14 +83,24 @@ if (info.equals("null"))
             success: function (response){
             	var training = response;
             	if(training=="not started"){
-
+					
             	}else{
             		var training=JSON.parse(training);
-            		$('#training').text( training.name);
+            		create_stop_training(training.name);
+            		var split = training.date.split(" ");
+            		var display_name = "Entreneamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
+            		$('#training').text( display_name);
             		draw_chart(training);
             	}
             },
 		});
+	}
+	
+	function create_stop_training(training_name){
+		var button = $('<input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" style="margin-left:200px;" />');
+		$('#stop_training_div').html(button);
+		$("#stop_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
+		$("#stop_training").on('click', function () { window.location.assign('/mapps/stopTraining?name='+training_name+'')}); 
 	}
 
 	
@@ -140,8 +158,7 @@ if (info.equals("null"))
                 <div id="list_players">
                 </div>
             </div>
-        	<div id="start_training_div">
-            	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
+        	<div id="stop_training_div">
             </div>
         </div>
         <div id="sidebar_right">

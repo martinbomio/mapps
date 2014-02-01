@@ -45,7 +45,7 @@ function myData(data) {
 
 function success(){
     nv.addGraph(function() {
-        var chart = nv.models.lineChart();
+        var chart = nv.models.lineChart().forceY([0, 60]).forceX([-55, 55]);
 
         chart.xAxis
             .axisLabel("Posicion X");
@@ -71,7 +71,7 @@ function success(){
 
 function create_label(data){
 	var athlete = data.athlete;
-	var distance = new String(data.distanceTraveled);
+	var distance = new String(data.traveledDistance);
 	var split = distance.split('.');
 	var distance = split[0] + '.' + split[1].substr(0,1);
 	split = new String(data.averageSpeed).split('.');
@@ -87,7 +87,7 @@ function create_label(data){
 
 function update_values(data){
 	var athlete = data.athlete;
-	var distance = new String(data.distanceTraveled);
+	var distance = new String(data.traveledDistance);
 	var split = distance.split('.');
 	var distance = split[0] + '.' + split[1].substr(0,1);
 	split = new String(data.averageSpeed).split('.');

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.model.Training;
 import com.mapps.services.institution.InstitutionService;
+import com.mapps.services.report.ReportService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
@@ -28,21 +29,27 @@ public class StopTrainingServlet extends HttpServlet implements Servlet {
     TrainerService trainerService;
     @EJB(beanName = "InstitutionService")
     InstitutionService institutionService;
+    @EJB(beanName = "ReportService")
+    ReportService reportService;
+
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String name = req.getParameter("name");
         try {
             Training training = trainerService.getTrainingByName(token, name);
+            reportService.createTrainingReports(training.getName(), token);
             trainerService.stopTraining(training, token);
-            req.setAttribute("info", "El entrenamiento terminó");
+            resp.sendRedirect("index.jsp?info=10");
         } catch (AuthenticationException e) {
-            req.setAttribute("error", "Error de autentificación");
+            resp.sendRedirect("index.jsp?error=10");
         } catch (InvalidTrainingException e) {
-            req.setAttribute("error", "Entrenamiento no valido");
+            resp.sendRedirect("index.jsp?error=11");
         } catch (NullParameterException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            resp.sendRedirect("index.jsp?error=11");
+        } catch (com.mapps.services.report.exceptions.AuthenticationException e) {
+            resp.sendRedirect("index.jsp?error=10");
         }
     }
 }

@@ -23,4 +23,12 @@ public interface ReportService {
     List<ProcessedDataUnit> getAthleteStats(String trainingID, String AthleteCI, String token) throws AuthenticationException, InvalidTrainingException, InvalidAthleteException;
 
     List<Integer> getThresholds(Training training, String token);
+
+    /**
+     * After a training is finished, creates a report for each athelte on the training and
+     * stores it on the database.
+     * @param trainingID the training ID
+     * @param token the identifier of the session.
+     */
+    void createTrainingReports(String trainingID, String token) throws AuthenticationException;
 }

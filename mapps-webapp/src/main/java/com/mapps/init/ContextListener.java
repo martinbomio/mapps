@@ -44,7 +44,6 @@ import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.PulseData;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Report;
-import com.mapps.model.ReportType;
 import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
@@ -115,8 +114,6 @@ public class ContextListener implements ServletContextListener {
         Athlete mario = new Athlete("Mario", "Gomez", new Date(), Gender.MALE, "mario@gmail.com", 78, 1.80, "4.447.599-3", inst);
         Device device = new Device("0013A200", "40aad87e", 55, inst);
         Device device1 = new Device("0013A200", "40a9c8d2", 55, inst);
-        Report report = new Report("url", date, "report one", ReportType.TRAINNING);
-
         Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
         Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
         mapAthleteDevice.put(athlete, device1);
@@ -131,7 +128,6 @@ public class ContextListener implements ServletContextListener {
             inst2.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             institutionDAO.addInstitution(inst);
             institutionDAO.addInstitution(inst2);
-            reportDAO.addReport(report);
             user.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             user2.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             userDAO.addUser(user);
@@ -162,8 +158,6 @@ public class ContextListener implements ServletContextListener {
             logger.error("Athlete already exists");
         } catch (DeviceAlreadyExistException e) {
             logger.error("Device already exists");
-        } catch (ReportAlreadyExistException e) {
-            logger.error("Report already exists");
         } catch (TrainingAlreadyExistException e) {
             logger.error("Training already exists");
         } catch (URISyntaxException e) {

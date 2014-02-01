@@ -25,27 +25,27 @@ import org.hibernate.annotations.Type;
  * Representation of a training in the system
  */
 @Entity
-@Table(name="Trainings")
+@Table(name = "Trainings")
 public class Training {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(nullable=false,unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Date date;
     private int participants;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private long latOrigin;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private long longOrigin;
     private int minBPM;
     private int maxBPM;
     private boolean started;
     private boolean finished;
     @ManyToMany(fetch = FetchType.EAGER)
-    private Map<Athlete,Device> mapAthleteDevice;
+    private Map<Athlete, Device> mapAthleteDevice;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Report> reports;
     @ManyToOne
@@ -57,17 +57,17 @@ public class Training {
     @Enumerated(value = EnumType.ORDINAL)
     @Column(name = "permission")
     @Type(
-                    type="org.hibernate.type.EnumType"
-            )
-    private Map <User,Permission> mapUserPermission;
+            type = "org.hibernate.type.EnumType"
+    )
+    private Map<User, Permission> mapUserPermission;
 
-    public Training(){
+    public Training() {
 
     }
 
     public Training(String name, Date date, int participants, long latOrigin, long longOrigin, int minBPM,
                     int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports, Sport sport,
-                    Map<User, Permission> mapUserPermission,Institution institution) {
+                    Map<User, Permission> mapUserPermission, Institution institution) {
         this.name = name;
         this.date = date;
         this.participants = participants;
@@ -79,7 +79,7 @@ public class Training {
         this.reports = reports;
         this.sport = sport;
         this.mapUserPermission = mapUserPermission;
-        this.institution=institution;
+        this.institution = institution;
         this.started = false;
         this.finished = false;
     }

@@ -253,8 +253,8 @@ public class TrainerServiceImpl implements TrainerService {
             if ((authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR))
                     || (authenticationHandler.isUserInRole(token, Role.TRAINER))) {
                 Training trainingAux = trainingDAO.getTrainingByName(training.getName());
-                training.setStarted(false);
-                training.setFinished(true);
+                trainingAux.setStarted(false);
+                trainingAux.setFinished(true);
                 trainingDAO.updateTraining(trainingAux);
             } else {
                 logger.error("authentication error");

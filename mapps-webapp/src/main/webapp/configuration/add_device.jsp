@@ -66,16 +66,13 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                 			source: response,
                 			selectedIndex: 0,
                 			displayMember: "name",
-                			valueMember:"name",
+                			valueMember: "name",
                 			width: '200',
                 			height: '25',
                 			dropDownHeight: '100',
 							theme: 'metro',
                 			}
                 		);
-            	
-            	
-            	
             	<%}%>
             	
             }
@@ -184,7 +181,6 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                    %>
                    		<li style="height:35px;"><a href="./my_account.jsp"> Mi cuenta </a></li>
                    		<li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
-                   		
                    <%
 					}else if(role.equals(Role.USER)){
                    %>

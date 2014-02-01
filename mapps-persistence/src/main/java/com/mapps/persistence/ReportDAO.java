@@ -1,12 +1,12 @@
 package com.mapps.persistence;
 
+import java.util.List;
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ReportAlreadyExistException;
 import com.mapps.exceptions.ReportNotFoundException;
 import com.mapps.model.Report;
-
-import javax.ejb.Local;
-import java.util.List;
 
 /**
  * ReportDAO interface
@@ -18,7 +18,7 @@ public interface ReportDAO {
      * @param report - The Report to add to the database
      * @throws ReportAlreadyExistException
      */
-    void addReport(Report report) throws ReportAlreadyExistException, NullParameterException;
+    void addReport(Report report) throws NullParameterException;
 
     /**
      * This method deletes a Report from the database.

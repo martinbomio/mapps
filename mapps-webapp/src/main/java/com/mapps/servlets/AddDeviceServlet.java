@@ -18,6 +18,7 @@ import com.mapps.services.institution.InstitutionService;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
+import com.mapps.services.util.Constants;
 
 /**
  *
@@ -37,7 +38,7 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
 
-        String dirHigh = "0013A200";
+        String dirHigh = Constants.DIRHIGH;
         String dirLow = req.getParameter("dirLow");
         int panId = Integer.parseInt(req.getParameter("panId"));
         String instName = req.getParameter("institution");
@@ -45,6 +46,12 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
 
 
         try {
+            if(instAux==null){
+                User user = userService.getUserOfToken(token);
+                String institutionOfUser = user.getInstitution().getName();
+                instAux = institutionService.getInstitutionByName(institutionOfUser);
+            }
+
             Device device = new Device(dirHigh, dirLow, panId, instAux);
             device.setAvailable(true);
             adminService.addDevice(device, token);
@@ -54,6 +61,8 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         } catch (DeviceAlreadyExistsException e) {
         	resp.sendRedirect("configuration/add_device.jsp?error=1");
         } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
+            resp.sendRedirect("configuration/add_device.jsp?error=1");
+        } catch (AuthenticationException e) {
             resp.sendRedirect("configuration/add_device.jsp?error=1");
         }
     }

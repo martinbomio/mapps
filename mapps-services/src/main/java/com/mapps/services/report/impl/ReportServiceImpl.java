@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
@@ -16,6 +17,8 @@ import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Permission;
 import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.Report;
+import com.mapps.model.Role;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 import com.mapps.persistence.AthleteDAO;
@@ -52,7 +55,7 @@ public class ReportServiceImpl implements ReportService {
         Map<Athlete, List<ProcessedDataUnit>> dataMap = Maps.newHashMap();
         try {
             Training training = trainingDAO.getTrainingByName(trainingID);
-            for (Athlete athlete : training.getMapAthleteDevice().keySet()){
+            for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
                 List<ProcessedDataUnit> dataUnits = getAthleteStats(trainingID, athlete.getIdDocument(), token);
                 dataMap.put(athlete, dataUnits);
             }
@@ -96,8 +99,50 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+
     @Override
     public List<Integer> getThresholds(Training training, String token) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void createTrainingReports(String trainingID, String token) throws AuthenticationException {
+        if (trainingID == null || token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                Training training = trainingDAO.getTrainingByName(trainingID);
+                for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
+                    List<ProcessedDataUnit> data = getAthleteStats(trainingID, athlete.getIdDocument(), token);
+                    Report report = new Report.Builder().setAthlete(athlete)
+                                                        .setTrainingName(trainingID)
+                                                        .setData(data)
+                                                        .build();
+                    reportDAO.addReport(report);
+                    if (training.getReports() == null){
+                        List<Report> reports = Lists.newArrayList();
+                        training.setReports(reports);
+                    }
+                    training.getReports().add(report);
+                    trainingDAO.updateTraining(training);
+                }
+            } else {
+                logger.error("User is not a trainer");
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            logger.error("Authentication exception");
+            throw new AuthenticationException();
+        } catch (TrainingNotFoundException e) {
+            throw new IllegalStateException("Training not found", e);
+        } catch (InvalidAthleteException e) {
+            throw new IllegalStateException("Athlete not found", e);
+        } catch (InvalidTrainingException e) {
+            throw new IllegalStateException("Training not found", e);
+        } catch (NullParameterException e) {
+            throw new IllegalStateException("Wrong parameters on saving report", e);
+        }
     }
 }

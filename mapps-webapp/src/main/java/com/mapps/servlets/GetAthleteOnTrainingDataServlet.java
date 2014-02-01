@@ -10,14 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.mapps.model.Athlete;
 import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.Report;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
 import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
-import com.mapps.wrappers.AthleteStatsWrapper;
 
 /**
  *
@@ -39,10 +40,12 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
             Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
-            AthleteStatsWrapper wrapper = new AthleteStatsWrapper(trainingID, athlete, stats);
+            Report report = new Report.Builder().setAthlete(athlete)
+                                                .setTrainingName(trainingID)
+                                                .setData(stats).build();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            String json = wrapper.toJson();
+            String json = new Gson().toJson(report);
             writer.write(json);
             writer.close();
         } catch (AuthenticationException e) {
