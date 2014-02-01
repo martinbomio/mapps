@@ -14,8 +14,11 @@ public class PacketBuilder {
     private boolean started;
     private ServiceInvoker serviceInvoker;
 
-    public PacketBuilder() {
+    public PacketBuilder(String dir) {
+        String dirLow = dir.substring(8);
+        this.dirLow = dirLow;
         this.builder = new StringBuilder();
+        this.builder.append(this.dirLow + "@");
         serviceInvoker = new ResfulServiceInvoker();
     }
 

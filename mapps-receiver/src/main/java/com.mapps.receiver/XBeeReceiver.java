@@ -2,37 +2,46 @@ package com.mapps.receiver;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
+import com.rapplogic.xbee.api.PacketListener;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
+import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
-import com.rapplogic.xbee.util.ByteUtils;
 
 /**
  *
  */
 public class XBeeReceiver {
-    Logger logger = Logger.getLogger(XBeeReceiver.class);
+    private static Logger logger = Logger.getLogger(XBeeReceiver.class);
 
     public static void main(String[] args) {
         XBee xbee = new XBee();
         try {
             xbee.open("COM6", 115200);
-            PacketBuilder builder = new PacketBuilder();
             while (true) {
-                try {
-                    ZNetRxResponse ioSample = (ZNetRxResponse) xbee.getResponse();
-                    if (ioSample.getData().length > 19) {
-                        int[] payload = new int[ioSample.getData().length - 19];
-                        for (int i = 18; i < ioSample.getData().length - 1; i++) {
-                            payload[i - 18] = ioSample.getData()[i];
+                xbee.addPacketListener(new PacketListener() {
+                    @Override
+                    public void processResponse(XBeeResponse xBeeResponse) {
+                        if (xBeeResponse.getApiId() == ApiId.ZNET_RX_RESPONSE) {
+                            XbeeResponseDecoder decoder = new XbeeResponseDecoder((ZNetRxResponse) xBeeResponse);
+                            if (decoder.isPacketComplete()) {
+                                PacketBuilderPool pool = PacketBuilderPool.getDefaultInstace();
+                                String dir = decoder.getDir();
+                                if (!pool.hasPacketBuilder(dir)) {
+                                    PacketBuilder builder = new PacketBuilder(dir);
+                                    builder.setDirLow(dir);
+                                    pool.putPacketBuilder(dir, builder);
+                                }
+                                PacketBuilder builder = pool.getPacketBuilder(dir);
+                                builder.addPacket(decoder.getPayload());
+                            } else {
+                                logger.debug("The XBee packet is incomplete");
+                            }
                         }
-                        String dir = getStringDir(ByteUtils.toBase16(ioSample.getRemoteAddress64().getAddress(), ""));
-                        builder.setDirLow(dir);
-                        builder.addPacket(ByteUtils.toString(payload));
+                        logger.error("The XBee packet format is wrong");
                     }
-                } catch (ClassCastException e) {
-                    e.printStackTrace();
-                }
+                });
             }
         } catch (XBeeException e) {
             e.printStackTrace();
