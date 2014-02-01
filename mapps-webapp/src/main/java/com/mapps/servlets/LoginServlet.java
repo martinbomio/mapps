@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.model.Role;
+import com.mapps.model.User;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -29,8 +30,11 @@ public class LoginServlet extends HttpServlet implements Servlet {
         try {
             String token = userService.login(username, password);
             Role role = userService.userRoleOfToken(token);
+            User user = userService.getUserOfToken(token);
+            String instName = user.getInstitution().getName();
             req.getSession().setAttribute("token", token);
             req.getSession().setAttribute("role", role);
+            req.getSession().setAttribute("institutionName",instName);
             resp.sendRedirect("index.jsp");
         } catch (AuthenticationException e) {
             //error 1: Nombre de Usuario o Contraseña no válido

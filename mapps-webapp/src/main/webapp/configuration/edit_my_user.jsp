@@ -85,7 +85,6 @@ if ( session.getAttribute("role") == null){
 		document.getElementById('username').innerHTML=user.userName;
 		document.getElementById('idDocument').innerHTML=user.idDocument;
 		document.getElementById('role').innerHTML=user.role;
-		document.getElementById('password').innerHTML=user.password;
 		$('#email').jqxInput('val', user.email);
 		$('#name').jqxInput('val', user['name']);
 		$('#lastName').jqxInput('val', user['lastName']);
@@ -206,7 +205,7 @@ if ( session.getAttribute("role") == null){
                                 Contrase&ntilde;a
                             </div>
                             <div class="my_account_data" id="password" name="password">
-                                
+                              ****  
                             </div>
                         </div>
                     </div>

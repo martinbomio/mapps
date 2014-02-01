@@ -83,6 +83,7 @@ if (error.equals("null"))
 						{
 							source: names,
 							displayMember: "name",
+							valueMember:"name",
 							selectedIndex: 0,
 							width: '40%',
 							height: '30',

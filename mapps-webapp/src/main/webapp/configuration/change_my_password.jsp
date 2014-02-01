@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -20,8 +21,11 @@
     <script type="text/javascript" src="../jqwidgets/jqxpasswordinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxpasswordinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
@@ -36,102 +40,119 @@
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	response.sendRedirect("../index_login.jsp");	
+	response.sendRedirect("../index_login.jsp");
 }
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");	
+	role = (Role) session.getAttribute("role");
 }
-String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
+boolean show_pop_up = false;
+String pop_up_message = "";
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+String error = String.valueOf(request.getParameter("error"));
+if (error.equals("null"))
+	error = "";
+
+if(info.equals("2")){
+	pop_up_message = "La contraseña anterior no es la correcta, vuelva a intentarlo";
+	show_pop_up = true;	
+}
+
 %>
+
+
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		//Get Institutions
-		var url = "/mapps/getAllInstitutions";
-		$.ajax({
-            url: url,
-            type: "GET",
-            success: function (response){
-            	
-            	<%
-				if(role.equals(Role.ADMINISTRATOR)){
-				%>
-            	
-            	$("#institution").jqxDropDownList(
-                		{
-                			source: response,
-                			selectedIndex: 0,
-                			displayMember: "name",
-                			valueMember:"name",
-                			width: '200',
-                			height: '25',
-                			dropDownHeight: '100',
-							theme: 'metro',
-                			}
-                		);
-            	
-            	
-            	
-            	<%}%>
-            	
-            }
-            	
-            	
-            });
-			
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-		//name
-		$("#panId").jqxInput({placeHolder: "PAN ID", height: 25, width: 200, minLength: 1, theme: 'metro'});
-		//lastname
-		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
-	
-		//register
-		$("#validate").jqxButton({ width: '150', height: '35',theme: 'metro'});
-		$("#validate").on('click', function (){ 
-	        $('#device_form').jqxValidator('validate');
+
+
+		$("#oldPassword").jqxPasswordInput({placeHolder: "Antigua contraseña", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#newPassword").jqxPasswordInput({ placeHolder: "Nueva contraseña", width: 200 , height: 25, showStrength: true, showStrengthPosition: "right" , theme: 'metro'});
+		//passowrdConfirm
+		$("#newPasswordConfirm").jqxPasswordInput({  placeHolder: 'Repetir contraseña', width: '200px', height: '25px', theme: 'metro' });
+		
+		
+		$("#changePassword_button").jqxButton({ width: '200', height: '35', theme: 'metro'});
+		$("#changePassword_button").on('click', function (){ 
+	        $('#changePassword_form').jqxValidator('validate');
 	    });
-		$("#device_form").jqxValidator({
+		$("#changePassword_form").jqxValidator({
             rules: [
-					{input: "#panId", message: "El PAN ID es obligatoria!", action: 'keyup, blur', rule: 'required'},
-					{input: "#panId", message: "El PAN ID debe ser un número!", action: 'keyup, blur', rule: function(){
-						var pan = $('#panId').jqxInput('val');
-						return $.isNumeric(pan);
-					}},
-					{input: "#dirLow", message: "La dirección es obligatoria!", action: 'keyup, blur', rule: 'required'},
-				
-					<%
-					if(role.equals(Role.ADMINISTRATOR)){
-					%>
-					
-					{input: "#institution", message: "La institución es obligatoria!", action: 'blur', rule: function (input, commit) {
-                        var index = $("#institution").jqxDropDownList('getSelectedIndex');
-                        return index != -1;
-                    }
-                },
-                
-                <%}%>
-					{input: "#dirLow", message: "La Dirección debe ser de 8 caracteres!", action: 'keyup, blur', rule: 'length=8,8'}
-					
-                    ]
-			});
-	$('#device_form').on('validationSuccess', function (event) {
-        $('#device_form').submit();
-    });
-});
+                    {
+                        input: "#oldPassword", message: "La contraseña anterior es obligatoria!", action: 'keyup, blur', rule: 'required'
+                    },
+                    
+                    { input: "#newPassword", message: "La nueva contraseña es obligatoria!", action: 'keyup, blur', rule: 'required'},
+					{ input: "#newPasswordConfirm", message: "La nueva contraseña es obligatoria!", action: 'keyup, blur', rule: 'required' },
+					{
+                        input: "#newPasswordConfirm", message: "Las contraseñas deben coincidir!", action: 'keyup, blur', rule: function (input, commit) {
+                            var firstPassword = $("#newPassword").jqxPasswordInput('val');
+                            var secondPassword = $("#newPasswordConfirm").jqxPasswordInput('val');
+                            return firstPassword == secondPassword;
+                        }
+                    },
+                    
+           
+            ],  theme: 'metro'
+        });
+	
+		$('#changePassword_form').on('validationSuccess', function (event) {
+        	$('#changePassword_form').submit();
+   		 });
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+	});
 </script>
+
 
 <div id="header">
 	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-		
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="../images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
@@ -139,14 +160,13 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
     </div>
 </div>
 <div id="contenedor">
-
 	<div id="tabs">
 	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab active" onclick="location.href='./configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
-  	</div>
+	</div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
 			<div id="jqxMenu" style="visibility:hidden; margin:20px;">
@@ -170,12 +190,12 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                         </li>
                         <li style="height:35px;"> Deportes..
                         	<ul>
-                       			<li style="height:35px;"><a href="./add_sport.jsp"> Agregar un Deporte </a></li>
+                       			<li style="height:35px;"><a href=""> Agregar un Deporte </a></li>
                             </ul>
                         </li>
                         <li style="height:35px;"> Dispositivos..
                         	<ul>
-                                <li style="height:35px;"><a href=""> Agregar un Dispositivo </a></li>
+                                <li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
                                 <li style="height:35px;"><a href="./edit_device.jsp"> Editar un Dispositivo </a></li>
                             </ul>
                         </li>
@@ -184,7 +204,6 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                    %>
                    		<li style="height:35px;"><a href="./my_account.jsp"> Mi cuenta </a></li>
                    		<li style="height:35px;"><a href="./add_device.jsp"> Agregar un Dispositivo </a></li>
-                   		
                    <%
 					}else if(role.equals(Role.USER)){
                    %>
@@ -194,52 +213,40 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                    %>
         		</ul>
   			</div>
-        </div>	   
+        </div>   
         <div id="main_div">
-			<div id="navigation" class="navigation">
-            	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un dispositivo
+        	<div id="navigation" class="navigation">
+            	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Modificar contraseña
             </div>
-        	<form action="/mapps/addDevice" method="post" name="device_form" id="device_form">
-            	<div id="title" style="margin:15px;">
-           			<label> Rellene el siguiente formulario </label>
-                </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
-                	<div id="pan_id">
-                    	<div class="tag_form"> PAN ID:  </div>
-                    	<div class="input"><input type="text" name="panId" id="panId" /></div>
+            <div id="title" style="margin:15px;">
+                <label> Complete el siguiente formulario </label>
+            </div>  
+            <div style="margin-left:100px;">  
+            	<form action="/mapps/changePassword" method="post" id="changePassword_form">
+                	<div id="passVieja">
+                        <div class="tag_form"> Antigua contraseña:  </div>
+                        <div class="input"><input type="text" name="oldPassword" id="oldPassword" type="password"/></div>
                     </div>
-                    <div id="dir_low">
-                        <div class="tag_form"> DIR LOW: </div>
-                        <div class="input"><input type="text" name="dirLow" id="dirLow" /></div>
+                    <div id="passNueva">
+                        <div class="tag_form"> Nueva contraseña:  </div>
+                        <div class="input"><input type="text" name="newPassword" id="newPassword" type="password"/></div>
                     </div>
-                    
-                   <%
-				if(role.equals(Role.ADMINISTRATOR)){
-				%>
-                    <div id="institution_field">
-                        <div class="tag_form"> Instituci&oacute;n: </div>
-                        <div id="institution" class="input">
-                        
-                        </div>
+                    <div id="confirmacion">
+                        <div class="tag_form"> Confirmar nueva contraseña:  </div>
+                        <div class="input"><input type="text" name="newPasswordConfirm" id="newPasswordConfirm" type="password"/></div>
                     </div>
+                    <div style="margin-left:25%; margin-top:25px;">
+                    	<input type="button" value="Modificar contraseña" id="changePassword_button" />
+                 	</div>
                     
-                    <%}else if(role.equals(Role.TRAINER)){ %>
-                    
-                    <input type="hidden" id="institution" name="institution" value="<%=instName%>"></input>
-                    
-                    <%} %>
-                  
-                    <div style="margin-left:25%; margin-top:20px;">
-                    	<input type="button" id="validate" value="CONFIRMAR"/>
-                    </div>
-				</div>
-            </form>
+                </form>
+        	</div>
         </div>
         <div id="sidebar_right">
         	
         </div>
     </div>
- 
+    
     
 </div>
 <div id="pie">

@@ -60,6 +60,7 @@ if ( session.getAttribute("role") == null){
                 			source: response,
                 			selectedIndex: 0,
                 			displayMember: "name",
+                			valueMember:"name",
                 			width: '200',
                 			height: '25',
                 			dropDownHeight: '100',

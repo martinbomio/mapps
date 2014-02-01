@@ -45,12 +45,6 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
 
 
         try {
-            if(instAux==null){
-                User user=userService.getUserOfToken(token);
-                String institutionOfUser=user.getInstitution().getName();
-                instAux= institutionService.getInstitutionByName(institutionOfUser);
-            }
-
             Device device = new Device(dirHigh, dirLow, panId, instAux);
             device.setAvailable(true);
             adminService.addDevice(device, token);
@@ -61,8 +55,6 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
         	resp.sendRedirect("configuration/add_device.jsp?error=1");
         } catch (com.mapps.services.admin.exceptions.AuthenticationException e) {
             resp.sendRedirect("configuration/add_device.jsp?error=1");
-        } catch (AuthenticationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }

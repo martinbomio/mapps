@@ -14,6 +14,8 @@
 	<script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="../jqwidgets/globalization/globalize.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script> 
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
@@ -33,8 +35,22 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+boolean show_pop_up = false;
+String pop_up_message = "";
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
 
-
+if(info.equals("5")){
+	// El Usuario fue modificado con exito
+	pop_up_message = "Sus datos fueron modificados con éxito.";
+	show_pop_up = true;	
+}
+if(info.equals("1")){
+	
+	pop_up_message = "La contraseña fue modificada con exito";
+	show_pop_up = true;	
+}
 %>
 <body>
 
@@ -57,6 +73,27 @@ if ( session.getAttribute("role") == null){
 				get_user_data(response);	            	
             }});
 		
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+		
 	});
 	function get_user_data(response){
 		var user = response;
@@ -66,7 +103,7 @@ if ( session.getAttribute("role") == null){
 		document.getElementById('email').innerHTML=user.email;
 		document.getElementById('role').innerHTML=user.role;
 		document.getElementById('idDocument').innerHTML=user.idDocument;
-		document.getElementById('password').innerHTML=user.password;
+		
 		document.getElementById('name').innerHTML=name;
 		
 		
@@ -80,6 +117,23 @@ if ( session.getAttribute("role") == null){
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
 		
+		<div id="pop_up">
+            <div>
+                <img width="14" height="14" src="../images/ok.png" alt="" />
+                Informaci&oacute;n
+            </div>
+            <div>
+            	<div style="height:60px;">
+                	<%=pop_up_message
+					%>
+                </div>
+                <div>
+            		<div style="float: right; margin-top: 15px; vertical-align:bottom;">
+           		        <input type="button" id="ok" value="OK" style="margin-right: 10px" />
+        	        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
@@ -159,7 +213,7 @@ if ( session.getAttribute("role") == null){
                     <div id="jqxMenu2" style="visibility:hidden; margin-top:100px; float:left;">
 						<ul>
                             <li style="height:45px; text-align:center;"><a href="./edit_my_user.jsp"> Editar mis datos </a></li>
-                            <li style="height:45px; text-align:center;"><a href=""> Cambiar contrase&ntilde;a </a></li>
+                            <li style="height:45px; text-align:center;"><a href="./change_my_password.jsp"> Cambiar contrase&ntilde;a </a></li>
                     	</ul>
                     </div>
                 </div>
@@ -188,7 +242,7 @@ if ( session.getAttribute("role") == null){
                         	Contrase&ntilde;a
                         </div>
                         <div class="my_account_data" id="password" name="password">
-                        	
+                        	****
                         </div>
                     </div>
                     

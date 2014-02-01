@@ -35,6 +35,7 @@ public class LogoutServlet extends HttpServlet implements Servlet {
         String logout = userService.logout(token);
         req.getSession().setAttribute("token",logout);
         req.getSession().setAttribute("role",null);
+        req.getSession().setAttribute("institutionName","");
         resp.sendRedirect("index_login.jsp");
     }
 
