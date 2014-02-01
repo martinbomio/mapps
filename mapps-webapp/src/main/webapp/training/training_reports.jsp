@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -11,22 +10,27 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxchart.js"></script>
+    <link href="../scripts/nv.d3.min.css" rel="stylesheet" type="text/css">
+    <script src="../scripts/d3.v3.js"></script>
+    <script src="../scripts/nv.d3.min.js"></script>
+    <script src="../scripts/mychart.js"></script>
+
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
-    <link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
+	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
-    
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
-	response.sendRedirect("../index_login.jsp");	
+	response.sendRedirect("index_login.jsp");	
 }
 Role role;
 if ( session.getAttribute("role") == null){
@@ -34,93 +38,81 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
-
 boolean show_pop_up = false;
+boolean training_started=false;
 String pop_up_message = "";
 String info = String.valueOf(request.getParameter("info"));
-if (info.equals("null"))
+if (info.equals("null")){
 	info = "";
-
-if(info.equals("1")){
-	
-	pop_up_message = "El entrenamiento fue programado con éxito.";
-	show_pop_up = true;	
+}else if (info.equals("10")){
+	pop_up_message = "El entrenamiento se a finalizado con éxito";
 }
-if(info.equals("2")){
-	
-	pop_up_message = "El entrenamiento fue editado con éxito.";
-	show_pop_up = true;	
+String error = String.valueOf(request.getParameter("error"));
+if (error.equals(10)){
+	pop_up_message = "Error de auteticación o no se tiene los permisos necesarios para realizar esta operación";
 }
-if(info.equals("3")){
-	
-	pop_up_message = "Los permisos han sido modificados con éxito.";
-	show_pop_up = true;	
+else if(error.equals(11)){
+	pop_up_message = "El entrenamiento que desae parar no es válido";
 }
-
 %>
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		
-		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-	
-		$("#start_training").on('click', function () {
-			var selected = $('#trainings').jqxListBox('getSelectedItem');
-			var uid = selected.value;
-			window.location.replace("start_training.jsp?uid="+uid);
-		});
-		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
-            resizable: false, draggable: false, 
-            okButton: $('#ok'), 
-            initContent: function () {
-                $('#ok').jqxButton({  width: '65px' });
-                $('#ok').focus();
-            }
-        });		
-		<%
-		if(show_pop_up){	
-		%>
-			$("#pop_up").css('visibility', 'visible');
-		<%
-		}else{
-		%>
-			$("#pop_up").css('visibility', 'hidden');
-			$("#pop_up").css('display', 'none');
-		<%
-		}
-		%>
-		
-		var source =
-        {
-            datatype: "json",
-            url: "/mapps/getTrainingsToStart"
-        };
-		
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        $('#trainings').jqxListBox({ source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '60%',autoHeight:true, theme: 'metro',
-        	renderer: function (index, label, value) {
-                var datarecord = dataAdapter.records[index];
-                if (dataAdapter.records.length == 0){
-                	//PONER UN DIV: NO HAY ENTRENAMIENTOS PROGRAMADOS
-                }
-                var split = datarecord.date.split(" ");
-                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento programado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
-                return table;
-            }	
-        }); 
+			<%
+			if(show_pop_up){	
+			%>
+				$("#pop_up").css('visibility', 'visible');
+			<%
+			}else{
+			%>
+				$("#pop_up").css('visibility', 'hidden');
+				$("#pop_up").css('display', 'none');
+			<%
+			}
+			%>
+			var url = "/mapps/getFinishedTrainings";		
+			$.ajax({
+	            url: url,
+	            type: "GET",
+	            success: function (response){
+					create_list(response);	            	
+	            },
+	        	   
+			});
+			
 	});
-</script>
+	
+	function create_list(response){
+		var trainings = response;
+		$('#list_trainings').on('select', function (event) {
+            
+        });
+		
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: "date", valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
+            renderer: function (index, label, value) {
+                var datarecord = trainings[index];
+                
+                var table = '<table style="min-width: 130px;"><td>' + datarecord.name + '</td></table>';
+                return table;
+            }
+        });
+		
+	}
+	
+	
 
+	
+</script>
 
 <div id="header">
 	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
     <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-		<div id="pop_up">
+    	<div id="pop_up">
             <div>
                 <img width="14" height="14" src="../images/ok.png" alt="" />
                 Informaci&oacute;n
@@ -137,6 +129,7 @@ if(info.equals("3")){
                 </div>
             </div>
         </div>
+        
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab">MI CUENTA</div>
@@ -145,16 +138,17 @@ if(info.equals("3")){
 </div>
 <div id="contenedor">
 
-<div id="tabs">
-	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:12%;">INICIO</div>
+    <div id="tabs">
+	  	<div id="tab_1" class="tab" onclick="location.href='../index.jsp'" style="margin-left:13%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
-        <div id="tab_3" class="tab active" onclick="location.href='./trainings.jsp'">ENTRENAMIENTOS</div>
+        <div id="tab_3" class="tab active" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
-  </div>
+    </div>
     <div id="area_de_trabajo">
 		<div id="sidebar_left">
-        	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
+		
+		<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
@@ -163,20 +157,16 @@ if(info.equals("3")){
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
+        
         </div>
         <div id="main_div">
-        	<div id="title" style="margin:15px;">
-           		<label> Seleccione el entrenamiento que desee comenzar </label>
-            </div>
-        	<div id="trainings" style="margin-left:20%;">
-            
-            </div>
-			<div id="start_training_div">
-            	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
-            </div>
+        	<div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+        	<div id="list_trainings">
+                </div>
+        	</div>
         </div>
         <div id="sidebar_right">
-        	
+        
         </div>
     </div>
  
