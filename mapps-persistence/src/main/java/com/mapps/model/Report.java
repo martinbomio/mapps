@@ -2,7 +2,20 @@ package com.mapps.model;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.mapps.stats.StatsDecoder;
 
@@ -24,19 +37,27 @@ public class Report {
     private double averageSpeed;
     private double maxVelocity;
     private double minVelocity;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> posX;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> posY;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> velocity;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Integer> pulse;
     private String trainingName;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> accelX;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> accelY;
+    private List<Double> acceleration;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Long> time;
     private long elapsedTime;
@@ -47,7 +68,7 @@ public class Report {
     public Report(String trainingName, Date createdDate, Athlete athlete, double traveledDistance, double averageSpeed,
                   double maxVelocity, double minVelocity, List<Double> posX, List<Double> posY,
                   List<Double> velocity, List<Integer> pulse, List<Double> accelX, List<Double> accelY, List<Long> time,
-                  long elapsedTime) {
+                  List<Double> acceleration, long elapsedTime) {
         this.createdDate = createdDate;
         this.athlete = athlete;
         this.traveledDistance = traveledDistance;
@@ -63,6 +84,7 @@ public class Report {
         this.trainingName = trainingName;
         this.time = time;
         this.elapsedTime = elapsedTime;
+        this.acceleration = acceleration;
     }
 
     public Long getId() {
@@ -185,6 +207,22 @@ public class Report {
         this.time = time;
     }
 
+    public List<Double> getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(List<Double> acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(long elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
+
     public static class Builder{
         private List<ProcessedDataUnit> processedDataUnits;
         private Athlete athlete;
@@ -217,7 +255,7 @@ public class Report {
                                        decoder.getAverageSpeed(), decoder.getMaxVelocity(), decoder.getMinVelocity(),
                                        decoder.getPositionX(), decoder.getPositionY(), decoder.getVelocity(),
                                        decoder.getPulse(), decoder.getAccelX(), decoder.getAccelY(), decoder.getTime(),
-                                       decoder.getElapsedTime());
+                                       decoder.getAcceleration(), decoder.getElapsedTime());
             return report;
         }
     }

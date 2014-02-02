@@ -19,7 +19,6 @@
     <script src="./scripts/d3.v3.js"></script>
     <script src="./scripts/nv.d3.min.js"></script>
     <script src="./scripts/mychart.js"></script>
-
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
@@ -43,13 +42,16 @@ if (info.equals("null")){
 	info = "";
 }else if (info.equals("10")){
 	pop_up_message = "El entrenamiento se a finalizado con éxito";
+	show_pop_up = true;
 }
 String error = String.valueOf(request.getParameter("error"));
 if (error.equals(10)){
 	pop_up_message = "Error de auteticación o no se tiene los permisos necesarios para realizar esta operación";
+	show_pop_up = true;
 }
 else if(error.equals(11)){
 	pop_up_message = "El entrenamiento que desae parar no es válido";
+	show_pop_up = true;
 }
 %>
 <body>
@@ -73,6 +75,14 @@ else if(error.equals(11)){
 			setInterval(function(){
 				call_ajax();
 			}, 5000);
+			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+	            resizable: false, draggable: false, 
+	            okButton: $('#ok'), 
+	            initContent: function () {
+	                $('#ok').jqxButton({  width: '65px' });
+	                $('#ok').focus();
+	            }
+	        });	
 	});
 	
 	function call_ajax(){
