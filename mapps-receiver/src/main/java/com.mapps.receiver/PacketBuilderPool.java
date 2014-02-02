@@ -11,7 +11,7 @@ import com.google.common.collect.Maps;
  */
 public class PacketBuilderPool {
     private Map<String, PacketBuilder> map;
-    private static Optional<PacketBuilderPool> instance;
+    private static Optional<PacketBuilderPool> instance = Optional.absent();
 
     private PacketBuilderPool(){
         map = Maps.newHashMap();

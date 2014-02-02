@@ -36,7 +36,6 @@ public class XBeeReceiver {
                         logger.debug("The XBee packet is incomplete");
                     }
                 }
-                logger.error("The XBee packet format is wrong");
             }
         } catch (XBeeException e){
             e.printStackTrace();

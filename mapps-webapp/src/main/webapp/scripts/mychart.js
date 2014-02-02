@@ -45,7 +45,8 @@ function myData(data) {
 
 function success(){
     nv.addGraph(function() {
-        var chart = nv.models.lineChart().forceY([0, 60]).forceX([-55, 55]);
+    	//.forceY([0, 60]).forceX([-55, 55]);
+        var chart = nv.models.lineChart();
 
         chart.xAxis
             .axisLabel("Posicion X");
