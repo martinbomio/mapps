@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.mapps.model.Athlete;
 import org.apache.log4j.Logger;
 
 import com.mapps.exceptions.NullParameterException;
@@ -67,9 +68,26 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public List<Report> getAllReportsByDate(Long reportDate) {
-        Query query = entityManager.createQuery("from Report as r where r.createdDate=:date");
+        Query query = entityManager.createQuery("select r from Report as r where r.createdDate=:date");
         query.setParameter("date", reportDate);
         List<Report> result = query.getResultList();
         return result;
     }
+    @Override
+    public Report getReport(String trainingName,Athlete athlete) throws ReportNotFoundException {
+        Query query = entityManager.createQuery("select r from Training t join t.reports r " +
+                "where r.athlete=:athlete and t.name=:trainingName");
+
+        query.setParameter("athlete",athlete);
+        query.setParameter("trainingName",trainingName);
+        List<Report> results = query.getResultList();
+
+        if(results.size()==0){
+            return null;
+        }else if (results.size() != 1) {
+            throw new ReportNotFoundException();
+        }
+        return results.get(0);
+    }
+
 }

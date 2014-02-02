@@ -2,16 +2,7 @@ package com.mapps.model;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.mapps.stats.StatsDecoder;
 
@@ -27,7 +18,7 @@ public class Report {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date createdDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Athlete athlete;
     private double traveledDistance;
     private double averageSpeed;
