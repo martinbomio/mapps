@@ -56,6 +56,8 @@ public class Report {
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     private List<Double> accelY;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ElementCollection
     private List<Double> acceleration;
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
