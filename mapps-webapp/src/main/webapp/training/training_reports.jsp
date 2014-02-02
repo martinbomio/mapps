@@ -57,6 +57,13 @@ else if(error.equals(11)){
 %>
 <body>
 
+<style media="screen" type="text/css">
+.tab_player_login{
+	height:50px;
+	margin-bottom:10px;
+	display:inline-block;
+	width:15%;
+}</style>
 <script type="text/javascript">
 	$(document).ready(function () {
 		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
@@ -120,14 +127,15 @@ else if(error.equals(11)){
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athlete;
-            	var distance = get_double_as_String(data.traveledDistance);
-            	var speed = get_double_as_String(data.averageSpeed);
+            	var distance = get_double_as_String(data.traveledDistance,1);
+            	var speed = get_double_as_String(data.averageSpeed,1);
             	var max_bpm = Math.max.apply(Math, data.pulse);
             	var min_bpm = Math.min.apply(Math, data.pulse);
-            	var max_speed = get_double_as_String(data.maxVelocity);
+            	var max_speed = get_double_as_String(data.maxVelocity,1);
+            	var max_acceleration = get_double_as_String(data.acceleration,3);
             	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-            	var div_up = $('<a href="athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:35%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div><div id="time" style="display:inline-block; font-size:14px; width:60%; height:100%;">'+ data.elapsedTime/1000.0+'</div></div></a>');
-            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia</div><div id="distance'+athlete.idDocument+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' km/h </div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Max</div><div id="speed_max'+athlete.idDocument+'" class="tag_data_player_login"> '+max_speed+' km/h </div></div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
+            	var div_up = $('<a href="athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:45%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ data.elapsedTime/1000.0+' sg</div></div>');
+            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia recorrida:</div><div id="distance'+athlete.idDocument+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_acceleration" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Acceleración max:</div><div id="max_acceleration'+athlete.idDocument+'" class="tag_data_player_login"> '+ max_acceleration +' m/(s)2 </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Max</div><div id="speed_max'+athlete.idDocument+'" class="tag_data_player_login"> '+max_speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
@@ -135,10 +143,10 @@ else if(error.equals(11)){
         });
 	}
 	
-	function get_double_as_String(doub){
+	function get_double_as_String(doub, decimals){
 		var val = new String(doub);
     	var split = val.split('.');
-    	return split[0] + '.' + split[1].substr(0,1);
+    	return split[0] + '.' + split[1].substr(0,decimals);
 	}
 	
 </script>
@@ -195,15 +203,15 @@ else if(error.equals(11)){
   			</div>
         
         </div>
-        <div id="main_div">
-        	<div id="main_div_left" style="float:left; width:40%; display:inline-block;">
+        <div id="main_div" style="width:75%;">
+        	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
         		<div id="list_trainings"></div>
         	</div>
-        	<div id="main_div_right" style="float:left; width:60%; display:inline-block;">
+        	<div id="main_div_right" style="float:left; width:70%; display:inline-block;">
         		<div id="list_athletes"></div>
         	</div>
         </div>
-        <div id="sidebar_right">
+        <div id="sidebar_right" style="width:5%;">
         
         </div>
     </div>

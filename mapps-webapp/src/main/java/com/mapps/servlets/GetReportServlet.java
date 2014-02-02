@@ -26,7 +26,7 @@ public class GetReportServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "ReportService")
     ReportService reportService;
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String trainingID = req.getParameter("t");
     String athleteCI = req.getParameter("a");
     String token = String.valueOf(req.getSession().getAttribute("token"));
