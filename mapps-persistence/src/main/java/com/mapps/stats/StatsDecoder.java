@@ -123,7 +123,7 @@ public class StatsDecoder {
                 last = data;
                 continue;
             }
-            if (index % SAMPLING_RATE == 0) {
+            if (index % (SAMPLING_RATE - 1) == 0) {
                 this.posX.add(data.getPositionX());
                 this.posY.add(data.getPositionY());
                 this.accelX.add(data.getAccelerationX());
