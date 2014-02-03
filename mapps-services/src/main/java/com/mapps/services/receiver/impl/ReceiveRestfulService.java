@@ -117,7 +117,7 @@ public class ReceiveRestfulService implements ReceiverService{
                 rawDataUnit.setCorrect(false);
                 if (!rawDataUnitDAO.initialConditionsSatisfied(training, device)){
                     logger.info("Not saving raw data because initial conditions are not satisfied.");
-                    throw new InvalidRawDataUnitRuntimeException();
+                    return;
                 }
             }
             if (String.valueOf(gpsData.getLatitude()).length() != 9 || String.valueOf(gpsData.getLongitude()).length() != 9){
@@ -125,7 +125,7 @@ public class ReceiveRestfulService implements ReceiverService{
                 rawDataUnit.setCorrect(false);
                 if (!rawDataUnitDAO.initialConditionsSatisfied(training, device)){
                     logger.info("Not saving raw data because initial conditions are not satisfied.");
-                    throw new InvalidRawDataUnitRuntimeException();
+                    return;
                 }
             }
             rawDataUnit.setDevice(device);

@@ -1,12 +1,10 @@
 package com.mapps.services.report.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.mapps.exceptions.InvalidReportException;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -14,6 +12,7 @@ import com.google.common.collect.Maps;
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.exceptions.InvalidReportException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
@@ -106,24 +105,25 @@ public class ReportServiceImpl implements ReportService {
     public List<Integer> getThresholds(Training training, String token) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
     @Override
-    public Report getReport(String trainingName,String athleteId,String token) throws AuthenticationException, InvalidReportException {
-         if(trainingName==null || athleteId==null || token==null){
-             throw new AuthenticationException();
-         }
-        Report report=null;
+    public Report getReport(String trainingName, String athleteId, String token) throws AuthenticationException, InvalidReportException {
+        if (trainingName == null || athleteId == null || token == null) {
+            throw new AuthenticationException();
+        }
+        Report report = null;
         try {
             if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
-               Athlete athlete=athleteDAO.getAthleteByIdDocument(athleteId);
-               report = reportDAO.getReport(trainingName,athlete);
-            }else{
+                Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteId);
+                report = reportDAO.getReport(trainingName, athlete);
+            } else {
                 throw new AuthenticationException();
             }
-            if(report==null){
-              throw new InvalidReportException();
+            if (report == null) {
+                throw new InvalidReportException();
             }
-            } catch (InvalidTokenException e) {
+        } catch (InvalidTokenException e) {
             throw new AuthenticationException();
         } catch (AthleteNotFoundException e) {
             throw new AuthenticationException();
@@ -132,21 +132,21 @@ public class ReportServiceImpl implements ReportService {
         }
         return report;
     }
+
     @Override
-    public List<Report> getReportsOfTraining(String trainingName,String token) throws AuthenticationException {
-        if(trainingName==null || token==null){
+    public List<Report> getReportsOfTraining(String trainingName, String token) throws AuthenticationException {
+        if (trainingName == null || token == null) {
             throw new AuthenticationException();
         }
-        List<Report> reports=new ArrayList<Report>();
         try {
             if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
-              reports= reportDAO.getReportsOfTraining(trainingName);
+                return reportDAO.getReportsOfTraining(trainingName);
             }
+            throw new AuthenticationException();
         } catch (InvalidTokenException e) {
             throw new AuthenticationException();
         }
-       return reports;
     }
 
 
@@ -161,12 +161,16 @@ public class ReportServiceImpl implements ReportService {
                 Training training = trainingDAO.getTrainingByName(trainingID);
                 for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
                     List<ProcessedDataUnit> data = getAthleteStats(trainingID, athlete.getIdDocument(), token);
+                    if (data.size() == 0){
+                        logger.error("The training has no data");
+                        return;
+                    }
                     Report report = new Report.Builder().setAthlete(athlete)
-                                                        .setTrainingName(trainingID)
-                                                        .setData(data)
-                                                        .build();
+                            .setTrainingName(trainingID)
+                            .setData(data)
+                            .build();
                     reportDAO.addReport(report);
-                    if (training.getReports() == null){
+                    if (training.getReports() == null) {
                         List<Report> reports = Lists.newArrayList();
                         training.setReports(reports);
                     }

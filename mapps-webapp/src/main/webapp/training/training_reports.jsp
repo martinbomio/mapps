@@ -95,7 +95,7 @@ else if(error.equals(11)){
 	function create_lists(response){
 		var trainings = response;
 		$('#list_trainings').on('select', function (event) {
-			var indexTrain = $("#jqxListBox").jqxListBox('getSelectedIndex'); 
+			var indexTrain = $("#list_trainings").jqxListBox('getSelectedIndex'); 
 			call_reports_ajax(trainings[indexTrain]);
         });
 		

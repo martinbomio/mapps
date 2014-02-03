@@ -120,7 +120,7 @@ public class ContextListener implements ServletContextListener {
         mapUserPermission.put(user, Permission.CREATE);
         mapUserPermission.put(user2, Permission.READ);
 
-        Training training = new Training("nombreTraining", new Date(), 3, 34523268, 56025302, 55, 190,
+        Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
                                          mapAthleteDevice, null, sport, mapUserPermission, inst);
         training.setStarted(true);
         try {
@@ -141,10 +141,10 @@ public class ContextListener implements ServletContextListener {
             deviceDAO.addDevice(device1);
             trainingDAO.addTraining(training);
 
-            List<IMUData> imuDatas = loadImuData(servletContextEvent);
-            List<GPSData> gpsDatas = loadGPSData(servletContextEvent);
-            loadAndSaveRawDataUnit(device1, training, imuDatas, gpsDatas, servletContextEvent);
-            loadAndSaveProcessedDataUnits(device1, servletContextEvent);
+//            List<IMUData> imuDatas = loadImuData(servletContextEvent);
+//            List<GPSData> gpsDatas = loadGPSData(servletContextEvent);
+//            loadAndSaveRawDataUnit(device1, training, imuDatas, gpsDatas, servletContextEvent);
+//            loadAndSaveProcessedDataUnits(device1, servletContextEvent);
 
         } catch (InstitutionAlreadyExistException e) {
             logger.error("Institution already exists");
@@ -162,16 +162,16 @@ public class ContextListener implements ServletContextListener {
             logger.error("Training already exists");
         } catch (URISyntaxException e) {
             logger.error("Image error");
-        } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (GPSDataNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (RawDataUnitNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IMUDataNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (ParseException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (IOException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (GPSDataNotFoundException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (RawDataUnitNotFoundException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (IMUDataNotFoundException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 

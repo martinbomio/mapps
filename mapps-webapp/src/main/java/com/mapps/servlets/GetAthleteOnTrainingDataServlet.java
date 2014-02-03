@@ -39,23 +39,25 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         Writer writer = resp.getWriter();
         try {
             List<ProcessedDataUnit> stats = reportService.getAthleteStats(trainingID, athleteCI, token);
-            Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
-            Report report = new Report.Builder().setAthlete(athlete)
-                                                .setTrainingName(trainingID)
-                                                .setData(stats).build();
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            String json = new Gson().toJson(report);
-            writer.write(json);
-            writer.close();
+            if (stats.size() != 0) {
+                Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
+                Report report = new Report.Builder().setAthlete(athlete)
+                                                    .setTrainingName(trainingID)
+                                                    .setData(stats).build();
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                String json = new Gson().toJson(report);
+                writer.write(json);
+                writer.close();
+            }
         } catch (AuthenticationException e) {
-        	writer.write("Error de autenticacion");
+            writer.write("Error de autenticacion");
         } catch (InvalidTrainingException e) {
-        	writer.write("El entrenamiento no es valido");
+            writer.write("El entrenamiento no es valido");
         } catch (InvalidAthleteException e) {
-        	writer.write("El atleta no es valido");
-        }finally{
-        	writer.close();
+            writer.write("El atleta no es valido");
+        } finally {
+            writer.close();
         }
     }
 }

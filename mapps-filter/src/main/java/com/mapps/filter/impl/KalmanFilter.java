@@ -51,6 +51,7 @@ public class KalmanFilter implements Filter {
     private static final int ACCEL_RANGE = 8192;
     private static final int YPR_RANGE = 100;
     private static final int INITIAL_DATA_ERROR = 20;
+    private static final int DATA_ERROR = 7;
 
 
     @Override
@@ -129,8 +130,8 @@ public class KalmanFilter implements Filter {
     }
 
     private boolean checkCoordenates(double[] vectorY) {
-        return (Math.abs(lastXpos.get(0, 0) - vectorY[0]) > INITIAL_DATA_ERROR ||
-                Math.abs(lastXpos.get(1, 0) - vectorY[1]) > INITIAL_DATA_ERROR);
+        return (Math.abs(lastXpos.get(0, 0) - vectorY[0]) > DATA_ERROR ||
+                Math.abs(lastXpos.get(1, 0) - vectorY[1]) > DATA_ERROR);
     }
 
     private void createNewState() {
