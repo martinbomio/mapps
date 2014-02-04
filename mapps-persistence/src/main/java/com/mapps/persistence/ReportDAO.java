@@ -3,9 +3,11 @@ package com.mapps.persistence;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.mapps.exceptions.InvalidReportException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ReportAlreadyExistException;
 import com.mapps.exceptions.ReportNotFoundException;
+import com.mapps.model.Athlete;
 import com.mapps.model.Report;
 
 /**
@@ -48,4 +50,8 @@ public interface ReportDAO {
      * @return - all the Report of one date
      */
     List<Report> getAllReportsByDate (Long reportDate);
+
+    public Report getReport(String trainingName,Athlete athlete) throws InvalidReportException;
+
+    public List<Report> getReportsOfTraining(String trainingName);
 }

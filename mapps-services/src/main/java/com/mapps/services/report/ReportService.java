@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
 
+import com.mapps.exceptions.InvalidReportException;
 import com.mapps.model.Athlete;
 import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.Report;
 import com.mapps.model.Training;
 import com.mapps.services.report.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
@@ -31,4 +33,7 @@ public interface ReportService {
      * @param token the identifier of the session.
      */
     void createTrainingReports(String trainingID, String token) throws AuthenticationException;
+
+    public Report getReport(String trainingName,String athleteId,String token) throws AuthenticationException, InvalidReportException;
+    public List<Report> getReportsOfTraining(String trainingName,String token) throws AuthenticationException;
 }

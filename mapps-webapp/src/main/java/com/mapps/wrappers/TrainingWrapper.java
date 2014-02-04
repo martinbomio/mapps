@@ -21,7 +21,7 @@ public class TrainingWrapper {
     private boolean started;
     private List<Athlete> athletes;
     private List<Device> devices;
-    private List<Report> reports;
+
     private List<User> users;
     private List<Permission> permissions;
     private Sport sport;
@@ -38,6 +38,7 @@ public class TrainingWrapper {
         this.athletes = Lists.newArrayList();
         this.devices = Lists.newArrayList();
         this.sport=training.getSport();
+
         for (Athlete athlete : training.getMapAthleteDevice().keySet()){
             this.athletes.add(athlete);
             this.devices.add(training.getMapAthleteDevice().get(athlete));

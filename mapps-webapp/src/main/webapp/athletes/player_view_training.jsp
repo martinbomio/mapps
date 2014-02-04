@@ -143,7 +143,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 			var series1 = [];
 		    for(var j =0; j < data[i].time.length; j ++) {
 		        series1.push({
-		            x: data[i].time[j], y: data[i].modVel[j]
+		            x: data[i].time[j], y: data[i].velocity[j]
 		        });
 		    }
 		    var ret = {
@@ -189,7 +189,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 
 	function create_label(data){
 		var athlete = data.athlete;
-		var distance = new String(data.distanceTraveled);
+		var distance = new String(data.traveledDistance);
 		var split = distance.split('.');
 		var distance = split[0] + '.' + split[1].substr(0,1);
 		split = new String(data.averageSpeed).split('.');
@@ -205,7 +205,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 
 	function update_values(data){
 		var athlete = data.athlete;
-		var distance = new String(data.distanceTraveled);
+		var distance = new String(data.traveledDistance);
 		var split = distance.split('.');
 		var distance = split[0] + '.' + split[1].substr(0,1);
 		split = new String(data.averageSpeed).split('.');

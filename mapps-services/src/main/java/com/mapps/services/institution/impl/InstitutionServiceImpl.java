@@ -200,6 +200,23 @@ public class InstitutionServiceImpl implements InstitutionService {
             throw new AuthenticationException();
         }
     }
+    @Override
+    public List<Training> getFinishedTrainingsOfInstitution(String token) throws AuthenticationException {
+        if(token==null){
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.USER)){
+                throw new AuthenticationException();
+            }
+            User user =authenticationHandler.getUserOfToken(token);
+            return trainingDAO.getFinishedTrainings(user.getInstitution());
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (InvalidStartedTrainingException e) {
+            throw new AuthenticationException();
+        }
+    }
         @Override
     public List<Training> getTraingsToStartOfInstitution(String token) throws AuthenticationException {
         if (token == null){

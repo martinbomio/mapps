@@ -125,4 +125,6 @@ public interface TrainingDAO {
 
     public Training getStartedTraining(Institution institution) throws InvalidStartedTrainingException;
 
+    public List<Training> getFinishedTrainings(Institution institution) throws InvalidStartedTrainingException;
+
 }

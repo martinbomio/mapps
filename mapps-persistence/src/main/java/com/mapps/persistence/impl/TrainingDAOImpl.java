@@ -214,4 +214,16 @@ public class TrainingDAOImpl implements TrainingDAO {
         return results.get(0);
 
     }
+    @Override
+    public List<Training> getFinishedTrainings(Institution institution) throws InvalidStartedTrainingException {
+        Query query = entityManager.createQuery("select t from Training t join t.institution i where " +
+                "i=:institution and t.started=:started and t.finished=:finished");
+        query.setParameter("institution",institution);
+        query.setParameter("started",false);
+        query.setParameter("finished",true);
+        List<Training> results = query.getResultList();
+
+        return results;
+
+    }
 }

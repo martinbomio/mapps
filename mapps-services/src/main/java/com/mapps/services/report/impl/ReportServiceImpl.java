@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.AthleteNotFoundException;
+import com.mapps.exceptions.InvalidReportException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
@@ -106,6 +107,50 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public Report getReport(String trainingName, String athleteId, String token) throws AuthenticationException, InvalidReportException {
+        if (trainingName == null || athleteId == null || token == null) {
+            throw new AuthenticationException();
+        }
+        Report report = null;
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteId);
+                report = reportDAO.getReport(trainingName, athlete);
+            } else {
+                throw new AuthenticationException();
+            }
+            if (report == null) {
+                throw new InvalidReportException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (AthleteNotFoundException e) {
+            throw new AuthenticationException();
+        } catch (InvalidReportException e) {
+            throw new InvalidReportException();
+        }
+        return report;
+    }
+
+    @Override
+    public List<Report> getReportsOfTraining(String trainingName, String token) throws AuthenticationException {
+        if (trainingName == null || token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                return reportDAO.getReportsOfTraining(trainingName);
+            }
+            throw new AuthenticationException();
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        }
+    }
+
+
+    @Override
     public void createTrainingReports(String trainingID, String token) throws AuthenticationException {
         if (trainingID == null || token == null) {
             throw new AuthenticationException();
@@ -116,12 +161,16 @@ public class ReportServiceImpl implements ReportService {
                 Training training = trainingDAO.getTrainingByName(trainingID);
                 for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
                     List<ProcessedDataUnit> data = getAthleteStats(trainingID, athlete.getIdDocument(), token);
+                    if (data.size() == 0){
+                        logger.error("The training has no data");
+                        return;
+                    }
                     Report report = new Report.Builder().setAthlete(athlete)
-                                                        .setTrainingName(trainingID)
-                                                        .setData(data)
-                                                        .build();
+                            .setTrainingName(trainingID)
+                            .setData(data)
+                            .build();
                     reportDAO.addReport(report);
-                    if (training.getReports() == null){
+                    if (training.getReports() == null) {
                         List<Report> reports = Lists.newArrayList();
                         training.setReports(reports);
                     }
