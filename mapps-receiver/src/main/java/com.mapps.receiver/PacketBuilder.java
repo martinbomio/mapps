@@ -11,20 +11,24 @@ public class PacketBuilder {
     Logger logger = Logger.getLogger(PacketBuilder.class);
     private StringBuilder builder;
     private String dirLow;
-    private boolean started;
     private ServiceInvoker serviceInvoker;
+    private int count;
 
     public PacketBuilder(String dir) {
         String dirLow = dir.substring(8);
         this.dirLow = dirLow;
         this.builder = new StringBuilder();
         this.builder.append(this.dirLow + "@");
+        this.count = 0;
         serviceInvoker = new ResfulServiceInvoker();
     }
 
     public void addPacket(String packet)  {
-        if (packet.substring(0,1).equals("G")){
-            if(builder.length() != 9){
+        if (packet.substring(0,1).equals("P")){
+            String payload = packet.split(",")[0];
+            builder.append(payload + ",");
+            count++;
+            if( count == 3){
                 String finalPacket = getPacket();
                 logger.info("Packet: " + finalPacket);
                     try{
@@ -35,10 +39,6 @@ public class PacketBuilder {
                 builder.setLength(0);
                 builder.append(this.dirLow + "@");
             }
-            this.started = true;
-        }
-        if (this.started){
-            builder.append(packet + ",");
         }
     }
 
