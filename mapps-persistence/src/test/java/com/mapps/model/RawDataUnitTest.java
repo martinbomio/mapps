@@ -45,7 +45,5 @@ public class RawDataUnitTest {
         Assert.assertEquals(imuData.getYaw(),-4745);
         Assert.assertEquals(imuData.getPitch(),194);
         Assert.assertEquals(imuData.getRoll(),-90);
-
-
     }
 }

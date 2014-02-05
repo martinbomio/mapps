@@ -93,5 +93,16 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
         return  rawDataUnits;
     }
 
+    @Override
+    public List<RawDataUnit> getRawDataFromAthleteOnTraining(Training training, Device device) {
+        String sql = "select r from RawDataUnit r join fetch r.device d join fetch r.training t where ( d=:device and t=:training ) " +
+                "order by r.date asc";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("device", device);
+        query.setParameter("training", training);
+        List<RawDataUnit> rawDataUnits = query.getResultList();
+        return rawDataUnits;
+    }
+
 
 }

@@ -7,9 +7,11 @@ import javax.ejb.Local;
 import com.mapps.exceptions.InvalidReportException;
 import com.mapps.model.Athlete;
 import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.PulseReport;
 import com.mapps.model.Report;
 import com.mapps.model.Training;
 import com.mapps.services.report.exceptions.AuthenticationException;
+import com.mapps.services.report.exceptions.NoPulseDataException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
@@ -33,7 +35,9 @@ public interface ReportService {
      * @param token the identifier of the session.
      */
     void createTrainingReports(String trainingID, String token) throws AuthenticationException;
+    void createTrainingPulseReports(String trainingID, String token) throws AuthenticationException;
 
     public Report getReport(String trainingName,String athleteId,String token) throws AuthenticationException, InvalidReportException;
     public List<Report> getReportsOfTraining(String trainingName,String token) throws AuthenticationException;
+    PulseReport getAthletePulseStats(String trainingID, String athleteCI, String token) throws AuthenticationException, NoPulseDataException;
 }

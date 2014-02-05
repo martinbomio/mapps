@@ -12,7 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -26,6 +28,9 @@ import com.mapps.utils.Constants;
  */
 @Entity(name = "RawDataUnit")
 public class RawDataUnit implements DataParser{
+    @Transient
+    private static final Logger logger = Logger.getLogger(RawDataUnit.class);
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
@@ -147,30 +152,17 @@ public class RawDataUnit implements DataParser{
         }
         String[] separetedData = data.split(",");
         if (separetedData.length >0 ){
-            imuData = new ArrayList<IMUData>();
-            gpsData = new ArrayList<GPSData>();
             pulseData = new ArrayList<PulseData>();
         }
         for(String d : separetedData){
             String[] sensorData = d.split(":");
-            if( sensorData[0].equals(Constants.GPSDELIMETER)){
-                GPSData gps = new GPSData(sensorData[1]);
-                gpsData.add(gps);
-                if (sensorData.length > 2){
-                    PulseData pulse = new PulseData(sensorData[2]);
-                    pulseData.add(pulse);
-                }
-            }else if( sensorData[0].equals(Constants.IMUDELIMETER)){
-                for(int i = 1; i< sensorData.length; i++){
-                    if (sensorData[i].equals("}"))
-                        continue;
-                    String[] split = sensorData[i].split("/");
-                    if (split.length != 6)
-                        continue;
-                    IMUData imu = new IMUData(sensorData[i]);
-                    imuData.add(imu);
-                }
+            if( sensorData[0].equals(Constants.PULSEDELIMETER)){
+                PulseData pulse = new PulseData(sensorData[1]);
+                pulseData.add(pulse);
+            }else{
+                logger.error("Invalid raw data unit");
             }
+
         }
     }
 }

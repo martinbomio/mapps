@@ -215,7 +215,7 @@ public class KalmanFilterServiceIntegrationTest {
         Double pX = Double.parseDouble(split[4]);
         Double pY = Double.parseDouble(split[5]);
         Date date = new Date(Long.parseLong(split[6]));
-        ProcessedDataUnit processedDataUnit  = new ProcessedDataUnit(pX, aY, aX, vY, vX, pY, this.device, last, date);
-        return processedDataUnit;
+        //ProcessedDataUnit processedDataUnit  = new ProcessedDataUnit(pX, aY, aX, vY, vX, pY, this.device, last, date);
+        return null;
     }
 }

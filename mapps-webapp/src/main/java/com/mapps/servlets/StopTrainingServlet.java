@@ -39,7 +39,7 @@ public class StopTrainingServlet extends HttpServlet implements Servlet {
         String name = req.getParameter("name");
         try {
             Training training = trainerService.getTrainingByName(token, name);
-            reportService.createTrainingReports(training.getName(), token);
+            reportService.createTrainingPulseReports(training.getName(), token);
             trainerService.stopTraining(training, token);
             resp.sendRedirect("index.jsp?info=10");
         } catch (AuthenticationException e) {

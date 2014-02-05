@@ -45,4 +45,6 @@ public interface RawDataUnitDAO {
     boolean initialConditionsSatisfied(Training training, Device device);
 
     List<RawDataUnit> getInitialConditions(Training training, Device device);
+
+    List<RawDataUnit> getRawDataFromAthleteOnTraining(Training training, Device device);
 }

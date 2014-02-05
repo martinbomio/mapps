@@ -48,6 +48,8 @@ public class Training {
     private Map<Athlete, Device> mapAthleteDevice;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Report> reports;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<PulseReport> pulseReports;
     @ManyToOne
     private Sport sport;
     @ManyToOne
@@ -66,7 +68,8 @@ public class Training {
     }
 
     public Training(String name, Date date, int participants, long latOrigin, long longOrigin, int minBPM,
-                    int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports, Sport sport,
+                    int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports,
+                    List<PulseReport> pulseReports, Sport sport,
                     Map<User, Permission> mapUserPermission, Institution institution) {
         this.name = name;
         this.date = date;
@@ -82,6 +85,7 @@ public class Training {
         this.institution = institution;
         this.started = false;
         this.finished = false;
+        this.pulseReports = pulseReports;
     }
 
     public Long getId() {
@@ -202,5 +206,13 @@ public class Training {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public List<PulseReport> getPulseReports() {
+        return pulseReports;
+    }
+
+    public void setPulseReports(List<PulseReport> pulseReports) {
+        this.pulseReports = pulseReports;
     }
 }

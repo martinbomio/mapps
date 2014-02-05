@@ -13,13 +13,11 @@ import com.mapps.exceptions.DeviceNotFoundException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Device;
-import com.mapps.model.GPSData;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Training;
 import com.mapps.persistence.DeviceDAO;
 import com.mapps.persistence.RawDataUnitDAO;
 import com.mapps.persistence.TrainingDAO;
-import com.mapps.services.kalman.FilterService;
 import com.mapps.services.receiver.ReceiverService;
 import com.mapps.services.receiver.exceptions.InvalidDataException;
 import com.mapps.services.receiver.exceptions.InvalidDataRuntimeException;
@@ -40,8 +38,6 @@ public class ReceiveRestfulService implements ReceiverService{
     RawDataUnitDAO rawDataUnitDAO;
     @EJB(beanName = "DeviceDAO")
     DeviceDAO deviceDAO;
-    @EJB(beanName = "KalmanFilterService")
-    FilterService kalmanFilterService;
 
     @POST
     @Consumes("text/plain")
@@ -111,28 +107,10 @@ public class ReceiveRestfulService implements ReceiverService{
         }
         try{
             RawDataUnit rawDataUnit = new RawDataUnit(data);
-            GPSData gpsData = rawDataUnit.getGpsData().get(0);
-            if (gpsData.getLatitude() == 0 || gpsData.getLongitude() == 0){
-                logger.error("Latitud or Longitud are 0");
-                rawDataUnit.setCorrect(false);
-                if (!rawDataUnitDAO.initialConditionsSatisfied(training, device)){
-                    logger.info("Not saving raw data because initial conditions are not satisfied.");
-                    return;
-                }
-            }
-            if (String.valueOf(gpsData.getLatitude()).length() != 9 || String.valueOf(gpsData.getLongitude()).length() != 9){
-                logger.info("Wrong gps Data, using previous one");
-                rawDataUnit.setCorrect(false);
-                if (!rawDataUnitDAO.initialConditionsSatisfied(training, device)){
-                    logger.info("Not saving raw data because initial conditions are not satisfied.");
-                    return;
-                }
-            }
             rawDataUnit.setDevice(device);
             rawDataUnit.setTraining(training);
             rawDataUnit.setTimestamp(rawDataUnit.getDate().getTime() - training.getDate().getTime());
             rawDataUnitDAO.addRawDataUnit(rawDataUnit);
-            kalmanFilterService.handleData(rawDataUnit, device, training);
         } catch (NullParameterException e) {
             logger.error("Invalid data unit structure to save");
             throw new InvalidRawDataUnitRuntimeException();

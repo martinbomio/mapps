@@ -16,25 +16,31 @@ import com.mapps.exceptions.InvalidReportException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Device;
 import com.mapps.model.Permission;
 import com.mapps.model.ProcessedDataUnit;
+import com.mapps.model.PulseReport;
+import com.mapps.model.RawDataUnit;
 import com.mapps.model.Report;
 import com.mapps.model.Role;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 import com.mapps.persistence.AthleteDAO;
 import com.mapps.persistence.ProcessedDataUnitDAO;
+import com.mapps.persistence.PulseReportDAO;
+import com.mapps.persistence.RawDataUnitDAO;
 import com.mapps.persistence.ReportDAO;
 import com.mapps.persistence.TrainingDAO;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
+import com.mapps.services.report.exceptions.NoPulseDataException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
- *
- *
- */
+*
+*
+*/
 @Stateless(name = "ReportService")
 public class ReportServiceImpl implements ReportService {
 
@@ -50,6 +56,10 @@ public class ReportServiceImpl implements ReportService {
     ProcessedDataUnitDAO processedDataUnitDAO;
     @EJB(name = "AuthenticationHandler")
     AuthenticationHandler authenticationHandler;
+    @EJB(name = "RawDataUnitDAO")
+    RawDataUnitDAO rawDataUnitDAO;
+    @EJB(name = "PulseReportDAO")
+    PulseReportDAO pulseReportDAO;
 
     @Override
     public Map<Athlete, List<ProcessedDataUnit>> getTrainingsReport(String trainingID, String token) throws InvalidTrainingException, AuthenticationException {
@@ -58,7 +68,7 @@ public class ReportServiceImpl implements ReportService {
             Training training = trainingDAO.getTrainingByName(trainingID);
             for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
                 List<ProcessedDataUnit> dataUnits = getAthleteStats(trainingID, athlete.getIdDocument(), token);
-                dataMap.put(athlete, dataUnits);
+                //dataMap.put(athlete, dataUnits);
             }
             return dataMap;
         } catch (TrainingNotFoundException e) {
@@ -97,6 +107,40 @@ public class ReportServiceImpl implements ReportService {
         } catch (NullParameterException e) {
             logger.error("Invalid parameters");
             throw new IllegalStateException();
+        }
+    }
+
+    public PulseReport getAthletePulseStats(String trainingID, String athleteCI, String token) throws AuthenticationException, NoPulseDataException {
+        if (trainingID == null || athleteCI == null) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            User user = authenticationHandler.getUserOfToken(token);
+            Training training = trainingDAO.getTrainingByName(trainingID);
+            Permission permission = training.getMapUserPermission().get(user);
+            if (permission != Permission.CREATE && permission != Permission.READ) {
+                logger.error("User has no permissions");
+                throw new AuthenticationException();
+            }
+            Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteCI);
+            Map<Athlete, Device> map = training.getMapAthleteDevice();
+            List<RawDataUnit> rawDataUnits = rawDataUnitDAO.getRawDataFromAthleteOnTraining(training, map.get(athlete));
+            if (rawDataUnits.size() == 0){
+                throw new NoPulseDataException();
+            }
+            PulseReport report = new PulseReport.Builder().setPulseData(rawDataUnits)
+                                                          .setAthlete(athlete)
+                                                          .setTraining(training).build();
+            return report;
+        } catch (InvalidTokenException e) {
+            logger.error("Invalid token");
+            throw new AuthenticationException();
+        } catch (TrainingNotFoundException e) {
+            logger.error("Invalid Training");
+            throw new IllegalStateException(e);
+        } catch (AthleteNotFoundException e) {
+            logger.error("Invalid Athlete");
+            throw new IllegalStateException(e);
         }
     }
 
@@ -161,7 +205,7 @@ public class ReportServiceImpl implements ReportService {
                 Training training = trainingDAO.getTrainingByName(trainingID);
                 for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
                     List<ProcessedDataUnit> data = getAthleteStats(trainingID, athlete.getIdDocument(), token);
-                    if (data.size() == 0){
+                    if (data.size() == 0) {
                         logger.error("The training has no data");
                         return;
                     }
@@ -192,6 +236,41 @@ public class ReportServiceImpl implements ReportService {
             throw new IllegalStateException("Training not found", e);
         } catch (NullParameterException e) {
             throw new IllegalStateException("Wrong parameters on saving report", e);
+        }
+    }
+
+    @Override
+    public void createTrainingPulseReports(String trainingID, String token) throws AuthenticationException {
+        if (trainingID == null || token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                Training training = trainingDAO.getTrainingByName(trainingID);
+                for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
+                    PulseReport report = getAthletePulseStats(trainingID, athlete.getIdDocument(), token);
+                    pulseReportDAO.addReport(report);
+                    if (training.getReports() == null) {
+                        List<Report> reports = Lists.newArrayList();
+                        training.setReports(reports);
+                    }
+                    training.getPulseReports().add(report);
+                    trainingDAO.updateTraining(training);
+                }
+            } else {
+                logger.error("User is not a trainer");
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            logger.error("Authentication exception");
+            throw new AuthenticationException();
+        } catch (TrainingNotFoundException e) {
+            throw new IllegalStateException("Training not found", e);
+        } catch (NullParameterException e) {
+            throw new IllegalStateException("Wrong parameters on saving report", e);
+        } catch (NoPulseDataException e) {
+            throw new IllegalStateException(e);
         }
     }
 }
