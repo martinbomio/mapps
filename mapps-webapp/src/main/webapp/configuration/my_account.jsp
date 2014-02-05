@@ -170,7 +170,7 @@ if(info.equals("1")){
             <div id="title" style="margin:15px;">
                 
             </div>     	
-            <div style="width:100%; height:100%; font-size:12px;">
+            <div style="width:100%; height:100%; font-size:12px; margin-left:5%;">
             	<div id="main_div_left" style="width:32%; height:100%; display:inline-block;">
                 	
                 	<div id="document" class="my_account_field">

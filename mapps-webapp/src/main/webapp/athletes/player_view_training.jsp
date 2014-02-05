@@ -15,9 +15,10 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxchart.js"></script>
-    <link href="../scripts/nv.d3.min.css" rel="stylesheet" type="text/css">
-    <script src="../scripts/d3.v3.js"></script>
-    <script src="../scripts/nv.d3.min.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxgauge.js"></script>
+    <script src="../amcharts/amcharts.js" type="text/javascript"></script>
+	<script src="../amcharts/serial.js" type="text/javascript"></script>
+	<script src="../amcharts/xy.js" type="text/javascript"></script>
 
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
@@ -62,10 +63,12 @@ String athleteID = String.valueOf(request.getParameter("a"));
 			<%
 			}
 			%>
+			
+			/*
 			setInterval(function(){
 				athlete_stats();
 			}, 5000);
-					
+			*/	
 	});
 	
 	function athlete_stats(){
@@ -94,99 +97,96 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		var data = window.athleteData;
 		var series = [];
 		for(var i = 0 ; i<data.length; i++){
-			var series1 = [];
-		    for(var j =0; j < data[i].time.length; j ++) {
-		        if((data[i].pulse[j])==null){
-		        	series1.push({
-			            x: data[i].time[j], y: 0
-			        });	
-		        }else{
-		    	series1.push({
-		            x: data[i].time[j], y: data[i].pulse[j]
-		        });
-		        }
-		        
-		    }
-		    var ret = {
-		                   key: data[i].athlete.name,
-		                   values: series1,
-		                   color: "#0000ff"
-		               };
-		    series.push(ret);
+			if( data[i].time.length > 300 ){
+				for(var j = data[i].time.length - 300; j < data[i].time.length ; j = j + 10) {
+					if((data[i].pulse[j])==null){
+						series.push({
+							time: data[i].time[j], pulse: 0
+						});	
+					}else{
+						series1.push({
+							time: data[i].time[j], pulse: data[i].pulse[j]
+						});
+					}				
+				}
+			}else {
+				for(var j = 0 ; j < data[i].time.length ; j = j + 10) {
+					if((data[i].pulse[j])==null){
+						series.push({
+							time: data[i].time[j], pulse: 0
+						});	
+					}else{
+						series1.push({
+							time: data[i].time[j], pulse: data[i].pulse[j]
+						});
+					}				
+				}
+			}
 		}
 	    return series;
 	}
 	
-	function myData() {
-		var data = window.athleteData;
-		var series = [];
-		for(var i = 0 ; i<data.length; i++){
-			var series1 = [];
-		    for(var j =0; j < data[i].posX.length; j ++) {
-		        series1.push({
-		            x: data[i].posX[j], y: data[i].posY[j]
-		        });
-		    }
-		    var ret = {
-		                   key: data[i].athlete.name,
-		                   values: series1,
-		                   color: "#0000ff"
-		               };
-		    series.push(ret);
-		}
-	    return series;
-	}
-	function velocityData() {
-		var data = window.athleteData;
-		var series = [];
-		for(var i = 0 ; i<data.length; i++){
-			var series1 = [];
-		    for(var j =0; j < data[i].time.length; j ++) {
-		        series1.push({
-		            x: data[i].time[j], y: data[i].velocity[j]
-		        });
-		    }
-		    var ret = {
-		                   key: data[i].athlete.name,
-		                   values: series1,
-		                   color: "#0000ff"
-		               };
-		    series.push(ret);
-		}
-	    return series;
-	}
+	
+	
 	function success(){
-	    nv.addGraph(function() {
-	        var chart = nv.models.lineChart();
-
-	        chart.xAxis
-	            .axisLabel("Posicion X");
-	        
-	       chart.yAxis    
-	            .tickFormat(d3.format("d"));
-
-	       d3.select("#position")
-	            .datum(myData())
-	            .transition().duration(500).call(chart);
-	       
-	       d3.select("#pulse")
-           .datum(pulseData())
-           .transition().duration(500).call(chart);
-	       
-	       d3.select("#velocity")
-           .datum(velocityData())
-           .transition().duration(500).call(chart);
-
-	        nv.utils.windowResize(
-	                function() {
-	                    chart.update();
-	                }
-	            );
-
-	        return chart;
-	    });
+		
+	  	// prepare chart data as an array
+        var pulse_data = pulseData();
+				
+			
+		var pulse_time_chart = new AmCharts.AmSerialChart();
+		speed_chart.dataProvider = speed_data;
+		speed_chart.categoryField = "x";
+		/*
+		var speed_category_axis = speed_chart.categoryAxis;
+		speed_category_axis.parseDates = true;
+		speed_category_axis.minPeriod = 'fff';
+		speed_chart.dataDateFormat = "NN-SS";
+		*/
+			
+		var pulse_time_graph = new AmCharts.AmGraph();
+		pulse_time_graph.valueField = "y";
+		pulse_time_graph.type = "line";
+		pulse_time_graph.title = "Velocidad (km/h)";
+		pulse_time_graph.balloonText = "[[value]] km/h";
+		pulse_time_graph.fillAlphas = 0.5;
+		pulse_time_chart.addGraph(speed_graph);
+			
+		var chartScrollbar = new AmCharts.ChartScrollbar();
+		pulse_time_chart.addChartScrollbar(chartScrollbar);
+			
+		var chartCursor = new AmCharts.ChartCursor();
+		chartCursor.cursorPosition = "mouse";
+		pulse_time_chart.addChartCursor(chartCursor);
+			
+		pulse_time_chart.write('graphicPulse');
+			
+		// aca debe ponerse el gauge (jqx)
+	
 	}
-
+	
+	
+	function pulseGauge(){
+		$('#gaugeContainer').jqxGauge({
+            ranges: [{ startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
+                     { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
+                     { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
+                     { startValue: 165, endValue: 220, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }],
+            ticksMinor: { interval: 5, size: '5%' },
+            ticksMajor: { interval: 10, size: '9%' },
+            value: 0,
+            colorScheme: 'scheme05',
+            animationDuration: 1200
+        });
+        $('#gaugeContainer').on('valueChanging', function (e) {
+            $('#gaugeValue').text(Math.round(e.args.value) + ' kph');
+        });
+        $('#gaugeContainer').jqxGauge('value', 140);
+		
+	}
+	
+	
+/*
 	function create_label(data){
 		var athlete = data.athlete;
 		var distance = new String(data.traveledDistance);
@@ -214,7 +214,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		$('#speed'+athlete.idDocument+'').text(speed);
 		$('#pulse'+athlete.idDocument+'').text(data.pulse[data.pulse.length-1]);
 	}
-	
+*/	
 </script>
 
 <div id="header">
@@ -238,32 +238,31 @@ String athleteID = String.valueOf(request.getParameter("a"));
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
     </div>
-    <div id="area_de_trabajo">
-		<div id="sidebar_left">
+    <div id="area_de_trabajo" style="height:900px;">
+		<div id="sidebar_left" style="width:10%;">
         
         </div>
-        <div id="main_div">
+        <div id="main_div" style="width:80%;">
         	<div id="training" style="width:100%; height:40px;"> 
             
             </div>
             <div>
-            	<div id="graphicPosition" style="height:400px; width:60%; display:inline-block;">
-                	<svg id="position"/>
+            	<div id="main_div_left" style="float:left; width:60%; margin-top:50px;">
+                    <div style="margin-top:50px;">Pulso 
+                        <div id="graphicPulse" style="height:280px; width:85%;">
+                            
+                        </div>
+                    </div>               
                 </div>
-                <div id="graphicPulse" style="height:400px; width:60%; display:inline-block;">
-                	<svg id="pulse"/>
-                </div>
-                <div id="graphicVelocity" style="height:400px; width:60%; display:inline-block;">
-                	<svg id="velocity"/>
-                </div>
-              
+                <div id="main_div_right" style="float:left; width:40%; margin-top:50px;">
+                	<div id="gaugeContainer" style="height:160px; width: 100%; float:left;">                
                 
-               
-                <div id="list_players">                
-                </div>
+                	</div>
+				</div>
+                
             </div>
         </div>
-        <div id="sidebar_right">
+        <div id="sidebar_right" style="width:10%;">
         
         </div>
     </div>

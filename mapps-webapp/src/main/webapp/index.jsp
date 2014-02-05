@@ -15,10 +15,6 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxchart.js"></script>
-    <link href="./scripts/nv.d3.min.css" rel="stylesheet" type="text/css">
-    <script src="./scripts/d3.v3.js"></script>
-    <script src="./scripts/nv.d3.min.js"></script>
-    <script src="./scripts/mychart.js"></script>
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
@@ -41,7 +37,7 @@ String info = String.valueOf(request.getParameter("info"));
 if (info.equals("null")){
 	info = "";
 }else if (info.equals("10")){
-	pop_up_message = "El entrenamiento se a finalizado con éxito";
+	pop_up_message = "El entrenamiento se ha finalizado con éxito";
 	show_pop_up = true;
 }
 String error = String.valueOf(request.getParameter("error"));
@@ -98,7 +94,7 @@ else if(error.equals(11)){
             		var training=JSON.parse(training);
             		create_stop_training(training.name);
             		var split = training.date.split(" ");
-            		var display_name = "Entreneamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
+            		var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
             		$('#training').text( display_name);
             		draw_chart(training);
             	}
@@ -107,11 +103,13 @@ else if(error.equals(11)){
 	}
 	
 	function create_stop_training(training_name){
-		var button = $('<input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" style="margin-left:200px;" />');
+		var button = $('<input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" style="margin-left:30%;" />');
 		$('#stop_training_div').html(button);
 		$("#stop_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 		$("#stop_training").on('click', function () { window.location.assign('/mapps/stopTraining?name='+training_name+'')}); 
 	}
+	
+	
 
 	
 </script>
@@ -150,25 +148,101 @@ else if(error.equals(11)){
 	  	<div id="tab_1" class="tab active" onclick="location.href='index.jsp'" style="margin-left:13%;">INICIO</div>
         <div id="tab_2" class="tab" onclick="location.href='athletes/athletes.jsp'">JUGADORES</div>
         <div id="tab_3" class="tab" onclick="location.href='training/trainings.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_4" class="tab" onclick="location.href='myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
     </div>
-    <div id="area_de_trabajo">
+    <div id="area_de_trabajo" style="height:620px;">
 		<div id="sidebar_left">
         
         </div>
         <div id="main_div">
-        	<div id="training" style="width:100%; height:40px;"> 
+        	<div id="training" style="width:100%; height:25px; padding-top:15px;"> 
             
             </div>
-            <div>
-            	<div id="graphic" style="height:400px; width:60%; display:inline-block;">
-                	<svg />
+            <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;">
+            	<div id="athlete_1" class="athlete_index">
+                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<img src="images/athletes/default.png" height="80px" />
+                    </div>
+                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<div id="name" class="data_info_index">
+                        	Martin
+                           	Bomio
+                        </div>
+                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
+                        	<div style="height:40px; text-align:center;">
+                            PULSO
+                            </div>
+                            <div id="pulse_data" class="data_index">
+                            	79 bpm
+                            </div>
+                        </div>
+                        <div id="calories" class="data_info_index" style="margin-top:15px;">
+                        	<div style="height:40px; text-align:center;">
+                            CALORIAS
+                            </div>
+                            <div id="calories_data" class="data_index">
+                            	475
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="list_players">
+                <div id="athlete_2" class="athlete_index">
+                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<img src="images/athletes/default.png" height="80px"/>
+                    </div>
+                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<div id="name" class="data_info_index">
+                        	Juan Diego
+                            Mattos
+                        </div>
+                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
+                        	<div  style="height:40px; text-align:center;">
+                            PULSO
+                            </div>
+                            <div id="pulse_data" class="data_index">
+                            	95 bpm
+                            </div>
+                        </div>
+                        <div id="calories" class="data_info_index" style="margin-top:15px;">
+                        	<div style="height:40px; text-align:center;">
+                            CALORIAS
+                            </div>
+                            <div id="calories_data" class="data_index">
+                            	530
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="athlete_3" class="athlete_index">
+                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<img src="images/athletes/default.png" height="80px"/>
+                    </div>
+                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<div id="name" class="data_info_index">
+                        	Nicolas
+                            Sosa
+                        </div>
+                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
+                        	<div class="data_index_alert" style="height:40px; text-align:center;">
+                            PULSO
+                            </div>
+                            <div id="pulse_data" class="data_index_alert">
+                            	114 bpm
+                            </div>
+                        </div>
+                        <div id="calories" class="data_info_index" style="margin-top:15px;">
+                        	<div style="height:40px; text-align:center;">
+                            CALORIAS
+                            </div>
+                            <div id="calories_data" class="data_index">
+                            	610
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         	<div id="stop_training_div">
+            
             </div>
         </div>
         <div id="sidebar_right">

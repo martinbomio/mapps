@@ -52,7 +52,7 @@ if (error.equals(10)){
 	pop_up_message = "Error de auteticación o no se tiene los permisos necesarios para realizar esta operación";
 }
 else if(error.equals(11)){
-	pop_up_message = "El entrenamiento que desae parar no es válido";
+	pop_up_message = "El entrenamiento que desea parar no es válido";
 }
 %>
 <body>

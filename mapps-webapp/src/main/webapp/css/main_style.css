@@ -84,9 +84,28 @@ body{
 	height:400px; 
 	display:inline-block; 
 	overflow:scroll;
-	border-left:solid 1px #A2A2A2;
-	border-right:solid 1px #A2A2A2;
-	margin-left:5%
+	border-left:solid 1px #EEE;
+	border-right:solid 1px #EEE;
+	margin-left:5%;
+	float:left;
+}
+
+#gaugeValue {
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fafafa), color-stop(100%, #f3f3f3));
+	background-image: -webkit-linear-gradient(#fafafa, #f3f3f3);
+	background-image: -moz-linear-gradient(#fafafa, #f3f3f3);
+	background-image: -o-linear-gradient(#fafafa, #f3f3f3);
+	background-image: -ms-linear-gradient(#fafafa, #f3f3f3);
+	background-image: linear-gradient(#fafafa, #f3f3f3);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+	padding: 10px;
 }
 
 
@@ -243,7 +262,7 @@ body{
 }
 
 .tab_player_login{
-	height:50px;
+	height:80px;
 	margin-bottom:10px;
 	display:inline-block;
 	width:30%;
@@ -255,6 +274,7 @@ body{
 	float:left; 
 	margin-left:5%;
 	margin-bottom:5px;
+	height:30px;
 }
 	
 .tag_data_player_login{
@@ -285,4 +305,48 @@ body{
 	margin-top:10%;
 	font-size:12px;
 	margin-left:15%;
+}
+
+.area {
+    fill: rgb(0,0,255);
+    stroke-width: 0;
+}
+
+.athlete_index{
+	width:80%; 
+	height:120px;
+	margin-left:10%; 
+	margin-right:10%; 
+	padding-top:15px;
+	padding-bottom:15px;
+	border-bottom:solid 1px #EEE;
+}
+
+.data_info_index{
+	float:left; 
+	height:65px; 
+	width:20%;
+	padding-left:3%; 
+	padding-right:3%;
+}
+
+.data_index{
+	height:40px; 
+	color:#000; 
+	font-size:22px;
+	text-align:center;
+}
+
+.data_index_alert{
+	height:40px; 
+	color:#F00;
+	font-weight:bold; 
+	font-size:30px;
+	text-align:center;
+}
+
+.data_index_alert{
+	color:#F00;
+	font-size:20px;
+	font-weight:bold;
 }

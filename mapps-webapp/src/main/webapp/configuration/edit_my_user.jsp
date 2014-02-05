@@ -177,7 +177,7 @@ if ( session.getAttribute("role") == null){
                         </div>
                         
                         <div style="margin-left:-10%; margin-top:35px;">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    		<input type="button" id="validate" value="CONFIRMAR" style="margin-top:40px; margin-left:5%;"/>
                    		</div>
                     </div>
                     <div id="main_div_right" style="width:32%; height:100%; display:inline-block; margin-left:8%;">
