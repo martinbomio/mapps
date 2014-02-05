@@ -199,9 +199,13 @@ if(info.equals("1")){
 		<div id="sidebar_left">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
+             	   <%
+					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					%>
              	   <li style="height:35px;"><a href="add_athletes.jsp"> Agregar </a></li>
              	   <li style="height:35px;"><a href="edit_athletes.jsp"> Editar </a></li>
              	   <li style="height:35px;"><a href="delete_athletes.jsp"> Eliminar </a></li>
+             	   <%} %>
         		</ul>
   			</div>
         </div>

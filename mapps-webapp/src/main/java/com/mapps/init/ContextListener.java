@@ -108,6 +108,7 @@ public class ContextListener implements ServletContextListener {
         Institution inst2 = new Institution("CAP", "Club Atletico Peñarol", "Uruguay");
         User user = new User("admin", "", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR, "5.858.567-0");
         User user2 = new User("train", "", new Date(), Gender.MALE, "user@mapps.com", "train", "train", inst, Role.TRAINER, "5.858.544.4");
+        User user3 = new User("user", "", new Date(), Gender.MALE, "userrrr@mapps.com", "user", "user", inst, Role.USER, "1.342.544.4");
         user.setEnabled(true);
         Sport sport = new Sport("Futbol");
         Athlete athlete = new Athlete("pepe", "apellido", new Date(), Gender.MALE, "pepe@gmail.com", 78, 1.8, "1.111.111-0", inst);
@@ -132,6 +133,7 @@ public class ContextListener implements ServletContextListener {
             user2.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             userDAO.addUser(user);
             userDAO.addUser(user2);
+            userDAO.addUser(user3);
             sportDAO.addSport(sport);
             athlete.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
             mario.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));

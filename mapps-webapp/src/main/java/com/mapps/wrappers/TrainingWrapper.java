@@ -19,6 +19,7 @@ public class TrainingWrapper {
     private int minBPM;
     private int maxBPM;
     private boolean started;
+    private boolean finished;
     private List<Athlete> athletes;
     private List<Device> devices;
 
@@ -35,6 +36,7 @@ public class TrainingWrapper {
         this.minBPM = training.getMinBPM();
         this.maxBPM = training.getMaxBPM();
         this.started = training.isStarted();
+        this.finished = training.isFinished();
         this.athletes = Lists.newArrayList();
         this.devices = Lists.newArrayList();
         this.sport=training.getSport();

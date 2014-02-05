@@ -62,7 +62,7 @@ else if(error.equals(11)){
 	height:50px;
 	margin-bottom:10px;
 	display:inline-block;
-	width:15%;
+	width:25%;
 }</style>
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -123,7 +123,7 @@ else if(error.equals(11)){
 	}
 	
 	function create_athlete_list(reports){
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '100%', width: '100%', theme: 'metro',
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '100%', width: '77%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athlete;
@@ -134,8 +134,8 @@ else if(error.equals(11)){
             	var max_speed = get_double_as_String(data.maxVelocity,1);
             	var max_acceleration = get_double_as_String(data.acceleration,3);
             	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:45%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ data.elapsedTime/1000.0+' sg</div></div>');
-            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia recorrida:</div><div id="distance'+athlete.idDocument+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_acceleration" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Acceleración max:</div><div id="max_acceleration'+athlete.idDocument+'" class="tag_data_player_login"> '+ max_acceleration +' m/(s)2 </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Max</div><div id="speed_max'+athlete.idDocument+'" class="tag_data_player_login"> '+max_speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
+            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:35%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ data.elapsedTime/1000.0+' sg</div></div>');
+            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+max_speed+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
@@ -194,10 +194,18 @@ else if(error.equals(11)){
 		
 		<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
+             	   <%
+					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					%>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <%} %>
+             	   <%
+					if(role.equals(Role.ADMINISTRATOR)){
+					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
+             	   <%} %>
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>

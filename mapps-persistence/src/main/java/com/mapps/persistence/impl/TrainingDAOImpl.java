@@ -179,10 +179,11 @@ public class TrainingDAOImpl implements TrainingDAO {
             throw new NullParameterException();
         }
         Query query = entityManager.createQuery("select t from Training t join t.mapUserPermission m where (index(m)=:key"
-        		+ "and m=:permission and t.started=:started)");
+        		+ "and m=:permission and t.started=:started and t.finished=:finished)");
         query.setParameter("key", user);
         query.setParameter("permission", Permission.CREATE);
         query.setParameter("started", false);
+        query.setParameter("finished", false);
         List<Training> results = query.getResultList();
         return results;
     }

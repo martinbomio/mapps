@@ -63,15 +63,23 @@ if(info.equals("3")){
 <script type="text/javascript">
 	$(document).ready(function () {
 		
+		<%
+		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+		%>
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
+		<%}%>
 		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 	
+        <%
+		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+		%>
 		$("#start_training").on('click', function () {
 			var selected = $('#trainings').jqxListBox('getSelectedItem');
 			var uid = selected.value;
 			window.location.replace("start_training.jsp?uid="+uid);
 		});
+		<%}%>
 		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
             resizable: false, draggable: false, 
             okButton: $('#ok'), 
@@ -157,23 +165,44 @@ if(info.equals("3")){
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
+             	   
+             	   <%
+					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					%>
+             	   
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
+             	   <%} %>
+             	   <%
+					if(role.equals(Role.ADMINISTRATOR)){
+					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
+             	   <%} %>
              	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
         </div>
         <div id="main_div">
         	<div id="title" style="margin:15px;">
+        	<%
+					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					%>
            		<label> Seleccione el entrenamiento que desee comenzar </label>
+           		<%}else{ %>
+           		<label> Usted no tiene permisos para comenzar un entrenamiento </label>
+           		<%} %>
+           		
             </div>
         	<div id="trainings" style="margin-left:20%;">
             
             </div>
+            <%
+					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					%>
 			<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
             </div>
+            <%} %>
         </div>
         <div id="sidebar_right">
         	
