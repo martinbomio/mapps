@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -29,7 +28,6 @@ import com.mapps.exceptions.IMUDataNotFoundException;
 import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.RawDataUnitNotFoundException;
-import com.mapps.exceptions.ReportAlreadyExistException;
 import com.mapps.exceptions.SportAlreadyExistException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.UserAlreadyExistException;
@@ -43,7 +41,6 @@ import com.mapps.model.Permission;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.PulseData;
 import com.mapps.model.RawDataUnit;
-import com.mapps.model.Report;
 import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
@@ -123,7 +120,7 @@ public class ContextListener implements ServletContextListener {
         mapUserPermission.put(user2, Permission.READ);
 
         Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
-                                         mapAthleteDevice, null, sport, mapUserPermission, inst);
+                                         mapAthleteDevice, null, null,sport, mapUserPermission, inst);
         training.setStarted(true);
         try {
             inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));

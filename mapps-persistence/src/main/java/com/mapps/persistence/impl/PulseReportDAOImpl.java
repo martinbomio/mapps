@@ -1,5 +1,6 @@
 package com.mapps.persistence.impl;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +15,7 @@ import com.mapps.persistence.PulseReportDAO;
 /**
  * Implementation of PulseReportDAO.
  */
+@Stateless(name = "PulseReportDAO")
 public class PulseReportDAOImpl implements PulseReportDAO {
     Logger logger = Logger.getLogger(PulseReportDAOImpl.class);
     @PersistenceContext(unitName = "mapps-persistence")

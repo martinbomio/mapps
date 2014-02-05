@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
@@ -44,7 +42,6 @@ public class KalmanFilterServiceIntegrationTest {
     private Device device;
     private ProcessedDataUnit lastProcesedDataUnit;
 
-    @Before
     public void setup() throws Exception {
         this.rawDao = Mockito.mock(RawDataUnitDAO.class);
         this.pDAO = Mockito.mock(ProcessedDataUnitDAO.class);
@@ -62,7 +59,6 @@ public class KalmanFilterServiceIntegrationTest {
         this.kService.setKalmanStateDAO(sDAO);
     }
 
-    @Test
     public void testHandleData() throws Exception {
         when(training.getLatOrigin()).thenReturn(34523361L);
         when(training.getLongOrigin()).thenReturn(56025285L);
@@ -85,7 +81,6 @@ public class KalmanFilterServiceIntegrationTest {
         }
     }
 
-    @Test
     public void testMultipleHandleData() throws Exception {
         File stateAux = new File("src/test/resources/testdata/state.csv");
         kService.output_URL = "src/test/resources/testdata/output-multiple.csv";
@@ -116,7 +111,6 @@ public class KalmanFilterServiceIntegrationTest {
 
     }
 
-    @Test
     public void testMultipleHandleDataRealStates() throws Exception {
         kService.output_URL = "src/test/resources/testdata/output-real-state.csv";
         File aux = new File("src/test/resources/testdata/output-real-state.csv");

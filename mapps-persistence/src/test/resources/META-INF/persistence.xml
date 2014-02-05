@@ -20,6 +20,7 @@
         <class>com.mapps.model.Sport</class>
         <class>com.mapps.model.Training</class>
         <class>com.mapps.model.User</class>
+        <class>com.mapps.model.PulseReport</class>
         <class>com.mapps.exceptions.AthleteAlreadyExistException</class>
         <class>com.mapps.exceptions.AthleteNotFoundException</class>
         <class>com.mapps.exceptions.DeviceAlreadyExistException</class>

@@ -42,14 +42,14 @@ public class PulseStatsDecoder {
     public long getElapsedTime() {
         long first = time.get(0);
         long last = time.get(time.size() - 1);
-        return  last - first;
+        return last - first;
     }
 
-    public List<Long> getTime(){
+    public List<Long> getTime() {
         return this.time;
     }
 
-    public List<Integer> getPulse(){
+    public List<Integer> getPulse() {
         return bpm;
     }
 }

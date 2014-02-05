@@ -202,7 +202,7 @@ public class AdminServiceImpl implements AdminService {
             throw new InvalidDeviceRuntimeException();
         }
         try {
-            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
+            if (!authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR)) {
                 logger.error("User not an administrator");
                 throw new AuthenticationException();
             }

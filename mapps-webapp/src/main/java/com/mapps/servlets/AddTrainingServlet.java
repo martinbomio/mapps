@@ -62,7 +62,7 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
             String name = createTrainingName(institution, sportAux);
             Map<User, Permission> permissionMap = createPermissionMap(token, userTraining);
             Training training = new Training(name, date, 0, longitude, latitude, minBPM, maxBPM,
-                                             null, null, sportAux, permissionMap, institution);
+                                             null, null, null, sportAux, permissionMap, institution);
             trainerService.addTraining(training, token);
             resp.sendRedirect("training/trainings.jsp?info=1");
         } catch (AuthenticationException e) {

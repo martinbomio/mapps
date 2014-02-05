@@ -340,7 +340,7 @@ public class AdminServiceImplTest {
         when(device.getDirLow()).thenReturn("123L");
         try {
             when(dDao.getDeviceByDir("123L")).thenReturn(device);
-            adminService.disableDevice(device,"validToken");
+            adminService.disableDevice(device, "validToken");
             verify(dDao).updateDevice(device);
         } catch (AuthenticationException e) {
             Assert.fail();

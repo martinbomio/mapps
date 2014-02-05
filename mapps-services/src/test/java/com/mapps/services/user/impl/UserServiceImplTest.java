@@ -145,11 +145,11 @@ public class UserServiceImplTest {
         try {
             when(auth.getUserOfToken("validToken")).thenReturn(user);
             userService.updateUser(user, "validToken");
-            Assert.fail();
+            Assert.assertTrue(true);
         } catch (com.mapps.services.user.exceptions.InvalidUserException e) {
             Assert.fail();
         } catch (AuthenticationException e) {
-            Assert.assertTrue(true);
+            Assert.fail();
         } catch (InvalidTokenException e) {
             Assert.fail();
         }

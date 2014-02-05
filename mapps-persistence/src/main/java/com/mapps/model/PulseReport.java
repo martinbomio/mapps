@@ -29,7 +29,7 @@ import com.mapps.wrappers.AthleteWrapper;
  * to display the necessary information.
  */
 @Entity
-@Table(name = "PulseReport")
+@Table(name = "Reports")
 public class PulseReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,14 +50,16 @@ public class PulseReport {
     @Transient
     private AthleteWrapper athleteWrapper;
     @Enumerated
-    private TrainingType trainingTyepe;
+    private TrainingType trainingType;
     private String trainingName;
+    private double kCal;
 
     public PulseReport() {
 
     }
 
-    public PulseReport(String trainingName, List<Long> time, List<Integer> pulse, long elapsedTime, Date createdDate, Athlete athlete) {
+    public PulseReport(String trainingName, List<Long> time, List<Integer> pulse, long elapsedTime,
+                       Date createdDate, Athlete athlete) {
         this.trainingName = trainingName;
         this.time = time;
         this.pulse = pulse;
@@ -65,7 +67,8 @@ public class PulseReport {
         this.createdDate = createdDate;
         this.athlete = athlete;
         this.athleteWrapper = new AthleteWrapper.Builder().setAthlete(this.athlete).build();
-        this.trainingTyepe = getTrainingType();
+        this.trainingType = getTrainingType();
+        this.kCal = getKcalPerMinute() * elapsedTime / (1000 * 60);
     }
 
     public List<Integer> getPulse() {
@@ -134,6 +137,16 @@ public class PulseReport {
         }
         int age = athleteWrapper.getAge();
         return TrainingType.fromFCR(fcr.get(age), age, pulse.get(pulse.size() - 1));
+    }
+
+    public double getKcalPerMinute() {
+        double weight = athlete.getWeight();
+        int age = athleteWrapper.getAge();
+        if (athlete.getGender().equals(Gender.MALE)) {
+            return (-55.0969 + (0.6309 * pulse.get(pulse.size() - 1)) + 0.1988 * weight + 0.2017 * age) / 4.184;
+        } else {
+            return (-20.4022 + (0.4472 * pulse.get(pulse.size() - 1)) + 0.1263 * weight + 0.074 * age) / 4.184;
+        }
     }
 
     public static class Builder {

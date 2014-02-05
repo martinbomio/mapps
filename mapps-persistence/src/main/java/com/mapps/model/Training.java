@@ -4,6 +4,7 @@ package com.mapps.model;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 /**
@@ -46,10 +49,11 @@ public class Training {
     private boolean finished;
     @ManyToMany(fetch = FetchType.EAGER)
     private Map<Athlete, Device> mapAthleteDevice;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Report> reports;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<PulseReport> pulseReports;
+    @OneToMany(targetEntity = PulseReport.class)
+    private Set<PulseReport> pulseReports;
     @ManyToOne
     private Sport sport;
     @ManyToOne
@@ -69,7 +73,7 @@ public class Training {
 
     public Training(String name, Date date, int participants, long latOrigin, long longOrigin, int minBPM,
                     int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports,
-                    List<PulseReport> pulseReports, Sport sport,
+                    Set<PulseReport> pulseReports, Sport sport,
                     Map<User, Permission> mapUserPermission, Institution institution) {
         this.name = name;
         this.date = date;
@@ -208,11 +212,11 @@ public class Training {
         this.finished = finished;
     }
 
-    public List<PulseReport> getPulseReports() {
+    public Set<PulseReport> getPulseReports() {
         return pulseReports;
     }
 
-    public void setPulseReports(List<PulseReport> pulseReports) {
+    public void setPulseReports(Set<PulseReport> pulseReports) {
         this.pulseReports = pulseReports;
     }
 }
