@@ -127,15 +127,13 @@ else if(error.equals(11)){
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athlete;
-            	var distance = get_double_as_String(data.traveledDistance,1);
-            	var speed = get_double_as_String(data.averageSpeed,1);
+            	var kCal = get_double_as_String(data.kCal,3);
             	var max_bpm = Math.max.apply(Math, data.pulse);
             	var min_bpm = Math.min.apply(Math, data.pulse);
-            	var max_speed = get_double_as_String(data.maxVelocity,1);
-            	var max_acceleration = get_double_as_String(data.acceleration,3);
+            	var average_bpm = (max_bpm + min_bpm)/2;
             	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
             	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:35%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ data.elapsedTime/1000.0+' sg</div></div>');
-            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+max_speed+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
+            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
@@ -148,6 +146,7 @@ else if(error.equals(11)){
     	var split = val.split('.');
     	return split[0] + '.' + split[1].substr(0,decimals);
 	}
+
 	
 </script>
 

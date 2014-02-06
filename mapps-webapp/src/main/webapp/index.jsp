@@ -101,6 +101,61 @@ else if(error.equals(11)){
             },
 		});
 	}
+	function draw_chart(training){
+		window.athleteData = [];
+		window.athleteIndex = 0;
+		for (var i = 0; i< training.athletes.length; i++){
+			$.ajax({
+			            url: "/mapps/getAthleteOnTrainingData",
+			            type: "POST",
+			            data: {t:training.name, a:training.athletes[i].idDocument},
+			            success: function (response){
+			            	if (window.created){
+			            		update_values(response);
+			            	}else{
+			            		create_label(response);
+			            		window.created = true;
+			            	}
+			                window.athleteData.push(response);
+			                window.athleteIndex+=1;
+			                if (window.athleteIndex == training.athletes.length){
+			                	success();
+			                }
+			        },
+			});
+		}
+	}
+	function createee_label(data){
+		var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia</div><div id="distance_'+athlete.id+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed_'+athlete.id+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso</div><div id="pulse_'+athlete.id+'" class="tag_data_player_login"> '+data.pulse[data.pulse.length-1]+' bpm </div></div></div>');
+	
+	}
+	function create_label(data){
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '450px',overflow:'scroll', width: '100%', theme: 'metro',
+            renderer: function (index, label, value) {
+                var data = reports[index];
+                var athlete = data.athlete;
+            	var bpm = data.pulse[data.pulse.length-1];
+            	var kCal = get_double_as_String(data.kCal,3);
+            	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
+            	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
+            	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KiloCalorias</div></div></div>');
+            	first_div.append(div_up);
+            	first_div.append(div_down);
+                return first_div.html();
+            }
+        });
+	}
+	function update_values(data){
+		var athlete = data.athlete;
+		$('#pulse_data'+athlete.id+'').text(data.pulse[data.pulse.length-1] + " bpm");
+		$('#kCal_data'+athlete.id+'').text(get_double_as_String(data.kCal,3) + " kCal");
+	}
+	
+	function get_double_as_String(doub, decimals){
+		var val = new String(doub);
+    	var split = val.split('.');
+    	return split[0] + '.' + split[1].substr(0,decimals);
+	}
 	
 	function create_stop_training(training_name){
 		var button = $('<input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" style="margin-left:30%;" />');
@@ -159,7 +214,7 @@ else if(error.equals(11)){
             
             </div>
             <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;">
-            	<div id="athlete_1" class="athlete_index">
+<!--               	<div id="athlete_1" class="athlete_index">
                 	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
                     	<img src="images/athletes/default.png" height="80px" />
                     </div>
@@ -186,60 +241,8 @@ else if(error.equals(11)){
                         </div>
                     </div>
                 </div>
-                <div id="athlete_2" class="athlete_index">
-                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<img src="images/athletes/default.png" height="80px"/>
-                    </div>
-                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<div id="name" class="data_info_index">
-                        	Juan Diego
-                            Mattos
-                        </div>
-                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
-                        	<div  style="height:40px; text-align:center;">
-                            PULSO
-                            </div>
-                            <div id="pulse_data" class="data_index">
-                            	95 bpm
-                            </div>
-                        </div>
-                        <div id="calories" class="data_info_index" style="margin-top:15px;">
-                        	<div style="height:40px; text-align:center;">
-                            CALORIAS
-                            </div>
-                            <div id="calories_data" class="data_index">
-                            	530
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="athlete_3" class="athlete_index">
-                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<img src="images/athletes/default.png" height="80px"/>
-                    </div>
-                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<div id="name" class="data_info_index">
-                        	Nicolas
-                            Sosa
-                        </div>
-                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
-                        	<div class="data_index_alert" style="height:40px; text-align:center;">
-                            PULSO
-                            </div>
-                            <div id="pulse_data" class="data_index_alert">
-                            	114 bpm
-                            </div>
-                        </div>
-                        <div id="calories" class="data_info_index" style="margin-top:15px;">
-                        	<div style="height:40px; text-align:center;">
-                            CALORIAS
-                            </div>
-                            <div id="calories_data" class="data_index">
-                            	610
-                            </div>
-                        </div>
-                    </div>
-                </div>
+-->
+               
             </div>
         	<div id="stop_training_div">
             
