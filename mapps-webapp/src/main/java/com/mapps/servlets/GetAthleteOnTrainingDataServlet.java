@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mapps.model.PulseReport;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
@@ -37,7 +38,8 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
             PulseReport report = reportService.getAthletePulseStats(trainingID, athleteCI, token);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            String json = new Gson().toJson(report);
+            Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
+            String json = gson.toJson(report);
             writer.write(json);
             writer.close();
         } catch (AuthenticationException e) {
