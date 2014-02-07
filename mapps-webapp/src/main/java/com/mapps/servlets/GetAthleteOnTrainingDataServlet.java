@@ -43,7 +43,7 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         } catch (AuthenticationException e) {
             writer.write("Error de autenticacion");
         } catch (NoPulseDataException e) {
-            writer.write("No hay datos del pulso.");
+            writer.write("No hay datos del pulso");
         } finally {
             writer.close();
         }

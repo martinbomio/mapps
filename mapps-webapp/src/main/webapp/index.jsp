@@ -110,6 +110,9 @@ else if(error.equals(11)){
 			            type: "POST",
 			            data: {t:training.name, a:training.athletes[i].idDocument},
 			            success: function (response){
+			            	if (response == "No hay datos del pulso"){
+			            		return;
+			            	}
 			            	if (window.created){
 			            		update_values(response);
 			            	}else{
@@ -130,7 +133,7 @@ else if(error.equals(11)){
 	
 	}
 	function create_label(data){
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '450px',overflow:'scroll', width: '100%', theme: 'metro',
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: data, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px',overflow:'scroll', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athlete;

@@ -2,6 +2,7 @@ package com.mapps.pulsedata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -30,12 +31,13 @@ public class RestPulseForAge {
         return instance.get();
     }
 
-    public static RestPulseForAge loadFromJson(){
-        try{
-        BufferedReader br = new BufferedReader(new InputStreamReader(RestPulseForAge.class.getResourceAsStream("com/mapps/pulseagedata/pulseagedata")));
-        String json = br.readLine();
-        return new Gson().fromJson(json, RestPulseForAge.class);
-        }catch (IOException e){
+    public static RestPulseForAge loadFromJson() {
+        try {
+            InputStream stream =  RestPulseForAge.class.getClassLoader().getResourceAsStream("pulseagedata/pulseagedata");
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+            String json = br.readLine();
+            return new Gson().fromJson(json, RestPulseForAge.class);
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
