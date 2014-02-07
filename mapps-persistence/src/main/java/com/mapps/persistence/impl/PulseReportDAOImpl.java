@@ -1,8 +1,10 @@
 package com.mapps.persistence.impl;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -61,5 +63,14 @@ public class PulseReportDAOImpl implements PulseReportDAO {
         } else {
             throw new ReportNotFoundException();
         }
+    }
+
+    @Override
+    public List<PulseReport> getReportsOfTraining(String trainingName) {
+        Query query = entityManager.createQuery("select r from Training t join t.pulseReports r where " +
+                                                        "t.name=:trainingName");
+        query.setParameter("trainingName", trainingName);
+        List<PulseReport> results = query.getResultList();
+        return results;
     }
 }

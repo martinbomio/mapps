@@ -31,13 +31,21 @@ public interface ReportService {
     /**
      * After a training is finished, creates a report for each athelte on the training and
      * stores it on the database.
+     *
      * @param trainingID the training ID
-     * @param token the identifier of the session.
+     * @param token      the identifier of the session.
      */
     void createTrainingReports(String trainingID, String token) throws AuthenticationException;
+
     void createTrainingPulseReports(String trainingID, String token) throws AuthenticationException;
 
-    public Report getReport(String trainingName,String athleteId,String token) throws AuthenticationException, InvalidReportException;
-    public List<Report> getReportsOfTraining(String trainingName,String token) throws AuthenticationException;
+    public Report getReport(String trainingName, String athleteId, String token) throws AuthenticationException, InvalidReportException;
+
+    public List<Report> getReportsOfTraining(String trainingName, String token) throws AuthenticationException;
+
+    public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws AuthenticationException;
+
     PulseReport getAthletePulseStats(String trainingID, String athleteCI, String token) throws AuthenticationException, NoPulseDataException;
+
+    List<PulseReport> getPulseDataOfTraining(String trainingName, String token) throws AuthenticationException;
 }

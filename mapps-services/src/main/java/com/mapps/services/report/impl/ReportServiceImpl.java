@@ -38,9 +38,9 @@ import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
-*
-*
-*/
+ *
+ *
+ */
 @Stateless(name = "ReportService")
 public class ReportServiceImpl implements ReportService {
 
@@ -125,12 +125,12 @@ public class ReportServiceImpl implements ReportService {
             Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteCI);
             Map<Athlete, Device> map = training.getMapAthleteDevice();
             List<RawDataUnit> rawDataUnits = rawDataUnitDAO.getRawDataFromAthleteOnTraining(training, map.get(athlete));
-            if (rawDataUnits.size() == 0){
+            if (rawDataUnits.size() == 0) {
                 throw new NoPulseDataException();
             }
             PulseReport report = new PulseReport.Builder().setPulseData(rawDataUnits)
-                                                          .setAthlete(athlete)
-                                                          .setTraining(training).build();
+                    .setAthlete(athlete)
+                    .setTraining(training).build();
             return report;
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");
@@ -186,6 +186,22 @@ public class ReportServiceImpl implements ReportService {
             if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 return reportDAO.getReportsOfTraining(trainingName);
+            }
+            throw new AuthenticationException();
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        }
+    }
+
+    @Override
+    public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws AuthenticationException {
+        if (trainingName == null || token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                return pulseReportDAO.getReportsOfTraining(trainingName);
             }
             throw new AuthenticationException();
         } catch (InvalidTokenException e) {
@@ -271,6 +287,28 @@ public class ReportServiceImpl implements ReportService {
             throw new IllegalStateException("Wrong parameters on saving report", e);
         } catch (NoPulseDataException e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    public List<PulseReport> getPulseDataOfTraining(String trainingName, String token) throws AuthenticationException {
+        if (trainingName == null || token == null) {
+            throw new AuthenticationException();
+        }
+        try {
+            List<PulseReport> reports = Lists.newArrayList();
+            Training training = trainingDAO.getTrainingByName(trainingName);
+            for (Athlete athlete : training.getMapAthleteDevice().keySet()){
+                try{
+                PulseReport pulseReport = getAthletePulseStats(trainingName, athlete.getIdDocument(), token);
+                reports.add(pulseReport);
+                } catch (NoPulseDataException e) {
+                    logger.error("There is no data for athlete: " + athlete.getName());
+                }
+            }
+            return reports;
+        } catch (TrainingNotFoundException e) {
+            logger.error("Invalid Training");
+            throw new IllegalStateException("Invalid training", e);
         }
     }
 }

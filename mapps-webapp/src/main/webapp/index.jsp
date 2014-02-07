@@ -15,6 +15,8 @@
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxchart.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxscrollbar.js"></script>
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="./jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main_style.css"> 
@@ -55,7 +57,6 @@ else if(error.equals(11)){
 <script type="text/javascript">
 	$(document).ready(function () {
 		window.created = false;
-		call_ajax();
 			<%
 			if(show_pop_up){	
 			%>
@@ -68,8 +69,27 @@ else if(error.equals(11)){
 			<%
 			}
 			%>
+			var url = "/mapps/getStartedTraining";
+			$.ajax({
+	            url: url,
+	            type: "GET",
+	            success: function (response){
+	            	var training = response;
+	            	if(training=="not started"){
+						
+	            	}else{
+	            		var training=JSON.parse(training);
+	            		create_stop_training(training.name);
+	            		var split = training.date.split(" ");
+	            		var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
+	            		$('#training').text( display_name);
+	            		window.training = training;
+	            		create_list();
+	            	}
+	            },
+			});
 			setInterval(function(){
-				call_ajax();
+				create_list();
 			}, 5000);
 			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
 	            resizable: false, draggable: false, 
@@ -80,78 +100,38 @@ else if(error.equals(11)){
 	            }
 	        });	
 	});
-	
-	function call_ajax(){
-		var url = "/mapps/getStartedTraining";
+	function create_list(){
+		training = window.training;
 		$.ajax({
-            url: url,
-            type: "GET",
+            url: "/mapps/getTrainingPulseData",
+            type: "POST",
+            data: {t:training.name},
             success: function (response){
-            	var training = response;
-            	if(training=="not started"){
-					
+            	var reports = response;
+            	if(reports.length != 0){
+                	create_label(reports);
             	}else{
-            		var training=JSON.parse(training);
-            		create_stop_training(training.name);
-            		var split = training.date.split(" ");
-            		var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
-            		$('#training').text( display_name);
-            		draw_chart(training);
+            		$('#list_athletes').text("No hay datos de los atletas aun")
             	}
             },
 		});
 	}
-	function draw_chart(training){
-		window.athleteData = [];
-		window.athleteIndex = 0;
-		for (var i = 0; i< training.athletes.length; i++){
-			$.ajax({
-			            url: "/mapps/getAthleteOnTrainingData",
-			            type: "POST",
-			            data: {t:training.name, a:training.athletes[i].idDocument},
-			            success: function (response){
-			            	if (response == "No hay datos del pulso"){
-			            		return;
-			            	}
-			            	if (window.created){
-			            		update_values(response);
-			            	}else{
-			            		create_label(response);
-			            		window.created = true;
-			            	}
-			                window.athleteData.push(response);
-			                window.athleteIndex+=1;
-			                if (window.athleteIndex == training.athletes.length){
-			                	success();
-			                }
-			        },
-			});
-		}
-	}
-	function createee_label(data){
-		var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia</div><div id="distance_'+athlete.id+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed_'+athlete.id+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso</div><div id="pulse_'+athlete.id+'" class="tag_data_player_login"> '+data.pulse[data.pulse.length-1]+' bpm </div></div></div>');
 	
-	}
-	function create_label(data){
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: data, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px',overflow:'scroll', width: '100%', theme: 'metro',
+	function create_label(reports){
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athlete;
-            	var bpm = data.pulse[data.pulse.length-1];
+            	var bpm = data.lastPulse;
             	var kCal = get_double_as_String(data.kCal,3);
-            	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
-            	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
-            	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KiloCalorias</div></div></div>');
+            	var first_div = $('<div id="'+athlete.id+'" class="athlete_index"></div>');
+            	var div_up = $('<div id="img'+athlete.id+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
+            	var div_down = $('<div id="data '+athlete.id+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.id+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.id+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.id+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.id+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.id+'" class="data_index">'+kCal+' KCal</div></div></div>');
             	first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
             }
         });
-	}
-	function update_values(data){
-		var athlete = data.athlete;
-		$('#pulse_data'+athlete.id+'').text(data.pulse[data.pulse.length-1] + " bpm");
-		$('#kCal_data'+athlete.id+'').text(get_double_as_String(data.kCal,3) + " kCal");
 	}
 	
 	function get_double_as_String(doub, decimals){

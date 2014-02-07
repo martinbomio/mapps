@@ -1,5 +1,6 @@
 package com.mapps.persistence;
 
+import java.util.List;
 import javax.ejb.Local;
 
 import com.mapps.exceptions.NullParameterException;
@@ -41,4 +42,6 @@ public interface PulseReportDAO {
      * @throws ReportNotFoundException - If the Report is not in the database
      */
     Report getReportById (Long reportId) throws ReportNotFoundException;
+
+    List<PulseReport> getReportsOfTraining(String trainingName);
 }

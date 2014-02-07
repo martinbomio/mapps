@@ -24,7 +24,7 @@ import java.util.List;
  *
  */
 @WebServlet(name = "getAllEditableTrainings", urlPatterns = "/getAllEditableTrainings/*")
-public class getAllEditableTrainingsServlet extends HttpServlet implements Servlet {
+public class GetAllEditableTrainingsServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "TrainerService")
     protected TrainerService trainerService;
 

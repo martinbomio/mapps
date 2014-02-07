@@ -19,7 +19,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.google.gson.annotations.Expose;
 import com.mapps.pulsedata.RestPulseForAge;
 import com.mapps.stats.PulseStatsDecoder;
 import com.mapps.wrappers.AthleteWrapper;
@@ -29,7 +28,7 @@ import com.mapps.wrappers.AthleteWrapper;
  * to display the necessary information.
  */
 @Entity
-@Table(name = "Reports")
+@Table(name = "PulseReports")
 public class PulseReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +44,6 @@ public class PulseReport {
     @Column(nullable = false)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Expose
     private Athlete athlete;
     @Transient
     private AthleteWrapper athleteWrapper;
@@ -53,6 +51,7 @@ public class PulseReport {
     private TrainingType trainingType;
     private String trainingName;
     private double kCal;
+    private int lastPulse;
 
     public PulseReport() {
 
@@ -68,7 +67,8 @@ public class PulseReport {
         this.athlete = athlete;
         this.athleteWrapper = new AthleteWrapper.Builder().setAthlete(this.athlete).build();
         this.trainingType = getTrainingType();
-        this.kCal = getKcalPerMinute() * elapsedTime / (1000 * 60);
+        this.kCal = getKcalPerMinute() * (time.get(time.size() - 1) - time.get(0)) / (1000 * 60);
+        this.lastPulse = pulse.get(pulse.size() - 1);
     }
 
     public List<Integer> getPulse() {
