@@ -121,7 +121,7 @@ else if(error.equals(11)){
 		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
-                var athlete = data.athlete;
+                var athlete = data.athleteWrapper;
             	var bpm = data.lastPulse;
             	var kCal = get_double_as_String(data.kCal,3);
             	var first_div = $('<div id="'+athlete.id+'" class="athlete_index"></div>');

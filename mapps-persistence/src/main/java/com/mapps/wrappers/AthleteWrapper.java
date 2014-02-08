@@ -17,13 +17,19 @@ public class AthleteWrapper {
     private double weight;
     private double height;
     private Gender gender;
+    private String imageURI;
+    private String lastName;
+    private String idDocument;
 
-    public AthleteWrapper(String name, int age, double weight, double height, Gender gender) {
+    public AthleteWrapper(String name, int age, double weight, double height, Gender gender, String imageURI,
+                          String lastName, String idDocument) {
         this.name = name;
         this.age = age;
         this.weight = weight;
         this.height = height;
         this.gender = gender;
+        this.imageURI = imageURI;
+        this.lastName = lastName;
     }
 
     public String getName() {
@@ -66,6 +72,22 @@ public class AthleteWrapper {
         this.gender = gender;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getImageURI() {
+        return imageURI;
+    }
+
+    public void setImageURI(String imageURI) {
+        this.imageURI = imageURI;
+    }
+
     public static class Builder{
         private Athlete athlete;
 
@@ -76,7 +98,8 @@ public class AthleteWrapper {
 
         public AthleteWrapper build(){
             return new AthleteWrapper(athlete.getName(), getAge(athlete.getBirth()), athlete.getHeight(),
-                                      athlete.getWeight(),athlete.getGender());
+                                      athlete.getWeight(),athlete.getGender(), athlete.getImageURI().toString(),
+                                      athlete.getLastName(), athlete.getIdDocument());
         }
 
         private int getAge(Date birth){

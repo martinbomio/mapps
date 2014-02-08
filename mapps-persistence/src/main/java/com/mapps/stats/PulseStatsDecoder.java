@@ -23,8 +23,8 @@ public class PulseStatsDecoder {
     }
 
     private void transverseData() {
+        time.add(0L);
         for (RawDataUnit data : rawDataUnits) {
-            time.add(0L);
             long timestamp = data.getTimestamp();
             long porcionOfTime = timestamp / data.getPulseData().size();
             for (PulseData pulseData : data.getPulseData()) {

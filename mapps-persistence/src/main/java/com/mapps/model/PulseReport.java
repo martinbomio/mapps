@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.mapps.jsonexclusions.annotations.PulseReportExclusion;
 import com.mapps.pulsedata.RestPulseForAge;
 import com.mapps.stats.PulseStatsDecoder;
 import com.mapps.wrappers.AthleteWrapper;
@@ -35,15 +36,18 @@ public class PulseReport {
     Long id;
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
+    @PulseReportExclusion
     private List<Integer> pulse;
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
+    @PulseReportExclusion
     private List<Long> time;
     private long elapsedTime;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.EAGER)
+    @PulseReportExclusion
     private Athlete athlete;
     @Transient
     private AthleteWrapper athleteWrapper;
