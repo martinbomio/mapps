@@ -108,7 +108,7 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
     }
 
     private void updateToReadedRawDataUnit(long lastID) {
-        String hql = "update RawDataUnit set read = :read where id <= :lastID";
+        String hql = "update RawDataUnit set readed = :read where id <= :lastID";
         Query query = entityManager.createQuery(hql);
         query.setParameter("read", true);
         query.setParameter("lastID", lastID);

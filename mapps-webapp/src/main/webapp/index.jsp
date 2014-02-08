@@ -89,7 +89,7 @@ else if(error.equals(11)){
 	            },
 			});
 			setInterval(function(){
-				//update_list();
+				//create_list();
 			}, 3000);
 			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
 	            resizable: false, draggable: false, 
@@ -118,28 +118,34 @@ else if(error.equals(11)){
 	}
 	
 	function create_label(reports){
-		for (var i = 0 ; i < reports.length ; i ++){
-			var data = reports[i];
+		var list = $("#list_athletes");
+		list.html("");
+		for (var index = 0; index< reports.length;index++){
+			var data = reports[index];
             var athlete = data.athleteWrapper;
         	var bpm = data.lastPulse;
         	var kCal = get_double_as_String(data.kCal,3);
-			document.getElementById('list_athletes').innerHTML = document.getElementById('list_athletes').innerHTML + '<div id="'+athlete.id+'" class="athlete_index"><div id="img'+athlete.id+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div><div id="data '+athlete.id+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.id+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.id+'" class="data_info_index" style="margin-top:15px; margin-left:4%;"><div style="height:40px; text-align:center; font-size:14px;">PULSO</div><div id="pulse_data'+athlete.id+'" class="data_index">'+bpm+' bpm</div></div><div id="calories'+athlete.id+'" class="data_info_index" style="margin-top:15px; width:25%; font-size:14px;"><div style="height:40px; text-align:center;">CALORIAS</div><div id="calories_data '+athlete.id+'" class="data_index" style="font-size:16px;">'+kCal+' KCal</div></div></div></div>';
-			
+        	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
+        	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
+        	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href="./athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
+        	first_div.append(div_up);
+        	first_div.append(div_down);
+        	list.append(first_div);
 		}
-		/* $('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
+		 /* $('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athleteWrapper;
             	var bpm = data.lastPulse;
             	var kCal = get_double_as_String(data.kCal,3);
-            	var first_div = $('<div id="'+athlete.id+'" class="athlete_index"></div>');
-            	var div_up = $('<div id="img'+athlete.id+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
-            	var div_down = $('<div id="data '+athlete.id+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.id+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.id+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.id+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.id+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.id+'" class="data_index">'+kCal+' KCal</div></div></div>');
+            	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
+            	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
+            	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
             	first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
             }
-        }); */
+        });  */
 	}
 	
 	function get_double_as_String(doub, decimals){

@@ -30,6 +30,7 @@ public class AthleteWrapper {
         this.gender = gender;
         this.imageURI = imageURI;
         this.lastName = lastName;
+        this.idDocument = idDocument;
     }
 
     public String getName() {
