@@ -32,10 +32,11 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String trainingID = req.getParameter("t");
         String athleteCI = req.getParameter("a");
+        boolean relod = Boolean.parseBoolean(req.getParameter("r"));
         String token = String.valueOf(req.getSession().getAttribute("token"));
         Writer writer = resp.getWriter();
         try {
-            PulseReport report = reportService.getAthletePulseStats(trainingID, athleteCI, token);
+            PulseReport report = reportService.getAthletePulseStats(trainingID, athleteCI, relod, token);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();

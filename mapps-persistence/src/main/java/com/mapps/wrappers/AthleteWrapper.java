@@ -88,6 +88,14 @@ public class AthleteWrapper {
         this.imageURI = imageURI;
     }
 
+    public String getIdDocument() {
+        return idDocument;
+    }
+
+    public void setIdDocument(String idDocument) {
+        this.idDocument = idDocument;
+    }
+
     public static class Builder{
         private Athlete athlete;
 

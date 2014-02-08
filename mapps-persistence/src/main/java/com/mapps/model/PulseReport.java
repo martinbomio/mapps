@@ -192,5 +192,17 @@ public class PulseReport {
             return report;
         }
 
+        public PulseReport buildRealTime(){
+            PulseStatsDecoder decoder = new PulseStatsDecoder(this.rawDataUnits);
+            PulseReport report = new PulseReport(training.getName(),
+                                                 decoder.getTime(),
+                                                 decoder.getPulse(),
+                                                 decoder.getElapsedTime(),
+                                                 new Date(), this.athlete);
+            report.setTime(decoder.getLatestTime());
+            report.setPulse(decoder.getLatestPulse());
+            return report;
+        }
+
     }
 }

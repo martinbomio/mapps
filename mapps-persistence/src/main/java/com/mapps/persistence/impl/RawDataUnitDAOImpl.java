@@ -101,7 +101,17 @@ public class RawDataUnitDAOImpl implements RawDataUnitDAO {
         query.setParameter("device", device);
         query.setParameter("training", training);
         List<RawDataUnit> rawDataUnits = query.getResultList();
+        updateToReadedRawDataUnit(rawDataUnits.get(rawDataUnits.size() - 1).getId());
         return rawDataUnits;
+    }
+
+    private void updateToReadedRawDataUnit(long lastID) {
+        String hql = "update RawDataUnit set read = :read where id <= :lastID";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("read", true);
+        query.setParameter("lastID", lastID);
+        query.executeUpdate();
+        return;
     }
 
 

@@ -45,7 +45,7 @@ public interface ReportService {
 
     public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws AuthenticationException;
 
-    PulseReport getAthletePulseStats(String trainingID, String athleteCI, String token) throws AuthenticationException, NoPulseDataException;
+    PulseReport getAthletePulseStats(String trainingID, String athleteCI, boolean reload, String token) throws AuthenticationException, NoPulseDataException;
 
     List<PulseReport> getPulseDataOfTraining(String trainingName, String token) throws AuthenticationException;
 }

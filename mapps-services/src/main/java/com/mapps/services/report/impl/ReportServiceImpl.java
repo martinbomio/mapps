@@ -110,7 +110,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    public PulseReport getAthletePulseStats(String trainingID, String athleteCI, String token) throws AuthenticationException, NoPulseDataException {
+    public PulseReport getAthletePulseStats(String trainingID, String athleteCI, boolean reload, String token) throws AuthenticationException, NoPulseDataException {
         if (trainingID == null || athleteCI == null) {
             throw new IllegalArgumentException();
         }
@@ -128,9 +128,15 @@ public class ReportServiceImpl implements ReportService {
             if (rawDataUnits.size() == 0) {
                 throw new NoPulseDataException();
             }
-            PulseReport report = new PulseReport.Builder().setPulseData(rawDataUnits)
-                    .setAthlete(athlete)
-                    .setTraining(training).build();
+            PulseReport report;
+            if (reload) {
+                report = new PulseReport.Builder().setAthlete(athlete)
+                        .setTraining(training).buildRealTime();
+            } else {
+                report = new PulseReport.Builder().setPulseData(rawDataUnits)
+                        .setAthlete(athlete)
+                        .setTraining(training).build();
+            }
             return report;
         } catch (InvalidTokenException e) {
             logger.error("Invalid token");
@@ -151,7 +157,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report getReport(String trainingName, String athleteId, String token) throws AuthenticationException, InvalidReportException {
+    public Report getReport(String trainingName, String athleteId, String token) throws
+            AuthenticationException, InvalidReportException {
         if (trainingName == null || athleteId == null || token == null) {
             throw new AuthenticationException();
         }
@@ -194,7 +201,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws AuthenticationException {
+    public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws
+            AuthenticationException {
         if (trainingName == null || token == null) {
             throw new AuthenticationException();
         }
@@ -265,7 +273,7 @@ public class ReportServiceImpl implements ReportService {
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
                 Training training = trainingDAO.getTrainingByName(trainingID);
                 for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
-                    PulseReport report = getAthletePulseStats(trainingID, athlete.getIdDocument(), token);
+                    PulseReport report = getAthletePulseStats(trainingID, athlete.getIdDocument(), false, token);
                     pulseReportDAO.addReport(report);
                     if (training.getReports() == null) {
                         List<Report> reports = Lists.newArrayList();
@@ -290,17 +298,18 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    public List<PulseReport> getPulseDataOfTraining(String trainingName, String token) throws AuthenticationException {
+    public List<PulseReport> getPulseDataOfTraining(String trainingName, String token) throws
+            AuthenticationException {
         if (trainingName == null || token == null) {
             throw new AuthenticationException();
         }
         try {
             List<PulseReport> reports = Lists.newArrayList();
             Training training = trainingDAO.getTrainingByName(trainingName);
-            for (Athlete athlete : training.getMapAthleteDevice().keySet()){
-                try{
-                PulseReport pulseReport = getAthletePulseStats(trainingName, athlete.getIdDocument(), token);
-                reports.add(pulseReport);
+            for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
+                try {
+                    PulseReport pulseReport = getAthletePulseStats(trainingName, athlete.getIdDocument(), false, token);
+                    reports.add(pulseReport);
                 } catch (NoPulseDataException e) {
                     logger.error("There is no data for athlete: " + athlete.getName());
                 }

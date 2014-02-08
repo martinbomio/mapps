@@ -14,6 +14,8 @@ public class PulseStatsDecoder {
     List<RawDataUnit> rawDataUnits;
     List<Integer> bpm;
     List<Long> time;
+    List<Integer> latestPulse;
+    List<Long> latestTime;
 
     public PulseStatsDecoder(List<RawDataUnit> rawDataUnitList) {
         this.rawDataUnits = rawDataUnitList;
@@ -28,6 +30,10 @@ public class PulseStatsDecoder {
             long timestamp = data.getTimestamp();
             long porcionOfTime = timestamp / data.getPulseData().size();
             for (PulseData pulseData : data.getPulseData()) {
+                if(!data.isRead()){
+                    latestPulse.add(pulseData.getBPM());
+                    latestTime.add(getNextTime(time.get(time.size() - 1), porcionOfTime));
+                }
                 bpm.add(pulseData.getBPM());
                 time.add(getNextTime(time.get(time.size() - 1), porcionOfTime));
             }
@@ -52,4 +58,13 @@ public class PulseStatsDecoder {
     public List<Integer> getPulse() {
         return bpm;
     }
+
+    public List<Long> getLatestTime(){
+        return latestTime;
+    }
+
+    public List<Integer> getLatestPulse(){
+        return latestPulse;
+    }
+
 }
