@@ -20,29 +20,54 @@ public class PulseStatsDecoder {
     public PulseStatsDecoder(List<RawDataUnit> rawDataUnitList) {
         this.rawDataUnits = rawDataUnitList;
         this.bpm = Lists.newArrayList();
-        this.time = Lists.newArrayList();
         this.latestPulse = Lists.newArrayList();
-        this.latestTime = Lists.newArrayList();
         transverseData();
     }
 
     private void transverseData() {
-        time.add(0L);
-        long lastTimeStamp = 0;
+        List<String> auxTime = Lists.newArrayList();
+        List<String> latestAuxTime = Lists.newArrayList();
         for (RawDataUnit data : rawDataUnits) {
-            long timestamp = data.getTimestamp() - lastTimeStamp;
-            lastTimeStamp = timestamp;
-            long porcionOfTime = timestamp / data.getPulseData().size();
+            auxTime.add(data.getPulseData().size() + "@" + data.getTimestamp());
             for (PulseData pulseData : data.getPulseData()) {
-                if(!data.isReaded()){
+                if (!data.isReaded()){
                     latestPulse.add(pulseData.getBPM());
-                    latestTime.add(getNextTime(time.get(time.size() - 1), porcionOfTime));
                 }
                 bpm.add(pulseData.getBPM());
-                time.add(getNextTime(time.get(time.size() - 1), porcionOfTime));
             }
         }
-        time.remove(0);
+        this.time = calculateTime(auxTime);
+        this.latestTime = calculateTime(latestAuxTime);
+    }
+
+    private List<Long> calculateTime(List<String> auxTime) {
+        List<Long> time = Lists.newArrayList();
+        long prev = 0;
+        int lastSize = 0;
+        for (int i = 0; i < auxTime.size(); i++) {
+            String[] split = auxTime.get(i).split("@");
+            long currentTime = Long.valueOf(split[1]);
+            if (i == 0) {
+                time.add(currentTime);
+            } else {
+                long porcion = (currentTime - prev) / (lastSize + 1);
+                for (int j = 0; j < lastSize; j++) {
+                    long next = getNextTime(prev, (j+1) * porcion);
+                    time.add(next);
+                }
+                time.add(currentTime);
+            }
+            lastSize = Integer.valueOf(split[0]);
+            if (i == (auxTime.size() -1)){
+                long porcion = (currentTime - prev) / (lastSize + 1);
+                for (int j = 0; j < lastSize; j++) {
+                    long next = getNextTime(currentTime, (j+1) * porcion);
+                    time.add(next);
+                }
+            }
+            prev = currentTime;
+        }
+        return time;
     }
 
     private Long getNextTime(Long prevTime, Long porcionOfTime) {
@@ -63,11 +88,11 @@ public class PulseStatsDecoder {
         return bpm;
     }
 
-    public List<Long> getLatestTime(){
+    public List<Long> getLatestTime() {
         return latestTime;
     }
 
-    public List<Integer> getLatestPulse(){
+    public List<Integer> getLatestPulse() {
         return latestPulse;
     }
 

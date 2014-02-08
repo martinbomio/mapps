@@ -89,7 +89,7 @@ else if(error.equals(11)){
 	            },
 			});
 			setInterval(function(){
-				//create_list();
+				create_list();
 			}, 3000);
 			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
 	            resizable: false, draggable: false, 
@@ -125,9 +125,10 @@ else if(error.equals(11)){
             var athlete = data.athleteWrapper;
         	var bpm = data.lastPulse;
         	var kCal = get_double_as_String(data.kCal,3);
+        	var training_zone = get_zone(data.trainingType);
         	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
         	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
-        	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href="./athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index" style"font-size:22px;">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">PULSO:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">CALORIAS QUEMADAS:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
+        	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><div style="width: 25%;height: 100%;float: left;display: inline-block" ><a href="./athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index" style="font-size:22px;">'+athlete.name+' '+athlete.lastName+'</div></a></div><div id="pulse '+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">Pulso:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="zone'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">Zona de Entrenamiento:</div><div id="training_zone'+athlete.idDocument+'" class="data_index">'+training_zone+'</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index" style="margin-top:15px;"><div style="height:40px; text-align:center;">Calorias Quemadas:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
         	first_div.append(div_up);
         	first_div.append(div_down);
         	list.append(first_div);
@@ -152,6 +153,20 @@ else if(error.equals(11)){
 		var val = new String(doub);
     	var split = val.split('.');
     	return split[0] + '.' + split[1].substr(0,decimals);
+	}
+	
+	function get_zone(type){
+		if (type == "VERYSOFT"){
+			return "Muy Suave";
+		}else if (type == "SOFT"){
+			return "Suave";
+		}else if (type == "MODERATED"){
+			return "Moderado";
+		}else if (type == "INTENSE"){
+			return "Intenso";
+		}else{
+			return "Muy Intenso";
+		}
 	}
 	
 	function create_stop_training(training_name){

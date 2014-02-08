@@ -41,9 +41,7 @@ public class Training {
     @Column(nullable = false)
     private Date date;
     private int participants;
-    
     private long latOrigin;
-    
     private long longOrigin;
     private int minBPM;
     private int maxBPM;
@@ -54,7 +52,8 @@ public class Training {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Report> reports;
-    @OneToMany(targetEntity = PulseReport.class)
+    @OneToMany(targetEntity = PulseReport.class, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Set<PulseReport> pulseReports;
     @ManyToOne
     private Sport sport;

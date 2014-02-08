@@ -39,8 +39,8 @@ public enum TrainingType {
 
     public static TrainingType fromFCR(int fcr, int age, int bpm) {
         int FCMax = 220 - age;
-        int[] margins = new int[]{getMargin(fcr, FCMax, 50), getMargin(fcr, FCMax, 60), getMargin(fcr, FCMax, 70),
-                                  getMargin(fcr, FCMax, 80), getMargin(fcr, FCMax, 90), getMargin(fcr, FCMax, 100)};
+        double[] margins = new double[]{getMargin(fcr, FCMax, 0.5), getMargin(fcr, FCMax, 0.6), getMargin(fcr, FCMax, 0.7),
+                                  getMargin(fcr, FCMax, 0.8), getMargin(fcr, FCMax, 0.9), getMargin(fcr, FCMax, 1.0)};
         if (bpm <= margins[1]){
             return VERYSOFT;
         }else if (bpm <= margins[2]){
@@ -55,7 +55,7 @@ public enum TrainingType {
 
     }
 
-    public static int getMargin(int fcr, int fcmax, int percentage) {
+    public static double getMargin(int fcr, int fcmax, double percentage) {
         return ((fcmax - fcr) * percentage + fcr);
     }
 

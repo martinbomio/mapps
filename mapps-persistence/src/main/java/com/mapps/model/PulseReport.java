@@ -2,6 +2,7 @@ package com.mapps.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.google.common.collect.Maps;
 import com.mapps.jsonexclusions.annotations.PulseReportExclusion;
 import com.mapps.pulsedata.RestPulseForAge;
 import com.mapps.stats.PulseStatsDecoder;
@@ -56,6 +58,9 @@ public class PulseReport {
     private String trainingName;
     private double kCal;
     private int lastPulse;
+    private double meanBPM;
+    @Transient
+    private Map<String, Double> trainingTypePercentage;
 
     public PulseReport() {
 
@@ -70,9 +75,11 @@ public class PulseReport {
         this.createdDate = createdDate;
         this.athlete = athlete;
         this.athleteWrapper = new AthleteWrapper.Builder().setAthlete(this.athlete).build();
-        this.trainingType = getTrainingType();
+        this.trainingType = getTrainingType(this.pulse.get(this.pulse.size()-1));
+        this.meanBPM = getMeanBPM();
         this.kCal = getKcalPerMinute() * (time.get(time.size() - 1) - time.get(0)) / (1000 * 60);
         this.lastPulse = pulse.get(pulse.size() - 1);
+        this.trainingTypePercentage = getTrainingTypePercentage();
     }
 
     public List<Integer> getPulse() {
@@ -131,7 +138,9 @@ public class PulseReport {
         this.id = id;
     }
 
-    public TrainingType getTrainingType() {
+
+
+    public TrainingType getTrainingType(int bpm) {
         RestPulseForAge restPulse = RestPulseForAge.loadFromJson();
         List<Integer> fcr;
         if (athlete.getGender().equals(Gender.MALE)) {
@@ -140,13 +149,12 @@ public class PulseReport {
             fcr = restPulse.getFemalePulse();
         }
         int age = athleteWrapper.getAge();
-        return TrainingType.fromFCR(fcr.get(age), age, pulse.get(pulse.size() - 1));
+        return TrainingType.fromFCR(fcr.get(age), age, bpm);
     }
 
     public double getKcalPerMinute() {
         double weight = athlete.getWeight();
         int age = athleteWrapper.getAge();
-        double meanBPM = getMeanBPM();
         if (athlete.getGender().equals(Gender.MALE)) {
             return (-55.0969 + (0.6309 * meanBPM) + 0.1988 * weight + 0.2017 * age) / (4.184 * 1000);
         } else {
@@ -160,6 +168,19 @@ public class PulseReport {
             sum += bpm;
         }
         return sum / pulse.size();
+    }
+
+    public Map<String, Double> getTrainingTypePercentage() {
+        Map<String, Double> map = Maps.newHashMap();
+        for (Integer bpm : this.pulse){
+            String type = getTrainingType(bpm).name();
+            if (map.get(type) == null){
+                map.put(type, (1.0 / pulse.size()));
+            }else{
+                map.put(type, map.get(type) + (1.0 / pulse.size()));
+            }
+        }
+        return map;
     }
 
     public static class Builder {
@@ -192,7 +213,7 @@ public class PulseReport {
             return report;
         }
 
-        public PulseReport buildRealTime(){
+        public PulseReport buildRealTime() {
             PulseStatsDecoder decoder = new PulseStatsDecoder(this.rawDataUnits);
             PulseReport report = new PulseReport(training.getName(),
                                                  decoder.getTime(),
