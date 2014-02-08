@@ -330,6 +330,12 @@ body{
 	padding-right:3%;
 }
 
+.data_info_index a{
+	text-decoration:none;
+	color:#A2A2A2;
+	font-style:normal;
+}
+
 .data_info_index_min{
 	float:left; 
 	height:65px; 

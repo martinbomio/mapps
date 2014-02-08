@@ -132,7 +132,7 @@ if(info.equals("7")){
         </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
-        <div id="logout" class="up_tab">MI CUENTA</div>
+        <div id="logout" class="up_tab"><a href="./my_account.jsp">MI CUENTA</a></div>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
