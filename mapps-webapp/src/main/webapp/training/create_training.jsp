@@ -54,29 +54,29 @@ if (error.equals("null"))
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		// Create jqxNumberInput
-        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 2, theme: 'metro', spinButtons: true});
-		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
-		$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-		$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
+//        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 2, theme: 'metro', spinButtons: true});
+//		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
+//		$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
+//		$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 		$("#date").jqxDateTimeInput({width: '220px', height: '25px', formatString: 'dd/MM/yyyy HH:mm', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#create_training").jqxValidator({
             rules: [
-        			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
-            			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
-            			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
-            			return val_max > val_min;
-           				}
-        			},
-        			{input: "#num_latitude", message: "La latitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
-        				var val = $("#num_latitude").jqxNumberInput('val');
-        				return val.toString().length == 8;
-        			}},
-        			{input: "#num_longitude", message: "La longitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
-        				var val = $("#num_longitude").jqxNumberInput('val');
-        				return val.toString().length == 8;
-        			}},
+//        			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
+//            			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
+//            			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
+//            			return val_max > val_min;
+//           				}
+//        			},
+ //       			{input: "#num_latitude", message: "La latitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
+ //       				var val = $("#num_latitude").jqxNumberInput('val');
+ //       				return val.toString().length == 8;
+ //       			}},
+ //       			{input: "#num_longitude", message: "La longitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
+ //       				var val = $("#num_longitude").jqxNumberInput('val');
+ //       				return val.toString().length == 8;
+ //       			}},
                     {input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
                         var index = $("#sport").jqxDropDownList('getSelectedIndex');
                         return index != -1;
@@ -161,7 +161,7 @@ if (error.equals("null"))
                         <div id="date" class="input">
                         </div>
                     </div>
-                    <div id="min_bpm">
+ <!--                   <div id="min_bpm">
                         <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
                         <div id="num_min_bpm" class="input" style="margin-top:10px;">
                         </div>
@@ -171,7 +171,7 @@ if (error.equals("null"))
                         <div id="num_max_bpm" class="input" style="margin-top:10px;">
                         </div>
                     </div>
-                    <div id="latitude">
+                      <div id="latitude">
                         <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
                         <div id="num_latitude" class="input" style="margin-top:10px;">
                         </div>
@@ -180,7 +180,7 @@ if (error.equals("null"))
                         <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
                         <div id="num_longitude" class="input" style="margin-top:10px;">
                         </div>
-                    </div>
+                    </div> -->
                     <div id='sport_div' style="display:inline-block">
                        	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
                         <div class="input" style="margin-top:10px;">

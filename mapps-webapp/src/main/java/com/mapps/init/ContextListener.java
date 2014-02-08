@@ -118,8 +118,7 @@ public class ContextListener implements ServletContextListener {
         mapUserPermission.put(user, Permission.CREATE);
         mapUserPermission.put(user2, Permission.READ);
 
-        Training training = new Training("nombreTraining", new Date(), 3, 34523361, 56025285, 55, 190,
-                                         mapAthleteDevice, null, null,sport, mapUserPermission, inst);
+        Training training = new Training("nombreTraining", new Date(),0,mapAthleteDevice, null, null,sport, mapUserPermission, inst);
         training.setStarted(true);
         try {
             inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
