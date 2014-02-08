@@ -44,7 +44,7 @@ if (info.equals("null")){
 }
 String error = String.valueOf(request.getParameter("error"));
 if (error.equals(10)){
-	pop_up_message = "Error de auteticación o no se tiene los permisos necesarios para realizar esta operación";
+	pop_up_message = "Error de autenticación o no se tiene los permisos necesarios para realizar esta operación";
 	show_pop_up = true;
 }
 else if(error.equals(11)){
@@ -89,8 +89,8 @@ else if(error.equals(11)){
 	            },
 			});
 			setInterval(function(){
-				create_list();
-			}, 5000);
+				//update_list();
+			}, 3000);
 			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
 	            resizable: false, draggable: false, 
 	            okButton: $('#ok'), 
@@ -111,14 +111,22 @@ else if(error.equals(11)){
             	if(reports.length != 0){
                 	create_label(reports);
             	}else{
-            		$('#list_athletes').text("No hay datos de los atletas aun")
+            		$('#list_athletes').text("No hay datos de los atletas aun");
             	}
             },
 		});
 	}
 	
 	function create_label(reports){
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
+		for (var i = 0 ; i < reports.length ; i ++){
+			var data = reports[i];
+            var athlete = data.athleteWrapper;
+        	var bpm = data.lastPulse;
+        	var kCal = get_double_as_String(data.kCal,3);
+			document.getElementById('list_athletes').innerHTML = document.getElementById('list_athletes').innerHTML + '<div id="'+athlete.id+'" class="athlete_index"><div id="img'+athlete.id+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div><div id="data '+athlete.id+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><a href=".athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.id+'" class="data_info_index">'+athlete.name+' '+athlete.lastName+'</div></a><div id="pulse '+athlete.id+'" class="data_info_index" style="margin-top:15px; margin-left:4%;"><div style="height:40px; text-align:center; font-size:14px;">PULSO</div><div id="pulse_data'+athlete.id+'" class="data_index">'+bpm+' bpm</div></div><div id="calories'+athlete.id+'" class="data_info_index" style="margin-top:15px; width:25%; font-size:14px;"><div style="height:40px; text-align:center;">CALORIAS</div><div id="calories_data '+athlete.id+'" class="data_index" style="font-size:16px;">'+kCal+' KCal</div></div></div></div>';
+			
+		}
+		/* $('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athleteWrapper.name", valueMember: "athleteWrapper.idDocument", itemHeight: 35, height: '450px', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var data = reports[index];
                 var athlete = data.athleteWrapper;
@@ -131,7 +139,7 @@ else if(error.equals(11)){
             	first_div.append(div_down);
                 return first_div.html();
             }
-        });
+        }); */
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -176,7 +184,7 @@ else if(error.equals(11)){
         </div>
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
-        <div id="logout" class="up_tab">MI CUENTA</div>
+        <div id="logout" class="up_tab"><a href="./configuration/my_account.jsp">MI CUENTA</a></div>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>

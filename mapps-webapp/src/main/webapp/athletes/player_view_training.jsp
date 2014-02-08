@@ -50,7 +50,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 <script type="text/javascript">
 	$(document).ready(function () {
 		window.created = false;
-		athlete_stats();
+		// athlete_stats();
 			<%
 			if(show_pop_up){	
 			%>
@@ -69,6 +69,9 @@ String athleteID = String.valueOf(request.getParameter("a"));
 				athlete_stats();
 			}, 5000);
 			*/	
+			
+		success();
+		
 	});
 	
 	function athlete_stats(){
@@ -89,9 +92,31 @@ String athleteID = String.valueOf(request.getParameter("a"));
                 window.athleteIndex+=1;
             	success();
                 
-        },
-});
-		}
+        	},
+		});
+	}
+	
+	function update_stats(){
+		window.athleteData = [];
+		window.athleteIndex = 0;
+		$.ajax({
+            url: "/mapps/getAthleteOnTrainingData",
+            type: "POST",
+            data: {a:<%="'"+athleteID+"'"%> , t:<%="'"+trainingName+"'"%>},
+            success: function (response){
+            	if (window.created){
+            		update_values(response);
+            	}else{
+            		create_label(response);
+            		window.created = true;
+            	}
+            	window.athleteData.push(response);
+                window.athleteIndex+=1;
+            	success();
+                
+        	},
+		});
+	}
 	
 	function pulseData() {
 		var data = window.athleteData;
@@ -126,17 +151,14 @@ String athleteID = String.valueOf(request.getParameter("a"));
 	    return series;
 	}
 	
-	
-	
 	function success(){
-		
 	  	// prepare chart data as an array
-        var pulse_data = pulseData();
+        //var pulse_data = pulseData();
 				
 			
 		var pulse_time_chart = new AmCharts.AmSerialChart();
-		speed_chart.dataProvider = speed_data;
-		speed_chart.categoryField = "x";
+		//pulse_time_chart.dataProvider = pulse_data;
+		pulse_time_chart.categoryField = "x";
 		/*
 		var speed_category_axis = speed_chart.categoryAxis;
 		speed_category_axis.parseDates = true;
@@ -147,10 +169,10 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		var pulse_time_graph = new AmCharts.AmGraph();
 		pulse_time_graph.valueField = "y";
 		pulse_time_graph.type = "line";
-		pulse_time_graph.title = "Velocidad (km/h)";
-		pulse_time_graph.balloonText = "[[value]] km/h";
+		pulse_time_graph.title = "Pulso (bpm)";
+		pulse_time_graph.balloonText = "[[value]] bpm";
 		pulse_time_graph.fillAlphas = 0.5;
-		pulse_time_chart.addGraph(speed_graph);
+		pulse_time_chart.addGraph(pulse_time_chart);
 			
 		var chartScrollbar = new AmCharts.ChartScrollbar();
 		pulse_time_chart.addChartScrollbar(chartScrollbar);
@@ -162,24 +184,29 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		pulse_time_chart.write('graphicPulse');
 			
 		// aca debe ponerse el gauge (jqx)
-	
+		pulseGauge();
 	}
 	
 	
 	function pulseGauge(){
 		$('#gaugeContainer').jqxGauge({
-            ranges: [{ startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
-                     { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
-                     { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
-                     { startValue: 165, endValue: 220, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }],
+            ranges: [{ startValue: 60, endValue: 100, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
+                     { startValue: 100, endValue: 150, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
+                     { startValue: 150, endValue: 180, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
+                     { startValue: 180, endValue: 220, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }],
             ticksMinor: { interval: 5, size: '5%' },
             ticksMajor: { interval: 10, size: '9%' },
+            style: { stroke: '#ffffff', 'stroke-width': '1px', fill: '#ffffff' },
             value: 0,
+            border: { visible: false },
             colorScheme: 'scheme05',
-            animationDuration: 1200
+            animationDuration: 1200,
+            width: '30%',
+            min: 60,
+            max: 220
         });
         $('#gaugeContainer').on('valueChanging', function (e) {
-            $('#gaugeValue').text(Math.round(e.args.value) + ' kph');
+            $('#gaugeValue').text(Math.round(e.args.value) + ' bpm');
         });
         $('#gaugeContainer').jqxGauge('value', 140);
 		
@@ -225,7 +252,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
     
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
-        <div id="logout" class="up_tab">MI CUENTA</div>
+        <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
@@ -246,21 +273,64 @@ String athleteID = String.valueOf(request.getParameter("a"));
         	<div id="training" style="width:100%; height:40px;"> 
             
             </div>
-            <div>
-            	<div id="main_div_left" style="float:left; width:60%; margin-top:50px;">
-                    <div style="margin-top:50px;">Pulso 
-                        <div id="graphicPulse" style="height:280px; width:85%;">
-                            
-                        </div>
-                    </div>               
+            <div id="main_div_up" style="float:left; height:200px; margin-top:30px; width:100%;">
+                <div id="img" style="float:left; height:100px; width:15%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                    	<img src="../images/athletes/default.png" height="80px" />
                 </div>
-                <div id="main_div_right" style="float:left; width:40%; margin-top:50px;">
-                	<div id="gaugeContainer" style="height:160px; width: 100%; float:left;">                
-                
-                	</div>
-				</div>
-                
+                <div id="data"  style="float:left; height:100px; width:50%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                 	<div id="name" class="data_info_index">
+                       	Martin
+                       	Bomio
+                    </div>
+                    <div id="pulse_min" class="data_info_index_min" style="margin-top:30px;">
+                      	<div style="height:40px; text-align:center;">
+                        min
+                        </div>
+                        <div id="pulse_data" class="data_index_min">
+                          	71
+                        </div>
+                    </div>
+                    <div id="pulse" class="data_info_index" style="margin-top:30px;">
+                      	<div style="height:40px; text-align:center;">
+                        PULSO
+                        </div>
+                        <div id="pulse_data" class="data_index">
+                          	79 bpm
+                        </div>
+                    </div>
+                    <div id="pulse_max" class="data_info_index_min" style="margin-top:30px;">
+                      	<div style="height:40px; text-align:center;">
+                        max
+                        </div>
+                        <div id="pulse_data" class="data_index_min">
+                          	140
+                        </div>
+                    </div>
+                    <div id="calories" class="data_info_index" style="margin-top:30px;">
+                      	<div style="height:40px; text-align:center;">
+                        CALORIAS
+                        </div>
+                        <div id="calories_data" class="data_index">
+                          	475
+                        </div>
+                    </div>
+                </div>
+                <div id="gaugeContainer" style="height:160px; width:40%; float:left;">                
+                	
+               	</div>
+                <!-- <div id="gaugeValue" style="position: absolute; top: 500px; left: 832px; font-family: Sans-Serif; text-align: center; font-size: 17px; width: 70px;">
+                    
+                </div> -->               
             </div>
+            <div id="main_div_down" style="float:left; height:200px; margin-top:30px; width:100%;">
+            	Pulsaciones
+                <div id="graphicPulse" style="height:280px; width:85%;">
+                            
+                </div>
+                <div id="graphic_pie">
+                
+                </div>
+			</div>
         </div>
         <div id="sidebar_right" style="width:10%;">
         

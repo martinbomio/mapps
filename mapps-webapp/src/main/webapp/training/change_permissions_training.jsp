@@ -118,7 +118,8 @@ function updatePanel(trainings){
 	
 	</div>
     <div id="header_der">
-	
+		<div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
+		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
 <div id="contenedor">
