@@ -130,7 +130,7 @@ public class ReportServiceImpl implements ReportService {
             }
             PulseReport report;
             if (reload) {
-                report = new PulseReport.Builder().setAthlete(athlete)
+                report = new PulseReport.Builder().setAthlete(athlete).setPulseData(rawDataUnits)
                         .setTraining(training).buildRealTime();
             } else {
                 report = new PulseReport.Builder().setPulseData(rawDataUnits)

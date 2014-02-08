@@ -50,7 +50,11 @@ String athleteID = String.valueOf(request.getParameter("a"));
 <script type="text/javascript">
 	$(document).ready(function () {
 		window.created = false;
-		// athlete_stats();
+		window.pulse_data = [];
+		window.pulse_min = 220;
+		window.pulse_max = 0;
+		window.chart = '';
+	 	athlete_stats(false);
 			<%
 			if(show_pop_up){	
 			%>
@@ -64,101 +68,62 @@ String athleteID = String.valueOf(request.getParameter("a"));
 			}
 			%>
 			
-			/*
-			setInterval(function(){
-				athlete_stats();
-			}, 5000);
-			*/	
 			
-		success();
+		setInterval(function(){
+						athlete_stats(true);
+					}, 
+		2000);
 		
 	});
 	
-	function athlete_stats(){
-		window.athleteData = [];
-		window.athleteIndex = 0;
+	function athlete_stats(reload){
+		window.athleteData = '';
 		$.ajax({
             url: "/mapps/getAthleteOnTrainingData",
             type: "POST",
-            data: {a:<%="'"+athleteID+"'"%> , t:<%="'"+trainingName+"'"%>},
+            data: {a:<%="'"+athleteID+"'"%> , t:<%="'"+trainingName+"'"%>, r:reload},
             success: function (response){
             	if (window.created){
             		update_values(response);
             	}else{
-            		create_label(response);
+            		create_values(response);
             		window.created = true;
             	}
-            	window.athleteData.push(response);
-                window.athleteIndex+=1;
-            	success();
-                
         	},
 		});
 	}
 	
-	function update_stats(){
-		window.athleteData = [];
-		window.athleteIndex = 0;
-		$.ajax({
-            url: "/mapps/getAthleteOnTrainingData",
-            type: "POST",
-            data: {a:<%="'"+athleteID+"'"%> , t:<%="'"+trainingName+"'"%>},
-            success: function (response){
-            	if (window.created){
-            		update_values(response);
-            	}else{
-            		create_label(response);
-            		window.created = true;
-            	}
-            	window.athleteData.push(response);
-                window.athleteIndex+=1;
-            	success();
-                
-        	},
-		});
-	}
+
 	
-	function pulseData() {
-		var data = window.athleteData;
-		var series = [];
-		for(var i = 0 ; i<data.length; i++){
-			if( data[i].time.length > 300 ){
-				for(var j = data[i].time.length - 300; j < data[i].time.length ; j = j + 10) {
-					if((data[i].pulse[j])==null){
-						series.push({
-							time: data[i].time[j], pulse: 0
-						});	
-					}else{
-						series1.push({
-							time: data[i].time[j], pulse: data[i].pulse[j]
-						});
-					}				
+	function pulseData(data) {
+		for(var i = 0 ; i<data.pulse.length; i++){
+			if((data.pulse[i])==null){
+				window.pulse_data.push({
+					time: data.time[i], pulse: 0
+				});	
+			}else{
+				if(data.pulse[i] > window.pulse_max){
+					window.pulse_max = data.pulse[i];
+				}else if(data.pulse[i] < window.pulse_min){
+					window.pulse_min = data.pulse[i];
 				}
-			}else {
-				for(var j = 0 ; j < data[i].time.length ; j = j + 10) {
-					if((data[i].pulse[j])==null){
-						series.push({
-							time: data[i].time[j], pulse: 0
-						});	
-					}else{
-						series1.push({
-							time: data[i].time[j], pulse: data[i].pulse[j]
-						});
-					}				
-				}
-			}
+				window.pulse_data.push({
+					time: data.time[i], pulse: data.pulse[i]
+				});
+			}				
 		}
-	    return series;
 	}
 	
-	function success(){
+	function create_values(response){
+		document.getElementById('name').innerHTML = response.athlete.name+' '+response.athlete.lastName;
 	  	// prepare chart data as an array
-        //var pulse_data = pulseData();
-				
-			
+        pulseData(response);
+		
+		
 		var pulse_time_chart = new AmCharts.AmSerialChart();
-		//pulse_time_chart.dataProvider = pulse_data;
-		pulse_time_chart.categoryField = "x";
+		pulse_time_chart.dataProvider = window.pulse_data;
+		pulse_time_chart.validateData();
+		pulse_time_chart.categoryField = "time";
 		/*
 		var speed_category_axis = speed_chart.categoryAxis;
 		speed_category_axis.parseDates = true;
@@ -167,12 +132,12 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		*/
 			
 		var pulse_time_graph = new AmCharts.AmGraph();
-		pulse_time_graph.valueField = "y";
+		pulse_time_graph.valueField = "pulse";
 		pulse_time_graph.type = "line";
 		pulse_time_graph.title = "Pulso (bpm)";
 		pulse_time_graph.balloonText = "[[value]] bpm";
 		pulse_time_graph.fillAlphas = 0.5;
-		pulse_time_chart.addGraph(pulse_time_chart);
+		pulse_time_chart.addGraph(pulse_time_graph);
 			
 		var chartScrollbar = new AmCharts.ChartScrollbar();
 		pulse_time_chart.addChartScrollbar(chartScrollbar);
@@ -185,6 +150,18 @@ String athleteID = String.valueOf(request.getParameter("a"));
 			
 		// aca debe ponerse el gauge (jqx)
 		pulseGauge();
+		
+		window.chart = pulse_time_chart;
+	}
+	
+	function update_values(response){
+		pulseData(response);
+		document.getElementById('pulse_data').innerHTML = window.pulse_data[window.pulse_data.length-1].pulse+' '+'bpm';
+		document.getElementById('calories_data').innerHTML = Math.round(response.kCal)+' '+'kCal';
+		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;
+		document.getElementById('pulse_data_max').innerHTML = window.pulse_max;
+		$('#gaugeContainer').jqxGauge('value', window.pulse_data[window.pulse_data.length-1].pulse);
+		window.chart.validateData();
 	}
 	
 	
@@ -201,47 +178,15 @@ String athleteID = String.valueOf(request.getParameter("a"));
             border: { visible: false },
             colorScheme: 'scheme05',
             animationDuration: 1200,
-            width: '30%',
+            width: '45%',
+            height: 200,
             min: 60,
             max: 220
         });
-        $('#gaugeContainer').on('valueChanging', function (e) {
-            $('#gaugeValue').text(Math.round(e.args.value) + ' bpm');
-        });
-        $('#gaugeContainer').jqxGauge('value', 140);
+		$('#gaugeContainer').jqxGauge('value', window.pulse_data[window.pulse_data.length-1].pulse);
 		
 	}
 	
-	
-/*
-	function create_label(data){
-		var athlete = data.athlete;
-		var distance = new String(data.traveledDistance);
-		var split = distance.split('.');
-		var distance = split[0] + '.' + split[1].substr(0,1);
-		split = new String(data.averageSpeed).split('.');
-		var speed = split[0] + '.' + split[1].substr(0,1);
-		var players_div = $("#list_players");
-		var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-		var div_up = $('<a href="player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:35%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:60%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></div></a>');
-		var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_distance" class="tab_player_login"><div class="tag_info_player_login"> Distancia</div><div id="distance'+athlete.idDocument+'" class="tag_data_player_login"> '+ distance +' mts </div></div><div id="info_speed" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Velocidad Promedio</div><div id="speed'+athlete.idDocument+'" class="tag_data_player_login"> '+speed+' km/h </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+data.pulse[data.pulse.length-1]+' bpm </div></div></div>');
-		first_div.append(div_up);
-		first_div.append(div_down);
-		players_div.append(first_div);
-	}
-
-	function update_values(data){
-		var athlete = data.athlete;
-		var distance = new String(data.traveledDistance);
-		var split = distance.split('.');
-		var distance = split[0] + '.' + split[1].substr(0,1);
-		split = new String(data.averageSpeed).split('.');
-		var speed = split[0] + '.' + split[1].substr(0,1);
-		$('#distance'+athlete.idDocument+'').text(distance);
-		$('#speed'+athlete.idDocument+'').text(speed);
-		$('#pulse'+athlete.idDocument+'').text(data.pulse[data.pulse.length-1]);
-	}
-*/	
 </script>
 
 <div id="header">
@@ -277,57 +222,56 @@ String athleteID = String.valueOf(request.getParameter("a"));
                 <div id="img" style="float:left; height:100px; width:15%; display:inline-block; padding-top:10px; padding-bottom:10px;">
                     	<img src="../images/athletes/default.png" height="80px" />
                 </div>
-                <div id="data"  style="float:left; height:100px; width:50%; display:inline-block; padding-top:10px; padding-bottom:10px;">
+                <div id="data"  style="float:left; height:100px; width:70%; display:inline-block; padding-top:10px; padding-bottom:10px;">
                  	<div id="name" class="data_info_index">
-                       	Martin
-                       	Bomio
+                       	
                     </div>
-                    <div id="pulse_min" class="data_info_index_min" style="margin-top:30px;">
-                      	<div style="height:40px; text-align:center;">
-                        min
-                        </div>
-                        <div id="pulse_data" class="data_index_min">
-                          	71
-                        </div>
-                    </div>
-                    <div id="pulse" class="data_info_index" style="margin-top:30px;">
-                      	<div style="height:40px; text-align:center;">
-                        PULSO
-                        </div>
-                        <div id="pulse_data" class="data_index">
-                          	79 bpm
-                        </div>
-                    </div>
-                    <div id="pulse_max" class="data_info_index_min" style="margin-top:30px;">
-                      	<div style="height:40px; text-align:center;">
-                        max
-                        </div>
-                        <div id="pulse_data" class="data_index_min">
-                          	140
-                        </div>
-                    </div>
-                    <div id="calories" class="data_info_index" style="margin-top:30px;">
-                      	<div style="height:40px; text-align:center;">
-                        CALORIAS
-                        </div>
-                        <div id="calories_data" class="data_index">
-                          	475
-                        </div>
-                    </div>
-                </div>
-                <div id="gaugeContainer" style="height:160px; width:40%; float:left;">                
+                    <div id="gaugeContainer" style="height:160px; width:50%; float:left;">                
                 	
-               	</div>
-                <!-- <div id="gaugeValue" style="position: absolute; top: 500px; left: 832px; font-family: Sans-Serif; text-align: center; font-size: 17px; width: 70px;">
-                    
-                </div> -->               
+               		</div>
+               		<div id="pulse_min" class="data_info_index_min" style="margin-top:30px;">
+	                  	<div style="height:40px; text-align:center;">
+	            	        min
+	                    </div>
+	                    <div id="pulse_data_min" class="data_index_min">
+	                        	
+	                    </div>
+	                </div>
+	                <div id="pulse" class="data_info_index" style="margin-top:30px;">
+	                  	<div style="height:40px; text-align:center;">
+	                        PULSO
+	                    </div>
+	                    <div id="pulse_data" class="data_index">
+	                          	
+	                    </div>
+	                </div>
+	                <div id="pulse_max" class="data_info_index_min" style="margin-top:30px;">
+	                  	<div style="height:40px; text-align:center;">
+	                        max
+	                    </div>
+	                    <div id="pulse_data_max" class="data_index_min">
+	                          	
+	                    </div>
+	                </div>
+               		
+	            </div>
+	            <div style="float:left; height:200px; width:40%;">
+	                <div id="calories" class="data_info_index" style="margin-top:30px;">
+	                  	<div style="height:40px; text-align:center;">
+	                	    CALORIAS
+	                    </div>
+	                    <div id="calories_data" class="data_index">
+	                          	
+	                    </div>
+	                </div>
+	            </div>             
             </div>
             <div id="main_div_down" style="float:left; height:200px; margin-top:30px; width:100%;">
-            	Pulsaciones
-                <div id="graphicPulse" style="height:280px; width:85%;">
+            	<div>Pulsaciones</div>
+                <div id="graphicPulse" style="height:280px; width:65%; display:inline-block;">
                             
                 </div>
-                <div id="graphic_pie">
+                <div id="graphic_pie" style="float:right; display:inline-block; height:280px; width:30%;">
                 
                 </div>
 			</div>
