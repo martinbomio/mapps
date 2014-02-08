@@ -330,10 +330,11 @@ body{
 	padding-right:3%;
 }
 
-.data_info_index a{
+.athlete_index a{
 	text-decoration:none;
-	color:#A2A2A2;
-	font-style:normal;
+	font-style:normal;	
+	color: #4DC230;
+	font-weight: bold;
 }
 
 .data_info_index_min{
@@ -348,7 +349,7 @@ body{
 .data_index{
 	height:40px; 
 	color:#000; 
-	font-size:22px;
+	font-size:16px;
 	text-align:center;
 }
 
