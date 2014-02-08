@@ -89,8 +89,9 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
         for (User user : usersOfInstitution){
         	if (user.equals(owner)){
                 permissionMap.put(user, Permission.CREATE);
+        	}else {
+        		permissionMap.put(user, Permission.READ);
         	}
-            permissionMap.put(user, Permission.READ);
         }
         return permissionMap;
     }

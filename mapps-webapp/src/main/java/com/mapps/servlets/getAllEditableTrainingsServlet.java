@@ -36,19 +36,12 @@ public class GetAllEditableTrainingsServlet extends HttpServlet implements Servl
         List<TrainingWrapper> trainingWrappers =new ArrayList<TrainingWrapper>();
         try {
             trainings = trainerService.getAllEditableTrainings(token);
-
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create();
-
-
             for(int i=0;i<trainings.size();i++){
                  trainingWrappers.add(new TrainingWrapper(trainings.get(i)));
-
             }
-
-
             String json = gson.toJson(trainingWrappers);
-
             writer.write(json);
             writer.close();
         } catch (AuthenticationException e) {

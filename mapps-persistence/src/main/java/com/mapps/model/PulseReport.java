@@ -146,11 +146,20 @@ public class PulseReport {
     public double getKcalPerMinute() {
         double weight = athlete.getWeight();
         int age = athleteWrapper.getAge();
+        double meanBPM = getMeanBPM();
         if (athlete.getGender().equals(Gender.MALE)) {
-            return (-55.0969 + (0.6309 * pulse.get(pulse.size() - 1)) + 0.1988 * weight + 0.2017 * age) / 4.184;
+            return (-55.0969 + (0.6309 * meanBPM) + 0.1988 * weight + 0.2017 * age) / (4.184 * 1000);
         } else {
-            return (-20.4022 + (0.4472 * pulse.get(pulse.size() - 1)) + 0.1263 * weight + 0.074 * age) / 4.184;
+            return (-20.4022 + (0.4472 * meanBPM) + 0.1263 * weight + 0.074 * age) / (4.184 * 1000);
         }
+    }
+
+    public double getMeanBPM() {
+        double sum = 0;
+        for (Integer bpm : pulse) {
+            sum += bpm;
+        }
+        return sum / pulse.size();
     }
 
     public static class Builder {

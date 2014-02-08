@@ -127,7 +127,8 @@ $(document).ready(function () {
 		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
-                
+                var split = datarecord.date.split(" ");
+                var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
                 var table = '<table style="min-width: 130px;"><td>' + datarecord.name + '</td></table>';
                 return table;
             }
