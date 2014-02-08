@@ -39,10 +39,10 @@ public class ModifyTrainingServlet extends HttpServlet implements Servlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
-        long longitude = Long.parseLong(req.getParameter("num_longitude"));
-        long latitude = Long.parseLong(req.getParameter("num_latitude"));
-        int minBPM = Integer.parseInt(req.getParameter("num_min_bpm"));
-        int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
+        //long longitude = Long.parseLong(req.getParameter("num_longitude"));
+        //long latitude = Long.parseLong(req.getParameter("num_latitude"));
+        //int minBPM = Integer.parseInt(req.getParameter("num_min_bpm"));
+        //int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
         String name = req.getParameter("name-hidden");
         
         try {
@@ -53,10 +53,10 @@ public class ModifyTrainingServlet extends HttpServlet implements Servlet {
             
 
             Training training = trainerService.getTrainingByName(token, name);
-            training.setLongOrigin(longitude);
-            training.setLatOrigin(latitude);
-            training.setMinBPM(minBPM);
-            training.setMaxBPM(maxBPM);
+            //training.setLongOrigin(longitude);
+            //training.setLatOrigin(latitude);
+            //training.setMinBPM(minBPM);
+            //training.setMaxBPM(maxBPM);
             training.setDate(date);
             training.setSport(newSport);
             trainerService.modifyTraining(training, token);
