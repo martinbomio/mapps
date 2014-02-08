@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -39,9 +41,9 @@ public class Training {
     @Column(nullable = false)
     private Date date;
     private int participants;
-    @Column(nullable = false)
+    
     private long latOrigin;
-    @Column(nullable = false)
+    
     private long longOrigin;
     private int minBPM;
     private int maxBPM;
@@ -49,7 +51,7 @@ public class Training {
     private boolean finished;
     @ManyToMany(fetch = FetchType.EAGER)
     private Map<Athlete, Device> mapAthleteDevice;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Report> reports;
     @OneToMany(targetEntity = PulseReport.class)
@@ -71,17 +73,16 @@ public class Training {
 
     }
 
-    public Training(String name, Date date, int participants, long latOrigin, long longOrigin, int minBPM,
-                    int maxBPM, Map<Athlete, Device> mapAthleteDevice, List<Report> reports,
+    public Training(String name, Date date, int participants,Map<Athlete, Device> mapAthleteDevice, List<Report> reports,
                     Set<PulseReport> pulseReports, Sport sport,
                     Map<User, Permission> mapUserPermission, Institution institution) {
         this.name = name;
         this.date = date;
         this.participants = participants;
-        this.latOrigin = latOrigin;
-        this.longOrigin = longOrigin;
-        this.minBPM = minBPM;
-        this.maxBPM = maxBPM;
+        //this.latOrigin = latOrigin;
+        //this.longOrigin = longOrigin;
+        //this.minBPM = minBPM;
+        //this.maxBPM = maxBPM;
         this.mapAthleteDevice = mapAthleteDevice;
         this.reports = reports;
         this.sport = sport;

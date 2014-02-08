@@ -57,8 +57,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     private boolean invalidTraining(Training training) {
         boolean aux = false;
-        if (training == null || training.getName() == null || training.getDate() == null || training.getLatOrigin() == 0
-                || training.getLongOrigin() == 0 || training.getSport() == null) {
+        if (training == null || training.getName() == null || training.getDate() == null || training.getSport() == null) {
             aux = true;
         }
         return aux;
