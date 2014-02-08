@@ -3,6 +3,7 @@ package com.mapps.servlets;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.mapps.model.Report;
+import com.mapps.model.PulseReport;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
 
@@ -34,7 +35,7 @@ public class GetReportsOfTrainingServlet extends HttpServlet implements Servlet 
 
         try {
             Writer writer = resp.getWriter();
-            List<Report> reports = reportService.getReportsOfTraining(trainingID, token);
+            List<PulseReport> reports = reportService.getPulseReportsOfTraining(trainingID, token);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             String json = new Gson().toJson(reports);

@@ -30,7 +30,7 @@ public class PulseStatsDecoder {
             long timestamp = data.getTimestamp();
             long porcionOfTime = timestamp / data.getPulseData().size();
             for (PulseData pulseData : data.getPulseData()) {
-                if(!data.isRead()){
+                if(!data.isReaded()){
                     latestPulse.add(pulseData.getBPM());
                     latestTime.add(getNextTime(time.get(time.size() - 1), porcionOfTime));
                 }
