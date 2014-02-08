@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -22,6 +24,8 @@ import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Permission;
+import com.mapps.model.PulseReport;
+import com.mapps.model.Report;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
 import com.mapps.model.User;
@@ -53,16 +57,16 @@ public class AddTrainingServlet extends HttpServlet implements Servlet {
             Institution institution = userTraining.getInstitution();
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date date = formatter.parse(req.getParameter("date"));
-            long longitude = Long.parseLong(req.getParameter("num_longitude"));
-            long latitude = Long.parseLong(req.getParameter("num_latitude"));
-            int minBPM = Integer.parseInt(req.getParameter("num_min_bpm"));
-            int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
+            //long longitude = Long.parseLong(req.getParameter("num_longitude"));
+            //long latitude = Long.parseLong(req.getParameter("num_latitude"));
+            //int minBPM = Integer.parseInt(req.getParameter("num_min_bpm"));
+            //int maxBPM = Integer.parseInt(req.getParameter("num_max_bpm"));
             String sportName = req.getParameter("sport");
             Sport sportAux = trainerService.getSportByName(sportName);
             String name = createTrainingName(institution, sportAux);
             Map<User, Permission> permissionMap = createPermissionMap(token, userTraining);
-            Training training = new Training(name, date, 0, longitude, latitude, minBPM, maxBPM,
-                                             null, null, null, sportAux, permissionMap, institution);
+
+          Training training = new Training(name, date, 0,null, null, null, sportAux, permissionMap, institution);
             trainerService.addTraining(training, token);
             resp.sendRedirect("training/trainings.jsp?info=1");
         } catch (AuthenticationException e) {
