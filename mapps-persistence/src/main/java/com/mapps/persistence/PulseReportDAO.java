@@ -5,8 +5,10 @@ import javax.ejb.Local;
 
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ReportNotFoundException;
+import com.mapps.model.Athlete;
 import com.mapps.model.PulseReport;
 import com.mapps.model.Report;
+import com.mapps.model.Training;
 
 
 /**
@@ -44,4 +46,6 @@ public interface PulseReportDAO {
     Report getReportById (Long reportId) throws ReportNotFoundException;
 
     List<PulseReport> getReportsOfTraining(String trainingName);
+
+    PulseReport getPulseReport(Training training, Athlete athlete);
 }

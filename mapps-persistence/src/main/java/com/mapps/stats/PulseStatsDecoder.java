@@ -25,49 +25,27 @@ public class PulseStatsDecoder {
     }
 
     private void transverseData() {
-        List<String> auxTime = Lists.newArrayList();
-        List<String> latestAuxTime = Lists.newArrayList();
         for (RawDataUnit data : rawDataUnits) {
-            auxTime.add(data.getPulseData().size() + "@" + data.getTimestamp());
             for (PulseData pulseData : data.getPulseData()) {
                 if (!data.isReaded()){
                     latestPulse.add(pulseData.getBPM());
+                    latestTime.add(pulseData.getTimestamp());
                 }
                 bpm.add(pulseData.getBPM());
+                time.add(pulseData.getTimestamp());
             }
         }
-        this.time = calculateTime(auxTime);
-        this.latestTime = calculateTime(latestAuxTime);
+        long ajustent = time.get(0);
+        time = adjustTime(time, ajustent);
+        latestTime = adjustTime(latestTime, ajustent);
     }
 
-    private List<Long> calculateTime(List<String> auxTime) {
-        List<Long> time = Lists.newArrayList();
-        long prev = 0;
-        int lastSize = 0;
-        for (int i = 0; i < auxTime.size(); i++) {
-            String[] split = auxTime.get(i).split("@");
-            long currentTime = Long.valueOf(split[1]);
-            if (i == 0) {
-                time.add(currentTime);
-            } else {
-                long porcion = (currentTime - prev) / (lastSize + 1);
-                for (int j = 0; j < lastSize; j++) {
-                    long next = getNextTime(prev, (j+1) * porcion);
-                    time.add(next);
-                }
-                time.add(currentTime);
-            }
-            lastSize = Integer.valueOf(split[0]);
-            if (i == (auxTime.size() -1)){
-                long porcion = (currentTime - prev) / (lastSize + 1);
-                for (int j = 0; j < lastSize; j++) {
-                    long next = getNextTime(currentTime, (j+1) * porcion);
-                    time.add(next);
-                }
-            }
-            prev = currentTime;
+    private List<Long> adjustTime(List<Long> time, long ajustment) {
+        List<Long> result = Lists.newArrayList();
+        for (Long aTime : time){
+            result.add(aTime - ajustment);
         }
-        return time;
+        return result;
     }
 
     private Long getNextTime(Long prevTime, Long porcionOfTime) {

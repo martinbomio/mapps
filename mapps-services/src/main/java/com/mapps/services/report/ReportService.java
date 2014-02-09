@@ -41,6 +41,8 @@ public interface ReportService {
 
     public Report getReport(String trainingName, String athleteId, String token) throws AuthenticationException, InvalidReportException;
 
+    public PulseReport getPulseReport(String trainingName, String athleteId, String token) throws AuthenticationException;
+
     public List<Report> getReportsOfTraining(String trainingName, String token) throws AuthenticationException;
 
     public List<PulseReport> getPulseReportsOfTraining(String trainingName, String token) throws AuthenticationException;

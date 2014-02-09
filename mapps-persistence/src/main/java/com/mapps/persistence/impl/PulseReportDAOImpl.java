@@ -10,8 +10,10 @@ import org.apache.log4j.Logger;
 
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.ReportNotFoundException;
+import com.mapps.model.Athlete;
 import com.mapps.model.PulseReport;
 import com.mapps.model.Report;
+import com.mapps.model.Training;
 import com.mapps.persistence.PulseReportDAO;
 
 /**
@@ -72,5 +74,14 @@ public class PulseReportDAOImpl implements PulseReportDAO {
         query.setParameter("trainingName", trainingName);
         List<PulseReport> results = query.getResultList();
         return results;
+    }
+
+    @Override
+    public PulseReport getPulseReport(Training training, Athlete athlete) {
+        Query query = entityManager.createQuery("select r from Training t join t.pulseReports r where ( t.name =:training and" +
+                                                        " r.athlete=:athlete)");
+        query.setParameter("training", training);
+        query.setParameter("athlete", athlete);
+        return (PulseReport)query.getSingleResult();
     }
 }

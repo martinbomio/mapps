@@ -23,6 +23,7 @@ public class PulseData implements DataParser{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
+    long timestamp;
     private int BPM;
 
     public PulseData() {
@@ -52,13 +53,23 @@ public class PulseData implements DataParser{
         this.BPM = BPM;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public void populate(String data) {
         if (data == null){
             log.error("Error parsing null data");
             throw new IllegalArgumentException();
         }
-        this.BPM = Integer.parseInt(data);
+        String[] split = data.split("#");
+        this.timestamp = Long.valueOf(split[1]);
+        this.BPM = Integer.parseInt(split[0]);
 
     }
 }

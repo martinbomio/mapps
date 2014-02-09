@@ -20,7 +20,7 @@ public class PulseDataDAOImpl implements PulseDataDAO {
     EntityManager entityManager;
 
     @Override
-    public void addGPSData(PulseData pulseData) throws NullParameterException {
+    public void addPulseData(PulseData pulseData) throws NullParameterException {
         if(pulseData!=null){
         logger.info("a PulseData was added to the database");
         entityManager.persist(pulseData);

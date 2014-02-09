@@ -1,5 +1,7 @@
 package com.mapps.receiver;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import com.mapps.receiver.exceptions.CouldNotInvokeServiceException;
@@ -26,7 +28,7 @@ public class PacketBuilder {
     public void addPacket(String packet)  {
         if (packet.substring(0,1).equals("P")){
             String payload = packet.split(",")[0];
-            builder.append(payload + ",");
+            appendString(payload);
             count++;
             if( count == 3){
                 String finalPacket = getPacket();
@@ -40,6 +42,13 @@ public class PacketBuilder {
                 builder.append(this.dirLow + "@");
             }
         }
+    }
+
+    private void appendString(String payload) {
+        builder.append(payload);
+        builder.append(",");
+        builder.append("#");
+        builder.append(new Date().getTime());
     }
 
     public String getPacket(){

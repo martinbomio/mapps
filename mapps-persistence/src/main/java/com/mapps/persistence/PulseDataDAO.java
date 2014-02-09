@@ -1,10 +1,10 @@
 package com.mapps.persistence;
 
+import javax.ejb.Local;
+
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.PulseDataNotFoundException;
 import com.mapps.model.PulseData;
-
-import javax.ejb.Local;
 
 /**
  * PulseDataDAO interface
@@ -15,7 +15,7 @@ public interface PulseDataDAO {
      * This method adds a PulseData to the database.
      * @param pulseData - The PulseData to add to the database
      */
-    void addGPSData(PulseData pulseData) throws NullParameterException;
+    void addPulseData(PulseData pulseData) throws NullParameterException;
 
     /**
      * This method deletes a PulseData from the database.

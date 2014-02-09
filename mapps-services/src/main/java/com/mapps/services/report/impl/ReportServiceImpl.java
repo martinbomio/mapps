@@ -178,6 +178,31 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public PulseReport getPulseReport(String trainingName, String athleteId, String token) throws
+            AuthenticationException{
+        if (trainingName == null || athleteId == null || token == null) {
+            throw new AuthenticationException();
+        }
+        PulseReport report = null;
+        try {
+            if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
+                    authenticationHandler.isUserInRole(token, Role.TRAINER)) {
+                Athlete athlete = athleteDAO.getAthleteByIdDocument(athleteId);
+                Training training = new Training();
+                training.setName(trainingName);
+                report = pulseReportDAO.getPulseReport(training, athlete);
+            } else {
+                throw new AuthenticationException();
+            }
+        } catch (InvalidTokenException e) {
+            throw new AuthenticationException();
+        } catch (AthleteNotFoundException e) {
+            throw  new IllegalStateException("Invalid Athlete", e);
+        }
+        return report;
+    }
+
+    @Override
     public List<Report> getReportsOfTraining(String trainingName, String token) throws AuthenticationException {
         if (trainingName == null || token == null) {
             throw new AuthenticationException();
