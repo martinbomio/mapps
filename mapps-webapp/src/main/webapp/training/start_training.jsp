@@ -34,25 +34,27 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
-Role role;
-if ( session.getAttribute("role") == null){
-	role = null;	
-}else{
-	role = (Role) session.getAttribute("role");	
-}
-String info = String.valueOf(request.getAttribute("info"));
-if (info.equals("null"))
-	info = "";
-String error = String.valueOf(request.getAttribute("error"));
-if (error.equals("null"))
-	error = "";
-String trainingUID = request.getParameter("uid");
+}else {
+	Role role;
+	if ( session.getAttribute("role") == null){
+		role = null;	
+	}else{
+		role = (Role) session.getAttribute("role");	
+	}
+	String info = String.valueOf(request.getAttribute("info"));
+	if (info.equals("null"))
+		info = "";
+	String error = String.valueOf(request.getAttribute("error"));
+	if (error.equals("null"))
+		error = "";
+	String trainingUID = request.getParameter("uid");
 %>
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		window.related = 0;
+		$("#relate_div").hide();
 		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
         $("#hidden-name").val('<%=trainingUID%>');
@@ -74,7 +76,7 @@ String trainingUID = request.getParameter("uid");
             url: "/mapps/getAllAthletesOfInstitution"
         };
 		var athletesAdapter = new $.jqx.dataAdapter(source);
-		$("#players_list").jqxListBox({ selectedIndex: 0, source: athletesAdapter, width: '85%', height: 250, displayMember: "name", valueMember: "idDocument",
+		$("#players_list").jqxListBox({ selectedIndex: 0, source: athletesAdapter, width: '100%', height: 250, displayMember: "name", valueMember: "idDocument",
 			renderer: function (index, label, value) {
                 var datarecord = athletesAdapter.records[index];
                 if (dataAdapter.records.length == 0){
@@ -91,12 +93,12 @@ String trainingUID = request.getParameter("uid");
             url: "/mapps/getAllDevicesOfInstitution"
         };
 		var dataAdapter = new $.jqx.dataAdapter(source);
-		$("#devices_list").jqxListBox({ selectedIndex: 0, source: dataAdapter, width: '85%', height: 250, displayMember: "dirLow", valueMember: "dirLow"});
+		$("#devices_list").jqxListBox({ selectedIndex: 0, source: dataAdapter, width: '100%', height: 250, displayMember: "dirLow", valueMember: "dirLow"});
 		$("#relate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#start_training").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#delete").jqxButton({ width: '100', height: '35', theme: 'metro'});
 		$("#dataTable").jqxDataTable(
-	        {	
+	        {
 	          	theme: 'metro',
 	           	altrows: true,
 	            sortable: true,
@@ -109,25 +111,29 @@ String trainingUID = request.getParameter("uid");
 	                { text: 'Dispositivo', dataField: 'device', width: '40%' }
 	           ]
 	    });
-		$("#relate").on('click', function (){ 
+		$("#relate").on('click', function (){
 	        $('#startTraining').jqxValidator('validate');
 	    });
 		$("#start_training").on('click', function (){ 
 	        $('#submit').jqxValidator('validate');
 	    });
-		$("#delete").on('click', function (){ 
+		$("#delete").on('click', function (){
 			var selection = $("#dataTable").jqxDataTable('getSelection');
 			for (var i = 0; i < selection.length; i++) {
 			    // get a selected row.
 				var rowData = selection[i];
 				var athlete = $("#players_list").jqxListBox('getItemByValue', rowData.uid);
 				var device = $("#devices_list").jqxListBox('getItemByValue', rowData.device);
-				$("#players_list").jqxListBox('enableItem', athlete ); 
-				$("#devices_list").jqxListBox('enableItem', device ); 
+				$("#players_list").jqxListBox('enableItem', athlete );
+				$("#devices_list").jqxListBox('enableItem', device );
 				var index = getIndexInTable(rowData.uid);
 				$("#dataTable").jqxDataTable('deleteRow', index);
+				window.related--;
 			}
 			$("#dataTable").jqxDataTable('refresh');
+			if (window.related == 0){
+				$("#relate_div").hide();
+			}
 	    });
 		$("#startTraining").jqxValidator({
             rules: [
@@ -153,6 +159,9 @@ String trainingUID = request.getParameter("uid");
             ],  theme: 'metro'
     	});
 		$('#startTraining').on('validationSuccess', function (event) {
+			if (window.related == 0){
+				$("#relate_div").show();
+			}
 			var athlete = $("#players_list").jqxListBox('getSelectedItem');
 			var device = $("#devices_list").jqxListBox('getSelectedItem');
 			if(!athlete.disabled && !device.disabled){
@@ -162,6 +171,7 @@ String trainingUID = request.getParameter("uid");
 					athlete: athlete.label,
 					device: device.label
 				});
+				window.related++;
 			}
 	    });
 		$('#submit').on('validationSuccess', function (event) {
@@ -208,13 +218,14 @@ String trainingUID = request.getParameter("uid");
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   </div>
-    <div id="area_de_trabajo" style="height:580px;">
+    <div id="area_de_trabajo" style="height:610px;">
 		<div id="sidebar_left">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
              	   <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+				   <li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
@@ -225,8 +236,8 @@ String trainingUID = request.getParameter("uid");
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
              	   <%
 					}
+}
 					%>
-             	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
         </div>
@@ -234,34 +245,38 @@ String trainingUID = request.getParameter("uid");
 			<div id="navigation" class="navigation">
             	<a href="./trainings.jsp">ENTRENAMIENTOS</a> >> Iniciar entrenamiento
             </div>
-            <div id="title" style="margin:15px;">
+            <div id="title" style="margin-top:20px;margin-bottom:10px">
                 <label> Relacione los atletas con su dispositivo correspondiente </label> 
             </div>
             <div>
-            	<label id="training"> Entrenamiento: XXXX-XX-XX-XX </label>
+            	<label id="training" style="margin-left:10px;margin-bottom:5px;"> Entrenamiento: XXXX-XX-XX-XX </label>
             </div>
             <form action="/mapps/startTraining" method="post" name="startTraining" id="startTraining">
-	            <div id="selector">
-	                <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+	            <div id="selector" style="display:inline-block;width: 100%;margin-top:20px;margin-left:100px;">
+	                <div id="main_div_left" style="float:left; width:25%; display:inline-block; margin:15px;">
 	                    <div id="players_list">
 	                    
 	                    </div>
 	                </div>
-	                <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+	                <div id="main_div_right" style="float:left; width:25%; display:inline-block;margin:15px;">
 	                    <div id="devices_list">
 	                    
 	                    </div>
 	                </div>
-	            </div>
-	            <div style="margin-left:45%; margin-top:20px;">
-	            	<input type="button" id="relate" value="RELACIONAR"/>
+	                <div style="margin-left:15px; margin-top:15px;float:left;">
+	            		<input type="button" id="relate" value="RELACIONAR"/>
+	            	</div>
 	            </div>
 	        </form>
-	        <form id="submit" action="/mapps/startTraining" name="submit" method="post">
-	            <div id="dataTable" style="margin-top:25px; margin-left:50px;">
+	        <form id="submit" action="/mapps/startTraining" name="submit" method="post" style="display: inline-block;width: 100%;">
+	        	<div id="relate_div" style="display: inline-block;width: 100%;">
+		            <div id="dataTable" style="margin-top: 25px; margin-left: 130px; margin-right: 15px;float: left;">
+		            </div>
+		            <div id="delete_div" style="height: 35px;margin-top: 40px;">
+		            	<input type="button" id="delete" name="delete" value="ELIMINAR"></input>
+		            </div>
 	            </div>
-	            <input type="button" id="delete" name="delete" value="ELIMINAR"></input>
-	            <div style="margin-left:45%; margin-top:20px;">
+	            <div style="margin-left: 28%; margin-top: 40px;">
 	            	<input type="button" id="start_training" value="COMENZAR"/>
 	            </div>
 	            <input type="hidden" id="hidden-name" name="hidden-name"/>

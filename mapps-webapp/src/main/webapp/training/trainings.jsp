@@ -25,37 +25,37 @@
 </head>
 <%
 String token = String.valueOf(session.getAttribute("token"));
-if (token.equals("null") || token.equals("")){
+if (token == null || token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
-Role role;
-if ( session.getAttribute("role") == null){
-	role = null;	
-}else{
-	role = (Role) session.getAttribute("role");	
-}
-
-boolean show_pop_up = false;
-String pop_up_message = "";
-String info = String.valueOf(request.getParameter("info"));
-if (info.equals("null"))
-	info = "";
-
-if(info.equals("1")){
+}else {
+	Role role;
+	if ( session.getAttribute("role") == null){
+		role = null;	
+	}else{
+		role = (Role) session.getAttribute("role");	
+	}
 	
-	pop_up_message = "El entrenamiento fue programado con éxito.";
-	show_pop_up = true;	
-}
-if(info.equals("2")){
+	boolean show_pop_up = false;
+	String pop_up_message = "";
+	String info = String.valueOf(request.getParameter("info"));
+	if (info.equals("null"))
+		info = "";
 	
-	pop_up_message = "El entrenamiento fue editado con éxito.";
-	show_pop_up = true;	
-}
-if(info.equals("3")){
-	
-	pop_up_message = "Los permisos han sido modificados con éxito.";
-	show_pop_up = true;	
-}
+	if(info.equals("1")){
+		
+		pop_up_message = "El entrenamiento fue programado con éxito.";
+		show_pop_up = true;	
+	}
+	if(info.equals("2")){
+		
+		pop_up_message = "El entrenamiento fue editado con éxito.";
+		show_pop_up = true;	
+	}
+	if(info.equals("3")){
+		
+		pop_up_message = "Los permisos han sido modificados con éxito.";
+		show_pop_up = true;	
+	}
 
 %>
 <body>
@@ -75,9 +75,13 @@ if(info.equals("3")){
 		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 		%>
 		$("#start_training").on('click', function () {
-			var selected = $('#trainings').jqxListBox('getSelectedItem');
-			var uid = selected.value;
-			window.location.replace("start_training.jsp?uid="+uid);
+			if($("#start_training").val() == "PROGRAMAR ENTRENAMIENTO"){
+				window.location.replace("create_training.jsp");
+			}else{
+				var selected = $('#trainings').jqxListBox('getSelectedItem');
+				var uid = selected.value;
+				window.location.replace("start_training.jsp?uid="+uid);
+			}
 		});
 		<%}%>
 		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
@@ -100,26 +104,30 @@ if(info.equals("3")){
 		<%
 		}
 		%>
-		
-		var source =
-        {
-            datatype: "json",
-            url: "/mapps/getTrainingsToStart"
-        };
-		
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        $('#trainings').jqxListBox({ source: dataAdapter, displayMember: "date", valueMember: "name", itemHeight: 70, height: '250', width: '60%',autoHeight:true, theme: 'metro',
-        	renderer: function (index, label, value) {
-                var datarecord = dataAdapter.records[index];
-                if (dataAdapter.records.length == 0){
-                	//PONER UN DIV: NO HAY ENTRENAMIENTOS PROGRAMADOS
-                }
-                var split = datarecord.date.split(" ");
-                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento programado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
-                return table;
-            }	
-        }); 
+		$.ajax({
+            url: "/mapps/getTrainingsToStart",
+            type: "GET",
+            success: function (response){
+            	load_list(JSON.parse(response));
+            }
+		});
 	});
+	
+	function load_list(records){
+		if (records.length == 0){
+			$("#title").text('No hay entrenamiento programados. Pulse "Programar Entrenamiento" para programar uno');
+			$("#start_training").jqxButton('val', "PROGRAMAR ENTRENAMIENTO");
+		}else{
+			$('#trainings').jqxListBox({ source: records, displayMember: "date", valueMember: "name", itemHeight: 28, height: '250px', width: '40%',autoHeight:true, theme: 'metro',
+	        	renderer: function (index, label, value) {
+	                var datarecord = records[index];
+	                var split = datarecord.date.split(" ");
+	                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento programado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
+	                return table;
+	            }	
+	        });
+		}
+	}
 </script>
 
 
@@ -178,7 +186,6 @@ if(info.equals("3")){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
              	   <%} %>
-             	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
         </div>
@@ -187,7 +194,7 @@ if(info.equals("3")){
         	<%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
-           		<label> Seleccione el entrenamiento que desee comenzar </label>
+           		<label id="title"> Seleccione el entrenamiento que desee comenzar </label>
            		<%}else{ %>
            		<label> Usted no tiene permisos para comenzar un entrenamiento </label>
            		<%} %>
@@ -200,9 +207,10 @@ if(info.equals("3")){
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
 			<div id="start_training_div">
-            	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:200px;" />
+            	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:175px;" />
             </div>
-            <%} %>
+            <%}
+            } %>
         </div>
         <div id="sidebar_right">
         	

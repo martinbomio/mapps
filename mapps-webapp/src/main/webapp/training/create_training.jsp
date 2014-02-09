@@ -33,19 +33,19 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
-Role role;
-if ( session.getAttribute("role") == null){
-	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");	
-}
-String info = String.valueOf(request.getAttribute("info"));
-if (info.equals("null"))
-	info = "";
-String error = String.valueOf(request.getAttribute("error"));
-if (error.equals("null"))
-	error = "";
+	Role role;
+	if ( session.getAttribute("role") == null){
+		role = null;	
+	}else{
+		role = (Role) session.getAttribute("role");	
+	}
+	String info = String.valueOf(request.getAttribute("info"));
+	if (info.equals("null"))
+		info = "";
+	String error = String.valueOf(request.getAttribute("error"));
+	if (error.equals("null"))
+		error = "";
 %>
 <body>
 
@@ -53,30 +53,11 @@ if (error.equals("null"))
 	$(document).ready(function () {
 		$("#jqxMenu").jqxMenu({ width: '200', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-		// Create jqxNumberInput
-//        $("#num_min_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 2, theme: 'metro', spinButtons: true});
-//		$("#num_max_bpm").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
-//		$("#num_latitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-//		$("#num_longitude").jqxNumberInput({ width: '220px', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 		$("#date").jqxDateTimeInput({width: '220px', height: '25px', formatString: 'dd/MM/yyyy HH:mm', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#create_training").jqxValidator({
             rules: [
-//        			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
-//            			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
-//            			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
-//            			return val_max > val_min;
-//           				}
-//        			},
- //       			{input: "#num_latitude", message: "La latitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
- //       				var val = $("#num_latitude").jqxNumberInput('val');
- //       				return val.toString().length == 8;
- //       			}},
- //       			{input: "#num_longitude", message: "La longitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
- //       				var val = $("#num_longitude").jqxNumberInput('val');
- //       				return val.toString().length == 8;
- //       			}},
                     {input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
                         var index = $("#sport").jqxDropDownList('getSelectedIndex');
                         return index != -1;
@@ -133,6 +114,7 @@ if (error.equals("null"))
              	   <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+					<li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="#"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
@@ -141,8 +123,8 @@ if (error.equals("null"))
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <%} %>
-             	   <li style="height:35px;"><a href="#">  </a></li>
+             	   <%} 
+             	   }%>
         		</ul>
   			</div>
         </div>
@@ -154,40 +136,19 @@ if (error.equals("null"))
             	<div id="title" style="margin:15px;">
            			<label> Rellene el siguiente formulario </label>
                 </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
-                	
+                <div id="campos" class="campos" style="margin-left:100px;margin-right:300px;">
                     <div id="fecha">
                         <div class="tag_form">Fecha: </div>
                         <div id="date" class="input">
                         </div>
                     </div>
- <!--                   <div id="min_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
-                        <div id="num_min_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="max_bpm">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Max BPM: </div>
-                        <div id="num_max_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                      <div id="latitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
-                        <div id="num_latitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="longitude">
-                        <div class="tag_form" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
-                        <div id="num_longitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div> -->
-                    <div id='sport_div' style="display:inline-block">
+                    <div id='sport_div'>
                        	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
                         <div class="input" style="margin-top:10px;">
-                        	<div id="sport" style="display:inline-block; margin-top:10px"></div>
+                        	<div id="sport" style="margin-top:10px"></div>
                         </div>
                     </div>
-                    <div style="margin-left:200px; margin-top:20px;">
+                    <div style="margin-left:150px; margin-top:50px;">
                     	<input type="button" id="validate" value="CREAR"/>
                     </div>
 				</div>

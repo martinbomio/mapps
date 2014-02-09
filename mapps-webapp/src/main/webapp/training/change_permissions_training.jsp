@@ -38,12 +38,12 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
-Role role;
-if ( session.getAttribute("role") == null){
-	role = null;	
 }else{
-	role = (Role) session.getAttribute("role");	
+	Role role;
+	if ( session.getAttribute("role") == null){
+		role = null;	
+	}else{
+		role = (Role) session.getAttribute("role");	
 }
 %>
 <body>
@@ -83,6 +83,7 @@ $(document).ready(function () {
 });
 function updatePanel(trainings){
 	var users = trainings.users;
+	$("#users_div").html("");
 	for (var i=0; i<users.length; i++){
 		var container = $("<div></div>");
 		var div = $('<div class="tag_form"> '+ users[i].userName +'</div>');
@@ -111,14 +112,14 @@ function updatePanel(trainings){
 </script>
 
 <div id="header">
-	<div id="header_izq">
-    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:20px;" /></a>
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central">
-	
-	</div>
-    <div id="header_der">
-		<div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
+    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+		
+    </div>
+    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+        <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
     </div>
 </div>
@@ -138,6 +139,7 @@ function updatePanel(trainings){
         		<%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+					<li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
              	    <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
@@ -146,8 +148,8 @@ function updatePanel(trainings){
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <%} %>
-             	   <li style="height:35px;"><a href="#">  </a></li>
+             	   <%} 
+             	   }%>
         		</ul>
   			</div>
         </div>	   
@@ -159,13 +161,14 @@ function updatePanel(trainings){
 	         <div id='trainings_div' style="display:inline-block">
                        	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Entrenamientos: </div>
                         <div class="input" style="margin-top:10px;">
-                        	<div id="trainings" style="display:inline-block; margin-top:10px">
+                        	<div id="trainings" style="display:inline-block;">
                             </div>
                         </div>
              </div>
              <form action="/mapps/changePermission" method="post" name="change_permission" id="change_permission">
-	             <div id="users_div" style="width:50%; margin-left:15%; margin-top:20px;">
-	             
+	             <div id="users" style="width: 100%; margin-top:20px;display: inline-block;">
+	             	<div class="tag_form" style="vertical-align:top; margin-top:15px;width: 20%;"> Permisos: </div>
+	             	<div id="users_div" style="width:50%; margin-left:15%;"></div>
                  </div>
 	             <input type="hidden" id="numberOfUsers" name="numberOfUsers"></input>
 	             <input type="hidden" id="name-hidden" name="name-hidden"></input>

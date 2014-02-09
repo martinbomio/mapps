@@ -208,6 +208,7 @@ else if(error.equals(11)){
              	   <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+					<li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
@@ -217,7 +218,6 @@ else if(error.equals(11)){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
              	   <%} %>
-             	   <li style="height:35px;"><a href="#">  </a></li>
         		</ul>
   			</div>
         

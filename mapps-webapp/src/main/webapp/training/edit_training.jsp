@@ -38,13 +38,13 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
-Role role;
-if ( session.getAttribute("role") == null){
-	role = null;	
-}else{
-	role = (Role) session.getAttribute("role");	
-}
+}else {
+	Role role;
+	if ( session.getAttribute("role") == null){
+		role = null;	
+	}else{
+		role = (Role) session.getAttribute("role");	
+	}
 %>
 <body>
 
@@ -55,31 +55,12 @@ $(document).ready(function () {
 	$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
     $("#jqxMenu").css('visibility', 'visible');
 	// Create jqxNumberInput
-//    $("#num_min_bpm").jqxNumberInput({ width: '50%', height: '25px', decimalDigits: 0, digits: 2, theme: 'metro', spinButtons: true});
-//	$("#num_max_bpm").jqxNumberInput({ width: '50%', height: '25px', decimalDigits: 0, digits: 3, theme: 'metro', spinButtons: true});
-//	$("#num_latitude").jqxNumberInput({ width: '50%', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
-//	$("#num_longitude").jqxNumberInput({ width: '50%', height: '25px', decimalDigits: 0, digits: 8, groupSeparator: '', theme: 'metro'});
 	$("#date").jqxDateTimeInput({width: '50%', height: '25px', formatString: 'dd/MM/yyyy HH:mm',theme: 'metro'});
 
 	$("#validate").jqxButton({ width: '50%', height: '35', theme: 'metro'});
 	
 	$("#edit_training").jqxValidator({
         rules: [
-				
-//    			{input: "#num_max_bpm", message: "El máximo de latidos por minuto debe ser mayor que el mínimo!", action: 'blur', rule: function (input, commit) {
-//        			var val_max = parseInt($("#num_max_bpm").jqxNumberInput('val'));
-//        			var val_min = parseInt($("#num_min_bpm").jqxNumberInput('val'));
-//        			return val_max > val_min;
-//       				}
-//    			},
-//    			{input: "#num_latitude", message: "La latitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
-//    				var val = $("#num_latitude").jqxNumberInput('val');
-//    				return val.toString().length == 8;
-//    			}},
-//    			{input: "#num_longitude", message: "La longitud debe ser un número de 8 cifras!", action: 'blur', rule: function(input, commit){
-//    				var val = $("#num_longitude").jqxNumberInput('val');
-//    				return val.toString().length == 8;
-//    			}},
     			{input: "#sport", message: "El Deporte es obligatorio!", action: 'blur', rule: function (input, commit) {
                     var index = $("#sport").jqxDropDownList('getSelectedIndex');
                     return index != -1;
@@ -124,12 +105,12 @@ $(document).ready(function () {
             updatePanel(trainings[event.args.index]);
         });
 		
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 28, height: '100%', width: '75%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
                 var split = datarecord.date.split(" ");
                 var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
-                var table = '<table style="min-width: 130px;"><td>' + datarecord.name + '</td></table>';
+                var table = '<table style="min-width: 130px;"><td>' + display_name + '</td></table>';
                 return table;
             }
         });
@@ -138,10 +119,6 @@ $(document).ready(function () {
 	function updatePanel(trainings){
 		var date=trainings['date'];
 		$('#date').jqxDateTimeInput('val', date);
-//		$('#num_min_bpm').jqxNumberInput('val', trainings['minBPM']);
-//		$('#num_max_bpm').jqxNumberInput('val', trainings['maxBPM']);
-//		$('#num_latitude').jqxNumberInput('val', trainings['latOrigin']);
-//		$('#num_longitude').jqxNumberInput('val', trainings['longOrigin']);
 		$('#sport').jqxDropDownList('val', trainings['sport'].name);
 		$('#name-hidden').val(trainings.name);
 		
@@ -177,6 +154,7 @@ $(document).ready(function () {
              	    <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+					<li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
              	    <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	    <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	    <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
@@ -185,8 +163,7 @@ $(document).ready(function () {
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
              	    <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	    <%} %>
-             	    <li style="height:35px;"><a href="#">  </a></li>
+             	    <%}}%>
         		</ul>
   			</div>
         </div>	   
@@ -213,26 +190,6 @@ $(document).ready(function () {
                         <div id="date" class="input" style="margin-top:10px;">
                         </div>
                     </div>
- <!--                   <div id="min_bpm">
-                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Min BPM: </div>
-                        <div id="num_min_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="max_bpm">
-                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Max BPM: </div>
-                        <div id="num_max_bpm" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                      <div id="latitude">
-                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Latitude: </div>
-                        <div id="num_latitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div>
-                    <div id="longitude">
-                        <div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Longitude: </div>
-                        <div id="num_longitude" class="input" style="margin-top:10px;">
-                        </div>
-                    </div> -->
                     <div id="sport_div">
                        	<div class="tag_form_editar" style="vertical-align:top; margin-top:15px;"> Deporte: </div>
                         <div class="input">
