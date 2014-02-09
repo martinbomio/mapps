@@ -34,6 +34,11 @@ public class GetFinishedTrainingsServlet extends HttpServlet implements Servlet 
         List<TrainingWrapper> trainingWrappers =new ArrayList<TrainingWrapper>();
         try {
             List<Training> trainings=institutionService.getFinishedTrainingsOfInstitution(token);
+            if(trainings==null){
+                req.getSession().setAttribute("finishedTraining", "noFinishedTraining");
+            } else{
+
+            req.getSession().setAttribute("finishedTraining", "finishedTraining");
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create();
             for(int i=0;i<trainings.size();i++){
@@ -41,6 +46,7 @@ public class GetFinishedTrainingsServlet extends HttpServlet implements Servlet 
             }
             String json = gson.toJson(trainingWrappers);
             writer.write(json);
+            }
             writer.close();
 
         } catch (AuthenticationException e) {

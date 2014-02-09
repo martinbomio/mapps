@@ -42,6 +42,7 @@ public class StartTrainingServlet extends HttpServlet implements Servlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String trainingName = req.getParameter("hidden-name");
+        req.getSession().setAttribute("trainingStarted", "trainingStarted");
         String json = req.getParameter("athlete-device");
         List<Map<String, String>> elements = new Gson().fromJson(json, new TypeToken<List<Map<String, String>>>() {
         }.getType());

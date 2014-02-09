@@ -39,7 +39,7 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
+}else{
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -239,7 +239,7 @@ if (error.equals("null"))
     </div>
 </div>
 <div id="pie">
-
+<%} %>
 </div>
 </body>
 </html>

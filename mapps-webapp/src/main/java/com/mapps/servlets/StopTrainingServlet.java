@@ -37,6 +37,7 @@ public class StopTrainingServlet extends HttpServlet implements Servlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         String name = req.getParameter("name");
+        req.getSession().setAttribute("trainingStarted", "trainingStopped");
         try {
             Training training = trainerService.getTrainingByName(token, name);
             reportService.createTrainingPulseReports(training.getName(), token);

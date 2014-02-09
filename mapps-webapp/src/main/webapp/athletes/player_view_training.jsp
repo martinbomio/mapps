@@ -28,7 +28,7 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("index_login.jsp");	
-}
+}else{
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -283,7 +283,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
  
 </div>
 <div id="pie">
-
+<%} %>
 </div>
 </body>
 </html>

@@ -31,7 +31,10 @@
 String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
-}
+}else{
+String finishedTraining = String.valueOf(session.getAttribute("finishedTraining"));
+if (finishedTraining.equals("null"))
+	finishedTraining = "";
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -54,6 +57,7 @@ if (error.equals(10)){
 else if(error.equals(11)){
 	pop_up_message = "El entrenamiento que desea parar no es válido";
 }
+
 %>
 <body>
 
@@ -80,12 +84,17 @@ else if(error.equals(11)){
 			<%
 			}
 			%>
+			
 			var url = "/mapps/getFinishedTrainings";		
 			$.ajax({
 	            url: url,
 	            type: "GET",
 	            success: function (response){
-					create_lists(response);	            	
+	            	
+	            	if(response.length!=0){
+	            	create_lists(response);
+	            	}
+	            	
 	            },
 	        	   
 			});
@@ -94,11 +103,6 @@ else if(error.equals(11)){
 	
 	function create_lists(response){
 		var trainings = response;
-		$('#list_trainings').on('select', function (event) {
-			var indexTrain = $("#list_trainings").jqxListBox('getSelectedIndex'); 
-			call_reports_ajax(trainings[indexTrain]);
-        });
-		
 		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: "date", valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
@@ -108,6 +112,13 @@ else if(error.equals(11)){
                 return table;
             }
         });
+		
+		$('#list_trainings').on('select', function (event) {
+			var indexTrain = $("#list_trainings").jqxListBox('getSelectedIndex'); 
+			call_reports_ajax(trainings[indexTrain]);
+        });
+		
+		
 		call_reports_ajax(trainings[0]);
 	}
 	
@@ -122,18 +133,19 @@ else if(error.equals(11)){
 		});
 	}
 	
-	function create_athlete_list(reports){
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: reports, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '100%', width: '77%', theme: 'metro',
+	function create_athlete_list(response){
+		
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '100%', width: '77%', theme: 'metro',
             renderer: function (index, label, value) {
-                var data = reports[index];
-                var athlete = data.athlete;
-            	var kCal = get_double_as_String(data.kCal,3);
-            	var max_bpm = Math.max.apply(Math, data.pulse);
-            	var min_bpm = Math.min.apply(Math, data.pulse);
-            	var average_bpm = data.meanBPM;
-            	var elapsedTime = set_time_format(data.elapsedTime);
+                var reports = response[index];
+                var athlete = reports.athlete;
+            	var kCal = get_double_as_String(reports.kCal,3);
+            	var max_bpm = Math.max.apply(Math, reports.pulse);
+            	var min_bpm = Math.min.apply(Math, reports.pulse);
+            	var average_bpm = get_double_as_String(reports.meanBPM,2);
+            	var elapsedTime = set_time_format(reports.elapsedTime);
             	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:35%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ elapsedTime +'</div></div>');
+            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+reports.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:35%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ elapsedTime +'</div></div>');
             	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
@@ -223,12 +235,19 @@ else if(error.equals(11)){
         
         </div>
         <div id="main_div" style="width:75%;">
+        	<%if(finishedTraining.equals("finishedTraining")){%>
         	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
         		<div id="list_trainings"></div>
         	</div>
         	<div id="main_div_right" style="float:left; width:70%; display:inline-block;">
         		<div id="list_athletes"></div>
         	</div>
+        	<%}else{ %>
+        	<div id="start_training_div">
+        	No hay entrenamientos finalizados en el sistema.
+        	
+        	</div>
+        	<%} %>
         </div>
         <div id="sidebar_right" style="width:5%;">
         
@@ -237,7 +256,7 @@ else if(error.equals(11)){
  
 </div>
 <div id="pie">
-
+<%} %>
 </div>
 </body>
 </html>
