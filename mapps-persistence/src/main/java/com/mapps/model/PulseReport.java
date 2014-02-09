@@ -32,7 +32,7 @@ import com.mapps.wrappers.AthleteWrapper;
  */
 @Entity
 @Table(name = "PulseReports")
-public class PulseReport {
+public class PulseReport implements Comparable<PulseReport>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -181,6 +181,11 @@ public class PulseReport {
             }
         }
         return map;
+    }
+
+    @Override
+    public int compareTo(PulseReport pulseReport) {
+        return athlete.getId().compareTo(pulseReport.getAthlete().getId());
     }
 
     public static class Builder {

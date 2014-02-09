@@ -115,6 +115,7 @@ public class ContextListener implements ServletContextListener {
         Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
         Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
         mapAthleteDevice.put(athlete, device1);
+        mapAthleteDevice.put(mario, device);
         mapUserPermission.put(user, Permission.CREATE);
         mapUserPermission.put(user2, Permission.READ);
 

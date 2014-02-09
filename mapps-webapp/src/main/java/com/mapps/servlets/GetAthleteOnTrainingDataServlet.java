@@ -11,11 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mapps.exceptions.NullParameterException;
+import com.mapps.model.Athlete;
 import com.mapps.model.PulseReport;
+import com.mapps.model.Training;
 import com.mapps.services.report.ReportService;
 import com.mapps.services.report.exceptions.AuthenticationException;
 import com.mapps.services.report.exceptions.NoPulseDataException;
 import com.mapps.services.trainer.TrainerService;
+import com.mapps.services.trainer.exceptions.InvalidAthleteException;
+import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
 /**
  *
@@ -36,7 +41,9 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         Writer writer = resp.getWriter();
         try {
-            PulseReport report = reportService.getAthletePulseStats(trainingID, athleteCI, relod, token);
+            Training training = trainerService.getTrainingByName(trainingID, token);
+            Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
+            PulseReport report = reportService.getAthletePulseStats(training, athlete, relod, token);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
@@ -47,6 +54,14 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
             writer.write("Error de autenticacion");
         } catch (NoPulseDataException e) {
             writer.write("No hay datos del pulso");
+        } catch (NullParameterException e) {
+            throw new IllegalStateException("Null parameters", e);
+        } catch (InvalidAthleteException e) {
+            throw new IllegalStateException("Invalid Athlete", e);
+        } catch (com.mapps.services.trainer.exceptions.AuthenticationException e) {
+            writer.write("Error de autenticacion");
+        } catch (InvalidTrainingException e) {
+            throw new IllegalStateException("Invalid Training", e);
         } finally {
             writer.close();
         }
