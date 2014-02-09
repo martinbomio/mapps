@@ -135,7 +135,7 @@ else if(error.equals(11)){
 	
 	function create_athlete_list(response){
 		
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35, height: '100%', width: '77%', theme: 'metro',
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35,height:'100%', autoHeight: 'true', width: '77%', theme: 'metro',
             renderer: function (index, label, value) {
                 var reports = response[index];
                 var athlete = reports.athlete;
@@ -152,6 +152,7 @@ else if(error.equals(11)){
                 return first_div.html();
             }
         });
+		$('#list_athletes').jqxListBox('refresh');
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -235,18 +236,21 @@ else if(error.equals(11)){
         
         </div>
         <div id="main_div" style="width:75%;">
-        	<%if(finishedTraining.equals("finishedTraining")){%>
-        	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
-        		<div id="list_trainings"></div>
-        	</div>
-        	<div id="main_div_right" style="float:left; width:70%; display:inline-block;">
-        		<div id="list_athletes"></div>
-        	</div>
-        	<%}else{ %>
+        	<%if(finishedTraining.equals("noFinishedTraining")){%>
         	<div id="start_training_div">
         	No hay entrenamientos finalizados en el sistema.
-        	
         	</div>
+        	<%}else{ %>
+        	
+        	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
+        		
+        		<div id="list_trainings"></div>
+        	</div>
+        	<div id="main_div_right" style="float:left;height:400px; width:70%; display:inline-block;">
+        		
+        		<div id="list_athletes"></div>
+        	</div>
+        	
         	<%} %>
         </div>
         <div id="sidebar_right" style="width:5%;">

@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet implements Servlet {
             req.getSession().setAttribute("token", token);
             req.getSession().setAttribute("role", role);
             req.getSession().setAttribute("institutionName",instName);
+            req.getSession().setAttribute("finishedTraining", "noFinishedTraining");
             resp.sendRedirect("index.jsp");
         } catch (AuthenticationException e) {
             //error 1: Nombre de Usuario o Contraseña no válido
