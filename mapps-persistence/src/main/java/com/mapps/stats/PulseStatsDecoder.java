@@ -21,6 +21,8 @@ public class PulseStatsDecoder {
         this.rawDataUnits = rawDataUnitList;
         this.bpm = Lists.newArrayList();
         this.latestPulse = Lists.newArrayList();
+        this.time = Lists.newArrayList();
+        this.latestTime = Lists.newArrayList();
         transverseData();
     }
 

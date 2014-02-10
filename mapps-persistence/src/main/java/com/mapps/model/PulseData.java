@@ -62,8 +62,9 @@ public class PulseData implements DataParser{
     }
 
     @Override
-    public void populate(String data) {
-        if (data == null){
+    public void populate(String dat) {
+        String data=dat;
+    	if (data == null){
             log.error("Error parsing null data");
             throw new IllegalArgumentException();
         }
