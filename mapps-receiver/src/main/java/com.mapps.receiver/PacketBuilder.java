@@ -40,6 +40,7 @@ public class PacketBuilder {
                     }
                 builder.setLength(0);
                 builder.append(this.dirLow + "@");
+                count = 0;
             }
         }
     }
