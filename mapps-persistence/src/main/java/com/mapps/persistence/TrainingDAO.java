@@ -9,7 +9,9 @@ import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Device;
 import com.mapps.model.Institution;
+import com.mapps.model.Permission;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 
@@ -126,5 +128,9 @@ public interface TrainingDAO {
     public Training getStartedTraining(Institution institution) throws InvalidStartedTrainingException;
 
     public List<Training> getFinishedTrainings(Institution institution) throws InvalidStartedTrainingException;
+
+    Permission getPermissionOfUser(Training training, User user);
+
+    Device getDeviceOfAthlete(Training training, Athlete athlete);
 
 }

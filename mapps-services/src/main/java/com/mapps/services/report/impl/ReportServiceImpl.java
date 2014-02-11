@@ -117,13 +117,13 @@ public class ReportServiceImpl implements ReportService {
         }
         try {
             User user = authenticationHandler.getUserOfToken(token);
-            Permission permission = training.getMapUserPermission().get(user);
+            Permission permission = trainingDAO.getPermissionOfUser(training, user);
             if (permission != Permission.CREATE && permission != Permission.READ) {
                 logger.error("User has no permissions");
                 throw new AuthenticationException();
             }
-            Map<Athlete, Device> map = training.getMapAthleteDevice();
-            List<RawDataUnit> rawDataUnits = rawDataUnitDAO.getRawDataFromAthleteOnTraining(training, map.get(athlete));
+            Device device = trainingDAO.getDeviceOfAthlete(training, athlete);
+            List<RawDataUnit> rawDataUnits = rawDataUnitDAO.getRawDataFromAthleteOnTraining(training, device);
             if (rawDataUnits.size() == 0) {
                 throw new NoPulseDataException();
             }

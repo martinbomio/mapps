@@ -41,7 +41,7 @@ public class GetAthleteOnTrainingDataServlet extends HttpServlet {
         String token = String.valueOf(req.getSession().getAttribute("token"));
         Writer writer = resp.getWriter();
         try {
-            Training training = trainerService.getTrainingByName(trainingID, token);
+            Training training = trainerService.getTrainingByName(token, trainingID);
             Athlete athlete = trainerService.getAthleteByIdDocument(athleteCI);
             PulseReport report = reportService.getAthletePulseStats(training, athlete, relod, token);
             resp.setContentType("application/json");

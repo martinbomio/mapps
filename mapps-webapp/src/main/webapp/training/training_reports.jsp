@@ -135,7 +135,7 @@ else if(error.equals(11)){
 	
 	function create_athlete_list(response){
 		
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: 35,height:'100%', autoHeight: 'true', width: '77%', theme: 'metro',
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'400px', autoHeight: 'true', width: '85%', theme: 'metro',
             renderer: function (index, label, value) {
                 var reports = response[index];
                 var athlete = reports.athlete;
@@ -156,9 +156,7 @@ else if(error.equals(11)){
 	}
 	
 	function get_double_as_String(doub, decimals){
-		var val = new String(doub);
-    	var split = val.split('.');
-    	return split[0] + '.' + split[1].substr(0,decimals);
+		return parseFloat(doub).toFixed(decimals)
 	}
 	function set_time_format(time){
 		var val = new String((time/1000.0)/60.0);
@@ -230,7 +228,7 @@ else if(error.equals(11)){
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <%} %>
+             	   <%}%>
         		</ul>
   			</div>
         
@@ -241,26 +239,23 @@ else if(error.equals(11)){
         	No hay entrenamientos finalizados en el sistema.
         	</div>
         	<%}else{ %>
-        	
+
         	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
-        		
         		<div id="list_trainings"></div>
         	</div>
         	<div id="main_div_right" style="float:left;height:400px; width:70%; display:inline-block;">
-        		
         		<div id="list_athletes"></div>
         	</div>
-        	
-        	<%} %>
+
+        	<%} 
+        	}%>
         </div>
         <div id="sidebar_right" style="width:5%;">
         
         </div>
     </div>
- 
-</div>
+</div> 
 <div id="pie">
-<%} %>
 </div>
 </body>
 </html>

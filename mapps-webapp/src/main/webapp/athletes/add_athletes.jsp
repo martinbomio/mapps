@@ -53,6 +53,7 @@ if (info.equals("null"))
 String error = String.valueOf(request.getAttribute("error"));
 if (error.equals("null"))
 	error = "";
+}
 %>
 <body>
 
@@ -239,7 +240,6 @@ if (error.equals("null"))
     </div>
 </div>
 <div id="pie">
-<%} %>
 </div>
 </body>
 </html>

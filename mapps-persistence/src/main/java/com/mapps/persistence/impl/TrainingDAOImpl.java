@@ -15,6 +15,7 @@ import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
+import com.mapps.model.Device;
 import com.mapps.model.Institution;
 import com.mapps.model.Permission;
 import com.mapps.model.Training;
@@ -224,5 +225,23 @@ public class TrainingDAOImpl implements TrainingDAO {
 
         return results;
 
+    }
+
+    @Override
+    public Permission getPermissionOfUser(Training training, User user) {
+        Query query = entityManager.createQuery("select p from Training t join t.mapUserPermission p where " +
+                                                        "(index(p)=:user and t=:training)");
+        query.setParameter("user", user);
+        query.setParameter("training", training);
+        return (Permission)query.getSingleResult();
+    }
+
+    @Override
+    public Device getDeviceOfAthlete(Training training, Athlete athlete) {
+        Query query = entityManager.createQuery("select d from Training t join t.mapAthleteDevice d where " +
+                                                        "(index(d)=:athlete and t=:training)");
+        query.setParameter("athlete", athlete);
+        query.setParameter("training", training);
+        return (Device) query.getSingleResult();
     }
 }

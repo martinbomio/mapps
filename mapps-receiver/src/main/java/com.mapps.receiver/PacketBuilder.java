@@ -47,7 +47,6 @@ public class PacketBuilder {
 
     private void appendString(String payload) {
         builder.append(payload);
-        
         builder.append("#");
         builder.append(new Date().getTime());
         builder.append(",");
