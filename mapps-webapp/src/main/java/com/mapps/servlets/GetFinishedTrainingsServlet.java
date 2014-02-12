@@ -35,10 +35,10 @@ public class GetFinishedTrainingsServlet extends HttpServlet implements Servlet 
         try {
             List<Training> trainings=institutionService.getFinishedTrainingsOfInstitution(token);
             if(trainings==null){
-                req.getSession().setAttribute("finishedTraining", "noFinishedTraining");
+                
             } else{
 
-            req.getSession().setAttribute("finishedTraining", "finishedTraining");
+           
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create();
             for(int i=0;i<trainings.size();i++){

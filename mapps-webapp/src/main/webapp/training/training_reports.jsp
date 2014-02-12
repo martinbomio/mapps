@@ -32,9 +32,7 @@ String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
 }else{
-String finishedTraining = String.valueOf(session.getAttribute("finishedTraining"));
-if (finishedTraining.equals("null"))
-	finishedTraining = "";
+
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -93,6 +91,9 @@ else if(error.equals(11)){
 	            	
 	            	if(response.length!=0){
 	            	create_lists(response);
+	            	$("#title").text('Entrenamientos:');
+	            	}else{
+	            		$("#title").text('No hay entrenamientos finalizados en el sistema. Para iniciar un entrenamiento,seleccione "Iniciar un entrenamiento" en el menu de su izquierda.');
 	            	}
 	            	
 	            },
@@ -234,11 +235,11 @@ else if(error.equals(11)){
         
         </div>
         <div id="main_div" style="width:75%;">
-        	<%if(finishedTraining.equals("noFinishedTraining")){%>
-        	<div id="start_training_div">
-        	No hay entrenamientos finalizados en el sistema.
-        	</div>
-        	<%}else{ %>
+        	
+        	<div id="title" style="margin:15px;">
+        	<label id="title">  </label>
+            </div>
+        	
 
         	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
         		<div id="list_trainings"></div>
@@ -246,9 +247,10 @@ else if(error.equals(11)){
         	<div id="main_div_right" style="float:left;height:400px; width:70%; display:inline-block;">
         		<div id="list_athletes"></div>
         	</div>
+        	
 
-        	<%} 
-        	}%>
+        	 
+        	<%} %>
         </div>
         <div id="sidebar_right" style="width:5%;">
         

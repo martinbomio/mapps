@@ -28,6 +28,11 @@ String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
 }else {
+	
+	String trainingStarted = String.valueOf(session.getAttribute("trainingStarted"));
+	if (trainingStarted.equals("null"))
+		trainingStarted = "";
+	
 	Role role;
 	if ( session.getAttribute("role") == null){
 		role = null;	
@@ -66,7 +71,9 @@ if (token.equals("null") || token.equals("")){
 		<%
 		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 		%>
+		<%if(trainingStarted.equals("trainingStopped")){ %>
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
+		<%}%>
 		<%}%>
 		$("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
@@ -74,6 +81,7 @@ if (token.equals("null") || token.equals("")){
         <%
 		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 		%>
+		<%if(trainingStarted.equals("trainingStopped")){ %>
 		$("#start_training").on('click', function () {
 			if($("#start_training").val() == "PROGRAMAR ENTRENAMIENTO"){
 				window.location.replace("create_training.jsp");
@@ -83,6 +91,7 @@ if (token.equals("null") || token.equals("")){
 				window.location.replace("start_training.jsp?uid="+uid);
 			}
 		});
+		<%}%>
 		<%}%>
 		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
             resizable: false, draggable: false, 
@@ -108,7 +117,9 @@ if (token.equals("null") || token.equals("")){
             url: "/mapps/getTrainingsToStart",
             type: "GET",
             success: function (response){
+            	<%if(trainingStarted.equals("trainingStopped")){ %>
             	load_list(JSON.parse(response));
+            	<%}%>
             }
 		});
 	});
@@ -194,7 +205,11 @@ if (token.equals("null") || token.equals("")){
         	<%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+				<%if(trainingStarted.equals("trainingStarted")){ %>
+				<label id="title"> Entrenamiento en curso </label>
+				<%}else{ %>	
            		<label id="title"> Seleccione el entrenamiento que desee comenzar </label>
+           		<%} %>
            		<%}else{ %>
            		<label> Usted no tiene permisos para comenzar un entrenamiento </label>
            		<%} %>
@@ -206,11 +221,13 @@ if (token.equals("null") || token.equals("")){
             <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
+			<%if(trainingStarted.equals("trainingStopped")){ %>		
 			<div id="start_training_div">
             	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:175px;" />
             </div>
-            <%}
-            } %>
+            <%}%>
+            <%}%>
+            <%}%> 
         </div>
         <div id="sidebar_right">
         	
