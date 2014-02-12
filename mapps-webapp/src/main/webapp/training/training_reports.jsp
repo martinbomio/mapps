@@ -103,10 +103,10 @@ else if(error.equals(11)){
 	});
 	
 	function create_lists(response){
-		var trainings = response;
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: "date", valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
+		window.trainings = response;
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: window.trainings, displayMember: "date", valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
             renderer: function (index, label, value) {
-                var datarecord = trainings[index];
+                var datarecord = window.trainings[index];
                 var split = datarecord.date.split(" ");
                 var display = "Entrenamiento iniciado el: " + split[0] + " a las: " + split[1];
                 var table = '<table style="min-width: 130px;"><td>' + display + '</td></table>';
@@ -116,11 +116,11 @@ else if(error.equals(11)){
 		
 		$('#list_trainings').on('select', function (event) {
 			var indexTrain = $("#list_trainings").jqxListBox('getSelectedIndex'); 
-			call_reports_ajax(trainings[indexTrain]);
+			$('#list_athletes').jqxListBox('destroy');
+			call_reports_ajax(window.trainings[indexTrain]);
         });
 		
-		
-		call_reports_ajax(trainings[0]);
+		call_reports_ajax(window.trainings[0]);
 	}
 	
 	function call_reports_ajax(training){
@@ -135,7 +135,7 @@ else if(error.equals(11)){
 	}
 	
 	function create_athlete_list(response){
-		
+		$('#main_div_right').html('<div id="list_athletes"></div>');
 		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'400px', autoHeight: 'true', width: '85%', theme: 'metro',
             renderer: function (index, label, value) {
                 var reports = response[index];
@@ -153,7 +153,6 @@ else if(error.equals(11)){
                 return first_div.html();
             }
         });
-		$('#list_athletes').jqxListBox('refresh');
 	}
 	
 	function get_double_as_String(doub, decimals){
