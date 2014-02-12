@@ -187,12 +187,11 @@ if (token.equals("null") || token.equals("")){
 		<div id="sidebar_left">
         	<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
-             	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
-             	   
              	   <%
-					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
+					if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){
 					%>
-             	   
+					<li style="height:35px;"><a href="./trainings.jsp"> Iniciar un entrenamiento </a></li>
+             	   <li style="height:35px;"><a href="./training_reports.jsp"> Ver entrenamientos anteriores </a></li>
              	   <li style="height:35px;"><a href="./create_training.jsp"> Programar un entrenamiento </a></li>
              	   <li style="height:35px;"><a href="./edit_training.jsp"> Editar un entrenamiento </a></li>
              	   <%} %>
@@ -200,7 +199,7 @@ if (token.equals("null") || token.equals("")){
 					if(role.equals(Role.ADMINISTRATOR)){
 					%>
              	   <li style="height:35px;"><a href="./change_permissions_training.jsp"> Editar Permisos </a></li>
-             	   <%} %>
+             	   <%}%>
         		</ul>
   			</div>
         </div>

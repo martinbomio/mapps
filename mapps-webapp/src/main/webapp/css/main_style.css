@@ -382,3 +382,10 @@ body{
 	font-size:30px;
 	text-align:center;
 }
+
+.trainings_player_report{
+	float:left;
+	width:18%;
+	display:inline-block;
+	margin-left:2%;
+}

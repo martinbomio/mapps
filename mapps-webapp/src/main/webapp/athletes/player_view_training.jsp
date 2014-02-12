@@ -105,7 +105,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		for(var i = 0 ; i<data.pulse.length; i++){
 			if((data.pulse[i])==null){
 				window.pulse_data.push({
-					time: data.time[i], pulse: 0
+					time: parseTimeStamp(data.time[i]), pulse: 0
 				});	
 			}else{
 				if(data.pulse[i] > window.pulse_max){
@@ -114,7 +114,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 					window.pulse_min = data.pulse[i];
 				}
 				window.pulse_data.push({
-					time: data.time[i], pulse: data.pulse[i]
+					time: parseTimeStamp(data.time[i]), pulse: data.pulse[i]
 				});
 			}				
 		}
@@ -226,6 +226,42 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		}
 	}
 	
+	function parseTimeStamp(milliseconds){
+		var seconds = Math.floor( milliseconds / 1000 );
+		var time = '';
+		if (seconds < 10){
+			time = '00:0'+seconds;
+		}else if(seconds < 60){
+			time = '00:'+seconds;
+		}else{
+			var minutes = Math.floor( seconds / 60 );
+			var stringMinutes = minutes;
+			var newSeconds = seconds - minutes * 60;
+			var stringNewSeconds = newSeconds;
+			if(minutes < 10){
+				stringMinutes = '0'+minutes;
+			}
+			if(newSeconds < 10){
+				stringNewSeconds = '0'+newSeconds;
+			}
+			if(minutes < 60){
+				time = stringMinutes+':'+stringNewSeconds;
+			}else{
+				var hours = Math.floor( minutes / 60 );
+				var stringHours = hours;
+				var newMinutes = minutes - hours * 60;
+				var stringNewMinutes = newMinutes;
+				if(hours < 10){
+					stringHours = '0:'+hours;
+				}
+				if(newMinutes < 10){
+					stringNewMinutes = '0'+newMinutes;
+				}
+				time = stringHours+':'+stringMinutes+StringHours;
+			}
+		}
+		return time;
+	}
 	
 	function pulseGauge(){
 		$('#gaugeContainer').jqxGauge({
