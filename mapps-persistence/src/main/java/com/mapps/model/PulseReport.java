@@ -21,7 +21,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.google.common.collect.Maps;
-import com.mapps.jsonexclusions.annotations.PulseReportExclusion;
 import com.mapps.pulsedata.RestPulseForAge;
 import com.mapps.stats.PulseStatsDecoder;
 import com.mapps.wrappers.AthleteWrapper;
@@ -38,18 +37,15 @@ public class PulseReport implements Comparable<PulseReport>{
     Long id;
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
-    @PulseReportExclusion
     private List<Integer> pulse;
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
-    @PulseReportExclusion
     private List<Long> time;
     private long elapsedTime;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.EAGER)
-    @PulseReportExclusion
     private Athlete athlete;
     @Transient
     private AthleteWrapper athleteWrapper;
@@ -79,7 +75,7 @@ public class PulseReport implements Comparable<PulseReport>{
         this.meanBPM = getMeanBPM();
         this.kCal = getKcalPerMinute() * (time.get(time.size() - 1) - time.get(0)) / (1000 * 60);
         this.lastPulse = pulse.get(pulse.size() - 1);
-        this.trainingTypePercentage = getTrainingTypePercentage();
+        setTrainingTypePercentage();
     }
 
     public List<Integer> getPulse() {
@@ -122,10 +118,12 @@ public class PulseReport implements Comparable<PulseReport>{
         this.athlete = athlete;
     }
 
+    @Transient
     public AthleteWrapper getAthleteWrapper() {
         return athleteWrapper;
     }
 
+    @Transient
     public void setAthleteWrapper(AthleteWrapper athleteWrapper) {
         this.athleteWrapper = athleteWrapper;
     }
@@ -138,8 +136,7 @@ public class PulseReport implements Comparable<PulseReport>{
         this.id = id;
     }
 
-
-
+    @Transient
     public TrainingType getTrainingType(int bpm) {
         RestPulseForAge restPulse = RestPulseForAge.loadFromJson();
         List<Integer> fcr;
@@ -152,6 +149,7 @@ public class PulseReport implements Comparable<PulseReport>{
         return TrainingType.fromFCR(fcr.get(age), age, bpm);
     }
 
+    @Transient
     public double getKcalPerMinute() {
         double weight = athlete.getWeight();
         int age = athleteWrapper.getAge();
@@ -162,6 +160,7 @@ public class PulseReport implements Comparable<PulseReport>{
         }
     }
 
+    @Transient
     public double getMeanBPM() {
         double sum = 0;
         for (Integer bpm : pulse) {
@@ -170,7 +169,8 @@ public class PulseReport implements Comparable<PulseReport>{
         return sum / pulse.size();
     }
 
-    public Map<String, Double> getTrainingTypePercentage() {
+    @Transient
+    public void setTrainingTypePercentage() {
         Map<String, Double> map = Maps.newHashMap();
         for (Integer bpm : this.pulse){
             String type = getTrainingType(bpm).name();
@@ -180,7 +180,7 @@ public class PulseReport implements Comparable<PulseReport>{
                 map.put(type, map.get(type) + (1.0 / pulse.size()));
             }
         }
-        return map;
+        this.trainingTypePercentage = map;
     }
 
     @Override

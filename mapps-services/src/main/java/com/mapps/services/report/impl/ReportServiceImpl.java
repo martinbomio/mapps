@@ -37,6 +37,7 @@ import com.mapps.services.report.exceptions.AuthenticationException;
 import com.mapps.services.report.exceptions.NoPulseDataException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
+import com.mapps.wrappers.AthleteWrapper;
 
 /**
  *
@@ -191,6 +192,8 @@ public class ReportServiceImpl implements ReportService {
                 Training training = new Training();
                 training.setName(trainingName);
                 report = pulseReportDAO.getPulseReport(training, athlete);
+                report.setAthleteWrapper(new AthleteWrapper.Builder().setAthlete(athlete).build());
+                report.setTrainingTypePercentage();
             } else {
                 throw new AuthenticationException();
             }

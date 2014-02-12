@@ -78,10 +78,11 @@ public class PulseReportDAOImpl implements PulseReportDAO {
 
     @Override
     public PulseReport getPulseReport(Training training, Athlete athlete) {
-        Query query = entityManager.createQuery("select r from Training t join t.pulseReports r where ( t.name =:training and" +
+        Query query = entityManager.createQuery("select r from PulseReport r where ( r.trainingName =:training and" +
                                                         " r.athlete=:athlete)");
-        query.setParameter("training", training);
+        query.setParameter("training", training.getName());
         query.setParameter("athlete", athlete);
-        return (PulseReport)query.getSingleResult();
+        List<PulseReport> list = query.getResultList();
+        return list.get(0);
     }
 }

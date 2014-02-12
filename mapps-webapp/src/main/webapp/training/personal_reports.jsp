@@ -135,7 +135,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
         pulseData(response);
         getTrainingZones(response);
 		
-        document.getElementById('pulse_data').innerHTML = getPulseMean()+' '+'bpm';
+        document.getElementById('pulse_data').innerHTML = float(response.meanBPM).toFixed(2) +' '+'bpm';
 		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
 		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;
 		document.getElementById('pulse_data_max').innerHTML = window.pulse_max;
