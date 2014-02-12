@@ -26,6 +26,10 @@ String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("index_login.jsp");	
 }else{
+	
+String trainingStarted = String.valueOf(session.getAttribute("trainingStarted"));
+if (trainingStarted.equals("null"))
+trainingStarted = "";	
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -42,6 +46,15 @@ if (info.equals("null")){
 	pop_up_message = "El entrenamiento se ha finalizado con éxito";
 	show_pop_up = true;
 }
+
+String logout = String.valueOf(request.getParameter("logout"));
+if (logout.equals("null")){
+	logout = "";
+}else if (logout.equals("1")){
+	pop_up_message = "Por favor termine el entrenamiento en curso antes de cerrar sesión";
+	show_pop_up = true;
+}
+
 String error = String.valueOf(request.getParameter("error"));
 if (error.equals(10)){
 	pop_up_message = "Error de autenticación o no se tiene los permisos necesarios para realizar esta operación";
@@ -192,7 +205,11 @@ else if(error.equals(11)){
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab"><a href="./configuration/my_account.jsp">MI CUENTA</a></div>
+		<%if(trainingStarted.equals("trainingStarted")){%>
+		<div id="logout" class="up_tab"><a href="./index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
+		<%}else{ %>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
+    <%} %>
     </div>
 </div>
 <div id="contenedor">

@@ -41,6 +41,9 @@ String token = String.valueOf(session.getAttribute("token"));
 if (token.equals("null") || token.equals("")){
 	response.sendRedirect("../index_login.jsp");	
 }else{
+	String trainingStarted = String.valueOf(session.getAttribute("trainingStarted"));
+	if (trainingStarted.equals("null"))
+	trainingStarted = "";
 Role role;
 if ( session.getAttribute("role") == null){
 	role = null;	
@@ -163,7 +166,11 @@ if(info.equals("1")){
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab"><a href="./my_account.jsp">MI CUENTA</a></div>
+        <%if(trainingStarted.equals("trainingStarted")){%>
+		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
+		<%}else{ %>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
+		<%} %>
     </div>
 </div>
 <div id="contenedor">

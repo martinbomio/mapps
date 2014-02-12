@@ -167,7 +167,11 @@ if (token.equals("null") || token.equals("")){
     </div>
     <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
         <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
+        <%if(trainingStarted.equals("trainingStarted")){%>
+		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
+		<%}else{ %>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
+		<%} %>
     </div>
 </div>
 <div id="contenedor">
@@ -206,7 +210,7 @@ if (token.equals("null") || token.equals("")){
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
 				<%if(trainingStarted.equals("trainingStarted")){ %>
-				<label id="title"> Entrenamiento en curso </label>
+				<label id="title"> Ya existe un entrenamiento en curso. Si desea programar o iniciar otro, termine el entrenamiento actual. </label>
 				<%}else{ %>	
            		<label id="title"> Seleccione el entrenamiento que desee comenzar </label>
            		<%} %>
