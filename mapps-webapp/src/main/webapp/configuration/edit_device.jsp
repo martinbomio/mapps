@@ -97,7 +97,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '100%', width: '85%', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '80%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
@@ -191,14 +191,14 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
             </div>
-	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
+	        <div id="main_div_left" style="height: 271px">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un dispositivo </label>
                 </div>
         		<div id="list_devices">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
+            <div id="main_div_right">
                 <form action="/mapps/modifyDevice" method="post" name="edit_device" id="edit_device">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>

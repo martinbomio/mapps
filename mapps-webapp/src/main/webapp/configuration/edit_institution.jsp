@@ -59,11 +59,11 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").css('visibility', 'visible');
 		
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: '100%', minLength: 1, theme: 'metro'});
-		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: '100%', minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '100%', minLength: 1, theme: 'metro'});
+		$("#file").jqxInput({placeHolder: "Nombre", height: 30, width: '100%', minLength: 1, theme: 'metro'});
 		//country
 		var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
-		$("#country").jqxInput({ placeHolder: "País", height: 25, width: '100%', minLength: 1 ,theme: 'metro', 
+		$("#country").jqxInput({ placeHolder: "País", height: 30, width: '100%', minLength: 1 ,theme: 'metro', 
             source: function (query, response) {
                 var item = query.split(/,\s*/).pop();
                 // update the search query.
@@ -83,9 +83,13 @@ if ( session.getAttribute("role") == null){
             }
         });
 		//register
-		$("#validate").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#edit_institution').jqxValidator('validate');
+	    });
+		$("#image").jqxButton({ height: 30, width: 257, theme: 'metro'});
+		$("#image").on('click', function (){ 
+	        $('#file').click();
 	    });
 		$("#edit_institution").jqxValidator({
             rules: [
@@ -115,7 +119,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_institutions').on('select', function (event) {
             updatePanel(institutions[event.args.index]);
         });
-		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '100%', width: '85%', theme: 'metro',
+		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '85%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = institutions[index];
                 var imageurl = datarecord.imageURI;
@@ -211,14 +215,14 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar una Institución
             </div>
-	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
+	        <div id="main_div_left" style="height: 476px">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione una instituci&oacute;n </label>
                 </div>
         		<div id="list_institutions">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
+            <div id="main_div_right">
                 <form action="/mapps/modifyInstitution" method="post" name="edit_institution" id="edit_institution" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
@@ -236,11 +240,13 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> País: </div>
                             <div class="input"><input name="country"  id="country"  /></div>
                         </div>
-                        <div>
-                    		<div class="tag_form_editar"> Imagen: </div>
-                        	<div class="input"><input name="file"  id="file" type="file" class="jqx-rc-all jqx-rc-all-metro jqx-button jqx-button-metro jqx-widget jqx-widget-metro jqx-fill-state-normal jqx-fill-state-normal-metro" /></div>
+                        	<div class="tag_form_editar" style="float: left;margin-top: 7px"> Imagen: </div>
+                    		<div style="height:0px;overflow:hidden">
+                        	<div class="input"><input name="file"  id="file" type="file" /></div>
+                        	</div>
+                        	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top:20px;">
+                    	<div style="margin-left:25%; margin-top: 65px">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>

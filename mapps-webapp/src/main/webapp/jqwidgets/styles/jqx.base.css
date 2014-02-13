@@ -1,4 +1,4 @@
-ï»¿/*Rounded Corners*/
+/*Rounded Corners*/
 /*top-left rounded Corners*/
 .jqx-rc-tl
 {
@@ -2093,7 +2093,7 @@ of the horizontal scrollbar.*/
 {
     -webkit-appearance: none;
     outline: none;
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     padding: 0px;
     margin: 0px;
     cursor: default;
@@ -2486,11 +2486,11 @@ of the horizontal scrollbar.*/
     overflow: hidden;
     border: 1px solid transparent;
 }
-/*applied to the jqxWindow when itâ€™s disabled*/
+/*applied to the jqxWindow when itÕs disabled*/
 .jqx-window-disabled
 {
 }
-/*applied to the windowâ€™s header*/
+/*applied to the windowÕs header*/
 .jqx-window-header
 {
     outline: none;
@@ -2502,12 +2502,12 @@ of the horizontal scrollbar.*/
     white-space: nowrap;
     overflow: hidden;  
 }
-/*applied to the windowâ€™s header when the window is disabled*/
+/*applied to the windowÕs header when the window is disabled*/
 .jqx-window-header-disabled
 {
 
 }
-/*applied to the windowâ€™s content*/
+/*applied to the windowÕs content*/
 .jqx-window-content
 {
     outline: none;
@@ -2517,7 +2517,7 @@ of the horizontal scrollbar.*/
     padding: 5px;
     -webkit-background-clip: padding-box; background-clip: padding-box;
 }
-/*applied to the windowâ€™s content when the window is disabled*/
+/*applied to the windowÕs content when the window is disabled*/
 .jqx-window-content-disabled
 {
     outline: none;
@@ -2525,7 +2525,7 @@ of the horizontal scrollbar.*/
     text-align: left;
     padding: 5px;
 }
-/*applied to the windowâ€™s close button*/
+/*applied to the windowÕs close button*/
 .jqx-window-close-button
 {
     cursor: pointer;
@@ -2546,7 +2546,7 @@ of the horizontal scrollbar.*/
     cursor: pointer;
     background-image: url(images/icon-down.png);
 }
-/*setting styles of the modal windowâ€™s background*/
+/*setting styles of the modal windowÕs background*/
 .jqx-window-modal
 {
    background-color: Black;

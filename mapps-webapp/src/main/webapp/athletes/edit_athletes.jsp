@@ -88,6 +88,10 @@ if(error.equals("1")){
 		$("#validate").on('click', function (){ 
 	        $('#edit_athlete').jqxValidator('validate');
 	    });
+		$("#image").jqxButton({ height: 30, width: 257, theme: 'metro'});
+		$("#image").on('click', function (){ 
+	        $('#file').click();
+	    });
 		$("#edit_athlete").jqxValidator({
             rules: [
                     {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -153,7 +157,7 @@ if(error.equals("1")){
 		$('#list_players').on('select', function (event) {
             updatePanel(athletes[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '90%', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -257,14 +261,14 @@ if(error.equals("1")){
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> >> Editar
             </div>
-            <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+            <div id="main_div_left" style="height:555px">
                 <div id="title" style="margin:15px;">
                     <label> 1) Seleccione un jugador </label>
                 </div>
                 <div id="list_players">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+            <div id="main_div_right">
                 <form action="/mapps/modifyAthlete" method="post" name="agregar_deportista" id="edit_athlete" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
@@ -303,11 +307,14 @@ if(error.equals("1")){
                             <div class="tag_form_editar"> Email: </div>
                             <div class="input"><input type="text" name="email" id="email" /></div>
                         </div>
-                        <div style="display:inline-block">
-                    		<div class="tag_form"> Cambiar Imagen: </div>
-                        	<div class="input" style="display:inline-block" ><input name="file"  id="file" type="file" /></div>
+                        <div>
+                    		<div class="tag_form_editar" style="float: left;margin-top: 7px"> Imagen: </div>
+                    		<div style="height:0px;overflow:hidden">
+                        	<div class="input"><input name="file"  id="file" type="file" /></div>
+                        	</div>
+                        	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top:20px;">
+                    	<div style="margin-left:25%; margin-top: 65px">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>

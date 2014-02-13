@@ -16,7 +16,8 @@ body{
 
 
 #container {
-	height:500px;
+	height:100%;
+	min-height:500px;
 	width:70%;
 	margin-left:15%;
 	margin-right:15%;
@@ -44,10 +45,13 @@ body{
 
 #area_de_trabajo{
 	width:100%;
-	height:500px;
+	height:100%;
 	border-top:solid 1px;
 	border-bottom:solid 1px;
 	margin-top:2px;
+	padding-bottom: 50px;
+	display: inline-block;
+	min-height: 600px;
 }
 
 #sidebar_left{
@@ -62,6 +66,7 @@ body{
 	height:100%;
 	display:inline-block;
 	float:left;
+	margin-top: 50px;
 }
 
 #sidebar_right{
@@ -84,9 +89,6 @@ body{
 	height:400px; 
 	display:inline-block; 
 	overflow:scroll;
-	border-left:solid 1px #EEE;
-	border-right:solid 1px #EEE;
-	margin-left:5%;
 	float:left;
 }
 
@@ -242,6 +244,7 @@ body{
 
 .campos{
 	font-size:14px;	
+	
 }
 
 .list_box{
@@ -382,7 +385,26 @@ body{
 	font-size:30px;
 	text-align:center;
 }
+#title{
+	margin-left: 50px;
+}
+#main_div_left{
+	float:left; width:30%; display:inline-block;
+	border: 2px solid;
+	border-radius: 15px;
+	border-color: #e5e5e5;
+	padding-left: 35px;
+}
 
+#main_div_right{
+	border: 2px solid;
+	border-radius: 15px;
+	border-color: #e5e5e5;
+	float: right;
+	width: 60%;
+	display: inline-block;
+	padding-bottom: 25px;
+}
 .trainings_player_report{
 	float:left;
 	width:18%;

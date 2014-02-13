@@ -71,7 +71,10 @@ if ( session.getAttribute("role") == null){
 		$("#validate").on('click', function (){ 
 	        $('#edit_user').jqxValidator('validate');
 	    });
-		$("#file").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#image").jqxButton({ height: 30, width: 257, theme: 'metro'});
+		$("#image").on('click', function (){ 
+	        $('#file').click();
+	    });
 		$("#edit_user").jqxValidator({
             rules: [
                     {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
@@ -110,7 +113,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_users').on('select', function (event) {
             updatePanel(users[event.args.index]);
         });
-		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 70, height: '100%', width: '90%', theme: 'metro',
+		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
                 var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
@@ -186,7 +189,7 @@ if ( session.getAttribute("role") == null){
         <div id="tab_4" class="tab" onclick="location.href='../myclub/myclub.jsp'">MI CLUB</div>
         <div id="tab_5" class="tab active" onclick="location.href='./configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
-    <div id="area_de_trabajo" style="height:560px;">
+    <div id="area_de_trabajo">
 		<div id="sidebar_left">
 			<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
@@ -237,14 +240,14 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un usuario
         	</div>
-	        <div id="main_div_left" style="float:left; width:40%; display:inline-block;">
+	        <div id="main_div_left" style="height: 550px;">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un Usuario </label>
                 </div>
         		<div id="list_users">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:60%; display:inline-block;">
+            <div id="main_div_right" >
                 <form action="/mapps/modifyUser" method="post" name="edit_user" id="edit_user" enctype="multipart/form-data">
                     <div id="title" style="margin:15px;">
                         <label> 2) Modifique los datos que desee </label>
@@ -284,10 +287,13 @@ if ( session.getAttribute("role") == null){
                             <div id="role_list" class="list_box"></div>
                         </div>
                         <div>
-                    		<div class="tag_form"> Imagen: </div>
+                    		<div class="tag_form_editar" style="float: left;margin-top: 7px"> Imagen: </div>
+                    		<div style="height:0px;overflow:hidden">
                         	<div class="input"><input name="file"  id="file" type="file" /></div>
+                        	</div>
+                        	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top:15px;">
+                    	<div style="margin-left:25%; margin-top: 65px;">
                     		<input type="button" id="validate" value="CONFIRMAR"/>
                    		</div>
                     </div>
