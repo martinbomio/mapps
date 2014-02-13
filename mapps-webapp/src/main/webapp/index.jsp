@@ -181,10 +181,10 @@ else if(error.equals(11)){
 </script>
 
 <div id="header">
-	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left; margin-left:5%;">
     	<a href="index.jsp"></href><img src="./images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+    <div id="header_central"  style="display:inline-block; width:40%; height:100%; float:left;">
     	<div id="pop_up">
             <div>
                 <img width="14" height="14" src="./images/ok.png" alt="" />
@@ -203,7 +203,7 @@ else if(error.equals(11)){
             </div>
         </div>
     </div>
-    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+    <div id="header_der" style="display:inline-block; width:20%; height:100%; float:left;">
         <div id="logout" class="up_tab"><a href="./configuration/my_account.jsp">MI CUENTA</a></div>
 		<%if(trainingStarted.equals("trainingStarted")){%>
 		<div id="logout" class="up_tab"><a href="./index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
@@ -229,34 +229,6 @@ else if(error.equals(11)){
             
             </div>
             <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;">
-<!--               	<div id="athlete_1" class="athlete_index">
-                	<div id="img" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<img src="images/athletes/default.png" height="80px" />
-                    </div>
-                    <div id="data"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<div id="name" class="data_info_index">
-                        	Martin
-                           	Bomio
-                        </div>
-                        <div id="pulse" class="data_info_index" style="margin-top:15px;">
-                        	<div style="height:40px; text-align:center;">
-                            PULSO
-                            </div>
-                            <div id="pulse_data" class="data_index">
-                            	79 bpm
-                            </div>
-                        </div>
-                        <div id="calories" class="data_info_index" style="margin-top:15px;">
-                        	<div style="height:40px; text-align:center;">
-                            CALORIAS
-                            </div>
-                            <div id="calories_data" class="data_index">
-                            	475
-                            </div>
-                        </div>
-                    </div>
-                </div>
--->
                
             </div>
         	<div id="stop_training_div">
