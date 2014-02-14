@@ -149,7 +149,7 @@ if(error.equals("1")){
 		<%
 		}
 		%>
-			
+		$('#main_div_left').height($('#main_div_right').height());
 	});
 	
 	function create_list(response){
@@ -157,7 +157,7 @@ if(error.equals("1")){
 		$('#list_players').on('select', function (event) {
             updatePanel(athletes[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '90%', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -257,10 +257,10 @@ if(error.equals("1")){
   			</div>
         </div>
         <div id="main_div">
-        	<div id="navigation" class="navigation">
+        <div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> >> Editar
-            </div>
-            <div id="main_div_left" style="height:555px">
+        </div>
+            <div id="main_div_left">
                 <div id="title" style="margin:15px;">
                     <label> 1) Seleccione un jugador </label>
                 </div>
@@ -313,8 +313,8 @@ if(error.equals("1")){
                         	</div>
                         	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top: 65px">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    	<div style="margin-top: 65px">
+                    		<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                    		</div>
                     </div>
                     <input type="hidden" id="document-hidden" name="document"></input>

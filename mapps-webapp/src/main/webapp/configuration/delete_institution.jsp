@@ -74,7 +74,7 @@ if(info.equals("1")){
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#delete").jqxButton({ width: '150', theme: 'metro'});
+		$("#delete").jqxButton({ width: '200', height: 35 ,theme: 'metro'});
 		
 		$("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
@@ -143,9 +143,10 @@ if(info.equals("1")){
 	                exportSettings: { fileName: null },
 	                source: dataAdapter,
 	                columnsResize: true,
+	                width: '60%',
 	                columns: [
-	                    { text: 'Nombre', dataField: 'name', width: 200 },
-	                    { text: 'País', dataField: 'country', width: 170 },
+	                    { text: 'Nombre', dataField: 'name', width: '50%' },
+	                    { text: 'País', dataField: 'country', width: '50%' },
 	                ]
 	            }
 		);
@@ -243,14 +244,16 @@ if(info.equals("1")){
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Eliminar Instituci&oacute;n
             </div>
+            <div id="add_div" >
             <div id="title" style="margin:15px;">
                 <label> Seleccione una o varias Instituciones </label>
             </div>
-        	<div id="dataTable" style="margin-top:35px; margin-left:20%;">
+        	<div id="dataTable" style="margin-top:35px; margin-left:20%;margin-right:20%;">
             
             </div>
-        	<div style="margin-top:25px; margin-left:35%;">
-             	<input type="button" value="Eliminar" id='delete' />
+        	<div style="margin-top:25px;">
+             	<center><input type="button" value="ELIMINAR" id='delete' /></center>
+            </div>
             </div>
         </div>
         <div id="sidebar_right">

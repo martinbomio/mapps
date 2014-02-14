@@ -75,7 +75,7 @@ if(info.equals("1")){
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		
-		$("#delete").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		$("#delete").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		
 		$("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
@@ -130,6 +130,7 @@ if(info.equals("1")){
 	                exportSettings: { fileName: null },
 	                source: dataAdapter,
 	                columnsResize: false,
+	                width: '80%',
 	                columns: [
 	                    { text: 'Nombre', dataField: 'name', width: '25%' },
 	                    { text: 'Apellido', dataField: 'lastName', width: '25%' },
@@ -232,14 +233,16 @@ if(info.equals("1")){
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Eliminar Usuarios
             </div>
+            <div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Seleccione uno o varios usuarios </label>
             </div>
         	<div id="dataTable" style="margin-top:25px; margin-left:10%; margin-right:10%;">
             
             </div>
-        	<div style="margin-top:25px; margin-left:42%;">
-             	<input type="button" value="Eliminar" id='delete' />
+        	<div style="margin-top:25px;">
+             	<center><input type="button" value="ELIMINAR" id='delete' /></center>
+            </div>
             </div>
         </div>
         <div id="sidebar_right">

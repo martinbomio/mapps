@@ -113,13 +113,14 @@ if ( session.getAttribute("role") == null){
             },
         	data: {edit : 1}    
 		});
+		$('#main_div_left').height($('#main_div_right').height());
 	});
 	function create_list(response){
 		var institutions = response;
 		$('#list_institutions').on('select', function (event) {
             updatePanel(institutions[event.args.index]);
         });
-		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '85%', width: '90%', theme: 'metro',
+		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = institutions[index];
                 var imageurl = datarecord.imageURI;
@@ -209,9 +210,9 @@ if ( session.getAttribute("role") == null){
                    %>
         		</ul>
   			</div>
-        </div>	   
+        </div>	
         <div id="main_div">
-        	<div id="navigation" class="navigation">
+        <div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar una Institución
             </div>
 	        <div id="main_div_left" style="height: 476px">
@@ -245,8 +246,8 @@ if ( session.getAttribute("role") == null){
                         	</div>
                         	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top: 65px">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    	<div style="margin-top: 65px">
+                    		<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                    		</div>
                     </div>
                     <input type="hidden" id="id-hidden" name="id-hidden"></input>

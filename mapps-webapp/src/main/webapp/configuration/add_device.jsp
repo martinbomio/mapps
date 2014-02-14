@@ -92,7 +92,7 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
 		$("#dirLow").jqxInput({placeHolder: "DIR LOW", height: 25, width: 200, minLength: 1, theme: 'metro'});
 	
 		//register
-		$("#validate").jqxButton({ width: '150', height: '35',theme: 'metro'});
+		$("#validate").jqxButton({ width: '200', height: '35',theme: 'metro'});
 		$("#validate").on('click', function (){ 
 	        $('#device_form').jqxValidator('validate');
 	    });
@@ -201,11 +201,12 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
 			<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un dispositivo
             </div>
+            <div id="add_div">
         	<form action="/mapps/addDevice" method="post" name="device_form" id="device_form">
             	<div id="title" style="margin:15px;">
            			<label> Rellene el siguiente formulario </label>
                 </div>
-                <div id="campos" class="campos" style="margin-left:100px;">
+                <div id="campos" class="campos" style="margin-left: 15%;margin-right: 15%;width: 70%;">
                 	<div id="pan_id">
                     	<div class="tag_form"> PAN ID:  </div>
                     	<div class="input"><input type="text" name="panId" id="panId" /></div>
@@ -231,11 +232,12 @@ String instName = ""+String.valueOf(session.getAttribute("institutionName"))+"";
                     
                     <%} %>
                   
-                    <div style="margin-left:25%; margin-top:20px;">
-                    	<input type="button" id="validate" value="CONFIRMAR"/>
+                    <div style="margin-top:20px;">
+                    	<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                     </div>
 				</div>
             </form>
+            </div>
         </div>
         <div id="sidebar_right">
         	

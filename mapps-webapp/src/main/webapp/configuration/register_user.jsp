@@ -77,27 +77,27 @@ if ( session.getAttribute("role") == null){
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1, theme: 'metro'});
 		//lastname
-		$("#lastName").jqxInput({placeHolder: "Apellido", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: 200, minLength: 1, theme: 'metro'});
 		//username
-		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 25, width: 200, minLength: 1, theme: 'metro'});
+		$("#username").jqxInput({placeHolder: "Nombre de Usuario", height: 30, width: 200, minLength: 1, theme: 'metro'});
 		//password
-		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 25, showStrength: true, showStrengthPosition: "right" , theme: 'metro'});
+		$("#password").jqxPasswordInput({ placeHolder: "Contraseña", width: 200 , height: 30, showStrength: true, showStrengthPosition: "right" , theme: 'metro'});
 		//passowrdConfirm
-		$("#passwordConfirm").jqxPasswordInput({  placeHolder: 'Repetir contraseña', width: '200px', height: '25px', theme: 'metro' });
+		$("#passwordConfirm").jqxPasswordInput({  placeHolder: 'Repetir contraseña', width: '200px', height: 30, theme: 'metro' });
         //email
-		$("#email").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 3, theme: 'metro'});
+		$("#email").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 3, theme: 'metro'});
 		//Drop list
-		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '100', theme: 'metro'});
+		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '200', height: 30, dropDownHeight: '100', theme: 'metro'});
 		//Date
-		$("#date").jqxDateTimeInput({width: '200px', height: '25px', theme: 'metro'});
+		$("#date").jqxDateTimeInput({width: '200px', height: 30, theme: 'metro'});
 		//document
-		$("#document").jqxMaskedInput({ width: 200, height: 25, mask: '#.###.###-#', theme: 'metro'});
+		$("#document").jqxMaskedInput({ width: 200, height: 30, mask: '#.###.###-#', theme: 'metro'});
 		//rol
-		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: '25', dropDownHeight: '75', theme: 'metro'});
+		$("#role").jqxDropDownList({ source: ["Usuario", "Entrenador", "Administrador"], selectedIndex: 0, width: '200', height: 30, dropDownHeight: '75', theme: 'metro'});
 		//register
-		$("#register_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		$("#register_button").jqxButton({ width: '200', height: 35, theme: 'metro'});
 		
 		$("#register_button").on('click', function (){ 
 	        $('#register_form').jqxValidator('validate');
@@ -227,10 +227,11 @@ if ( session.getAttribute("role") == null){
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un Usuario
             </div>
+            <div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>     	
-            <div style="margin-left:100px;">
+            <div style="margin-left: 15%;margin-right: 15%;">
             	<form action="/mapps/registerUser" method="post" id="register_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
@@ -281,10 +282,11 @@ if ( session.getAttribute("role") == null){
                         
                         </div>
                     </div>
-                   	<div style="margin-left:25%; margin-top:10px;">
-                    	<input type="button" value="Registrar" id="register_button" />
+                   	<div style="margin-top:10px;">
+                    	<center><input type="button" value="REGISTRAR" id="register_button" /></center>
                  	</div>
                 </form>
+            </div>
             </div>
         </div>
         <div id="sidebar_right">

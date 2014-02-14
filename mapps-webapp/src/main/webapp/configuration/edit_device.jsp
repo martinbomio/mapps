@@ -91,13 +91,14 @@ if ( session.getAttribute("role") == null){
             },
         	   
 		});
+		$('#main_div_left').height($('#main_div_right').height());
 	});
 	function create_list(response){
 		var devices = response;
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '80%', width: '90%', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '80%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
@@ -185,11 +186,11 @@ if ( session.getAttribute("role") == null){
                    %>
         		</ul>
   			</div>
-        </div>	   
+        </div>	
         <div id="main_div">
-        	<div id="navigation" class="navigation">
-            	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
-            </div>
+	        <div id="navigation" class="navigation">
+	            	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
+	        </div>   
 	        <div id="main_div_left" style="height: 271px">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un dispositivo </label>
@@ -215,8 +216,8 @@ if ( session.getAttribute("role") == null){
                             <div class="tag_form_editar"> DIR LOW: </div>
                             <div class="input"><input type="text" id="dirLow" name="dirLow" /></div>
                         </div>
-                    	<div style="margin-left:25%; margin-top:20px;">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    	<div style="margin-top:20px;">
+                    		<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                    		</div>
                     </div>
                     <input type="hidden" id="id-hidden" name="id-hidden"></input>

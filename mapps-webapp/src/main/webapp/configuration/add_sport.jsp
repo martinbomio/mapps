@@ -29,6 +29,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatatable.js"></script> 
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -77,8 +78,20 @@ if (error.equals("null"))
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
         // Create a jqxListBox
-        $("#sports").jqxListBox({ source: dataAdapter, displayMember: "name", valueMember: "name", width: 200, height: 150, theme: 'metro'});
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: 200, minLength: 1, theme: 'metro'});
+        $("#sports").jqxDataTable(
+	            {	
+	            	theme: 'metro',
+					width: 200,
+	            	altrows: true,
+	                sortable: true,
+	                source: dataAdapter,
+	                columnsResize: false,
+	                columns: [
+	                    { text: 'Deportte', dataField: 'name', width: '100%' },
+	                ]
+	            }
+		);
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: 200, minLength: 1, theme: 'metro'});
 		//register
 		$("#addSport_button").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#addSport_button").on('click', function (){ 
@@ -174,27 +187,29 @@ if (error.equals("null"))
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Agregar un deporte
             </div>
+            <div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>  
-            <div style="margin-left:100px;">  
+            <div style="margin-left: 15%;margin-right: 15%;">  
             	<form action="/mapps/addSport" method="post" id="addSport_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
-                    <div style="margin-left:25%; margin-top:25px;">
-                    	<input type="button" value="Agregar deporte" id="addSport_button" />
+                    <div style=" margin-top:25px;">
+                    	<center><input type="button" value="AGREGAR DEPORTE" id="addSport_button" /></center>
                  	</div>
-                    <div style="margin-top:50px;">
-                        <div id="title" class="tag_form" style="margin:15px; vertical-align:top;">
+                    <div style="margin-top:30px;margin-left: 180px;width: 58%;">
+                        <div id="title" class="tag_form" style="margin:15px; vertical-align:top; width:100%">
                             Deportes ya Ingresados
                         </div>
-                        <div id="sports" class="input" style="margin-top:50px;">
+                        <div id="sports" class="input">
                          
                         </div>
                     </div>
                 </form>
+        	</div>
         	</div>
         </div>
         <div id="sidebar_right">

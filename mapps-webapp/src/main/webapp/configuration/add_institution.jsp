@@ -60,7 +60,7 @@ if (error.equals("null"))
 	$(document).ready(function () {
 		
 		 var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
-         $("#country").jqxInput({ placeHolder: "País", height: 35, width: 200, theme: 'metro', 
+         $("#country").jqxInput({ placeHolder: "País", height: 30, width: 200, theme: 'metro', 
              source: function (query, response) {
                  var item = query.split(/,\s*/).pop();
                  // update the search query.
@@ -84,10 +84,10 @@ if (error.equals("null"))
         $("#jqxMenu").jqxMenu({ width: '55%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
 		//name
-		$("#name").jqxInput({placeHolder: "Nombre", height: 25, width: '50%', minLength: 1, theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '50%', minLength: 1, theme: 'metro'});
 	
 		//register
-		$("#addInstitution_button").jqxButton({ width: '150', height: '35', theme: 'metro'});
+		$("#addInstitution_button").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		$("#addInstitution_button").on('click', function (){ 
 	        $('#addInstitution_form').jqxValidator('validate');
 	    });
@@ -132,7 +132,7 @@ if (error.equals("null"))
         <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
         <div id="tab_5" class="tab active" onclick="location.href='./configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
   	</div>
-    <div id="area_de_trabajo" style="height:580px;">
+    <div id="area_de_trabajo">
 		<div id="sidebar_left">
 			<div id="jqxMenu" style="visibility:hidden; margin:20px;">
         		<ul>
@@ -179,15 +179,15 @@ if (error.equals("null"))
         		</ul>
   			</div>
         </div>	   
-        <div id="main_div">
-        
-        	<div id="navigation" class="navigation">
+        <div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Agregar una Institución
             </div>
+        <div id="main_div">
+        	<div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>     	
-            <div style="margin-left:100px;">
+            <div>
             	<form action="/mapps/addInstitution" method="post" id="addInstitution_form">
                 	<div id="nombre">
                         <div class="tag_form"> Nombre:  </div>
@@ -201,10 +201,11 @@ if (error.equals("null"))
                     	<div class="tag_form"> País: </div>
                         <div class="input"><input name="country"  id="country" type="text" /></div>
                     </div>
-                   	<div style="margin-left:40%; margin-top:20px;">
-                    	<input type="button" value="Agregar Institución" id="addInstitution_button" />
+                   	<div style="margin-top:20px;">
+                    	<center><input type="button" value="AGREGAR INSTITUCIÓN" id="addInstitution_button" /></center>
                  	</div>
                 </form>
+            </div>
             </div>
         </div>
         <div id="sidebar_right">

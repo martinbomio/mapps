@@ -107,7 +107,7 @@ if (error.equals("null"))
 	
 		
 		//addAthlete
-		$("#addAthlete_button").jqxButton({ width: '150'});
+		$("#addAthlete_button").jqxButton({ width: '200', height: 35});
 		$("#addAthlete_button").on('click', function (){ 
 			$('#addAthlete_form').jqxValidator('validate');
 		});
@@ -193,6 +193,7 @@ if (error.equals("null"))
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> >> Agregar
             </div>
+            <div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>     	
@@ -237,10 +238,11 @@ if (error.equals("null"))
                         
                         </div>
                     </div>
-                   	<div style="margin-left:25%; margin-top:10px;">
-                    	<input type="button" id="addAthlete_button" value="CONFIRMAR"/>
+                   	<div style=" margin-top:10px;">
+                    	<center><input type="button" id="addAthlete_button" value="CONFIRMAR"/></center>
                  	</div>
                 </form>  
+                </div>
         	</div>        
         </div>
         <div id="sidebar_right">

@@ -106,6 +106,7 @@ if ( session.getAttribute("role") == null){
             success: function (response){
 				create_list(response);	            	
             }});
+		$('#main_div_left').height($('#main_div_right').height());
 		});
 	
 	function create_list(response){
@@ -113,7 +114,7 @@ if ( session.getAttribute("role") == null){
 		$('#list_users').on('select', function (event) {
             updatePanel(users[event.args.index]);
         });
-		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '90%', theme: 'metro',
+		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
                 var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
@@ -236,9 +237,9 @@ if ( session.getAttribute("role") == null){
   			</div>
         </div>	   
         <div id="main_div">
-        	<div id="navigation" class="navigation">
+        <div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un usuario
-        	</div>
+        </div>
 	        <div id="main_div_left" style="height: 550px;">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un Usuario </label>
@@ -292,8 +293,8 @@ if ( session.getAttribute("role") == null){
                         	</div>
                         	<input type="button" id="image" value="CAMBIAR IMAGEN" style="float: left;margin-top: 7px;margin-left: 5px;"/>
                     	</div>
-                    	<div style="margin-left:25%; margin-top: 65px;">
-                    		<input type="button" id="validate" value="CONFIRMAR"/>
+                    	<div style="margin-top: 65px;">
+                    		<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                    		</div>
                     </div>
                     <input type="hidden" id="username-hidden" name="username-hidden"></input>

@@ -61,7 +61,7 @@ if(info.equals("1")){
 		// Create a jqxMenu
         $("#jqxMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu").css('visibility', 'visible');
-        $("#delete").jqxButton({ width: '150', height: '35', theme: 'metro'});
+        $("#delete").jqxButton({ width: '200', height: '35', theme: 'metro'});
 		
         $("#delete").click(function () {
             var array = $("#dataTable").jqxDataTable('getSelection');
@@ -132,10 +132,11 @@ if(info.equals("1")){
 	                exportSettings: { fileName: null },
 	                source: dataAdapter,
 	                columnsResize: true,
+	                width: '80%',
 	                columns: [
-	                    { text: 'Nombre', dataField: 'name', width: 200 },
-	                    { text: 'Apellido', dataField: 'lastName', width: 170 },
-	                    { text: 'C.I.', dataField: 'idDocument', width: 170 }
+	                    { text: 'Nombre', dataField: 'name', width: '40%' },
+	                    { text: 'Apellido', dataField: 'lastName', width: '40%' },
+	                    { text: 'C.I.', dataField: 'idDocument', width: '20%' }
 	                ]
 	            });
 	}
@@ -196,14 +197,16 @@ if(info.equals("1")){
         	<div id="navigation" class="navigation">
             	<a href="./athletes.jsp">JUGADORES</a> >> Eliminar
             </div>
+            <div id="add_div">
             <div id="title" style="margin:15px;">
                 <label> Seleccione uno o varios jugadores </label>
             </div>
-        	<div id="dataTable" style="margin-top:25px; margin-left:50px;">
+        	<div id="dataTable" style="margin-top:25px; margin-left:10%;margin-right:10%;">
             
             </div>
-        	<div style="margin-top:25px; margin-left:250px;">
-             	<input type="button" value="Eliminar" id='delete' />
+        	<div style="margin-top:25px;">
+             	<center><input type="button" value="ELIMINAR" id='delete' /></center>
+            </div>
             </div>
         </div>
         <div id="sidebar_right">
