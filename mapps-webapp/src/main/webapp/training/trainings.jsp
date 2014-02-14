@@ -99,8 +99,6 @@ if (token.equals("null") || token.equals("")){
 		$("#start_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 		<%}%>
 		<%}%>
-		//$("#jqxOtherMenu").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
-//        $("#jqxOtherMenu").css('visibility', 'visible');
 	
         <%
 		if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
@@ -147,7 +145,7 @@ if (token.equals("null") || token.equals("")){
             }
 		});
 		
-	      $("#jqxMenu").jqxMenu({ width: '90%', height: '30px'});
+	      $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
           
           var centerItems = function () {
               var firstItem = $($("#jqxMenu ul:first").children()[0]);
@@ -224,70 +222,52 @@ if (token.equals("null") || token.equals("")){
 <div id="contenedor">
 
 
-	  	 <div id='jqxMenu'>
+	  	 <div id='tabs' style="background-color:#4DC230; color:#FFF;">
                 <ul>
-                    <li><a href="#Home">Home</a></li>
-                    <li>Solutions
-                        <ul style='width: 250px;'>
-                            <li><a href="#Education">Education</a></li>
-                            <li><a href="#Financial">Financial services</a></li>
-                            <li><a href="#Government">Government</a></li>
-                            <li><a href="#Manufacturing">Manufacturing</a></li>
-                            <li type='separator'></li>
-                            <li>Software Solutions
-                                <ul style='width: 220px;'>
-                                    <li><a href="#ConsumerPhoto">Consumer photo and video</a></li>
-                                    <li><a href="#Mobile">Mobile</a></li>
-                                    <li><a href="#RIA">Rich Internet applications</a></li>
-                                    <li><a href="#TechnicalCommunication">Technical communication</a></li>
-                                    <li><a href="#Training">Training and eLearning</a></li>
-                                    <li><a href="#WebConferencing">Web conferencing</a></li>
+                    <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="#Home">INICIO</a></li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                        <ul style="width:200px;">
+                            <li><a href="#Education">Agregar</a></li>
+                            <li><a href="#Financial">Editar</a></li>
+                            <li><a href="#Government">Eliminar</a></li>
+                        </ul>
+                    </li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic; background-color:#FFF; color:#4DC230;">ENTRENAMIENTOS
+                        <ul style="width:250px;">
+                            <li><a href="#PCProducts">Iniciar un entrenamiento</a></li>
+                            <li><a href="#MobileProducts">Ver entrenamientos anteriores</a></li>
+                            <li><a href="#AllProducts">Programar un entrenamiento</a></li>
+                            <li><a href="#">Editar un entrenamiento</a></li>
+                            <li><a href="#">Editar permisos</a></li>
+                        </ul>
+                    </li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">CONFIGURACI&Oacute;N
+                        <ul style="width:200px;">
+                            <li>Usuarios
+                                <ul style="width:130px;">
+                                    <li><a href="#ConsumerPhoto">Agregar</a></li>
+                                    <li><a href="#Mobile">Editar</a></li>
+                                    <li><a href="#RIA">Eliminar</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">All industries and solutions</a></li>
-                        </ul>
-                    </li>
-                    <li>Products
-                        <ul>
-                            <li><a href="#PCProducts">PC products</a></li>
-                            <li><a href="#MobileProducts">Mobile products</a></li>
-                            <li><a href="#AllProducts">All products</a></li>
-                        </ul>
-                    </li>
-                    <li>Support
-                        <ul style='width: 200px;'>
-                            <li><a href="#SupportHome">Support home</a></li>
-                            <li><a href="#CustomerService">Customer Service</a></li>
-                            <li><a href="#KB">Knowledge base</a></li>
-                            <li><a href="#Books">Books</a></li>
-                            <li><a href="#Training">Training and certification</a></li>
-                            <li><a href="#SupportPrograms">Support programs</a></li>
-                            <li><a href="#Forums">Forums</a></li>
-                            <li><a href="#Documentation">Documentation</a></li>
-                            <li><a href="#Updates">Updates</a></li>
-                        </ul>
-                    </li>
-                    <li>Communities
-                        <ul style='width: 200px;'>
-                            <li><a href="#Designers">Designers</a></li>
-                            <li><a href="#Developers">Developers</a></li>
-                            <li><a href="#Educators">Educators and students</a></li>
-                            <li><a href="#Partners">Partners</a></li>
-                            <li type='separator'></li>
-                            <li>By resource</li>
-                        </ul>
-                    </li>
-                    <li>Company
-                        <ul style='width: 180px;'>
-                            <li><a href="#About">About Us</a></li>
-                            <li><a href="#Press">Press</a></li>
-                            <li><a href="#Investor">Investor Relations</a></li>
-                            <li><a href="#CorporateAffairs">Corporate Affairs</a></li>
-                            <li><a href="#Careers">Careers</a></li>
-                            <li><a href="#Showcase">Showcase</a></li>
-                            <li><a href="#Events">Events</a></li>
-                            <li><a href="#ContactUs">Contact Us</a></li>
-                            <li><a href="#Become an affiliate">Become an affiliate</a></li>
+                            <li>Instituciones
+                                <ul style="width:130px;">
+                                    <li><a href="#ConsumerPhoto">Agregar</a></li>
+                                    <li><a href="#Mobile">Editar</a></li>
+                                    <li><a href="#RIA">Eliminar</a></li>
+                                </ul>
+                            </li>
+                            <li>Deportes
+                                <ul style="width:130px;">
+                                    <li><a href="#ConsumerPhoto">Agregar</a></li>
+                                </ul>
+                            </li>
+                            <li>Dispositivos
+                                <ul style="width:130px;">
+                                    <li><a href="#ConsumerPhoto">Agregar</a></li>
+                                    <li><a href="#Mobile">Editar</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>

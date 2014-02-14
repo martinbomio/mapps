@@ -133,6 +133,15 @@ body{
 	padding-top:15px;
 }
 
+.new_tabs{
+	width:18%; 
+	text-align:center; 
+	height:25px; 
+	padding-top:15px; 
+	font-size:16px; 
+	font-family:Century Gothic;
+}
+
 .tab:hover{
 	/*
 	border-top:solid 3px #4DC230;
