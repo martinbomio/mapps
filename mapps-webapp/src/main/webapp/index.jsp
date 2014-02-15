@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,100italic,300italic,400italic,500,700' rel='stylesheet' type='text/css'>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="./scripts/jquery-1.10.2.min.js"></script>
@@ -89,21 +90,23 @@ else if(error.equals(11)){
 	            success: function (response){
 	            	var training = response;
 	            	if(training=="not started"){
-						
+	            		create_static_labels();
 	            	}else{
-	            		var training=JSON.parse(training);
+	            		hide_static_labels();
+	            		var training = JSON.parse(training);
 	            		create_stop_training(training.name);
 	            		var split = training.date.split(" ");
 	            		var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
 	            		$('#training').text( display_name);
 	            		window.training = training;
 	            		create_list();
+
+	        			setInterval(function(){
+	        				create_list();
+	        			}, 3000);
 	            	}
 	            },
 			});
-			setInterval(function(){
-				create_list();
-			}, 3000);
 			$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
 	            resizable: false, draggable: false, 
 	            okButton: $('#ok'), 
@@ -124,7 +127,7 @@ else if(error.equals(11)){
             	if(reports.length != 0){
                 	create_label(reports);
             	}else{
-            		$('#list_athletes').text("No hay datos de los atletas aun");
+            		 $('#list_athletes').text("No hay datos de los atletas aun");
             	}
             },
 		});
@@ -146,6 +149,18 @@ else if(error.equals(11)){
         	first_div.append(div_down);
         	list.append(first_div);
 		}
+	}
+	
+	function create_static_labels(){
+		document.getElementById("list_athletes_left").style.display = 'block';
+		document.getElementById("list_athletes_right").style.display = 'block';
+		// document.getElementById("list_athletes").document.getElementsByTagName('a').style.color = '#4DC230';
+	}
+	
+	function hide_static_labels(){
+		document.getElementById("list_athletes_left").style.display = 'none';
+		document.getElementById("list_athletes_right").style.display = 'none';
+		// document.getElementById("list_athletes").document.getElementsByTagName('a').style.color = '#FFFFFF';
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -229,7 +244,28 @@ else if(error.equals(11)){
             
             </div>
             <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;">
-               
+                <div id="list_athletes_left" style="display:none; width:70%; height:80%; float:left; display:inline-block; margin-top:60px;">
+               		<div id="buttons_up">
+	               	    <a href="./training/training_reports.jsp">
+	               	    	<img id="button1" class="index_button" src="./images/boton1.png" width="200px;" />
+	               	   	</a>
+	               	    <a href="./training/create_training.jsp">
+	               	    	<img id="button2" class="index_button" src="./images/boton1 3.png" width="200px;" />
+	               	    </a>
+	               	    <a href="./athletes/athletes.jsp">
+	               	    	<img id="button3" class="index_button" src="./images/boton1 2.png" width="200px;" />
+	               	    </a>
+               		</div>
+               		<div id="buttons_down">
+               			<a href="./training/trainings.jsp">
+               				<img id="button4" class="index_button" src="./images/boton 2.png" width="613px;" />
+               			</a>
+               		</div>
+               	</div>
+               	<div id="list_athletes_right"  style="display:none; width:30%; height:100%; float:left; display:inline-block;">
+               		<a class="twitter-timeline" href="https://twitter.com/MAPPSuy/feed-de-noticias" data-widget-id="434799977672372224">Tweets de https://twitter.com/MAPPSuy/feed-de-noticias</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>               		
+               	</div>
             </div>
         	<div id="stop_training_div">
             
