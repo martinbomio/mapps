@@ -97,7 +97,7 @@ if(info.equals("1")){
 		<%
 		}
 		%>
-$("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+        $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
         
         var centerItems = function () {
             var firstItem = $($("#jqxMenu ul:first").children()[0]);
@@ -140,11 +140,12 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 </script>
 
 <div id="header">
-	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left; margin-left:5%;">
+	<div id="header_izq">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central"  style="display:inline-block; width:40%; height:100%; float:left;">
-    	<div id="pop_up">
+    <div id="header_central">
+		
+		<div id="pop_up">
             <div>
                 <img width="14" height="14" src="../images/ok.png" alt="" />
                 Informaci&oacute;n
@@ -162,13 +163,13 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
             </div>
         </div>
     </div>
-    <div id="header_der" style="display:inline-block; width:20%; height:100%; float:left;">
-        <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
-		<%if(trainingStarted.equals("trainingStarted")){%>
+    <div id="header_der">
+        <div id="logout" class="up_tab"><a href="./configuration/my_account.jsp">MI CUENTA</a></div>
+        <%if(trainingStarted.equals("trainingStarted")){%>
 		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
 		<%}else{ %>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
-    <%} %>
+		<%} %>
     </div>
 </div>
 <div id="contenedor">

@@ -30,18 +30,18 @@ if (error.equals("null"))
 
 <body>
 <div id="header">
-	<div id="header_izq">
+	<div id="header_izq" style="display:none;">
     
     </div>
-    <div id="header_central" style="margin-left:15%;">
+    <div id="header_central" style="margin-left:27%;">
     	<img src="./images/logo_mapps.png" style="height:80px; margin-top:15px; margin-left:30%;" />    
     </div>
-    <div id="header_der">
+    <div id="header_der" style="display:none;">
     
     </div>
 
 </div>
-<div id="container" style="border-top:solid 1px; border-bottom:solid 1px;">
+<div id="container" style="border-top:solid 1px; border-bottom:solid 1px; min-width:0px;">
     <div id="login_container" >
         <form action="login" method="post">
             <div id="usernameField" class="loginForm" > Nombre de usuario: </div>

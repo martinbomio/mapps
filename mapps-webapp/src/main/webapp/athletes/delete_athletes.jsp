@@ -160,11 +160,11 @@ if(info.equals("1")){
 
 
 <div id="header">
-	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left; margin-left:5%;">
+	<div id="header_izq">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central"  style="display:inline-block; width:40%; height:100%; float:left;">
-    	<div id="pop_up">
+    <div id="header_central">
+		<div id="pop_up">
             <div>
                 <img width="14" height="14" src="../images/ok.png" alt="" />
                 Informaci&oacute;n
@@ -182,7 +182,7 @@ if(info.equals("1")){
             </div>
         </div>
     </div>
-    <div id="header_der" style="display:inline-block; width:20%; height:100%; float:left;">
+    <div id="header_der">
         <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
 		<%if(trainingStarted.equals("trainingStarted")){%>
 		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>

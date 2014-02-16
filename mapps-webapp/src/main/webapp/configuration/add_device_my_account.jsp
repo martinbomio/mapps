@@ -109,13 +109,13 @@
 </script>
 
 <div id="header">
-    <div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+    <div id="header_izq">
         <a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
+    <div id="header_central">
 
     </div>
-    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+    <div id="header_der">
         <div id="logout" class="up_tab"><a href="./my_account.jsp">MI CUENTA</a></div>
         <%if(trainingStarted.equals("trainingStarted")){%>
 		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
