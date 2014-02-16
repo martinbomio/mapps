@@ -405,11 +405,25 @@ body{
 	text-align:center;
 }
 
-.data_index_alert{
+.data_index_alert_soft{
+	height:40px; 
+	color:#4DC230;
+	font-weight:bold; 
+	font-size:16px;
+	text-align:center;
+}
+.data_index_alert_moderated{
+	height:40px; 
+	color:#EFFC03;
+	font-weight:bold; 
+	font-size:16px;
+	text-align:center;
+}
+.data_index_alert_intense{
 	height:40px; 
 	color:#F00;
 	font-weight:bold; 
-	font-size:30px;
+	font-size:16px;
 	text-align:center;
 }
 #title{

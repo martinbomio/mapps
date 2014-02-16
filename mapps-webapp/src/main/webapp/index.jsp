@@ -47,6 +47,32 @@ if (info.equals("null")){
 }else if (info.equals("10")){
 	pop_up_message = "El entrenamiento se ha finalizado con éxito";
 	show_pop_up = true;
+}else if(info.equals("1")){
+	// La Institucion ha sido ingresada con exito
+	pop_up_message = "La institucion ha sido ingresada con éxito al sistema.";
+	show_pop_up = true;	
+}else if(info.equals("2")){
+	// El dispositivo ha sido ingresada con exito
+	pop_up_message = "El dispositivo ha sido ingresado al sistema con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("3")){
+	pop_up_message = "El usuario ha sido ingresado al sistema con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("4")){
+	pop_up_message = "El deporte ha sido ingresado al sistema con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("5")){
+	pop_up_message = "El usuario ha sido modificado con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("6")){
+	pop_up_message = "La institución ha sido modificado con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("7")){
+	pop_up_message = "El dispositivo ha sido modificado con éxito.";
+	show_pop_up = true;	
+}else if(info.equals("11")){
+	pop_up_message = "El entrenamiento ha comenzado.";
+	show_pop_up = true;	
 }
 
 String logout = String.valueOf(request.getParameter("logout"));
@@ -160,9 +186,17 @@ else if(error.equals(11)){
         	var bpm = data.lastPulse;
         	var kCal = get_double_as_String(data.kCal,3);
         	var training_zone = get_zone(data.trainingType);
+        	var trainingClass = "data_index_alert_soft";
+        	if(training_zone=="Suave"||training_zone=="Muy Suave"){
+        		trainingClass="data_index_alert_soft";
+        	}else if(training_zone=="Moderado"){
+        		trainingClass="data_index_alert_moderated";
+        	}else if(training_zone=="Muy Intenso"||training_zone=="Intenso"){
+        		trainingClass="data_index_alert_intense";
+        	}
         	var first_div = $('<div id="'+athlete.idDocument+'" class="athlete_index"></div>');
         	var div_up = $('<div id="img'+athlete.idDocument+'" style="float:left; height:100px; width:20%; display:inline-block; padding-top:10px; padding-bottom:10px;"><img src="'+athlete.imageURI+'" height="80px" /></div>'); 
-        	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><div style="width: 25%;height: 100%;float: left;display: inline-block" ><a href="./athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index_inicio" style="font-size:22px;">'+athlete.name+' '+athlete.lastName+'</div></a></div><div id="pulse '+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Pulso:</div><div id="pulse_data'+athlete.idDocument+'" class="data_index">'+bpm+' BPM</div></div><div id="zone'+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Zona de Entrenamiento:</div><div id="training_zone'+athlete.idDocument+'" class="data_index">'+training_zone+'</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Calorias Quemadas:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
+        	var div_down = $('<div id="data '+athlete.idDocument+'"  style="float:left; height:100px; width:80%; display:inline-block; padding-top:10px; padding-bottom:10px;"><div style="width: 25%;height: 100%;float: left;display: inline-block" ><a href="./athletes/player_view_training.jsp?a='+athlete.idDocument+'&t='+data.trainingName+'"><div id="name'+athlete.idDocument+'" class="data_info_index_inicio" style="font-size:22px;">'+athlete.name+' '+athlete.lastName+'</div></a></div><div id="pulse '+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Pulso:</div><div id="pulse_data'+athlete.idDocument+'" class="'+trainingClass+'">'+bpm+' BPM</div></div><div id="zone'+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Zona de Entrenamiento:</div><div id="training_zone'+athlete.idDocument+' " class="'+trainingClass+'">'+training_zone+'</div></div><div id="calories'+athlete.idDocument+'" class="data_info_index_inicio" style="margin-top:15px;"><div style="height:40px; text-align:center;">Calorias Quemadas:</div><div id="calories_data '+athlete.idDocument+'" class="data_index">'+kCal+' KCal</div></div></div>');
         	first_div.append(div_up);
         	first_div.append(div_down);
         	list.append(first_div);

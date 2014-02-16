@@ -55,7 +55,7 @@ public class AddDeviceServlet extends HttpServlet implements Servlet {
             Device device = new Device(dirHigh, dirLow, panId, instAux);
             device.setAvailable(true);
             adminService.addDevice(device, token);
-            resp.sendRedirect("configuration/configuration_main.jsp?info=2");
+            resp.sendRedirect("index.jsp?info=2");
         } catch (com.mapps.services.admin.exceptions.InvalidDeviceException e) {
         	resp.sendRedirect("configuration/add_device.jsp?error=1");
         } catch (DeviceAlreadyExistsException e) {

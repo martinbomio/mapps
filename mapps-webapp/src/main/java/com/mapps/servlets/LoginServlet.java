@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mapps.model.Role;
 import com.mapps.model.User;
+import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.user.UserService;
 import com.mapps.services.user.exceptions.AuthenticationException;
 import com.mapps.services.user.exceptions.InvalidUserException;
@@ -22,6 +23,8 @@ import com.mapps.services.user.exceptions.InvalidUserException;
 public class LoginServlet extends HttpServlet implements Servlet {
     @EJB(beanName = "UserService")
     UserService userService;
+    @EJB(beanName = "TrainerService")
+    TrainerService trainerService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,8 +39,12 @@ public class LoginServlet extends HttpServlet implements Servlet {
             req.getSession().setAttribute("role", role);
             req.getSession().setAttribute("institutionName",instName);
             req.getSession().setAttribute("finishedTraining", "noFinishedTraining");
-            req.getSession().setAttribute("trainingStarted", "trainingStopped");
-            resp.sendRedirect("index.jsp");
+            if(trainerService.thereIsAStartedTraining()){
+                req.getSession().setAttribute("trainingStarted", "trainingStarted");
+            } else{
+                req.getSession().setAttribute("trainingStarted", "trainingStopped");
+            }
+                resp.sendRedirect("index.jsp");
         } catch (AuthenticationException e) {
             //error 1: Nombre de Usuario o Contraseña no válido
             resp.sendRedirect("index_login.jsp?error=1");

@@ -210,7 +210,17 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
-
+    @Override
+    public boolean thereIsAStartedTraining(){
+        boolean aux=false;
+        List<Training> trainings=trainingDAO.getAllTrainings();
+        for(int i=0;i<trainings.size();i++){
+            if(trainings.get(i).isStarted()){
+                aux=true;
+            }
+        }
+        return aux;
+    }
     @Override
     public void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
         if (invalidTraining(training)) {

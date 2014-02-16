@@ -54,4 +54,6 @@ public interface TrainerService {
     List<Training> getAllEditableTrainings(String token) throws AuthenticationException;
 
     public void modifyTraining(Training training,String token) throws InvalidTrainingException, AuthenticationException;
+
+    public boolean thereIsAStartedTraining();
 }
