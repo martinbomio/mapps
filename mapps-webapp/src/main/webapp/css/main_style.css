@@ -463,3 +463,9 @@ body{
 	display:inline-block;
 	margin-left:2%;
 }
+
+#main_div_up{
+	float: left;
+	height: 250px;
+	width: 100%;
+}

@@ -46,22 +46,6 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
-boolean show_pop_up = false;
-String pop_up_message = "";
-String info = String.valueOf(request.getParameter("info"));
-if (info.equals("null"))
-	info = "";
-
-if(info.equals("5")){
-	// El Usuario fue modificado con exito
-	pop_up_message = "Sus datos fueron modificados con éxito.";
-	show_pop_up = true;	
-}
-if(info.equals("1")){
-	
-	pop_up_message = "La contraseña fue modificada con exito";
-	show_pop_up = true;	
-}
 %>
 <body>
 
@@ -114,28 +98,7 @@ if(info.equals("1")){
 				get_user_data(response);	            	
             }});
 		
-		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
-            resizable: false, draggable: false, 
-            okButton: $('#ok'), 
-            initContent: function () {
-                $('#ok').jqxButton({  width: '65px' });
-                $('#ok').focus();
-            }
-        });		
-		<%
-		if(show_pop_up){	
-		%>
-			$("#pop_up").css('visibility', 'visible');
-		<%
-		}else{
-		%>
-			$("#pop_up").css('visibility', 'hidden');
-			$("#pop_up").css('display', 'none');
-		<%
-		}
-		%>
-		
-$("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+	$("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
         
         var centerItems = function () {
             var firstItem = $($("#jqxMenu ul:first").children()[0]);

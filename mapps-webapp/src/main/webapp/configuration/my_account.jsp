@@ -59,12 +59,6 @@ if(info.equals("1")){
 
 <script type="text/javascript">
 	$(document).ready(function () {
-					
-		
-		
-		// Create a jqxMenu
-        $("#jqxMenu2").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
-        $("#jqxMenu2").css('visibility', 'visible');
         $("#edit").jqxButton({ width: '200', height: '35', theme: 'metro'});
         $("#change_password").jqxButton({ width: '200', height: '35', theme: 'metro'});
         

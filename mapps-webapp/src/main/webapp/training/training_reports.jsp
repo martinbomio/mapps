@@ -90,11 +90,11 @@ else if(error.equals(11)){
 	            url: url,
 	            type: "GET",
 	            success: function (response){
-	            	
 	            	if(response.length!=0){
 	            	create_lists(response);
 	            	$("#title").text('Entrenamientos:');
 	            	}else{
+	            		$('#div_content').hide();
 	            		$("#title").text('No hay entrenamientos finalizados en el sistema. Para iniciar un entrenamiento,seleccione "ENTRENAMIENTOS/Iniciar un entrenamiento" en el menu principal.');
 	            	}
 	            	
@@ -123,12 +123,12 @@ else if(error.equals(11)){
 	
 	function create_lists(response){
 		window.trainings = response;
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: window.trainings, displayMember: "date", valueMember: "name", itemHeight: 35, height: '100%', width: '300', theme: 'metro',
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: window.trainings, displayMember: "date", valueMember: "name", itemHeight: 40, height: '80%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = window.trainings[index];
                 var split = datarecord.date.split(" ");
-                var display = "Entrenamiento iniciado el: " + split[0] + " a las: " + split[1];
-                var table = '<table style="min-width: 130px;"><td>' + display + '</td></table>';
+                var display = "Entrenamiento iniciado el: " + split[0];
+                var table = '<table style="min-width: 130px;"><tr><td>' + display + '</td></tr><tr><td style="text-align: center;"> a las:'+ split[1]; + '</td></tr></table>';
                 return table;
             }
         });
@@ -154,8 +154,8 @@ else if(error.equals(11)){
 	}
 	
 	function create_athlete_list(response){
-		$('#main_div_right').html('<div id="list_athletes"></div>');
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'400px', autoHeight: 'true', width: '85%', theme: 'metro',
+		$('#main_div_right').html('<div id="list_athletes" style="width: 90%;margin-left: 5%;margin-right: 5%;margin-top: 25px;"></div>');
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'90%', autoHeight: 'true', width: '90%', theme: 'metro',
             renderer: function (index, label, value) {
                 var reports = response[index];
                 var athlete = reports.athlete;
@@ -164,9 +164,9 @@ else if(error.equals(11)){
             	var min_bpm = Math.min.apply(Math, reports.pulse);
             	var average_bpm = get_double_as_String(reports.meanBPM,2);
             	var elapsedTime = set_time_format(reports.elapsedTime);
-            	var first_div = $('<div id="'+athlete.idDocument+'" class="display_player"></div');
-            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+reports.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:35%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:40%; height:100%;">'+ elapsedTime +'</div></div>');
-            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
+            	var first_div = $('<div style="width:90%" id="'+athlete.idDocument+'" class="display_player"></div');
+            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+reports.trainingName+'"><div id="up" style="width:90%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:30%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:20%; height:100%;">'+ elapsedTime +'</div></div>');
+            	var div_down = $('<div id="down" style="width:90%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;width: 75px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
                 return first_div.html();
@@ -316,23 +316,26 @@ else if(error.equals(11)){
   			</div>
         
         </div>
-        <div id="main_div" style="width:75%;">
-        	
+        <div id="main_div">
+        	<div id="navigation" class="navigation">
+            	<a href="./trainings.jsp">JUGADORES</a> >> Editar
+        	</div>
         	<div id="title" style="margin:15px;">
         	<label id="title">  </label>
             </div>
-        	
-
-        	<div id="main_div_left" style="float:left; width:30%; display:inline-block;">
+			<div id="div_content">
+        	<div id="main_div_left" style="width:23%;">
+        		<div id="title" style="margin: 10px;font-size: 16px;margin-left: 0px;margin-right: 0px;">
+                    <label> 1) Elija un entrenamiento </label>
+                </div>
         		<div id="list_trainings"></div>
         	</div>
-        	<div id="main_div_right" style="float:left;height:400px; width:70%; display:inline-block;">
+        	<div id="main_div_right" style="width:67%; display:inline-block;">
         		<div id="list_athletes"></div>
         	</div>
         	
-
-        	 
         	<%} %>
+        	</div>
         </div>
         <div id="sidebar_right" style="width:5%;">
         
