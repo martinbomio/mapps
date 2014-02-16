@@ -70,7 +70,7 @@ if ( session.getAttribute("role") == null){
 		$("#validate").on('click', function (){ 
 	        $('#edit_user').jqxValidator('validate');
 	    });
-		$("#image").jqxButton({ height: 30, width: 257, theme: 'metro'});
+		$("#image").jqxButton({ height: 30, width: '50%', theme: 'metro'});
 		$("#image").on('click', function (){ 
 	        $('#file').click();
 	    });
@@ -131,11 +131,11 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 		$('#list_users').on('select', function (event) {
             updatePanel(users[event.args.index]);
         });
-		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 65, height: '90%', width: '100%', theme: 'metro',
+		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
-                var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                var img = '<img height="55" width="55" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px;border-spacing: 10px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td style="font-size:24px">  ' + datarecord.userName + '</td></table>';
                 return table;
             }
         });

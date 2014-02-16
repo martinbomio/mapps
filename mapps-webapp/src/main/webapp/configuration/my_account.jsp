@@ -65,6 +65,15 @@ if(info.equals("1")){
 		// Create a jqxMenu
         $("#jqxMenu2").jqxMenu({ width: '70%', mode: 'vertical', theme: 'metro'});
         $("#jqxMenu2").css('visibility', 'visible');
+        $("#edit").jqxButton({ width: '200', height: '35', theme: 'metro'});
+        $("#change_password").jqxButton({ width: '200', height: '35', theme: 'metro'});
+        
+        $("#edit").on('click', function (){ 
+        	window.location.assign("edit_my_user.jsp");
+	    });
+        $("#change_password").on('click', function (){ 
+        	window.location.assign("change_my_password.jsp");
+	    });
         
         var url = "/mapps/getUserOfToken";		
 		$.ajax({
@@ -114,18 +123,26 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 	});
 	function get_user_data(response){
 		var user = response;
-		var name=user.name+" "+user.lastName;
+		$('#img').html('<img src="'+ user.imageURI+'" style="width:100%;"/>');
 		document.getElementById('username').innerHTML=user.userName;
 		document.getElementById('institution').innerHTML=user.institution.name;
 		document.getElementById('email').innerHTML=user.email;
 		document.getElementById('role').innerHTML=user.role;
 		document.getElementById('idDocument').innerHTML=user.idDocument;
-		
-		document.getElementById('name').innerHTML=name;
-		
-		
+		document.getElementById('name').innerHTML=user.name;
+		document.getElementById('lastName').innerHTML=user.lastName;
+		document.getElementById('gender').innerHTML=getGender(user.gender);
+		document.getElementById('birth').innerHTML=user.birth;
 	}		
-	
+	function getGender(gender){
+		var gender = "Desconocido";
+		if(gender == "Male"){
+			gender = "Hombre";
+		}else if (gender == "FEMALE"){
+			gender = "Mujer";
+		}
+		return gender;
+	}
 </script>
 
 <div id="header">
@@ -240,21 +257,66 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
             <div id="title" style="margin:15px;">
                 
             </div>     	
-            <div style="width:100%; height:100%; font-size:12px; margin-left:5%;">
-            	<div id="main_div_left" style="width:32%; height:100%; display:inline-block;">
-                	
+            <div style="width:100%;display: inline-block;">
+                <div id="main_div_left" style="width: 20%;padding-top: 25px">
+                	<div id="img" style="float:left; width:100%;">	
+                        
+                    </div>
+                 </div>   
+                <div id="main_div_right" style="width:70%;">
+                	<div id="otherName" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Nombre:
+                        </div>
+                        <div class="my_account_data" name="name" id="name">
+                        	
+                        </div>
+                    </div>
+                    <div id="otherLastName" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Apellido:
+                        </div>
+                        <div class="my_account_data" name="lastName" id="lastName">
+                        	
+                        </div>
+                    </div>
+                	<div id="otherUsername" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Nombre de usuario:
+                        </div>
+                        <div class="my_account_data" name="username" id="username">
+                        	
+                        </div>
+                    </div>
+                    
                 	<div id="document" class="my_account_field">
                     	<div class="my_account_tag">
-                        	Documento
+                        	Documento:
                         </div>
                         <div class="my_account_data" id="idDocument" name="idDocument">
+                        	
+                        </div>
+                    </div>
+                    <div id="otherBirth" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Fecha de Nacimiento:
+                        </div>
+                        <div class="my_account_data" id="birth" name="birth">
+                        	
+                        </div>
+                    </div>
+                    <div id="otherGender" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Sexo:
+                        </div>
+                        <div class="my_account_data" id="gender" name="gender">
                         	
                         </div>
                     </div>
                     
                     <div id="otherEmail" class="my_account_field">
                     	<div class="my_account_tag">
-                        	E-mail
+                        	E-mail:
                         </div>
                         <div class="my_account_data" id="email" name="email">
                         	
@@ -263,59 +325,37 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
                     
                     <div id="otherRole" class="my_account_field">
                     	<div class="my_account_tag">
-                        	Rol
+                        	Rol:
                         </div>
                         <div class="my_account_data" id="role" name="role">
                         	
                         </div>
                     </div>
-                </div>
-                
-                <div id="main_div_center" style="width:25%; height:100%; display:inline-block;">
-                	<div id="img" style="float:left; width:80%; margin-top:65px;">	
-                        <img src="../images/users/default.png" style="width:150px;"/>
-                    </div>
-                    
-                    <div id="name" style="float:left; margin-top:15px;; width:65%; height:25px; text-align:center; font-size:14px; color:#000;">
-                    	Luis Aguiar
-                    </div>
-                    
-                    <div id="jqxMenu2" style="visibility:hidden; margin-top:100px; float:left;">
-						<ul>
-                            <li style="height:45px; text-align:center;"><a href="./edit_my_user.jsp"> Editar mis datos </a></li>
-                            <li style="height:45px; text-align:center;"><a href="./change_my_password.jsp"> Cambiar contrase&ntilde;a </a></li>
-                    	</ul>
-                    </div>
-                </div>
-                <div id="main_div_right" style="width:32%; height:100%; display:inline-block; margin-left:8%;">
-                	
                 	<div id="otherInstitution" class="my_account_field">
                     	<div class="my_account_tag">
-                        	Instituci&oacute;n
+                        	Instituci&oacute;n:
                         </div>
                         <div class="my_account_data" id="institution" name="institution">
                         	
                         </div>
                     </div>
                     
-                    <div id="otherUsername" class="my_account_field">
-                    	<div class="my_account_tag" >
-                        	Nombre de usuario
-                        </div>
-                        <div class="my_account_data" name="username" id="username">
-                        	
-                        </div>
-                    </div>
-                    
                     <div id="otherPassword" class="my_account_field">
                     	<div class="my_account_tag">
-                        	Contrase&ntilde;a
+                        	Contrase&ntilde;a:
                         </div>
                         <div class="my_account_data" id="password" name="password">
                         	****
                         </div>
                     </div>
-                    
+                    <div class="main_div_bottom">
+                    <div style="width: 100%;margin-top: 25px;">
+                		<center><input type="button" id="edit" value="EDITAR DATOS"/></center>
+                	</div>
+                	<div style="width: 100%;margin-top: 15px;">
+                		<center><input type="button" id="change_password" value="CAMBIAR CONTRESE&Ntilde;A"/></center>
+                	</div>
+                    </div>
                 </div>
             </div>
         </div>

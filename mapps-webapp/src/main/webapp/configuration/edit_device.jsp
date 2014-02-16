@@ -114,11 +114,11 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 30, height: '80%', width: '100%', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 65, height: '80%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
-                var table = '<table style="min-width: 130px;"><td>' + datarecord.dirLow + '</td></table>';
+                var table = '<table style="min-width: 130px;border-spacing: 10px;"><td style="font-size:24px">' + datarecord.dirLow + '</td></table>';
                 return table;
             }
         });

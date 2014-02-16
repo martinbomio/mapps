@@ -1,10 +1,7 @@
 package com.mapps.servlets;
 
-import com.google.gson.Gson;
-import com.mapps.model.User;
-import com.mapps.services.user.UserService;
-import com.mapps.services.user.exceptions.AuthenticationException;
-
+import java.io.IOException;
+import java.io.Writer;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -12,8 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mapps.model.User;
+import com.mapps.services.user.UserService;
+import com.mapps.services.user.exceptions.AuthenticationException;
 
 /**
  *
@@ -31,7 +32,8 @@ public class GetUserOfTokenServlet extends HttpServlet implements Servlet {
             User user = userService.getUserOfToken(token);
             Writer writer = resp.getWriter();
             resp.setContentType("application/json");
-            String json = new Gson().toJson(user);
+            Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+            String json = gson.toJson(user);
             writer.write(json);
             writer.close();
 

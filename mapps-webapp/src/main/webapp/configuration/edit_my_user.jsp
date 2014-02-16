@@ -14,11 +14,19 @@
 	<script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="../jqwidgets/globalization/globalize.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script> 
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxscrollbar.js"></script>
-    <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxvalidator.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxmaskedinput.js"></script>
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="../jqwidgets/styles/jqx.metro.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../css/main_style.css"> 
@@ -38,45 +46,95 @@ if ( session.getAttribute("role") == null){
 }else{
 	role = (Role) session.getAttribute("role");	
 }
+boolean show_pop_up = false;
+String pop_up_message = "";
+String info = String.valueOf(request.getParameter("info"));
+if (info.equals("null"))
+	info = "";
+
+if(info.equals("5")){
+	// El Usuario fue modificado con exito
+	pop_up_message = "Sus datos fueron modificados con éxito.";
+	show_pop_up = true;	
+}
+if(info.equals("1")){
+	
+	pop_up_message = "La contraseña fue modificada con exito";
+	show_pop_up = true;	
+}
 %>
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-					
-		
-		
-		
-		$("#name").jqxInput({placeHolder: "Pepe", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		$("#birth").jqxDateTimeInput({width: '100%', height: '30px', theme: 'metro'});
+		$("#name").jqxInput({placeHolder: "Nombre", height: 30, width: '100%', minLength: 1, theme: 'metro' });
 		$("#lastName").jqxInput({placeHolder: "Apellido", height: 30, width: '100%', minLength: 1, theme: 'metro' });
-		$("#email").jqxInput({placeHolder: "pepe@gmail", height: 30, width: '100%', minLength: 1, theme: 'metro' });
-		
-		
-		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
-		$("#validate").on('click', function (){ 
-	        $('#edit_user').jqxValidator('validate');
+		$("#idDocument").jqxMaskedInput({ width: '100%', height: 30, mask: '#.###.###-#', theme: 'metro'});
+		$("#email").jqxInput({placeHolder: "E-Mail", height: 30, width: '100%', minLength: 1, theme: 'metro' });
+		$("#gender").jqxDropDownList({ source: ["Hombre", "Mujer", "Desconocido"], selectedIndex: 0, width: '50%', height: '30', dropDownHeight: '100', theme: 'metro'});
+		$("#image").jqxButton({ height: 30, width: '65%', theme: 'metro'});
+		$("#image").on('click', function (){ 
+	        $('#file').click();
 	    });
-		
-		$("#edit_user").jqxValidator({
-            rules: [
-                    {input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    {input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    { input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
-                    { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
-                  
-            ],  theme: 'metro'
-	        });
-		$('#edit_user').on('validationSuccess', function (event) {
+		$("#edit").jqxButton({ width: '200', height: '35', theme: 'metro'});
+        $("#edit").on('click', function (){ 
+        	$('#edit_user').jqxValidator('validate');
+	    });
+        $('#edit_user').on('validationSuccess', function (event) {
 	        $('#edit_user').submit();
 	    });
-		
-		var url = "/mapps/getUserOfToken";		
+        
+        $("#edit_user").jqxValidator({
+            rules: [
+					{
+					    input: "#name", message: "El nombre es obligatorio!", action: 'keyup, blur', rule: 'required'
+					},
+					{
+					    input: "#lastName", message: "El apellido es obligatorio!", action: 'keyup, blur', rule: 'required'
+					},
+					{ input: "#email", message: "El email es obligatorio!", action: 'keyup, blur', rule: 'required'},
+	                { input: '#email', message: 'Invalid e-mail!', action: 'keyup,blur', rule: 'email'},
+	                { input: "#idDocument", message: "El documento es obligatorio!", action: 'keyup, blur', rule: 'required'},
+	                {
+	                  input: "#gender", message: "El Género es obligatorio!", action: 'blur', rule: function (input, commit) {
+	                  var index = $("#gender").jqxDropDownList('getSelectedIndex');
+	                  return index != -1;
+	                  }
+	                },
+                    
+            ],  theme: 'metro'
+	        });
+        
+        var url = "/mapps/getUserOfToken";		
 		$.ajax({
             url: url,
             type: "GET",
             success: function (response){
 				get_user_data(response);	            	
             }});
+		
+		$('#pop_up').jqxWindow({ maxHeight: 150, maxWidth: 280, minHeight: 30, minWidth: 250, height: 145, width: 270,
+            resizable: false, draggable: false, 
+            okButton: $('#ok'), 
+            initContent: function () {
+                $('#ok').jqxButton({  width: '65px' });
+                $('#ok').focus();
+            }
+        });		
+		<%
+		if(show_pop_up){	
+		%>
+			$("#pop_up").css('visibility', 'visible');
+		<%
+		}else{
+		%>
+			$("#pop_up").css('visibility', 'hidden');
+			$("#pop_up").css('display', 'none');
+		<%
+		}
+		%>
+		
 $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
         
         var centerItems = function () {
@@ -97,18 +155,27 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 	});
 	
 	function get_user_data(response){
-		var user = response;	
-		document.getElementById('institution').innerHTML=user.institution.name;
+		var user = response;
+		$('#img').html('<img src="'+ user.imageURI+'" style="width:100%;"/>');
 		document.getElementById('username').innerHTML=user.userName;
-		document.getElementById('idDocument').innerHTML=user.idDocument;
+		document.getElementById('institution').innerHTML=user.institution.name;
 		document.getElementById('role').innerHTML=user.role;
-		$('#email').jqxInput('val', user.email);
-		$('#name').jqxInput('val', user['name']);
-		$('#lastName').jqxInput('val', user['lastName']);
 		
-		
-		
-	}
+		$('#email').val(user.email);
+		$('#idDocument').val(user.idDocument);
+		$('#name').val(user.name);
+		$('#lastName').val(user.lastName);
+		var split = user.birth.split("/");
+		$("#birth").jqxCalendar('val', new Date(split[2], split[1], split[0]));
+		var index = 2;
+		if (user['gender'] == "FEMALE"){
+			index = 1;
+		}else if (user['gender'] == "MALE"){
+			index = 0;
+		}
+		$("#gender").jqxDropDownList({selectedIndex: index });
+	}		
+	
 </script>
 
 <div id="header">
@@ -207,80 +274,111 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
             <div id="title" style="margin:15px;">
                 
             </div>     	
-            <div style="width:100%; height:100%; font-size:12px;">
-            	<form  action="/mapps/modifyMyAccount" method="post" name="edit_user" id="edit_user" >
-                    <div id="main_div_left" style="width:32%; height:100%; display:inline-block;">
-                        <div id="document" class="my_account_field">
-                            <div class="my_account_tag">
-                                Documento
-                            </div>
-                            <div class="my_account_data" id="idDocument" name="idDocument">
-                                
-                            </div>
+            <div style="width:100%;display: inline-block;">
+                <div id="main_div_left" style="width: 20%;padding-top: 25px">
+                	<div id="img" style="float:left; width:100%;">	
+                    </div>
+                    <div style="float: left;width: 100%; margin-top: 10px;">
+                        <center><input type="button" id="image" value="CAMBIAR IMAGEN" /></center>
+                    </div>
+                 </div>   
+                <div id="main_div_right" style="width:70%;">
+                <form action="/mapps/modifyMyAccount" method="post" name="edit_user" id="edit_user" enctype="multipart/form-data">
+                	<div id="otherName" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Nombre:
                         </div>
-                        <div id="email_form" class="my_account_field">
-                            <div class="my_account_tag">
-                                E-mail
-                            </div>
-                            <div class="my_account_data">
-                                <div class="input"><input type="text" name="email" id="email" /></div>
-                            </div>
-                        </div>
-                        <div id="otherRole" class="my_account_field">
-                            <div class="my_account_tag">
-                                Rol
-                            </div>
-                            <div class="my_account_data" id="role" name="role">
-                                
-                            </div>
+                        <div class="my_account_data" >
+                        	<input type="text" name="name" id="name" />
                         </div>
                     </div>
-                    <div id="main_div_center" style="width:25%; height:100%; display:inline-block;">
-                        <div id="img" style="float:left; width:80%; margin-top:35px;">	
-                            <img src="../images/users/default.png" style="width:150px;"/>
+                    <div id="otherLastName" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Apellido:
                         </div>
-                        
-                        <div id="name_form" style="float:left; margin-top:15px; width:65%; text-align:center; font-size:14px; color:#000;">
-                            <div style="margin-top:10px;"> Nombre:  </div>
-                            <div style="margin-top:10px;"><input type="text" name="name" id="name" /></div>
-                            <div style="margin-top:10px;"> Apellido:  </div>
-                            <div style="margin-top:10px;"><input type="text" name="lastName" id="lastName" /></div>
+                        <div class="my_account_data">
+                        	<input type="text" id="lastName" name="lastName" />
                         </div>
-                        
-                        <div style="margin-left:-10%; margin-top:35px;">
-                    		<input type="button" id="validate" value="CONFIRMAR" style="margin-top:40px; margin-left:5%;"/>
-                   		</div>
                     </div>
-                    <div id="main_div_right" style="width:32%; height:100%; display:inline-block; margin-left:8%;">
-                        
-                        <div id="othherInstitution" class="my_account_field">
-                            <div class="my_account_tag">
-                                Instituci&oacute;n
-                            </div>
-                            <div class="my_account_data" id="institution" name="institution">
-                                
-                            </div>
+                	<div id="otherUsername" class="my_account_field">
+                    	<div class="my_account_tag" >
+                        	Nombre de usuario:
                         </div>
-                        
-                        <div id="otherUsername" class="my_account_field">
-                    		<div class="my_account_tag" >
-                        		Nombre de usuario
-                        	</div>
-                        	<div class="my_account_data" name="username" id="username">
+                        <div class="my_account_data" name="username" id="username">
                         	
-                        	</div>
-                    	</div>
-                    	
-                        <div id="otherPassword" class="my_account_field">
-                            <div class="my_account_tag">
-                                Contrase&ntilde;a
-                            </div>
-                            <div class="my_account_data" id="password" name="password">
-                              ****  
-                            </div>
                         </div>
                     </div>
-                 </form>
+                    
+                	<div id="document" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Documento:
+                        </div>
+                        <div class="my_account_data" >
+                        	<input type="text" id="idDocument" name="idDocument" />
+                        </div>
+                    </div>
+                    
+                    <div id="otherBirth" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Fecha de Nacimiento:
+                        </div>
+                        <div class="my_account_data">
+                        	<div id="birth" class="input list_box"></div>
+                        </div>
+                    </div>
+                    <div id="otherGender" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Sexo:
+                        </div>
+                        <div class="my_account_data">
+                        	<div id="gender" class="list_box"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="otherEmail" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	E-mail:
+                        </div>
+                        <div class="my_account_data" >
+                        	<input type="text" id="email" name="email"/>
+                        </div>
+                    </div>
+                    
+                    <div id="otherRole" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Rol:
+                        </div>
+                        <div class="my_account_data" id="role" name="role">
+                        	
+                        </div>
+                    </div>
+                	<div id="otherInstitution" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Instituci&oacute;n:
+                        </div>
+                        <div class="my_account_data" id="institution" name="institution">
+                        	
+                        </div>
+                    </div>
+                    
+                    <div id="otherPassword" class="my_account_field">
+                    	<div class="my_account_tag">
+                        	Contrase&ntilde;a:
+                        </div>
+                        <div class="my_account_data" id="password" name="password">
+                        	****
+                        </div>
+                    </div>
+                    <div style="width: 100%; margin-top: 45px;float: left;">
+                		<center><input type="button" id="edit" value="CONFIRMAR"/></center>
+                	</div>
+                	<div style="height:0px;overflow:hidden">
+                        		<input name="file"  id="file" type="file" />
+                    </div>
+                	</form>
+                </div>
+                <div class="main_div_bottom">
+                </div>
             </div>
         </div>
         <div id="sidebar_right">

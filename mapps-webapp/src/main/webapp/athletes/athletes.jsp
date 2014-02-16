@@ -71,7 +71,7 @@ if(info.equals("1")){
             url: url,
             type: "GET",
             success: function (response){
-            	fill_splitter(response);
+            	create_list(response);
             }});
 			
 			
@@ -116,55 +116,44 @@ if(info.equals("1")){
 		
 
    	});
-	function fill_splitter(response){
-		$("#splitter").jqxSplitter({  width: '95%', height: 390, panels: [{ size: '40%'}] });
-		var athletes = response["athletes"];
-        var source =
-        {
-            localdata: athletes,
-            datatype: "json"
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        var updatePanel = function (index) {
-            var container = $('<div style="margin: 5px;"></div>')
-            var leftcolumn = $('<div style="float: left; width: 45%;"></div>');
-            var rightcolumn = $('<div style="float: left; width: 40%;"></div>');
-            container.append(leftcolumn);
-            container.append(rightcolumn);
-            var datarecord = athletes[index];
-            var name = "<div style='margin: 10px;'><b>Nombre:</b> " + datarecord.name + "</div>";
-            var lastname = "<div style='margin: 10px;'><b>Apellido:</b> " + datarecord.lastName + "</div>";
-            var birth = "<div style='margin: 10px;'><b>Fecha de Nacimiento:</b> " + datarecord.birth + "</div>";
-            var gender = "<div style='margin: 10px;'><b>Género:</b> " + get_gender(datarecord.gender) + "</div>";
-            $(leftcolumn).append(name);
-            $(leftcolumn).append(lastname);
-            $(leftcolumn).append(birth);
-            $(leftcolumn).append(gender);
-            var email = "<div style='margin: 10px;'><b>Email:</b> " + datarecord.email + "</div>";
-            var weight = "<div style='margin: 10px;'><b>Peso:</b> " + datarecord.weight + "</div>";
-            var height = "<div style='margin: 10px;'><b>Altura:</b> " + datarecord.height + "</div>";
-            var document = "<div style='margin: 10px;'><b>C.I.:</b> " + datarecord.idDocument + "</div>";
-            $(rightcolumn).append(email);
-            $(rightcolumn).append(weight);
-            $(rightcolumn).append(height);
-            $(rightcolumn).append(document);
-            $("#ContentPanel").html(container.html());
-        }
-        $('#listbox').on('select', function (event) {
-            updatePanel(event.args.index);
+	function create_list(response){
+		var athletes = response['athletes'];
+		$('#list_players').on('select', function (event) {
+            updatePanel(athletes[event.args.index]);
         });
-  
-        // Create jqxListBox
-        $('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '100%', width: '100%', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
-                var img = '<img height="60" style="margin-right:20px;" src="' + datarecord.imageURI + '"/>';
-                var table = '<table style="min-width: 130px; font-size:14px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
+                //var imgurl = '../../images/' + label.toLowerCase() + '.png';
+                var img = '<img height="55" width="55" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px;border-spacing: 20px;"><tr><td style="width: 55px;" rowspan="2">' + img + '</td><td style="font-size:24px">  ' + datarecord.name + " " + datarecord.lastName + '</td></table>';
                 return table;
             }
         });
-        updatePanel(0);
+		updatePanel(athletes[0]);
 	}
+        var updatePanel = function (athlete) {
+            var container = $('<div style="margin: 5px;"></div>')
+            var datarecord = athlete;
+            var name = '<div class="my_account_field"><div class="my_account_tag" >Nombre:</div><div class="my_account_data">'+ datarecord.name +'</div>';
+            var lastname = '<div class="my_account_field"><div class="my_account_tag" >Apellido:</div><div class="my_account_data">'+ datarecord.lastName +'</div>';
+            var birth = '<div class="my_account_field"><div class="my_account_tag" >Fecha de Nacimiento:</div><div class="my_account_data">'+ datarecord.birth +'</div>';
+            var gender = '<div class="my_account_field"><div class="my_account_tag" >Género:</div><div class="my_account_data">'+ get_gender(datarecord.gender) +'</div>';
+            $(container).append(name);
+            $(container).append(lastname);
+            $(container).append(birth);
+            $(container).append(gender);
+            var email = '<div class="my_account_field"><div class="my_account_tag" >E-Mail:</div><div class="my_account_data">'+ datarecord.email +'</div>';
+            var weight = '<div class="my_account_field"><div class="my_account_tag" >Peso:</div><div class="my_account_data">'+ datarecord.weight +' kg.</div>';
+            var height = '<div class="my_account_field"><div class="my_account_tag" >Altura:</div><div class="my_account_data">'+ datarecord.height +' m.</div>';
+            var document = '<div class="my_account_field"><div class="my_account_tag" >C.I.:</div><div class="my_account_data">'+ datarecord.idDocument +'</div>';
+            $(container).append(email);
+            $(container).append(weight);
+            $(container).append(height);
+            $(container).append(document);
+            $("#main_div_right").html(container.html());
+            $('#main_div_left').height($('#main_div_right').height());
+        }
 	
 	function get_gender(gender){
 		var gender = "Desconocido";
@@ -299,16 +288,15 @@ if(info.equals("1")){
         	<div id="title" style="margin:15px;">
            			<label> Todos mis jugadores </label>
             </div>
-            <div id="splitter" style="margin-top:20px;margin-bottom:35px;">
-                <div style="overflow: hidden;">
-                    <div style="border: none;" id="listbox">
-                    
-                    </div>
+            <div id="main_div_left">
+                <div id="title" style="margin:15px;">
+                    <label> 1) Seleccione un jugador </label>
                 </div>
-                <div style="overflow: hidden;" id="ContentPanel">
-                
+                <div id="list_players">
                 </div>
-        	</div>
+            </div>
+            <div id="main_div_right">
+            </div>
         </div>
         <div id="sidebar_right">
         	

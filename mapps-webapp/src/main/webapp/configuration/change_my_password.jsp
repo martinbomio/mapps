@@ -258,28 +258,30 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
         	<div id="navigation" class="navigation">
             	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Modificar contraseña
             </div>
+            <div id="add_div"> 
             <div id="title" style="margin:15px;">
                 <label> Complete el siguiente formulario </label>
             </div>  
-            <div style="margin-left:100px;">  
+            <div id="campos" style="margin-left: 15%;margin-right: 15%;width: 70%;">  
             	<form action="/mapps/changePassword" method="post" id="changePassword_form">
                 	<div id="passVieja">
                         <div class="tag_form"> Antigua contraseña:  </div>
-                        <div class="input"><input type="text" name="oldPassword" id="oldPassword" type="password"/></div>
+                        <div class="input"><input name="oldPassword" id="oldPassword" type="password"/></div>
                     </div>
                     <div id="passNueva">
                         <div class="tag_form"> Nueva contraseña:  </div>
-                        <div class="input"><input type="text" name="newPassword" id="newPassword" type="password"/></div>
+                        <div class="input"><input name="newPassword" id="newPassword" type="password"/></div>
                     </div>
                     <div id="confirmacion">
                         <div class="tag_form"> Confirmar nueva contraseña:  </div>
-                        <div class="input"><input type="text" name="newPasswordConfirm" id="newPasswordConfirm" type="password"/></div>
+                        <div class="input"><input name="newPasswordConfirm" id="newPasswordConfirm" type="password"/></div>
                     </div>
                     <div style="margin-left:25%; margin-top:25px;">
                     	<input type="button" value="Modificar contraseña" id="changePassword_button" />
                  	</div>
                     
                 </form>
+        	</div>
         	</div>
         </div>
         <div id="sidebar_right">

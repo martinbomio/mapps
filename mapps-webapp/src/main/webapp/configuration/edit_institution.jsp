@@ -85,7 +85,7 @@ if ( session.getAttribute("role") == null){
 		$("#validate").on('click', function (){ 
 	        $('#edit_institution').jqxValidator('validate');
 	    });
-		$("#image").jqxButton({ height: 30, width: 257, theme: 'metro'});
+		$("#image").jqxButton({ height: 30, width: '50%', theme: 'metro'});
 		$("#image").on('click', function (){ 
 	        $('#file').click();
 	    });
@@ -136,13 +136,13 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 		$('#list_institutions').on('select', function (event) {
             updatePanel(institutions[event.args.index]);
         });
-		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 60, height: '90%', width: '100%', theme: 'metro',
+		$('#list_institutions').jqxListBox({ selectedIndex: 0,  source: institutions, displayMember: "name", valueMember: "name", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = institutions[index];
                 var imageurl = datarecord.imageURI;
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
-                var img = '<img height="50" width="50" src="' + datarecord.imageURI + '"/>';
-                var table = '<table style="min-width: 130px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td>' + datarecord.name + '</td></table>';
+                var img = '<img height="55" width="55" src="' + datarecord.imageURI + '"/>';
+                var table = '<table style="min-width: 130px;border-spacing: 10px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td style="font-size:24px">' + datarecord.name + '</td></table>';
                 return table;
             }
         });
