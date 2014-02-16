@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxchart.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxgauge.js"></script>
@@ -80,6 +81,24 @@ String athleteID = String.valueOf(request.getParameter("a"));
 					}, 
 		2000);
 		
+		
+$("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+	    
+	    var centerItems = function () {
+	        var firstItem = $($("#jqxMenu ul:first").children()[0]);
+	        firstItem.css('margin-left', 0);
+	        var width = 0;
+	        var borderOffset = 2;
+	        $.each($("#jqxMenu ul:first").children(), function () {
+	            width += $(this).outerWidth(true) + borderOffset;
+	        });
+	        var menuWidth = $("#jqxMenu").outerWidth();
+	        firstItem.css('margin-left', (menuWidth / 2 ) - (width / 2));
+	    }
+	    centerItems();
+	    $(window).resize(function () {
+	        centerItems();
+	    });
 	});
 	
 	function athlete_stats(reload){
@@ -320,29 +339,91 @@ String athleteID = String.valueOf(request.getParameter("a"));
 </script>
 
 <div id="header">
-	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left;">
+	<div id="header_izq" style="display:inline-block; width:25%; height:100%; float:left; margin-left:5%;">
     	<a href="../index.jsp"></href><img src="../images/logo_mapps.png" style="height:80px; margin-top:20px; margin-left:4%;" /></a>
     </div>
-    <div id="header_central"  style="display:inline-block; width:50%; height:100%; float:left;">
-    
+    <div id="header_central"  style="display:inline-block; width:40%; height:100%; float:left;">
+    	
     </div>
-    <div id="header_der" style="display:inline-block; width:25%; height:100%; float:left;">
+    <div id="header_der" style="display:inline-block; width:20%; height:100%; float:left;">
         <div id="logout" class="up_tab"><a href="../configuration/my_account.jsp">MI CUENTA</a></div>
 		<%if(trainingStarted.equals("trainingStarted")){%>
 		<div id="logout" class="up_tab"><a href="../index.jsp?logout=1" >CERRAR SESI&Oacute;N</a></div>
 		<%}else{ %>
 		<div id="logout" class="up_tab"><a href="/mapps/logout" >CERRAR SESI&Oacute;N</a></div>
-		<%} %>
+    <%} %>
     </div>
 </div>
 <div id="contenedor">
 
-    <div id="tabs">
-	  	<div id="tab_1" class="tab active" onclick="location.href='../index.jsp'" style="margin-left:13%;">INICIO</div>
-        <div id="tab_2" class="tab" onclick="location.href='../athletes/athletes.jsp'">JUGADORES</div>
-        <div id="tab_3" class="tab" onclick="location.href='../training/trainings.jsp'">ENTRENAMIENTOS</div>
-        <div id="tab_5" class="tab" onclick="location.href='../configuration/configuration_main.jsp'">CONFIGURACI&Oacute;N</div>
-    </div>
+    <div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
+                <ul>
+                    <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">JUGADORES
+                        <ul style="width:296px;">
+                        	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
+                        <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/add_athletes.jsp">AGREGAR</a></li>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/edit_athletes.jsp">EDITAR</a></li>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/delete_athletes.jsp">ELIMINAR</a></li>
+                            <%}%>
+                        </ul>
+                    </li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">ENTRENAMIENTOS
+                        <ul style="width:296px;">
+                        	<li style="text-align:center;font-size:16px;height:30px;"><a href="../training/training_reports.jsp">VER ANTERIORES</a></li>
+                        <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/trainings.jsp">COMENZAR</a></li>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/create_training.jsp">PROGRAMAR</a></li>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/edit_training.jsp">EDITAR</a></li>
+                            <%}%>
+             	   		<%if(role.equals(Role.ADMINISTRATOR)){%>
+                            <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/change_permissions_training.jsp">EDITAR PERMISOS</a></li>
+                            <%}%>
+                        </ul>
+                    </li>
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">CONFIGURACI&Oacute;N
+                        <ul style="width:296px;">
+                            <li style="text-align:center;font-size:16px;height:30px;">CUENTA
+                                <ul style="width:186px;">
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/my_account.jsp">MI CUENTA</a></li>
+                                </ul>
+                            </li>
+                            <%if(role.equals(Role.ADMINISTRATOR)){%>
+                            <li style="text-align:center;font-size:16px;height:30px;">USUARIOS
+                                <ul style="width:186px;">
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/register_user.jsp">AGREGAR</a></li>
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/edit_user.jsp">EDITAR</a></li>
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/delete_user.jsp">ELIMINAR</a></li>
+                                </ul>
+                            </li>
+                            <li style="text-align:center;font-size:16px;height:30px;">INSTITUCIONES
+                                <ul style="width:186px;">
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/add_institution.jsp">AGREGAR</a></li>
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/edit_institution.jsp">EDITAR</a></li>
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/delete_institution.jsp">ELIMINAR</a></li>
+                                </ul>
+                            </li>
+                            <%}%>
+                            <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
+                            <li style="text-align:center;font-size:16px;height:30px;">DEPORTES
+                                <ul style="width:186px;">
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/add_sport.jsp">AGREGAR</a></li>
+                                </ul>
+                            </li>
+                            <li style="text-align:center;font-size:16px;height:30px;">DISPOSITIVOS
+                                <ul style="width:186px;">
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/add_device.jsp">AGREGAR</a></li>
+                                    <%if(role.equals(Role.ADMINISTRATOR)){%>
+                                    <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/edit_device.jsp">EDITAR</a></li>
+                                    <%}%>
+                                </ul>
+                            </li>
+                            <%}%>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
     <div id="area_de_trabajo" style="height:1030px;">
 		<div id="sidebar_left" style="width:10%;">
         
