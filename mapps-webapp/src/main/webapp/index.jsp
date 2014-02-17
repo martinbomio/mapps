@@ -357,7 +357,7 @@ else if(error.equals(11)){
         	<div id="training" style="width:100%; height:25px; padding-top:15px;"> 
             
             </div>
-            <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;">
+            <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;display: block;">
                 <div id="list_athletes_left" style="display:none; width:70%; height:80%; float:left; display:inline-block; margin-top:60px;">
                		<div id="buttons_up">
 	               	    <a href="./training/training_reports.jsp">
@@ -376,7 +376,7 @@ else if(error.equals(11)){
                			</a>
                		</div>
                	</div>
-               	<div id="list_athletes_right"  style="display:none; width:30%; height:100%; float:left; display:inline-block;">
+               	<div id="list_athletes_right"  style="display:none; width:30%; height:100%; float:left; display:block;">
                		<a class="twitter-timeline" href="https://twitter.com/MAPPSuy/feed-de-noticias" data-widget-id="434799977672372224">Tweets de https://twitter.com/MAPPSuy/feed-de-noticias</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>               		
                	</div>

@@ -355,7 +355,7 @@ body{
 .data_info_index{
 	float:left;
 	font-size: 16px;
-	width:15%;
+	width:42%;
 	padding-left:1%; 
 	padding-right:1%;
 }
@@ -376,10 +376,10 @@ body{
 .data_info_index_min{
 	float:left; 
 	height:65px; 
-	width:5%;
+	width:25%;
 	padding-left:1%; 
 	padding-right:1%;
-	font-size:14px;
+	font-size:14px;	
 }
 
 .data_info_index_inicio_min{
@@ -480,6 +480,42 @@ body{
 
 #main_div_up{
 	float: left;
-	height: 250px;
+	height: 230px;
 	width: 100%;
+}
+
+#main_div_down{
+	width:99%;
+	float: left;
+	height: 350px;
+	border: 2px solid;
+	border-radius: 15px;
+	border-color: #e5e5e5;
+	margin-bottom: 10px;
+}
+
+#athlete_data_div{
+	float: left;
+	height: 200px;
+	width: 32%;
+	display: inline-block;
+	padding-bottom: 25px;
+	border: 2px solid;
+	border-radius: 15px;
+	border-color: #e5e5e5;
+	padding-bottom: 15px;
+	margin-right: 10px;
+}
+
+#athlete_data{
+	float: left;
+	width: 53%;
+	display: inline-block;
+}
+
+#training_zones{
+	float:left; display:inline-block; width:99%; height:280px;
+	border: 2px solid;
+	border-radius: 15px;
+	border-color: #e5e5e5;
 }

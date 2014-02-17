@@ -165,7 +165,6 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 	
 
 	function create_values(response){
-		document.getElementById('name').innerHTML = response.athlete.name+' '+response.athlete.lastName;
 	  	// prepare chart data as an array
         pulseData(response);
         getTrainingZones(response);
@@ -207,6 +206,12 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 	function update_values(response){
 		pulseData(response);
         getTrainingZones(response);
+        var athlete = response.athleteWrapper;
+        $('#name').text(athlete.name);
+        $('#lastName').text(athlete.lastName);
+        $('#age').text(athlete.age);
+        $('#weight').text(athlete.weight + " kg.");
+        $('#height').text(athlete.height + " m.");
         updateCurrentTraining(response.trainingType);
 		document.getElementById('pulse_data').innerHTML = window.pulse_data[window.pulse_data.length-1].pulse+' '+'bpm';
 		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
@@ -295,8 +300,8 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
             border: { visible: false },
             colorScheme: 'scheme05',
             animationDuration: 1200,
-            width: '33%',
-            height: 175,
+            width: '80%',
+            height: '100%',
             min: 60,
             max: 220
         });
@@ -424,67 +429,78 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
                     </li>
                 </ul>
             </div>
-    <div id="area_de_trabajo" style="height:1030px;">
-		<div id="sidebar_left" style="width:10%;">
+    <div id="area_de_trabajo">
+		<div id="sidebar_left">
         
         </div>
-        <div id="main_div" style="width:80%;">
-        	<div id="training" style="width:100%; height:40px;"> 
-            
-            </div>
-            <div id="main_div_up" style="float:left; height:265px; margin-top:30px; width:100%;">
-                <div id="img" style="float:left; height:100px; width:15%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<img src="../images/athletes/default.png" height="80px" />
+        <div id="main_div">
+        	<div id="navigation" class="navigation">
+            	<a href="./athletes.jsp">JUGADORES</a> >> Jugador en Entrenamiento
+        	</div>
+            <div id="main_div_up">
+                <div id="athlete_data_div">
+                    	<img src="../images/athletes/default.png" height="110px" style="float: left;margin-top: 25px;margin-left: 10px" />
+                    	<div id='athlete_data'>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Nombre:</div><div id="name" class="my_account_data"> Martin</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"> Bomio</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"> 24</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"> 1.75 m.</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
+                    	</div>
                 </div>
-                <div id="data"  style="float:left; height:200px; width:85%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                 	<div id="name" class="data_info_index">
-                       	
-                    </div>
-                    <div id="gaugeContainer" style="height:160px; width:50%; float:left; margin-left:5%; margin-right:5%;">                
-                	
-               		</div>
+                <div id="athlete_data_div" >
+	                <div id="gaugeContainer" style="margin-left: 25px"> 
+	                </div>
+                </div>
+                
+                <div id="athlete_data_div"  style="margin-right:0px;">
                		<div id="pulse_min" class="data_info_index_min" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center;">
+	                  	<div  class="data_index_min">
 	            	        min
 	                    </div>
-	                    <div id="pulse_data_min" class="data_index_min">
+	                    <div id="pulse_data_min" style="text-align:center;" >
 	                        	
 	                    </div>
 	                </div>
-	                <div id="pulse" class="data_info_index" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center; font-size:18px;">
+	                <div id="pulse" class="data_info_index" style="margin-top:15px;border-left: solid 2px #e5e5e5;border-right: solid 2px #e5e5e5;">
+	                  	<div style="font-size:25px;" class="data_index">
 	                        PULSO
 	                    </div>
-	                    <div id="pulse_data" class="data_index" style="font-size:18px;">
+	                    <div id="pulse_data" style="text-align:center;font-sizee18px;margin-top:12px;">
 	                          	
 	                    </div>
 	                </div>
 	                <div id="pulse_max" class="data_info_index_min" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center;">
+	                  	<div class="data_index_min">
 	                        max
 	                    </div>
-	                    <div id="pulse_data_max" class="data_index_min">
+	                    <div id="pulse_data_max" style="text-align:center;">
 	                          	
 	                    </div>
 	                </div>
-               		<div id="calories" class="data_info_index" style="margin-top:30px; margin-left:7%">
-	                  	<div style="height:40px; text-align:center;">
+               		<div id="calories" class="data_info_index" style="margin-top:30px; width: 100%">
+	                  	<div class="data_index">
 	                	    CALORIAS
 	                    </div>
-	                    <div id="calories_data" class="data_index">
+	                    <div id="calories_data" style="text-align:center;">
 	                          	
 	                    </div>
 	                </div>
 	            </div>          
             </div>
-            <div id="main_div_down" style="float:left; height:350px; margin-top:30px; width:100%;">
-            	<div style="float:left; display:inline-block; width:65%">
+            <div id="main_div_down">
+            	<div style="float:left; display:inline-block; width:90%;margin:3%;">
 	            	<div>Pulsaciones</div>
-	                <div id="graphicPulse" style="height:280px; width:100%; display:inline-block;">
+	                <div id="graphicPulse" style="height:280px; width:100%; display:inline-block;margin-left: 10px;">
 	                            
 	                </div>
 	            </div>
-	            <div style="float:left; display:inline-block; width:30%; margin-left:3%;">
+	            
+	        </div>
+	        <div id="training_zones">
+	        	<div style="float:left; display:inline-block; width:90%;margin:3%;">
+	            <div>Zonas de entrenamiento</div>
+	            <div style="float:left; display:inline-block; width:60%; margin-left:3%;">
 	            	<div>Entrenamiento actual:</div>
 		            <div id="very_soft" style="display:none;">
 		            	<div style="text-align: center; margin-top: 10px;">MUY SUAVE</div>	
@@ -526,15 +542,13 @@ Se trabaja siempre por encima del umbral anaeróbico, o sea con deuda de oxígen
 		            	</div>
 		            </div>
 	            </div>
-	        </div>
-	        <div style="float:left; display:inline-block; width:90%; margin-left:3%; height:280px;">
-	            <div>Zonas de entrenamiento</div>
-	            <div id="graphic_pie" style="float:right; display:inline-block; height:280px; width:100%;">
+	            <div id="graphic_pie" style="float:left; display:inline-block; width:100%;">
 	            
+	            </div>
 	            </div>
 	        </div>
         </div>
-        <div id="sidebar_right" style="width:10%;">
+        <div id="sidebar_right">
         
         </div>
     </div>
