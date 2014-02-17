@@ -54,7 +54,7 @@ if (token.equals("null") || token.equals("")){
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		
+		set_tab_child_length();
 		$("#date").jqxDateTimeInput({width: '220px', height: '25px', formatString: 'dd/MM/yyyy HH:mm', theme: 'metro'});
 
 		$("#validate").jqxButton({ width: '200', height: '35', theme: 'metro'});
@@ -84,7 +84,7 @@ if (token.equals("null") || token.equals("")){
         var dataAdapter = new $.jqx.dataAdapter(source);
         // Create a jqxInput
         $("#sport").jqxDropDownList({ source: dataAdapter, selectedIndex: 0, width: '220', height: '25',displayMember: "name", valueMember: "name", dropDownHeight: '80', theme: 'metro'});
-        $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+        $("#tabs").jqxMenu({ width: '100%', height: '50px',theme:'metro'});
         
         var centerItems = function () {
             var firstItem = $($("#jqxMenu ul:first").children()[0]);
@@ -97,15 +97,19 @@ if (token.equals("null") || token.equals("")){
             var menuWidth = $("#jqxMenu").outerWidth();
             firstItem.css('margin-left', (menuWidth / 2 ) - (width / 2));
         }
+        set_tab_child_length();
         centerItems();
         $(window).resize(function () {
+      	  set_tab_child_length();
             centerItems();
         });
-	
-	
-	
-	
-	});
+});
+function set_tab_child_length(){
+	var size = $('#ref_tab').width();
+	for (var i=0; i<3; i++){
+		$('#ul_'+i+'').width(size + 12);
+	}
+}
 </script>
 
 
@@ -130,8 +134,8 @@ if (token.equals("null") || token.equals("")){
 		<div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
-                        <ul style="width:296px;">
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                        <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/add_athletes.jsp">AGREGAR</a></li>
@@ -141,7 +145,7 @@ if (token.equals("null") || token.equals("")){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">ENTRENAMIENTOS
-                        <ul style="width:296px;">
+                        <ul id="ul_1" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../training/training_reports.jsp">VER ANTERIORES</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/trainings.jsp">COMENZAR</a></li>
@@ -154,7 +158,7 @@ if (token.equals("null") || token.equals("")){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">CONFIGURACI&Oacute;N
-                        <ul style="width:296px;">
+                        <ul id="ul_2" style="width:296px;">
                             <li style="text-align:center;font-size:16px;height:30px;">CUENTA
                                 <ul style="width:186px;">
                                     <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/my_account.jsp">MI CUENTA</a></li>

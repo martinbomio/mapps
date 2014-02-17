@@ -97,6 +97,7 @@ else if(error.equals(11)){
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		set_tab_child_length();
 		hide_static_labels()
 		window.created = false;
 			<%
@@ -165,7 +166,7 @@ else if(error.equals(11)){
 	});
 	function set_tab_child_length(){
 		var size = $('#ref_tab').width();
-		for (var i=0; i<2; i++){
+		for (var i=0; i<3; i++){
 			$('#ul_'+i+'').width(size + 12);
 		}
 	}
@@ -357,7 +358,7 @@ else if(error.equals(11)){
                     </li>
                 </ul>
             </div>
-    <div id="area_de_trabajo" style="height:620px;">
+    <div id="area_de_trabajo">
 		<div id="sidebar_left">
         
         </div>

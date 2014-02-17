@@ -58,7 +58,7 @@ if (error.equals("null"))
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		
+		set_tab_child_length();
 		 var countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
          $("#country").jqxInput({ placeHolder: "País", height: 30, width: 200, theme: 'metro', 
              source: function (query, response) {
@@ -104,7 +104,7 @@ if (error.equals("null"))
         $('#addInstitution_form').submit();
     });
 	
-	$("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+	$("#tabs").jqxMenu({ width: '100%', height: '50px',theme:'metro'});
     
     var centerItems = function () {
         var firstItem = $($("#jqxMenu ul:first").children()[0]);
@@ -117,12 +117,19 @@ if (error.equals("null"))
         var menuWidth = $("#jqxMenu").outerWidth();
         firstItem.css('margin-left', (menuWidth / 2 ) - (width / 2));
     }
+    set_tab_child_length();
     centerItems();
     $(window).resize(function () {
+  	  set_tab_child_length();
         centerItems();
     });
-	
-	});
+});
+function set_tab_child_length(){
+var size = $('#ref_tab').width();
+for (var i=0; i<3; i++){
+	$('#ul_'+i+'').width(size + 12);
+}
+}
 </script>
 
 <div id="header">
@@ -146,8 +153,8 @@ if (error.equals("null"))
 	<div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
-                        <ul style="width:296px;">
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                        <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/add_athletes.jsp">AGREGAR</a></li>
@@ -157,7 +164,7 @@ if (error.equals("null"))
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">ENTRENAMIENTOS
-                        <ul style="width:296px;">
+                        <ul id="ul_1" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../training/training_reports.jsp">VER ANTERIORES</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/trainings.jsp">COMENZAR</a></li>
@@ -170,7 +177,7 @@ if (error.equals("null"))
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">CONFIGURACI&Oacute;N
-                        <ul style="width:296px;">
+                        <ul id="ul_2" style="width:296px;">
                             <li style="text-align:center;font-size:16px;height:30px;">CUENTA
                                 <ul style="width:186px;">
                                     <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/my_account.jsp">MI CUENTA</a></li>

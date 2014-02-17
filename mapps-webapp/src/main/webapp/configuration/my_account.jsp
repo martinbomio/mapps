@@ -59,6 +59,7 @@ if(info.equals("1")){
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		set_tab_child_length();
         $("#edit").jqxButton({ width: '200', height: '35', theme: 'metro'});
         $("#change_password").jqxButton({ width: '200', height: '35', theme: 'metro'});
         
@@ -97,7 +98,7 @@ if(info.equals("1")){
 		<%
 		}
 		%>
-        $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
+		$("#tabs").jqxMenu({ width: '100%', height: '50px',theme:'metro'});
         
         var centerItems = function () {
             var firstItem = $($("#jqxMenu ul:first").children()[0]);
@@ -110,11 +111,18 @@ if(info.equals("1")){
             var menuWidth = $("#jqxMenu").outerWidth();
             firstItem.css('margin-left', (menuWidth / 2 ) - (width / 2));
         }
+        set_tab_child_length();
         centerItems();
         $(window).resize(function () {
             centerItems();
         });
-	});
+});
+function set_tab_child_length(){
+	var size = $('#ref_tab').width();
+	for (var i=0; i<3; i++){
+		$('#ul_'+i+'').width(size + 12);
+	}
+}
 	function get_user_data(response){
 		var user = response;
 		$('#img').html('<img src="'+ user.imageURI+'" style="width:100%;"/>');
@@ -176,8 +184,8 @@ if(info.equals("1")){
 	<div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
-                        <ul style="width:296px;">
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                        <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/add_athletes.jsp">AGREGAR</a></li>
@@ -187,7 +195,7 @@ if(info.equals("1")){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">ENTRENAMIENTOS
-                        <ul style="width:296px;">
+                        <ul id="ul_1" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../training/training_reports.jsp">VER ANTERIORES</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="../training/trainings.jsp">COMENZAR</a></li>
@@ -200,7 +208,7 @@ if(info.equals("1")){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">CONFIGURACI&Oacute;N
-                        <ul style="width:296px;">
+                        <ul id="ul_2" style="width:296px;">
                             <li style="text-align:center;font-size:16px;height:30px;">CUENTA
                                 <ul style="width:186px;">
                                     <li style="text-align:center;font-size:16px;height:30px;"><a href="../configuration/my_account.jsp">MI CUENTA</a></li>
