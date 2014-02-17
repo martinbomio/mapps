@@ -331,7 +331,7 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 		chart.marginRight = 25;
 		chart.pullOutRadius = 0;
 		chart.validateData();
-		chart.labelsEnabled = true;
+		// chart.labelsEnabled = true;
 		window.pie_chart = chart;
 	}
 	
@@ -445,7 +445,7 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"> Bomio</div></div>
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"> 24</div></div>
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"> 1.75 m.</div></div>
-                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
+                    		<div class="my_account_field" style="width:65%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
                     	</div>
                 </div>
                 <div id="athlete_data_div" >
@@ -499,8 +499,8 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
 	        </div>
 	        <div id="training_zones">
 	        	<div style="float:left; display:inline-block; width:90%;margin:3%;">
-	            <div>Zonas de entrenamiento</div>
-	            <div style="float:left; display:inline-block; width:60%; margin-left:3%;">
+	            <div>Zonas de entrenamiento<br></br></div>
+	            <div style="float:left; display:inline-block; width:45%; margin-left:5%;">
 	            	<div>Entrenamiento actual:</div>
 		            <div id="very_soft" style="display:none;">
 		            	<div style="text-align: center; margin-top: 10px;">MUY SUAVE</div>	
@@ -542,7 +542,7 @@ Se trabaja siempre por encima del umbral anaeróbico, o sea con deuda de oxígen
 		            	</div>
 		            </div>
 	            </div>
-	            <div id="graphic_pie" style="float:left; display:inline-block; width:100%;">
+	            <div id="graphic_pie" style="float:left; display:inline-block; width:40%; margin-left:10%; height:290px;">
 	            
 	            </div>
 	            </div>
