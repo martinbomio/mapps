@@ -114,6 +114,7 @@ $(document).ready(function () {
 	    $(window).resize(function () {
 	        centerItems();
 	    });
+	    
 });
 
 	function create_list(response){
@@ -122,12 +123,12 @@ $(document).ready(function () {
             updatePanel(trainings[event.args.index]);
         });
 		
-		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 28, height: '100%', width: '75%', theme: 'metro',
+		$('#list_trainings').jqxListBox({ selectedIndex: 0,  source: trainings, displayMember: trainings.date, valueMember: "name", itemHeight: 40, height: '80%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = trainings[index];
                 var split = datarecord.date.split(" ");
-                var display_name = "Entrenamiento iniciado el: " + split[0] + " a las " + split[1] + "horas";
-                var table = '<table style="min-width: 130px;"><td>' + display_name + '</td></table>';
+                var display = "Entrenamiento iniciado el: " + split[0];
+                var table = '<table style="min-width: 130px; width:100%"><tr><td style="text-align: center;">' + display + '</td></tr><tr><td style="text-align: center;"> a las:'+ split[1]; + '</td></tr></table>';
                 return table;
             }
         });
@@ -138,8 +139,7 @@ $(document).ready(function () {
 		$('#date').jqxDateTimeInput('val', date);
 		$('#sport').jqxDropDownList('val', trainings['sport'].name);
 		$('#name-hidden').val(trainings.name);
-		
-		
+		$('#main_div_right').height($('#main_div_left').height());
 	}
 </script>
 
@@ -237,14 +237,14 @@ $(document).ready(function () {
         	<div id="navigation" class="navigation">
             	<a href="./training.jsp">ENTRENAMIENTOS</a> >> Editar un entrenamiento
             </div>
-	        <div id="main_div_left" style="float:left; width:50%; display:inline-block;">
+	        <div id="main_div_left">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un entrenamiento </label>
                 </div>
         		<div id="list_trainings">
                 </div>
             </div>
-            <div id="main_div_right" style="float:right; width:50%; display:inline-block;">
+            <div id="main_div_right">
                 <form action="/mapps/modifyTraining" method="post" name="edit_training" id="edit_training">
             	<div id="title" style="margin:15px;">
            			<label> 2) Modifique los datos que desee </label>
@@ -264,7 +264,7 @@ $(document).ready(function () {
                     </div>
                     <input type="hidden" id="name-hidden" name="name-hidden"></input>
 
-                    <div style="margin-left:30%; margin-top:20px;">
+                    <div style="margin-left:30%; margin-top:40px;">
                     	<input type="button" id="validate" value="CONFIRMAR"/>
                     </div>
 				</div>

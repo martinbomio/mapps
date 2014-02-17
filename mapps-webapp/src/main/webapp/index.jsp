@@ -97,6 +97,7 @@ else if(error.equals(11)){
 
 <script type="text/javascript">
 	$(document).ready(function () {
+		hide_static_labels()
 		window.created = false;
 			<%
 			if(show_pop_up){	
@@ -155,11 +156,20 @@ else if(error.equals(11)){
 	              var menuWidth = $("#jqxMenu").outerWidth();
 	              firstItem.css('margin-left', (menuWidth / 2 ) - (width / 2));
 	          }
+	          set_tab_child_length();
 	          centerItems();
 	          $(window).resize(function () {
+	        	  set_tab_child_length();
 	              centerItems();
 	          });
 	});
+	function set_tab_child_length(){
+		var size = $('#ref_tab').width();
+		for (var i=0; i<2; i++){
+			$('#ul_'+i+'').width(size + 12);
+		}
+	}
+	
 	function create_list(){
 		training = window.training;
 		$.ajax({
@@ -204,15 +214,13 @@ else if(error.equals(11)){
 	}
 	
 	function create_static_labels(){
-		document.getElementById("list_athletes_left").style.display = 'block';
-		document.getElementById("list_athletes_right").style.display = 'block';
-		// document.getElementById("list_athletes").document.getElementsByTagName('a').style.color = '#4DC230';
+		$('#index').show();
+		$('#add_div').hide();
 	}
 	
 	function hide_static_labels(){
-		document.getElementById("list_athletes_left").style.display = 'none';
-		document.getElementById("list_athletes_right").style.display = 'none';
-		// document.getElementById("list_athletes").document.getElementsByTagName('a').style.color = '#FFFFFF';
+		$('#index').hide();
+		$('#add_div').show();
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -236,7 +244,7 @@ else if(error.equals(11)){
 	}
 	
 	function create_stop_training(training_name){
-		var button = $('<input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" style="margin-left:30%;" />');
+		var button = $('<center><input type="button" id="stop_training" name="stop_training" value="TERMINAR ENTRENAMIENTO" /></center>');
 		$('#stop_training_div').html(button);
 		$("#stop_training").jqxButton({ width: '300', height: '50', theme: 'metro'});
 		$("#stop_training").on('click', function () { window.location.assign('/mapps/stopTraining?name='+training_name+'')}); 
@@ -284,8 +292,8 @@ else if(error.equals(11)){
     <div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;"><a href="./index.jsp">INICIO</a></li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
-                        <ul style="width:296px;">
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                        <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="./athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="./athletes/add_athletes.jsp">AGREGAR</a></li>
@@ -295,7 +303,7 @@ else if(error.equals(11)){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">ENTRENAMIENTOS
-                        <ul style="width:296px;">
+                        <ul id="ul_1" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="./training/training_reports.jsp">VER ANTERIORES</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
                             <li style="text-align:center;font-size:16px;height:30px;"><a href="./training/trainings.jsp">COMENZAR</a></li>
@@ -308,7 +316,7 @@ else if(error.equals(11)){
                         </ul>
                     </li>
                     <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">CONFIGURACI&Oacute;N
-                        <ul style="width:296px;">
+                        <ul id="ul_2" style="width:296px;">
                             <li style="text-align:center;font-size:16px;height:30px;">CUENTA
                                 <ul style="width:186px;">
                                     <li style="text-align:center;font-size:16px;height:30px;"><a href="./configuration/my_account.jsp">MI CUENTA</a></li>
@@ -354,10 +362,18 @@ else if(error.equals(11)){
         
         </div>
         <div id="main_div">
+	        <div id="navigation" class="navigation">
+            </div>
         	<div id="training" style="width:100%; height:25px; padding-top:15px;"> 
             
             </div>
-            <div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;display: block;">
+            <div id="add_div">
+            	<div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;display: block;text-align: center;"></div>
+            <div id="stop_training_div">
+            
+            </div>
+            </div>
+            <div id="index" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;display: block;">
                 <div id="list_athletes_left" style="display:none; width:70%; height:80%; float:left; display:inline-block; margin-top:60px;">
                		<div id="buttons_up">
 	               	    <a href="./training/training_reports.jsp">

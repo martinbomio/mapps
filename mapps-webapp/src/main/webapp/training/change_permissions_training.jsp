@@ -222,8 +222,9 @@ function updatePanel(trainings){
         	<div id="navigation" class="navigation">
             	<a href="./training.jsp">ENTRENAMIENTOS</a> >> Editar un entrenamiento
             </div>
-	        
-	         <div id='trainings_div' style="display:inline-block">
+	        <div id="add_div" >
+	        <div style="margin-left: 15%;margin-right: 15%;margin-top: 25px;">
+	         <div id='trainings_div' style="display:inline-block;width: 100%">
                        	<div class="tag_form" style="vertical-align:top; margin-top:15px;"> Entrenamientos: </div>
                         <div class="input" style="margin-top:10px;">
                         	<div id="trainings" style="display:inline-block;">
@@ -233,14 +234,16 @@ function updatePanel(trainings){
              <form action="/mapps/changePermission" method="post" name="change_permission" id="change_permission">
 	             <div id="users" style="width: 100%; margin-top:20px;display: inline-block;">
 	             	<div class="tag_form" style="vertical-align:top; margin-top:15px;width: 20%;"> Permisos: </div>
-	             	<div id="users_div" style="width:50%; margin-left:15%;"></div>
+	             	<div id="users_div" style="width:100%; margin-left:10%;margin-right:15%;"></div>
                  </div>
 	             <input type="hidden" id="numberOfUsers" name="numberOfUsers"></input>
 	             <input type="hidden" id="name-hidden" name="name-hidden"></input>
-	             <div style="margin-left:25%; margin-top:20px;">
-                    	<input type="button" id="validate" value="CONFIRMAR"/>
+	             <div style="margin-top:20px;">
+                    	<center><input type="button" id="validate" value="CONFIRMAR"/></center>
                     </div>
              </form>
+             </div>
+             </div>
         </div>
         <div id="sidebar_right">
         	

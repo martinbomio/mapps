@@ -203,11 +203,12 @@ if (token.equals("null") || token.equals("")){
 			<div id="navigation" class="navigation">
             	<a href="./trainings.jsp">ENTRENAMIENTOS</a> >> Programar entrenamiento
             </div>
+            <div id="add_div">
         	<form action="/mapps/addTraining" method="post" name="create_training" id="create_training">
             	<div id="title" style="margin:15px;">
            			<label> Rellene el siguiente formulario </label>
                 </div>
-                <div id="campos" class="campos" style="margin-left:100px;margin-right:300px;">
+                <div id="campos" class="campos" style="margin-left:15%;margin-right:15%;">
                     <div id="fecha">
                         <div class="tag_form">Fecha: </div>
                         <div id="date" class="input">
@@ -219,11 +220,12 @@ if (token.equals("null") || token.equals("")){
                         	<div id="sport" style="margin-top:10px"></div>
                         </div>
                     </div>
-                    <div style="margin-left:150px; margin-top:50px;">
-                    	<input type="button" id="validate" value="CREAR"/>
+                    <div style="margin-top:25px;">
+                    	<center><input type="button" id="validate" value="CREAR"/></center>
                     </div>
 				</div>
-            </form>            
+            </form> 
+            </div>           
         </div>
         <div id="sidebar_right">
         	

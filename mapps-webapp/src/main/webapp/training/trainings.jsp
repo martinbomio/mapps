@@ -150,11 +150,12 @@ if (token.equals("null") || token.equals("")){
 			$("#title").text('No hay entrenamiento programados. Pulse "Programar Entrenamiento" para programar uno');
 			$("#start_training").jqxButton('val', "PROGRAMAR ENTRENAMIENTO");
 		}else{
-			$('#trainings').jqxListBox({ source: records, displayMember: "date", valueMember: "name", itemHeight: 28, height: '250px', width: '40%',autoHeight:true, theme: 'metro',
+			$('#trainings').jqxListBox({ source: records, displayMember: "date", valueMember: "name", itemHeight: 40, height: '250px', width: '100%', theme: 'metro',
 	        	renderer: function (index, label, value) {
 	                var datarecord = records[index];
 	                var split = datarecord.date.split(" ");
-	                var table = '<table style="min-width: 130px;"><td><center> Entrenamiento programado para el dia: ' + split[0] +'</center></td><td><center> Hora: ' + split[1] +'</center></td></table>';
+	                var display = "Entrenamiento programado para el: " + split[0];
+	                var table = '<table style="min-width: 130px; width:100%;font-size: 14px;"><tr><td style="text-align: center;">' + display + '</td></tr><tr><td style="text-align: center;"> a las:'+ split[1]; + '</td></tr></table>';
 	                return table;
 	            }	
 	        });
@@ -269,6 +270,10 @@ if (token.equals("null") || token.equals("")){
 
         </div>
         <div id="main_div">
+        	<div id="navigation" class="navigation">
+            	<a href="./training.jsp">ENTRENAMIENTOS</a> >> Comenzar
+            </div>
+        	<div id="add_div">
         	<div id="title" style="margin:15px;">
         	<%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
@@ -283,19 +288,22 @@ if (token.equals("null") || token.equals("")){
            		<%} %>
            		
             </div>
-        	<div id="trainings" style="margin-left:20%;">
-            
+            <div style="margin-left:20%;margin-right:20%;width: 60%">
+	        	<div id="trainings" >
+	            
+	            </div>
             </div>
             <%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
 			<%if(trainingStarted.equals("trainingStopped")){ %>		
 			<div id="start_training_div">
-            	<input type="button" id="start_training" name="start_training" value="INICIAR ENTRENAMIENTO" style="margin-left:175px;" />
+            	<center><input type="button" id="start_training" name="start_training" value="COMENZAR ENTRENAMIENTO" /></center>
             </div>
             <%}%>
             <%}%>
             <%}%> 
+        </div>
         </div>
         <div id="sidebar_right">
         	

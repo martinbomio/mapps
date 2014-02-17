@@ -445,7 +445,7 @@ $("#tabs").jqxMenu({ width: '100%', height: '50px', theme:'metro'});
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"> Bomio</div></div>
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"> 24</div></div>
                     		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"> 1.75 m.</div></div>
-                    		<div class="my_account_field" style="width:65%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
+                    		<div class="my_account_field" style="width:40%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
                     	</div>
                 </div>
                 <div id="athlete_data_div" >
