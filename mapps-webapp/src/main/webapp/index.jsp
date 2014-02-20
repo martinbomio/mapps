@@ -363,8 +363,6 @@ else if(error.equals(11)){
         
         </div>
         <div id="main_div">
-	        <div id="navigation" class="navigation">
-            </div>
         	<div id="training" style="width:100%; height:25px; padding-top:15px;"> 
             
             </div>

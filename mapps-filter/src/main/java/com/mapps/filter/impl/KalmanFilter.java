@@ -51,7 +51,7 @@ public class KalmanFilter implements Filter {
     private static final int ACCEL_RANGE = 8192;
     private static final int YPR_RANGE = 100;
     private static final int INITIAL_DATA_ERROR = 20;
-    private static final int DATA_ERROR = 7;
+    private static final int DATA_ERROR = 20;
 
 
     @Override

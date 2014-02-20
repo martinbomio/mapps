@@ -307,7 +307,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
             border: { visible: false },
             colorScheme: 'scheme05',
             animationDuration: 1200,
-            width: '80%',
+            width: '90%',
             height: '100%',
             min: 60,
             max: 220
@@ -338,7 +338,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		chart.marginRight = 25;
 		chart.pullOutRadius = 0;
 		chart.validateData();
-		// chart.labelsEnabled = true;
+		chart.labelsEnabled = true;
 		window.pie_chart = chart;
 	}
 	
@@ -505,7 +505,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
 	            
 	        </div>
 	        <div id="training_zones">
-	        	<div style="float:left; display:inline-block; width:90%;margin:3%;">
+	        	<div style="float:left; display:inline-block; width:94%;margin:3%;">
 	            <div>Zonas de entrenamiento<br></br></div>
 	            <div style="float:left; display:inline-block; width:45%; margin-left:5%;">
 	            	<div>Entrenamiento actual:</div>
@@ -549,7 +549,7 @@ Se trabaja siempre por encima del umbral anaeróbico, o sea con deuda de oxígen
 		            	</div>
 		            </div>
 	            </div>
-	            <div id="graphic_pie" style="float:left; display:inline-block; width:40%; margin-left:10%; height:290px;">
+	            <div id="graphic_pie" style="float:left; display:inline-block; width:50%; margin-left:0%; height:250px;">
 	            
 	            </div>
 	            </div>

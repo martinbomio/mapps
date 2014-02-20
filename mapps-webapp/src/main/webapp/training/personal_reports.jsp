@@ -114,20 +114,22 @@ String athleteID = String.valueOf(request.getParameter("a"));
 	}
 	
 	function create_values(response){
-		document.getElementById('name').innerHTML = response.athlete.name+' '+response.athlete.lastName;
 	  	// prepare chart data as an array
         pulseData(response);
         getTrainingZones(response);
+        updateCurrentTraining(response.trainingType);
+        update_values(response);
 		
-        document.getElementById('pulse_data').innerHTML = parseFloat(response.meanBPM).toFixed(1) +' '+'bpm';
-		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
-		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;
-		document.getElementById('pulse_data_max').innerHTML = window.pulse_max;
-        
 		var pulse_time_chart = new AmCharts.AmSerialChart();
 		pulse_time_chart.dataProvider = window.pulse_data;
 		pulse_time_chart.validateData();
 		pulse_time_chart.categoryField = "time";
+		/*
+		var speed_category_axis = speed_chart.categoryAxis;
+		speed_category_axis.parseDates = true;
+		speed_category_axis.minPeriod = 'fff';
+		speed_chart.dataDateFormat = "NN-SS";
+		*/
 			
 		var pulse_time_graph = new AmCharts.AmGraph();
 		pulse_time_graph.valueField = "pulse";
@@ -146,10 +148,11 @@ String athleteID = String.valueOf(request.getParameter("a"));
 			
 		pulse_time_chart.write('graphicPulse');
 			
-		pulseGauge(parseFloat(response.meanBPM).toFixed(1));
+		pulseGauge(Math.round(response.meanBPM));
 		pieChart();
+		
+		window.time_chart = pulse_time_chart;
 	}
-	
 	function pulseData(data) {
 		for(var i = 0 ; i<data.pulse.length; i++){
 			if((data.pulse[i])==null){
@@ -206,6 +209,13 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		return time;
 	}
 	
+	function update_values(response){
+		document.getElementById('pulse_data').innerHTML = Math.round(response.meanBPM)+' '+'bpm';
+		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
+		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;
+		document.getElementById('pulse_data_max').innerHTML = window.pulse_max;
+	}
+	
 	function getTrainingZones(response){
 		window.training_zones_data = [];
 		if(response.trainingTypePercentage.VERYSOFT != null){
@@ -230,6 +240,33 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		}
 	}
 	
+	function updateCurrentTraining(trainingType){
+		document.getElementById('very_soft').style.display = 'none';
+		document.getElementById('soft').style.display = 'none';
+		document.getElementById('moderate').style.display = 'none';
+		document.getElementById('intense').style.display = 'none';
+		document.getElementById('very_intense').style.display = 'none';
+		switch(trainingType){
+			case 'VERYSOFT':
+				document.getElementById('very_soft').style.display = 'block';
+				break;
+			case 'SOFT':
+				document.getElementById('soft').style.display = 'block';
+				break;
+			case 'MODERATE':
+				document.getElementById('moderate').style.display = 'block';
+				break;
+			case 'INTENSE':
+				document.getElementById('intense').style.display = 'block';
+				break;
+			case 'VERYINTENSE':
+				document.getElementById('very_intense').style.display = 'block';
+				break;
+				default:
+					break;
+		}
+	}
+	
 	
 	function pulseGauge(mean){
 		$('#gaugeContainer').jqxGauge({
@@ -244,7 +281,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
             border: { visible: false },
             colorScheme: 'scheme05',
             animationDuration: 1200,
-            width: '33%',
+            width: '90%',
             height: 175,
             min: 60,
             max: 220
@@ -309,7 +346,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
     <div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
-                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">JUGADORES
                         <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
@@ -319,7 +356,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
                             <%}%>
                         </ul>
                     </li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;background-color:#FFF; color:#4DC230;">ENTRENAMIENTOS
+                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">ENTRENAMIENTOS
                         <ul id="ul_1" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../training/training_reports.jsp">VER ANTERIORES</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>
@@ -374,116 +411,126 @@ String athleteID = String.valueOf(request.getParameter("a"));
                     </li>
                 </ul>
             </div>
-    <div id="area_de_trabajo" style="height:1520px;">
-		<div id="sidebar_left" style="width:10%;">
+    <div id="area_de_trabajo">
+		<div id="sidebar_left">
         
         </div>
-        <div id="main_div" style="width:80%;">
-        	<div id="training" style="width:100%; height:40px;"> 
-            
-            </div>
-            <div id="main_div_up" style="float:left; height:265px; margin-top:30px; width:100%;">
-                <div id="img" style="float:left; height:100px; width:15%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                    	<img src="../images/athletes/default.png" height="80px" />
+        <div id="main_div">
+        	<div id="navigation" class="navigation">
+            	<a href="./athletes.jsp">JUGADORES</a> >> Jugador en Entrenamiento
+        	</div>
+            <div id="main_div_up">
+                <div id="athlete_data_div">
+                    	<img src="../images/athletes/default.png" height="110px" style="float: left;margin-top: 25px;margin-left: 10px" />
+                    	<div id='athlete_data'>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Nombre:</div><div id="name" class="my_account_data"> Martin</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"> Bomio</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"> 24</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"> 1.75 m.</div></div>
+                    		<div class="my_account_field" style="width:40%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
+                    	</div>
                 </div>
-                <div id="data"  style="float:left; height:200px; width:85%; display:inline-block; padding-top:10px; padding-bottom:10px;">
-                 	<div id="name" class="data_info_index">
-                       	
-                    </div>
-                    <div id="gaugeContainer" style="height:160px; width:50%; float:left; margin-left:5%; margin-right:5%;">                
-                	
-               		</div>
+                <div id="athlete_data_div" >
+	                <div id="gaugeContainer" style="margin-left: 25px"> 
+	                </div>
+                </div>
+                
+                <div id="athlete_data_div"  style="margin-right:0px;">
                		<div id="pulse_min" class="data_info_index_min" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center;">
+	                  	<div  class="data_index_min">
 	            	        min
 	                    </div>
-	                    <div id="pulse_data_min" class="data_index_min">
+	                    <div id="pulse_data_min" style="text-align:center;" >
 	                        	
 	                    </div>
 	                </div>
-	                <div id="pulse" class="data_info_index" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center; font-size:18px;">
-	                        PULSO MEDIO
+	                <div id="pulse" class="data_info_index" style="margin-top:15px;border-left: solid 2px #e5e5e5;border-right: solid 2px #e5e5e5;">
+	                  	<div style="font-size:25px;" class="data_index">
+	                        PULSO <div class="data_index_min">prom</div>
 	                    </div>
-	                    <div id="pulse_data" class="data_index" style="font-size:18px;">
+	                    <div id="pulse_data" style="text-align:center;font-sizee18px;margin-top:12px;">
 	                          	
 	                    </div>
 	                </div>
 	                <div id="pulse_max" class="data_info_index_min" style="margin-top:30px;">
-	                  	<div style="height:40px; text-align:center;">
+	                  	<div class="data_index_min">
 	                        max
 	                    </div>
-	                    <div id="pulse_data_max" class="data_index_min">
+	                    <div id="pulse_data_max" style="text-align:center;">
 	                          	
 	                    </div>
 	                </div>
-               		<div id="calories" class="data_info_index" style="margin-top:30px; margin-left:7%">
-	                  	<div style="height:40px; text-align:center;">
+               		<div id="calories" class="data_info_index" style="margin-top:30px; width: 100%">
+	                  	<div class="data_index">
 	                	    CALORIAS
 	                    </div>
-	                    <div id="calories_data" class="data_index">
+	                    <div id="calories_data" style="text-align:center;">
 	                          	
 	                    </div>
 	                </div>
 	            </div>          
             </div>
-            <div id="main_div_down" style="float:left; height:350px; margin-top:30px; width:100%;">
-            	<div style="float:left; display:inline-block; width:65%">
+            <div id="main_div_down">
+            	<div style="float:left; display:inline-block; width:90%;margin:3%;">
 	            	<div>Pulsaciones</div>
-	                <div id="graphicPulse" style="height:280px; width:100%; display:inline-block; margin-left:20%;">
+	                <div id="graphicPulse" style="height:280px; width:100%; display:inline-block;margin-left: 10px;">
 	                            
 	                </div>
-	            </div>	            
-	        </div>
-	        <div style="float:left; display:inline-block; width:90%; height:280px;">
-	            <div style="margin-bottom:10px;">Zonas de entrenamiento</div>
-	            <div id="graphic_pie" style="float:right; display:inline-block; height:280px; width:100%;">
-	            
 	            </div>
+	            
 	        </div>
-	        <div style="float:left; display:inline-block; margin-top:30px;">
-		        <div id="very_soft" class="trainings_player_report">
-		           	<div style="text-align: center; margin-top: 10px;">MUY SUAVE</div>	
-		           	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
-		           	En este rango no hay adaptaciones a menos que el nivel físico de la persona sea muy bajo. El metabolismo energético más utilizado es el de los ácidos grasos y la intensidad de trabajo es baja.
+	        <div id="training_zones">
+	        	<div style="float:left; display:inline-block; width:94%;margin:3%;">
+	            <div>Zonas de entrenamiento<br></br></div>
+	            <div style="float:left; display:inline-block; width:45%; margin-left:5%;">
+	            	<div>Entrenamiento actual:</div>
+		            <div id="very_soft" style="display:none;">
+		            	<div style="text-align: center; margin-top: 10px;">MUY SUAVE</div>	
+		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
+		            	En este rango no hay adaptaciones a menos que el nivel físico de la persona sea muy bajo. El metabolismo energético más utilizado es el de los ácidos grasos y la intensidad de trabajo es baja.
 	Puede servir para gente con poco nivel físico o para intercalarlo como trabajo de recuperación de otras sesiones más importantes. Tras una sesión dura, introducir trabajo en este rango hace que la recuperación sea más rápida que si se para completamente.
 	<b>Recomendada para acondicionamiento básico o rehabilitación cardíaca.</b>
-		           	</div>
-		        </div>
-		        <div id="soft" class="trainings_player_report">
-		           	<div style="text-align: center; margin-top: 10px;">SUAVE</div>	
-		           	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
-		           	En este rango ya se empiezan a producir adaptaciones que serán más importantes en función de la calidad y de la cantidad de trabajo que se realice. El metabolismo energético es el de los ácidos grasos y el de los hidratos de carbono, si el nivel de intensidad es elevado la utilización de los hidratos de carbono es mayor.
+		            	</div>
+		            </div>
+		            <div id="soft" style="display:none;">
+		            	<div style="text-align: center; margin-top: 10px;">SUAVE</div>	
+		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
+		            	En este rango ya se empiezan a producir adaptaciones que serán más importantes en función de la calidad y de la cantidad de trabajo que se realice. El metabolismo energético es el de los ácidos grasos y el de los hidratos de carbono, si el nivel de intensidad es elevado la utilización de los hidratos de carbono es mayor.
 Se puede utilizar en cualquier grupo que tenga un mínimo de condición física.
 <b>Recomendada para mantenimiento físico y salud.</b>
-		           	</div>
-		        </div>
-		        <div id="moderate" class="trainings_player_report">
-		           	<div style="text-align: center; margin-top: 10px;">MODERADO</div>	
-		           	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
-		           	Tiene las mismas características que el anterior pero con más intensidad, por tanto la degradación de los hidratos de carbono será mayor en esta zona que en la anterior. Es un trabajo de más calidad y en donde se pueden obtener unas adaptaciones muy interesantes para la mejora de la condición física. De hecho esta zona es ideal para el entrenamiento de la capacidad aeróbica. Diríamos que es la zona deseada de ritmo cardíaco.
+		            	</div>
+		            </div>
+		            <div id="moderate" style="display:none;">
+		            	<div style="text-align: center; margin-top: 10px;">MODERADO</div>	
+		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
+		            	Tiene las mismas características que el anterior pero con más intensidad, por tanto la degradación de los hidratos de carbono será mayor en esta zona que en la anterior. Es un trabajo de más calidad y en donde se pueden obtener unas adaptaciones muy interesantes para la mejora de la condición física. De hecho esta zona es ideal para el entrenamiento de la capacidad aeróbica. Diríamos que es la zona deseada de ritmo cardíaco.
 <b>Recomendada sólo para deportistas comprometidos y con buena condición física. </b>
-		           	</div>
-		        </div>
-		        <div id="intense" class="trainings_player_report">
-		           	<div style="text-align: center; margin-top: 10px;">INTENSO</div>	
-		           	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
-		           	A este nivel se puede trabajar en o muy cerca del umbral anaeróbico, un poco por encima y un poco por debajo. Cuando se entrena dentro de este rango empieza a ser necesario metabolizar el ácido láctico, ya que se genera este compuesto por la alta intensidad.
+		            	</div>
+		            </div>
+		            <div id="intense" style="display:none;">
+		            	<div style="text-align: center; margin-top: 10px;">INTENSO</div>	
+		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
+		            	A este nivel se puede trabajar en o muy cerca del umbral anaeróbico, un poco por encima y un poco por debajo. Cuando se entrena dentro de este rango empieza a ser necesario metabolizar el ácido láctico, ya que se genera este compuesto por la alta intensidad.
 Se puede entrenar más duro y en muchos momentos con ausencia de oxígeno. Sólo se debe utilizar con gente con un buen nivel de condición física.
 <b>Recomendada sólo para deportistas de alto nivel.</b>  
-		           	</div>
-		        </div>
-		        <div id="very_intense" class="trainings_player_report">
-		           	<div style="text-align: center; margin-top: 10px;">MUY INTENSO</div>	
-		           	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
-		           	En este rango sólo se puede entrenar si se esta perfectamente en forma, es el caso de los deportistas de élite que están controlados constantemente por profesionales del deporte y de la medicina.
+		            	</div>
+		            </div>
+		            <div id="very_intense" style="display:none;">
+		            	<div style="text-align: center; margin-top: 10px;">MUY INTENSO</div>	
+		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">
+		            	En este rango sólo se puede entrenar si se esta perfectamente en forma, es el caso de los deportistas de élite que están controlados constantemente por profesionales del deporte y de la medicina.
 Se trabaja siempre por encima del umbral anaeróbico, o sea con deuda de oxígeno. Esto significa que los músculos están utilizando más oxígeno del que puede proporcionar el cuerpo.
 <b>Recomendada sólo para deportistas de alto nivel.</b> 
-		           	</div>
-		        </div>
+		            	</div>
+		            </div>
+	            </div>
+	            <div id="graphic_pie" style="float:left; display:inline-block; width:50%; margin-left:0%; height:250px;">
+	            
+	            </div>
+	            </div>
 	        </div>
         </div>
-        <div id="sidebar_right" style="width:10%;">
+        <div id="sidebar_right">
         
         </div>
     </div>
