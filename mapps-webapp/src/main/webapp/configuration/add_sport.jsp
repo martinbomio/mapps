@@ -233,8 +233,8 @@ function set_tab_child_length(){
             </div>  
             <div style="margin-left: 15%;margin-right: 15%;">  
             	<form action="/mapps/addSport" method="post" id="addSport_form">
-                	<div id="nombre">
-                        <div class="tag_form"> Nombre:  </div>
+                	<div id="nombre" style="margin-left: 10%;margin-right: 10%;">
+                        <div class="tag_form" style="width: 35%;"> Nombre:  </div>
                         <div class="input"><input type="text" name="name" id="name" /></div>
                     </div>
                     <div style=" margin-top:25px;">

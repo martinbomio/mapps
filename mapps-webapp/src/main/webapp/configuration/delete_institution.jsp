@@ -210,7 +210,7 @@ function set_tab_child_length(){
 	<div id='tabs' style="background-color:#4DC230; color:#FFF;text-align: center;">
                 <ul>
                     <li style="width:18%; text-align:center; margin-left:11%; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;"><a href="../index.jsp">INICIO</a></li>
-                    <li style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
+                    <li id="ref_tab" style="width:18%; text-align:center; height:25px; padding-top:15px; font-size:16px; font-family:Century Gothic;">JUGADORES
                         <ul id="ul_0" style="width:296px;">
                         	<li style="text-align:center;font-size:16px;height:30px;"><a href="../athletes/athletes.jsp">VER</a></li>
                         <%if(role.equals(Role.ADMINISTRATOR) || role.equals(Role.TRAINER)){%>

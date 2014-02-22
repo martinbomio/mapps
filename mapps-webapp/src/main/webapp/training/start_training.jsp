@@ -345,16 +345,22 @@ function set_tab_child_length(){
             	<label id="training" style="margin-left:10px;margin-bottom:5px;"> Entrenamiento: XXXX-XX-XX-XX </label>
             </div>
             <form action="/mapps/startTraining" method="post" name="startTraining" id="startTraining">
-	            <div id="selector" style="display:inline-block;width: 100%;margin-top:20px;margin-left:100px;">
-	                <div id="main_div_left" style="float:left; width:25%; display:inline-block; margin:15px;">
+	            <div id="selector" style="display:inline-block;width: 80%;margin-right: 10%;margin-top:20px;margin-left: 10%;">
+	            	<div style="width: 30%;margin-left: 2%;margin-right: 2%;display: inline-block;float: left;">
+	            	<center><label>Jugadores:</label></center>
+	                <div id="main_div_left" style="float:left; width: 90%; display:inline-block; margin:2%;padding-left: 3%;padding-right: 2%;padding-top: 2%;">
 	                    <div id="players_list">
 	                    
 	                    </div>
 	                </div>
-	                <div id="main_div_right" style="float:left; width:25%; display:inline-block;margin:15px;">
+	                </div>
+	                <div style="width: 30%;margin-left: 2%;margin-right: 2%;display: inline-block;float: left;">
+	                <center><label>Dispositivos:</label></center>
+	                <div id="main_div_right" style="float:left; width: 90%; display:inline-block; margin:2%;padding-left: 3%;padding-right: 2%;padding-top: 2%;">
 	                    <div id="devices_list">
 	                    
 	                    </div>
+	                </div>
 	                </div>
 	                <div style="margin-left:15px; margin-top:15px;float:left;">
 	            		<input type="button" id="relate" value="RELACIONAR"/>

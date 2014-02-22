@@ -80,11 +80,34 @@ public interface AdminService {
      */
     void disableDevice(Device device, String token) throws AuthenticationException;
 
+    /**
+     * Gets a User from the database by its username.
+     *
+     * @param name the username.
+     * @return The User with the username specified.
+     * @throws InvalidUserException when there is no user with the username specified.
+     */
     User getUserByUsername(String name) throws InvalidUserException;
 
+    /**
+     * Modifies a Device that already exists on the system.
+     *
+     * @param device the device to be changes.
+     * @param token  the identifier of the session.
+     * @throws InvalidDeviceException  when the device to modify isn' on the database.
+     * @throws AuthenticationException when the caller has no privileges to perform this action.
+     */
     void modifyDevice(Device device, String token) throws InvalidDeviceException, AuthenticationException;
 
+    /**
+     * @return all the devices of the system. Doesn't need a token because only the admin can call the service.
+     */
     List<Device> getAllDevices();
 
+    /**
+     * @param token the identifier of the session.
+     * @return all the users from the system.
+     * @throws AuthenticationException
+     */
     List<User> getAllUsers(String token) throws AuthenticationException;
 }

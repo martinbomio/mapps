@@ -9,7 +9,7 @@ import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
 
 /**
- *
+ * Main class that runs all the receiver. Waits to a packet to arrive.
  */
 public class XBeeReceiver {
     private static Logger logger = Logger.getLogger(XBeeReceiver.class);

@@ -69,7 +69,7 @@ public class RawDataUnitDAOImplTest {
         Device device = new Device("123", "456", 55, null);
         deviceDAO.addDevice(device);
 
-        Training training = new Training("training1", new Date(), 1, 1L, 1L, 0, 0, null, null, null, null, null, null);
+        Training training = new Training("training1", new Date(), 1, null, null, null, null, null, null);
         trainingDAO.addTraining(training);
 
         addRawDataUnits(50, device, training);
@@ -81,7 +81,7 @@ public class RawDataUnitDAOImplTest {
         Device device = new Device("123", "456789", 55, null);
         deviceDAO.addDevice(device);
 
-        Training training = new Training("training2", new Date(), 1, 1L, 1L, 0, 0, null, null, null, null, null, null);
+        Training training = new Training("training2", new Date(), 1, null, null, null, null, null, null);
         trainingDAO.addTraining(training);
 
         addRawDataUnits(50, device, training);

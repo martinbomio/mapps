@@ -7,5 +7,5 @@ package com.mapps.services.trainer.exceptions;
  * Time: 05:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class InvalidParException extends Exception {
+public class InvalidParameterException extends Exception {
 }

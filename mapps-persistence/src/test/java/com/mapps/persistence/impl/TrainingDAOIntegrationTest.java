@@ -83,7 +83,7 @@ public class TrainingDAOIntegrationTest {
     @Test
     public void testAddTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
         Date dNow = new Date();
-        testTraining = new Training("hola", dNow, 0, 0, 0, 0, 0, null, null, null, null, null, null);
+        testTraining = new Training("hola", dNow,0, null, null, null, null, null, null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
         Assert.assertEquals(testTraining.getName(), returnedTraining.getName());
@@ -92,7 +92,7 @@ public class TrainingDAOIntegrationTest {
     @Test
     public void testDeleteTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
         Date dNow = new Date();
-        testTraining = new Training("hola2", dNow, 0, 0, 0, 0, 0, null, null, null, null, null, null);
+        testTraining = new Training("hola2", dNow, 0, null, null, null, null, null, null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
 
@@ -109,7 +109,7 @@ public class TrainingDAOIntegrationTest {
     @Test
     public void updateTraining() throws NullParameterException, TrainingAlreadyExistException, TrainingNotFoundException {
         Date dNow = new Date();
-        testTraining = new Training("hola3", dNow, 0, 0, 0, 0, 0, null, null, null, null, null, null);
+        testTraining = new Training("hola3", dNow, 0, null, null, null, null, null, null);
         trainingDAO.addTraining(testTraining);
         Training returnedTraining = trainingDAO.getTrainingByName(testTraining.getName());
         returnedTraining.setMaxBPM(5);
@@ -130,7 +130,7 @@ public class TrainingDAOIntegrationTest {
         testDevice = new Device("0013A200", "40813E2A", 55, testInstitution);
         HashMap<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
         mapAthleteDevice.put(testAthlete, testDevice);
-        testTraining = new Training("hola4", dNow, 0, 0, 0, 0, 0, mapAthleteDevice, null, null, null, null, null);
+        testTraining = new Training("hola4", dNow, 0, mapAthleteDevice, null, null, null, null, null);
 
         institutionDAO.addInstitution(testInstitution);
         athleteDAO.addAthlete(testAthlete);
@@ -160,7 +160,7 @@ public class TrainingDAOIntegrationTest {
         testDevice = new Device("0013A202", "40813E2B", 55, testInstitution);
         HashMap<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
         mapAthleteDevice.put(testAthlete, testDevice);
-        testTraining = new Training("training", dNow, 0, 0, 0, 0, 0, mapAthleteDevice, null, null, null, null, null);
+        testTraining = new Training("training", dNow, 0, mapAthleteDevice, null, null, null, null, null);
 
         institutionDAO.addInstitution(testInstitution);
         athleteDAO.addAthlete(testAthlete);
@@ -177,7 +177,7 @@ public class TrainingDAOIntegrationTest {
     public void testTrainingOfInstitution() throws InstitutionAlreadyExistException, NullParameterException, TrainingAlreadyExistException {
         Date dNow = new Date();
         testInstitution = new Institution("inst", null, "URUGUAY");
-        testTraining = new Training("trai", dNow, 0, 0, 0, 0, 0, null, null, null, null, null, testInstitution);
+        testTraining = new Training("trai", dNow, 0, null, null, null, null, null, testInstitution);
 
         institutionDAO.addInstitution(testInstitution);
         trainingDAO.addTraining(testTraining);

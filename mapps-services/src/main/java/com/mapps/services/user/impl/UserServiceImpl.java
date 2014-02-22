@@ -115,22 +115,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Role userRoleOfToken(String token) throws AuthenticationException {
-        if (token == null) {
-            logger.error("Invalid token");
-            throw new AuthenticationException();
-        }
-        try {
-            User aux = authenticationHandler.getUserOfToken(token);
-            Role role = aux.getRole();
-            return role;
-        } catch (InvalidTokenException e) {
-            logger.error("Invalid token");
-            throw new AuthenticationException();
-        }
-    }
-
-    @Override
     public List<Sport> getAllSports() {
         return sportDAO.getAllSports();
     }

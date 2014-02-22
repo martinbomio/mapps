@@ -2,14 +2,12 @@ package com.mapps.services.report.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mapps.authentificationhandler.AuthenticationHandler;
 import com.mapps.authentificationhandler.exceptions.InvalidTokenException;
 import com.mapps.exceptions.AthleteNotFoundException;
@@ -63,27 +61,8 @@ public class ReportServiceImpl implements ReportService {
     @EJB(name = "PulseReportDAO")
     PulseReportDAO pulseReportDAO;
 
-    @Override
-    public Map<Athlete, List<ProcessedDataUnit>> getTrainingsReport(String trainingID, String token) throws InvalidTrainingException, AuthenticationException {
-        Map<Athlete, List<ProcessedDataUnit>> dataMap = Maps.newHashMap();
-        try {
-            Training training = trainingDAO.getTrainingByName(trainingID);
-            for (Athlete athlete : training.getMapAthleteDevice().keySet()) {
-                List<ProcessedDataUnit> dataUnits = getAthleteStats(trainingID, athlete.getIdDocument(), token);
-                //dataMap.put(athlete, dataUnits);
-            }
-            return dataMap;
-        } catch (TrainingNotFoundException e) {
-            logger.error("Invalid Training name");
-            throw new InvalidTrainingException();
-        } catch (InvalidAthleteException e) {
-            logger.error("Invalid athelete");
-            throw new IllegalStateException();
-        }
-    }
 
-    @Override
-    public List<ProcessedDataUnit> getAthleteStats(String trainingID, String athleteCI, String token) throws AuthenticationException, InvalidTrainingException, InvalidAthleteException {
+    private List<ProcessedDataUnit> getAthleteStats(String trainingID, String athleteCI, String token) throws AuthenticationException, InvalidTrainingException, InvalidAthleteException {
         if (trainingID == null || athleteCI == null) {
             throw new IllegalArgumentException();
         }
@@ -142,12 +121,6 @@ public class ReportServiceImpl implements ReportService {
             logger.error("Invalid token");
             throw new AuthenticationException();
         }
-    }
-
-
-    @Override
-    public List<Integer> getThresholds(Training training, String token) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

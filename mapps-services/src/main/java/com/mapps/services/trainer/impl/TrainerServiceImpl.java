@@ -21,6 +21,7 @@ import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.TrainingNotFoundException;
 import com.mapps.model.Athlete;
 import com.mapps.model.Device;
+import com.mapps.model.Institution;
 import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.model.Training;
@@ -33,7 +34,7 @@ import com.mapps.services.trainer.TrainerService;
 import com.mapps.services.trainer.exceptions.AuthenticationException;
 import com.mapps.services.trainer.exceptions.InvalidAthleteException;
 import com.mapps.services.trainer.exceptions.InvalidDeviceException;
-import com.mapps.services.trainer.exceptions.InvalidParException;
+import com.mapps.services.trainer.exceptions.InvalidParameterException;
 import com.mapps.services.trainer.exceptions.InvalidSportException;
 import com.mapps.services.trainer.exceptions.InvalidTrainingException;
 
@@ -135,7 +136,7 @@ public class TrainerServiceImpl implements TrainerService {
         if (!authenticationHandler.validateToken(token)) {
             throw new AuthenticationException();
         }
-        if (name == null){
+        if (name == null) {
             throw new NullParameterException();
         }
         try {
@@ -210,17 +211,18 @@ public class TrainerServiceImpl implements TrainerService {
         }
         return aux;
     }
+
     @Override
-    public boolean thereIsAStartedTraining(){
-        boolean aux=false;
-        List<Training> trainings=trainingDAO.getAllTrainings();
-        for(int i=0;i<trainings.size();i++){
-            if(trainings.get(i).isStarted()){
-                aux=true;
+    public boolean thereIsAStartedTraining(Institution institution) {
+        List<Training> trainings = trainingDAO.getTrainingOfInstitution(institution.getName());
+        for (Training training : trainings){
+            if(training.isStarted()){
+                return true;
             }
         }
-        return aux;
+        return false;
     }
+
     @Override
     public void startTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
         if (invalidTraining(training)) {
@@ -313,14 +315,14 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public void addAthleteToTraining(String trainingName, String dirDevice, String idAthlete, String token) throws
-            AuthenticationException, InvalidParException {
+            AuthenticationException, InvalidParameterException {
         try {
             Athlete athlete = athleteDAO.getAthleteByIdDocument(idAthlete);
             Device device = deviceDAO.getDeviceByDir(dirDevice);
             Training training = trainingDAO.getTrainingByName(trainingName);
             if (invalidTraining(training) || invalidAthlete(athlete) || invalidDevice(device)) {
                 logger.error("invalid parameter");
-                throw new InvalidParException();
+                throw new InvalidParameterException();
             }
             if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
@@ -342,25 +344,25 @@ public class TrainerServiceImpl implements TrainerService {
         } catch (InvalidTokenException e) {
             throw new AuthenticationException();
         } catch (NullParameterException e) {
-            throw new InvalidParException();
+            throw new InvalidParameterException();
         } catch (TrainingNotFoundException e) {
-            throw new InvalidParException();
+            throw new InvalidParameterException();
         } catch (AthleteNotFoundException e) {
-            throw new InvalidParException();
+            throw new InvalidParameterException();
         } catch (DeviceNotFoundException e) {
-            throw new InvalidParException();
+            throw new InvalidParameterException();
         }
     }
 
     @Override
-    public void modifyTraining(Training training,String token) throws InvalidTrainingException, AuthenticationException {
-          if(invalidTraining(training)){
-              throw new InvalidTrainingException();
-          }
+    public void modifyTraining(Training training, String token) throws InvalidTrainingException, AuthenticationException {
+        if (invalidTraining(training)) {
+            throw new InvalidTrainingException();
+        }
         try {
             if (authenticationHandler.isUserInRole(token, Role.ADMINISTRATOR) ||
                     authenticationHandler.isUserInRole(token, Role.TRAINER)) {
-               trainingDAO.updateTraining(training);
+                trainingDAO.updateTraining(training);
             }
         } catch (InvalidTokenException e) {
             throw new AuthenticationException();

@@ -86,7 +86,7 @@ public class ProcessedDataUnitDAOImplIntegrationTest {
         athleteDAO.addAthlete(athlete);
         Map<Athlete, Device> map = new HashMap<Athlete, Device>();
         map.put(athlete, device);
-        this.training = new Training("training", new Date(), 1, 0L, 0L, 1, 1, map, null, null, null, null, institution);
+        this.training = new Training("training", new Date(), 1, map, null, null, null, null, institution);
         trainingDAO.addTraining(training);
         RawDataUnit rawData = new RawDataUnit(null, null, null, device, 1L, new Date(), training);
         rawDataUnitDAO.addRawDataUnit(rawData);

@@ -4,7 +4,6 @@ package com.mapps.services.user;
 import java.util.List;
 import javax.ejb.Local;
 
-import com.mapps.model.Role;
 import com.mapps.model.Sport;
 import com.mapps.model.User;
 import com.mapps.services.user.exceptions.AuthenticationException;
@@ -42,11 +41,25 @@ public interface UserService {
      */
     void updateUser(User user, String token) throws InvalidUserException, AuthenticationException;
 
+    /**
+     * Checks if the user with the given username is administrator.
+     * @param username the username of the user.
+     * @return true if the user is an administrator, false otherwise.
+     * @throws InvalidUserException if there is no user with the given username.
+     */
     public boolean isAdministrator(String username) throws InvalidUserException;
 
-    public Role userRoleOfToken(String token) throws InvalidUserException, AuthenticationException;
-
+    /**
+     * Gets the user of the given token.
+     *
+     * @param token the identifier of the session.
+     * @return the user of the token.
+     * @throws AuthenticationException when the user doesn't have the necessary permission to perform this action.
+     */
     public User getUserOfToken(String token) throws AuthenticationException;
 
+    /**
+     * @return a list containing all the sport of the system.
+     */
     List<Sport> getAllSports();
 }
