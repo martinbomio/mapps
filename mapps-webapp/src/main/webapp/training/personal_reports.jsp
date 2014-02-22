@@ -210,6 +210,12 @@ String athleteID = String.valueOf(request.getParameter("a"));
 	}
 	
 	function update_values(response){
+        var athlete = response.athleteWrapper;
+        $('#name').text(athlete.name);
+        $('#lastName').text(athlete.lastName);
+        $('#age').text(athlete.age);
+        $('#weight').text(athlete.weight + " kg.");
+        $('#height').text(athlete.height + " m.");
 		document.getElementById('pulse_data').innerHTML = Math.round(response.meanBPM)+' '+'bpm';
 		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
 		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;

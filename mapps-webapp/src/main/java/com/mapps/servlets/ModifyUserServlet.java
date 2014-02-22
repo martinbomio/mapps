@@ -44,6 +44,7 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
     InstitutionService institutionService;
 
     private static final String UPLOAD_DIR = "images/users";
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -63,7 +64,6 @@ public class ModifyUserServlet extends HttpServlet implements Servlet {
         String userName = req.getParameter("username-hidden");
         String idDocument = req.getParameter("document");
         String birth = req.getParameter("date");
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Gender gender = Gender.UNKNOWN;
         if (req.getParameter("gender_list").equalsIgnoreCase("hombre")) {
             gender = Gender.MALE;

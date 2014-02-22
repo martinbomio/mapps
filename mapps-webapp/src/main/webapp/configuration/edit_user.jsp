@@ -140,7 +140,7 @@ function set_tab_child_length(){
 		$('#list_users').jqxListBox({ selectedIndex: 0,  source: users, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = users[index];
-                var img = '<img height="55" width="55" src="' + datarecord.imageURI + '"/>';
+                var img = '<img id="img_'+index+'" height="55" width="55" src="' + datarecord.imageURI + '"/>';
                 var table = '<table style="min-width: 130px;border-spacing: 10px;"><tr><td style="width: 40px;" rowspan="2">' + img + '</td><td style="font-size:24px">  ' + datarecord.userName + '</td></table>';
                 return table;
             }
@@ -164,7 +164,7 @@ function set_tab_child_length(){
 		$("#role_list").jqxDropDownList({selectedIndex: get_role_index(user) });
 		$("#username-hidden").val(user.userName);
 		var split = user.birth.split('/');
-		$('#date').jqxDateTimeInput('setDate', new Date(split[2], split[1], split[0]));
+		$('#date').jqxDateTimeInput('setDate', new Date(split[2], parseInt(split[1]) - 1, split[0]));
 	}
 	
 	function get_gender_index(user){
@@ -186,6 +186,7 @@ function set_tab_child_length(){
 		}
 		return index;
 	}
+	
 </script>
 
 <div id="header">

@@ -62,6 +62,9 @@ if ( session.getAttribute("role") == null){
 		$("#image").on('click', function (){ 
 	        $('#file').click();
 	    });
+		$("#file").change( function() {
+			readURL(this);
+		});
 		$("#edit").jqxButton({ width: '200', height: '35', theme: 'metro'});
         $("#edit").on('click', function (){ 
         	$('#edit_user').jqxValidator('validate');
@@ -147,6 +150,16 @@ function set_tab_child_length(){
 		}
 		$("#gender").jqxDropDownList({selectedIndex: index });
 	}		
+	
+	function readURL(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function (e) {
+	        	$('#img').html('<img src="'+ e.target.result +'" style="width:100%;"/>');
+	        }
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
 	
 </script>
 

@@ -2,6 +2,9 @@ package com.mapps.servlets;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -38,6 +41,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
     InstitutionService institutionService;
 
     private static final String UPLOAD_DIR = "images/athletes";
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -66,6 +70,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
         double height = Double.parseDouble(req.getParameter("height"));
         String idDocument = req.getParameter("document");
         try {
+            Date birth = formatter.parse(req.getParameter("date"));
             Athlete athlete = trainerService.getAthleteByIdDocument(idDocument);
             athlete.setName(name);
             athlete.setLastName(lastName);
@@ -73,6 +78,7 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
             athlete.setEmail(email);
             athlete.setWeight(weight);
             athlete.setHeight(height);
+            athlete.setBirth(birth);
             if(!fileName.equals("")){
                 String extension = fileName.split("\\.")[1];
                 athlete.setImageURI(Utils.getFileURI(idDocument, UPLOAD_DIR, extension));
@@ -86,6 +92,8 @@ public class ModifyAthleteServlet extends HttpServlet implements Servlet {
         } catch (AuthenticationException e) {
             //error 2: Error de autetificacion
             resp.sendRedirect("athletes/edit_athletes.jsp?error=2");
+        } catch (ParseException e) {
+            throw new IllegalStateException("Date format exception");
         }
 
     }
