@@ -153,7 +153,7 @@ function set_tab_child_length(){
 			$("#title").text('No hay entrenamiento programados. Pulse "Programar Entrenamiento" para programar uno');
 			$("#start_training").jqxButton('val', "PROGRAMAR ENTRENAMIENTO");
 		}else{
-			$('#trainings').jqxListBox({ source: records, displayMember: "date", valueMember: "name", itemHeight: 40, height: '250px', width: '100%', theme: 'metro',
+			$('#trainings').jqxListBox({ source: records, displayMember: "date", valueMember: "name", itemHeight: 55, height: '250px', width: '100%', theme: 'metro',
 	        	renderer: function (index, label, value) {
 	                var datarecord = records[index];
 	                var split = datarecord.date.split(" ");
@@ -277,17 +277,17 @@ function set_tab_child_length(){
             	<a href="./training.jsp">ENTRENAMIENTOS</a> >> Comenzar
             </div>
         	<div id="add_div">
-        	<div id="title" style="margin:15px;">
+        	<div id="title_div" style="margin:15px;">
         	<%
 					if(role.equals(Role.ADMINISTRATOR)||role.equals(Role.TRAINER)){
 					%>
 				<%if(trainingStarted.equals("trainingStarted")){ %>
-				<label id="title"> Ya existe un entrenamiento en curso. Si desea programar o iniciar otro, termine el entrenamiento actual. </label>
+				<center><label id="title"> Ya existe un entrenamiento en curso. Si desea programar o iniciar otro, termine el entrenamiento actual. </label></center>
 				<%}else{ %>	
-           		<label id="title"> Seleccione el entrenamiento que desee comenzar </label>
+           		<label id="title"> Seleccione el entrenamiento que desee comenzar: </label>
            		<%} %>
            		<%}else{ %>
-           		<label> Usted no tiene permisos para comenzar un entrenamiento </label>
+           		<center><label> Usted no tiene permisos para comenzar un entrenamiento </label></center>
            		<%} %>
            		
             </div>
