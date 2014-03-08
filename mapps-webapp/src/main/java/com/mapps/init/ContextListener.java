@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -21,28 +20,21 @@ import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mapps.exceptions.AthleteAlreadyExistException;
-import com.mapps.exceptions.DeviceAlreadyExistException;
 import com.mapps.exceptions.GPSDataNotFoundException;
 import com.mapps.exceptions.IMUDataNotFoundException;
 import com.mapps.exceptions.InstitutionAlreadyExistException;
 import com.mapps.exceptions.NullParameterException;
 import com.mapps.exceptions.RawDataUnitNotFoundException;
-import com.mapps.exceptions.SportAlreadyExistException;
-import com.mapps.exceptions.TrainingAlreadyExistException;
 import com.mapps.exceptions.UserAlreadyExistException;
-import com.mapps.model.Athlete;
 import com.mapps.model.Device;
 import com.mapps.model.GPSData;
 import com.mapps.model.Gender;
 import com.mapps.model.IMUData;
 import com.mapps.model.Institution;
-import com.mapps.model.Permission;
 import com.mapps.model.ProcessedDataUnit;
 import com.mapps.model.PulseData;
 import com.mapps.model.RawDataUnit;
 import com.mapps.model.Role;
-import com.mapps.model.Sport;
 import com.mapps.model.Training;
 import com.mapps.model.User;
 import com.mapps.persistence.AthleteDAO;
@@ -99,47 +91,14 @@ public class ContextListener implements ServletContextListener {
     }
 
     private void createDefault(ServletContextEvent servletContextEvent) {
-        Date date = new Date();
+        Institution inst = new Institution("Mapps-Administration", "Institucion MAPPS", "Uruguay");
+        User user = new User("Administrator", "Administrator", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR, "0.000.000-0");
 
-        Institution inst = new Institution("CPC", "Carrasco Polo Club", "Uruguay");
-        Institution inst2 = new Institution("CAP", "Club Atletico Peñarol", "Uruguay");
-        User user = new User("admin", "", new Date(), Gender.MALE, "admin@mapps.com", "admin", "admin", inst, Role.ADMINISTRATOR, "5.858.567-0");
-        User user2 = new User("train", "", new Date(), Gender.MALE, "user@mapps.com", "train", "train", inst, Role.TRAINER, "5.858.544.4");
-        User user3 = new User("user", "", new Date(), Gender.MALE, "userrrr@mapps.com", "user", "user", inst, Role.USER, "1.342.544.4");
-        user.setEnabled(true);
-        Sport sport = new Sport("Futbol");
-        Athlete athlete = new Athlete("pepe", "apellido", new Date(), Gender.MALE, "pepe@gmail.com", 78, 1.8, "1.111.111-0", inst);
-        Athlete mario = new Athlete("Mario", "Gomez", new Date(), Gender.MALE, "mario@gmail.com", 78, 1.80, "4.447.599-3", inst);
-        Device device = new Device("0013A200", "40aad87e", 55, inst);
-        Device device1 = new Device("0013A200", "40a9c8d2", 55, inst);
-        Map<Athlete, Device> mapAthleteDevice = new HashMap<Athlete, Device>();
-        Map<User, Permission> mapUserPermission = new HashMap<User, Permission>();
-        mapAthleteDevice.put(athlete, device1);
-        mapAthleteDevice.put(mario, device);
-        mapUserPermission.put(user, Permission.CREATE);
-        mapUserPermission.put(user2, Permission.READ);
-
-        Training training = new Training("nombreTraining", new Date(),0,mapAthleteDevice, null, null,sport, mapUserPermission, inst);
-        training.setStarted(true);
         try {
             inst.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
-            inst2.setImageURI(new URI(Constants.DEFAULT_INSTITUTION_IMAGE));
             institutionDAO.addInstitution(inst);
-            institutionDAO.addInstitution(inst2);
             user.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
-            user2.setImageURI(new URI(Constants.DEFAULT_USER_IMAGE));
             userDAO.addUser(user);
-            userDAO.addUser(user2);
-            userDAO.addUser(user3);
-            sportDAO.addSport(sport);
-            athlete.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
-            mario.setImageURI(new URI(Constants.DEFAULT_ATHLETE_IMAGE));
-            athleteDAO.addAthlete(athlete);
-            athleteDAO.addAthlete(mario);
-            deviceDAO.addDevice(device);
-            deviceDAO.addDevice(device1);
-            trainingDAO.addTraining(training);
-
 //            List<IMUData> imuDatas = loadImuData(servletContextEvent);
 //            List<GPSData> gpsDatas = loadGPSData(servletContextEvent);
 //            loadAndSaveRawDataUnit(device1, training, imuDatas, gpsDatas, servletContextEvent);
@@ -151,14 +110,6 @@ public class ContextListener implements ServletContextListener {
             throw new IllegalArgumentException();
         } catch (UserAlreadyExistException e) {
             logger.error("User already exists");
-        } catch (SportAlreadyExistException e) {
-            logger.error("Sport already exists");
-        } catch (AthleteAlreadyExistException e) {
-            logger.error("Athlete already exists");
-        } catch (DeviceAlreadyExistException e) {
-            logger.error("Device already exists");
-        } catch (TrainingAlreadyExistException e) {
-            logger.error("Training already exists");
         } catch (URISyntaxException e) {
             logger.error("Image error");
 //        } catch (ParseException e) {

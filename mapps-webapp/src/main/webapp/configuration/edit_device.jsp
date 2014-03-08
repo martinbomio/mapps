@@ -4,11 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="shortcut icon" href="../favicon.ico" />
+	<title>Mapps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
 	<script type="text/javascript" src="../jqwidgets/jqxdata.js"></script>
@@ -87,7 +86,8 @@ if ( session.getAttribute("role") == null){
             },
         	   
 		});
-		$('#main_div_left').height($('#main_div_right').height());
+		var min_height = $('#main_div_right').height();
+        $('#main_div_left').css("min-height", min_height);
 		
 		$("#tabs").jqxMenu({ width: '100%', height: '50px',theme:'metro'});
         
@@ -120,7 +120,7 @@ function set_tab_child_length(){
 		$('#list_devices').on('select', function (event) {
             updatePanel(devices[event.args.index]);
         });
-		$('#list_devices').jqxListBox({ selectedIndex: 0,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 65, height: '80%', width: '100%', theme: 'metro',
+		$('#list_devices').jqxListBox({ selectedIndex: 0, autoHeight:true,  source: devices, displayMember: "name", valueMember: "name", itemHeight: 65, height: '80%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = devices[index];
                
@@ -232,7 +232,7 @@ function set_tab_child_length(){
 	        <div id="navigation" class="navigation">
 	            	<a href="configuration_main.jsp">CONFIGURACI&Oacute;N</a> >> Editar un dispositivo
 	        </div>   
-	        <div id="main_div_left" style="height: 271px">
+	        <div id="main_div_left">
             	<div id="title" style="margin:15px;">
                     <label> 1) Seleccione un dispositivo </label>
                 </div>

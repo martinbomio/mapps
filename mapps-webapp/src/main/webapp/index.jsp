@@ -3,12 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <title>Mapps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,100italic,300italic,400italic,500,700' rel='stylesheet' type='text/css'>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="./scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="./jqwidgets/jqxbuttons.js"></script>
@@ -366,7 +364,7 @@ else if(error.equals(11)){
         	<div id="training" style="width:100%; height:25px; padding-top:15px;"> 
             
             </div>
-            <div id="add_div">
+            <div id="add_div" style="overflow: auto;height: auto!important;max-height: 800px;">
             	<div id="list_athletes" style="width:100%; height:450px; overflow:scroll; margin-top:30px; margin-bottom:30px;display: block;text-align: center;"></div>
             <div id="stop_training_div">
             

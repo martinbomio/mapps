@@ -19,6 +19,7 @@ public class Institution {
     Long id;
     @Column(nullable=false)
     private String name;
+    @Column(length = 10000)
     private String description;
     @Column(nullable=false)
     private String country;

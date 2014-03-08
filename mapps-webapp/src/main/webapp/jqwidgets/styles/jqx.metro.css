@@ -73,7 +73,7 @@
     font-size: 12px;
     font-family: 'segoe ui', arial, sans-serif;
 }
-.jqx-widget-content-metro{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color: #e5e5e5; color: #767676; background-color: #fff;}
+.jqx-widget-content-metro{font-size: 12px; font-family: Helvetica; border-color: #e5e5e5; color: #767676; background-color: #fff;}
 .jqx-widget-header-metro{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; color: #767676; border-color:#e5e5e5; background-color:#f4f4f4;}
 .jqx-fill-state-normal-metro{font-size: 12px; font-family: 'segoe ui', arial, sans-serif; border-color: #e5e5e5; color: #767676; background: #ffffff;}
 .jqx-button-metro {border-color: #cdcdcd;}
@@ -103,8 +103,8 @@
     background-image: url('images/metro-icon-down.png');
  }
 .jqx-widget-metro .jqx-grid-cell-selected-metro, .jqx-grid-cell-selected-metro{ background-color:#EBFDE5;/*background-color:#1faeff;*/
- !important; background-color:#EBFDE5;/*background-color:#1faeff;*/
- !important; font-size: 12px;  color:#fff !important}
+ !important; background-color:rgb(77, 194, 48);/*background-color:#1faeff;*/
+ !important; font-size: 12px;  color:!important}
 .jqx-grid-cell-hover-metro{ background-color:#dedede;}
  /*applied to the column's sort button when the sort order is ascending.*/
  .jqx-grid-column-sortascbutton-metro {

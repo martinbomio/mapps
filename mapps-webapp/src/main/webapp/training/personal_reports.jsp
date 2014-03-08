@@ -3,11 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<link rel="shortcut icon" href="../favicon.ico" />
+	<title>Mapps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
@@ -216,6 +215,7 @@ String athleteID = String.valueOf(request.getParameter("a"));
         $('#age').text(athlete.age);
         $('#weight').text(athlete.weight + " kg.");
         $('#height').text(athlete.height + " m.");
+        $('#athlete_img').attr("src", athlete.imageURI);
 		document.getElementById('pulse_data').innerHTML = Math.round(response.meanBPM)+' '+'bpm';
 		document.getElementById('calories_data').innerHTML = get_double_as_String(response.kCal,3)+' '+'kCal';
 		document.getElementById('pulse_data_min').innerHTML = window.pulse_min;
@@ -321,6 +321,19 @@ String athleteID = String.valueOf(request.getParameter("a"));
 		chart.labelsEnabled = true;
 		chart.validateData();
 		window.pie_chart = chart;
+		chart.addListener("clickSlice", function(event){
+			var title = event.dataItem.title;
+			var divs = [$('#very_soft'),$('#soft'),$('#moderate'),$('#intense'),$('#very_intense')];
+			var values = ['Muy suave', 'Suave', 'Moderado', 'Intenso', 'Muy intenso'];
+			$.each(divs, function(index, value){
+				value.css('display', 'none');
+			});
+			$.each(values, function(index, value){
+				if (value == title){
+					divs[index].css('display', 'block');
+				}
+			});
+		});
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -427,13 +440,13 @@ String athleteID = String.valueOf(request.getParameter("a"));
         	</div>
             <div id="main_div_up">
                 <div id="athlete_data_div">
-                    	<img src="../images/athletes/default.png" height="110px" style="float: left;margin-top: 25px;margin-left: 10px" />
+                    	<img id="athlete_img" src="../images/athletes/default.png" height="110px" style="float: left;margin-top: 25px;margin-left: 10px" />
                     	<div id='athlete_data'>
-                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Nombre:</div><div id="name" class="my_account_data"> Martin</div></div>
-                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"> Bomio</div></div>
-                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"> 24</div></div>
-                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"> 1.75 m.</div></div>
-                    		<div class="my_account_field" style="width:40%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"> 95 kg.</div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Nombre:</div><div id="name" class="my_account_data"></div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Apellido:</div><div id="lastName" class="my_account_data"></div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Edad:</div><div id="age" class="my_account_data"></div></div>
+                    		<div class="my_account_field" style="width:35%"><div class="my_account_tag" >Altura:</div><div id="height" class="my_account_data"></div></div>
+                    		<div class="my_account_field" style="width:40%"><div class="my_account_tag" >Peso:</div><div id="weight" class="my_account_data"></div></div>
                     	</div>
                 </div>
                 <div id="athlete_data_div" >
@@ -489,7 +502,6 @@ String athleteID = String.valueOf(request.getParameter("a"));
 	        	<div style="float:left; display:inline-block; width:94%;margin:3%;">
 	            <div>Zonas de entrenamiento<br></br></div>
 	            <div style="float:left; display:inline-block; width:45%; margin-left:5%;">
-	            	<div>Entrenamiento actual:</div>
 		            <div id="very_soft" style="display:none;">
 		            	<div style="text-align: center; margin-top: 10px;">MUY SUAVE</div>	
 		            	<div style="font-size:12px; line-height:2; margin-top:15px; font-style:italic">

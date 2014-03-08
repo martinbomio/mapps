@@ -3,11 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<title>Mapps</title>
+	<link rel="shortcut icon" href="../favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxmenu.js"></script>
@@ -126,7 +125,7 @@ if(info.equals("1")){
 		$('#list_players').on('select', function (event) {
             updatePanel(athletes[event.args.index]);
         });
-		$('#list_players').jqxListBox({ selectedIndex: 0,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
+		$('#list_players').jqxListBox({ selectedIndex: 0, autoHeight:true,  source: athletes, displayMember: "firstname", valueMember: "notes", itemHeight: 90, height: '90%', width: '100%', theme: 'metro',
             renderer: function (index, label, value) {
                 var datarecord = athletes[index];
                 //var imgurl = '../../images/' + label.toLowerCase() + '.png';
@@ -157,7 +156,8 @@ if(info.equals("1")){
             $(container).append(height);
             $(container).append(document);
             $("#main_div_right").html(container.html());
-            $('#main_div_left').height($('#main_div_right').height());
+            var min_height = $('#main_div_right').height();
+            $('#main_div_left').css("min-height", min_height);
         }
 	
 	function get_gender(gender){

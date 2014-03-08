@@ -3,11 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<link rel="shortcut icon" href="../favicon.ico" />
+	<title>Mapps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type='text/javascript' src="../scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="../jqwidgets/jqxbuttons.js"></script>
@@ -101,6 +100,7 @@ if (token.equals("null") || token.equals("")){
 	            },
 	        	   
 			});
+			
 			$("#tabs").jqxMenu({ width: '100%', height: '50px',theme:'metro'});
 	          
 	          var centerItems = function () {
@@ -162,7 +162,7 @@ if (token.equals("null") || token.equals("")){
 	
 	function create_athlete_list(response){
 		$('#main_div_right').html('<div id="list_athletes" style="width: 90%;margin-left: 5%;margin-right: 5%;margin-top: 25px;"></div>');
-		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'90%', autoHeight: 'true', width: '90%', theme: 'metro',
+		$('#list_athletes').jqxListBox({ selectedIndex: 0, source: response, displayMember: "athlete.name", valueMember: "athlete.idDocument", itemHeight: '130px' ,height:'90%', autoHeight: 'true', width: '95%', theme: 'metro',
             renderer: function (index, label, value) {
                 var reports = response[index];
                 var athlete = reports.athlete;
@@ -171,14 +171,16 @@ if (token.equals("null") || token.equals("")){
             	var min_bpm = Math.min.apply(Math, reports.pulse);
             	var average_bpm = get_double_as_String(reports.meanBPM,2);
             	var elapsedTime = set_time_format(reports.elapsedTime);
-            	var first_div = $('<div style="width:90%" id="'+athlete.idDocument+'" class="display_player"></div');
-            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+reports.trainingName+'"><div id="up" style="width:90%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:30%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:20%; height:100%;">'+ elapsedTime +'</div></div>');
-            	var div_down = $('<div id="down" style="width:90%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;width: 75px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
+            	var first_div = $('<div style="width:100%" id="'+athlete.idDocument+'" class="display_player"></div');
+            	var div_up = $('<a href="./personal_reports.jsp?a='+athlete.idDocument+'&t='+reports.trainingName+'"><div id="up" style="width:100%; height:60%;"><div id="img" style="display:inline-block; width:15%; height:100%;"><img src="'+athlete.imageURI+'" style="height:55px; margin-top:5px; vertical-align:middle"/></div><div id="name" style="display:inline-block; font-size:14px; width:30%; height:100%;">'+athlete.name+' '+athlete.lastName+'</div></a> Duración del entrenamiento: <div id="time" style="display:inline-block; font-size:14px; width:20%; height:100%;">'+ elapsedTime +'</div></div></a>');
+            	var div_down = $('<div id="down" style="width:100%; height:40%;"><div id="info_bpm" class="tab_player_login"><div class="tag_info_player_login"> Pulsaciones Promedio:</div><div id="bpm'+athlete.idDocument+'" class="tag_data_player_login"> '+average_bpm+' bpm </div></div><div id="info_calories" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Calorias quemadas:</div><div id="calories'+athlete.idDocument+'" class="tag_data_player_login"> '+kCal+' KCal </div></div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;"><div class="tag_info_player_login"> Pulso Max:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+max_bpm+' bpm </div> </div><div id="info_heart" class="tab_player_login" style="border-left:solid 1px;width: 75px;"><div class="tag_info_player_login"> Pulso Min:</div><div id="pulse'+athlete.idDocument+'" class="tag_data_player_login"> '+min_bpm+' bpm </div></div></div></div>');
                 first_div.append(div_up);
             	first_div.append(div_down);
-                return first_div.html();
+            	var div = $('<div></div>').append(first_div)
+                return div.html();
             }
         });
+		$('#main_div_left').height($('#main_div_right').height());
 	}
 	
 	function get_double_as_String(doub, decimals){
@@ -338,7 +340,7 @@ if (token.equals("null") || token.equals("")){
                 </div>
         		<div id="list_trainings"></div>
         	</div>
-        	<div id="main_div_right" style="width:67%; display:inline-block;">
+        	<div id="main_div_right" style="width:67%; display:inline-block;overflow: auto;">
         		<div id="list_athletes"></div>
         	</div>
         	

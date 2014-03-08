@@ -106,8 +106,8 @@ public class AthleteWrapper {
         }
 
         public AthleteWrapper build(){
-            return new AthleteWrapper(athlete.getName(), getAge(athlete.getBirth()), athlete.getHeight(),
-                                      athlete.getWeight(),athlete.getGender(), athlete.getImageURI().toString(),
+            return new AthleteWrapper(athlete.getName(), getAge(athlete.getBirth()), athlete.getWeight(),
+                                      athlete.getHeight(),athlete.getGender(), athlete.getImageURI().toString(),
                                       athlete.getLastName(), athlete.getIdDocument());
         }
 

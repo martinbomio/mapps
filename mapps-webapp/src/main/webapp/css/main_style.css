@@ -1,6 +1,6 @@
 /* CSS Document */
 body{
-	font-family:Century Gothic;
+	font-family:Helvetica;
 	color:#A2A2A2;
 	font-size:16px;
 	position:relative;
@@ -176,7 +176,7 @@ body{
 	height:25px; 
 	padding-top:15px; 
 	font-size:16px; 
-	font-family:Century Gothic;
+	font-family:Helvetica;
 }
 
 .tab:hover{
@@ -461,6 +461,8 @@ body{
 }
 
 #main_div_left{
+	overflow: auto;
+	max-height: 550px;
 	float:left; width:30%; display:inline-block;
 	border: 2px solid;
 	border-radius: 15px;
