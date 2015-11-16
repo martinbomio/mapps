@@ -3,8 +3,8 @@ package com.mapps.utils;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
 
-import com.sun.istack.internal.Nullable;
 
 /**
  *
